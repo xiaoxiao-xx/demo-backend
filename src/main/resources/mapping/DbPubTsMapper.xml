@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DbPubTsMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.api.model.DbPubTs" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pub_name" property="pubName" jdbcType="VARCHAR" />
+    <result column="pub_desc" property="pubDesc" jdbcType="VARCHAR" />
+    <result column="pol_id" property="polId" jdbcType="VARCHAR" />
+    <result column="model_id" property="modelId" jdbcType="VARCHAR" />
+    <result column="template_id" property="templateId" jdbcType="VARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="data_type" property="dataType" jdbcType="VARCHAR" />
+    <result column="pub_user_id" property="pubUserId" jdbcType="VARCHAR" />
+    <result column="pub_org_id" property="pubOrgId" jdbcType="VARCHAR" />
+    <result column="pub_time" property="pubTime" jdbcType="TIMESTAMP" />
+    <result column="source_db_id" property="sourceDbId" jdbcType="VARCHAR" />
+    <result column="table_name" property="tableName" jdbcType="VARCHAR" />
+    <result column="table_comment" property="tableComment" jdbcType="VARCHAR" />
+    <result column="pub_status" property="pubStatus" jdbcType="VARCHAR" />
+    <result column="auto_app" property="autoApp" jdbcType="VARCHAR" />
+    <result column="interface_type" property="interfaceType" jdbcType="VARCHAR" />
+    <result column="rest_url" property="restUrl" jdbcType="VARCHAR" />
+    <result column="web_url" property="webUrl" jdbcType="VARCHAR" />
+    <result column="auth_type" property="authType" jdbcType="VARCHAR" />
+    <result column="auth_scope" property="authScope" jdbcType="VARCHAR" />
+    <result column="auth_start_time" property="authStartTime" jdbcType="DATE" />
+    <result column="auth_end_date" property="authEndDate" jdbcType="DATE" />
+    <result column="usefrequency" property="usefrequency" jdbcType="INTEGER" />
+    <result column="is_sign" property="isSign" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+    <result column="upd_user_id" property="updUserId" jdbcType="VARCHAR" />
+    <result column="upd_org_id" property="updOrgId" jdbcType="VARCHAR" />
+    <result column="upd_tm" property="updTm" jdbcType="TIMESTAMP" />
+    <result column="crt_user_id" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="crt_org_id" property="crtOrgId" jdbcType="VARCHAR" />
+    <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pub_name, pub_desc, pol_id, model_id, template_id, keywords, data_type, pub_user_id, 
+    pub_org_id, pub_time, source_db_id, table_name, table_comment, pub_status, auto_app, 
+    interface_type, rest_url, web_url, auth_type, auth_scope, auth_start_time, auth_end_date, 
+    usefrequency, is_sign, status, del_status, upd_user_id, upd_org_id, upd_tm, crt_user_id, 
+    crt_org_id, crt_tm
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbPubTsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from db_pub_ts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_pub_ts
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from db_pub_ts
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DbPubTsExample" >
+    delete from db_pub_ts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.api.model.DbPubTs" >
+    insert into db_pub_ts (id, pub_name, pub_desc, 
+      pol_id, model_id, template_id, 
+      keywords, data_type, pub_user_id, 
+      pub_org_id, pub_time, source_db_id, 
+      table_name, table_comment, pub_status, 
+      auto_app, interface_type, rest_url, 
+      web_url, auth_type, auth_scope, 
+      auth_start_time, auth_end_date, usefrequency, 
+      is_sign, status, del_status, 
+      upd_user_id, upd_org_id, upd_tm, 
+      crt_user_id, crt_org_id, crt_tm
+      )
+    values (#{id,jdbcType=VARCHAR}, #{pubName,jdbcType=VARCHAR}, #{pubDesc,jdbcType=VARCHAR}, 
+      #{polId,jdbcType=VARCHAR}, #{modelId,jdbcType=VARCHAR}, #{templateId,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{pubUserId,jdbcType=VARCHAR}, 
+      #{pubOrgId,jdbcType=VARCHAR}, #{pubTime,jdbcType=TIMESTAMP}, #{sourceDbId,jdbcType=VARCHAR}, 
+      #{tableName,jdbcType=VARCHAR}, #{tableComment,jdbcType=VARCHAR}, #{pubStatus,jdbcType=VARCHAR}, 
+      #{autoApp,jdbcType=VARCHAR}, #{interfaceType,jdbcType=VARCHAR}, #{restUrl,jdbcType=VARCHAR}, 
+      #{webUrl,jdbcType=VARCHAR}, #{authType,jdbcType=VARCHAR}, #{authScope,jdbcType=VARCHAR}, 
+      #{authStartTime,jdbcType=DATE}, #{authEndDate,jdbcType=DATE}, #{usefrequency,jdbcType=INTEGER}, 
+      #{isSign,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, 
+      #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, #{updTm,jdbcType=TIMESTAMP}, 
+      #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.api.model.DbPubTs" >
+    insert into db_pub_ts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pubName != null" >
+        pub_name,
+      </if>
+      <if test="pubDesc != null" >
+        pub_desc,
+      </if>
+      <if test="polId != null" >
+        pol_id,
+      </if>
+      <if test="modelId != null" >
+        model_id,
+      </if>
+      <if test="templateId != null" >
+        template_id,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="dataType != null" >
+        data_type,
+      </if>
+      <if test="pubUserId != null" >
+        pub_user_id,
+      </if>
+      <if test="pubOrgId != null" >
+        pub_org_id,
+      </if>
+      <if test="pubTime != null" >
+        pub_time,
+      </if>
+      <if test="sourceDbId != null" >
+        source_db_id,
+      </if>
+      <if test="tableName != null" >
+        table_name,
+      </if>
+      <if test="tableComment != null" >
+        table_comment,
+      </if>
+      <if test="pubStatus != null" >
+        pub_status,
+      </if>
+      <if test="autoApp != null" >
+        auto_app,
+      </if>
+      <if test="interfaceType != null" >
+        interface_type,
+      </if>
+      <if test="restUrl != null" >
+        rest_url,
+      </if>
+      <if test="webUrl != null" >
+        web_url,
+      </if>
+      <if test="authType != null" >
+        auth_type,
+      </if>
+      <if test="authScope != null" >
+        auth_scope,
+      </if>
+      <if test="authStartTime != null" >
+        auth_start_time,
+      </if>
+      <if test="authEndDate != null" >
+        auth_end_date,
+      </if>
+      <if test="usefrequency != null" >
+        usefrequency,
+      </if>
+      <if test="isSign != null" >
+        is_sign,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id,
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id,
+      </if>
+      <if test="updTm != null" >
+        upd_tm,
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id,
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id,
+      </if>
+      <if test="crtTm != null" >
+        crt_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pubName != null" >
+        #{pubName,jdbcType=VARCHAR},
+      </if>
+      <if test="pubDesc != null" >
+        #{pubDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="polId != null" >
+        #{polId,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null" >
+        #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="pubUserId != null" >
+        #{pubUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="pubOrgId != null" >
+        #{pubOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="pubTime != null" >
+        #{pubTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceDbId != null" >
+        #{sourceDbId,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="tableComment != null" >
+        #{tableComment,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        #{pubStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="autoApp != null" >
+        #{autoApp,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null" >
+        #{interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="restUrl != null" >
+        #{restUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="webUrl != null" >
+        #{webUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="authType != null" >
+        #{authType,jdbcType=VARCHAR},
+      </if>
+      <if test="authScope != null" >
+        #{authScope,jdbcType=VARCHAR},
+      </if>
+      <if test="authStartTime != null" >
+        #{authStartTime,jdbcType=DATE},
+      </if>
+      <if test="authEndDate != null" >
+        #{authEndDate,jdbcType=DATE},
+      </if>
+      <if test="usefrequency != null" >
+        #{usefrequency,jdbcType=INTEGER},
+      </if>
+      <if test="isSign != null" >
+        #{isSign,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DbPubTsExample" resultType="java.lang.Integer" >
+    select count(*) from db_pub_ts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update db_pub_ts
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubName != null" >
+        pub_name = #{record.pubName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubDesc != null" >
+        pub_desc = #{record.pubDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.polId != null" >
+        pol_id = #{record.polId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modelId != null" >
+        model_id = #{record.modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templateId != null" >
+        template_id = #{record.templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keywords != null" >
+        keywords = #{record.keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataType != null" >
+        data_type = #{record.dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubUserId != null" >
+        pub_user_id = #{record.pubUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubOrgId != null" >
+        pub_org_id = #{record.pubOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubTime != null" >
+        pub_time = #{record.pubTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sourceDbId != null" >
+        source_db_id = #{record.sourceDbId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tableName != null" >
+        table_name = #{record.tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tableComment != null" >
+        table_comment = #{record.tableComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubStatus != null" >
+        pub_status = #{record.pubStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.autoApp != null" >
+        auto_app = #{record.autoApp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceType != null" >
+        interface_type = #{record.interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.restUrl != null" >
+        rest_url = #{record.restUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.webUrl != null" >
+        web_url = #{record.webUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authType != null" >
+        auth_type = #{record.authType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authScope != null" >
+        auth_scope = #{record.authScope,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authStartTime != null" >
+        auth_start_time = #{record.authStartTime,jdbcType=DATE},
+      </if>
+      <if test="record.authEndDate != null" >
+        auth_end_date = #{record.authEndDate,jdbcType=DATE},
+      </if>
+      <if test="record.usefrequency != null" >
+        usefrequency = #{record.usefrequency,jdbcType=INTEGER},
+      </if>
+      <if test="record.isSign != null" >
+        is_sign = #{record.isSign,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updUserId != null" >
+        upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updOrgId != null" >
+        upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updTm != null" >
+        upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.crtUserId != null" >
+        crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtOrgId != null" >
+        crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update db_pub_ts
+    set id = #{record.id,jdbcType=VARCHAR},
+      pub_name = #{record.pubName,jdbcType=VARCHAR},
+      pub_desc = #{record.pubDesc,jdbcType=VARCHAR},
+      pol_id = #{record.polId,jdbcType=VARCHAR},
+      model_id = #{record.modelId,jdbcType=VARCHAR},
+      template_id = #{record.templateId,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      data_type = #{record.dataType,jdbcType=VARCHAR},
+      pub_user_id = #{record.pubUserId,jdbcType=VARCHAR},
+      pub_org_id = #{record.pubOrgId,jdbcType=VARCHAR},
+      pub_time = #{record.pubTime,jdbcType=TIMESTAMP},
+      source_db_id = #{record.sourceDbId,jdbcType=VARCHAR},
+      table_name = #{record.tableName,jdbcType=VARCHAR},
+      table_comment = #{record.tableComment,jdbcType=VARCHAR},
+      pub_status = #{record.pubStatus,jdbcType=VARCHAR},
+      auto_app = #{record.autoApp,jdbcType=VARCHAR},
+      interface_type = #{record.interfaceType,jdbcType=VARCHAR},
+      rest_url = #{record.restUrl,jdbcType=VARCHAR},
+      web_url = #{record.webUrl,jdbcType=VARCHAR},
+      auth_type = #{record.authType,jdbcType=VARCHAR},
+      auth_scope = #{record.authScope,jdbcType=VARCHAR},
+      auth_start_time = #{record.authStartTime,jdbcType=DATE},
+      auth_end_date = #{record.authEndDate,jdbcType=DATE},
+      usefrequency = #{record.usefrequency,jdbcType=INTEGER},
+      is_sign = #{record.isSign,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      del_status = #{record.delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{record.crtTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.api.model.DbPubTs" >
+    update db_pub_ts
+    <set >
+      <if test="pubName != null" >
+        pub_name = #{pubName,jdbcType=VARCHAR},
+      </if>
+      <if test="pubDesc != null" >
+        pub_desc = #{pubDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="polId != null" >
+        pol_id = #{polId,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        model_id = #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null" >
+        template_id = #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        data_type = #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="pubUserId != null" >
+        pub_user_id = #{pubUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="pubOrgId != null" >
+        pub_org_id = #{pubOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="pubTime != null" >
+        pub_time = #{pubTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceDbId != null" >
+        source_db_id = #{sourceDbId,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        table_name = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="tableComment != null" >
+        table_comment = #{tableComment,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        pub_status = #{pubStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="autoApp != null" >
+        auto_app = #{autoApp,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null" >
+        interface_type = #{interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="restUrl != null" >
+        rest_url = #{restUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="webUrl != null" >
+        web_url = #{webUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="authType != null" >
+        auth_type = #{authType,jdbcType=VARCHAR},
+      </if>
+      <if test="authScope != null" >
+        auth_scope = #{authScope,jdbcType=VARCHAR},
+      </if>
+      <if test="authStartTime != null" >
+        auth_start_time = #{authStartTime,jdbcType=DATE},
+      </if>
+      <if test="authEndDate != null" >
+        auth_end_date = #{authEndDate,jdbcType=DATE},
+      </if>
+      <if test="usefrequency != null" >
+        usefrequency = #{usefrequency,jdbcType=INTEGER},
+      </if>
+      <if test="isSign != null" >
+        is_sign = #{isSign,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.api.model.DbPubTs" >
+    update db_pub_ts
+    set pub_name = #{pubName,jdbcType=VARCHAR},
+      pub_desc = #{pubDesc,jdbcType=VARCHAR},
+      pol_id = #{polId,jdbcType=VARCHAR},
+      model_id = #{modelId,jdbcType=VARCHAR},
+      template_id = #{templateId,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=VARCHAR},
+      pub_user_id = #{pubUserId,jdbcType=VARCHAR},
+      pub_org_id = #{pubOrgId,jdbcType=VARCHAR},
+      pub_time = #{pubTime,jdbcType=TIMESTAMP},
+      source_db_id = #{sourceDbId,jdbcType=VARCHAR},
+      table_name = #{tableName,jdbcType=VARCHAR},
+      table_comment = #{tableComment,jdbcType=VARCHAR},
+      pub_status = #{pubStatus,jdbcType=VARCHAR},
+      auto_app = #{autoApp,jdbcType=VARCHAR},
+      interface_type = #{interfaceType,jdbcType=VARCHAR},
+      rest_url = #{restUrl,jdbcType=VARCHAR},
+      web_url = #{webUrl,jdbcType=VARCHAR},
+      auth_type = #{authType,jdbcType=VARCHAR},
+      auth_scope = #{authScope,jdbcType=VARCHAR},
+      auth_start_time = #{authStartTime,jdbcType=DATE},
+      auth_end_date = #{authEndDate,jdbcType=DATE},
+      usefrequency = #{usefrequency,jdbcType=INTEGER},
+      is_sign = #{isSign,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      del_status = #{delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{crtTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

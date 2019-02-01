@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DbServiceKitMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.api.model.DbServiceKit" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="org_id" property="orgId" jdbcType="VARCHAR" />
+    <result column="label_id" property="labelId" jdbcType="VARCHAR" />
+    <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+    <result column="tag_type" property="tagType" jdbcType="VARCHAR" />
+    <result column="tag_ip" property="tagIp" jdbcType="VARCHAR" />
+    <result column="mac_address" property="macAddress" jdbcType="VARCHAR" />
+    <result column="tag_port" property="tagPort" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+    <result column="upd_user_id" property="updUserId" jdbcType="VARCHAR" />
+    <result column="upd_org_id" property="updOrgId" jdbcType="VARCHAR" />
+    <result column="upd_tm" property="updTm" jdbcType="TIMESTAMP" />
+    <result column="crt_user_id" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="crt_org_id" property="crtOrgId" jdbcType="VARCHAR" />
+    <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, org_id, label_id, tag_name, tag_type, tag_ip, mac_address, tag_port, status, 
+    del_status, upd_user_id, upd_org_id, upd_tm, crt_user_id, crt_org_id, crt_tm, remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbServiceKitExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from db_service_kit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_service_kit
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from db_service_kit
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DbServiceKitExample" >
+    delete from db_service_kit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.api.model.DbServiceKit" >
+    insert into db_service_kit (id, org_id, label_id, 
+      tag_name, tag_type, tag_ip, 
+      mac_address, tag_port, status, 
+      del_status, upd_user_id, upd_org_id, 
+      upd_tm, crt_user_id, crt_org_id, 
+      crt_tm, remark)
+    values (#{id,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{labelId,jdbcType=VARCHAR}, 
+      #{tagName,jdbcType=VARCHAR}, #{tagType,jdbcType=VARCHAR}, #{tagIp,jdbcType=VARCHAR}, 
+      #{macAddress,jdbcType=VARCHAR}, #{tagPort,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{delStatus,jdbcType=VARCHAR}, #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, 
+      #{updTm,jdbcType=TIMESTAMP}, #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, 
+      #{crtTm,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.api.model.DbServiceKit" >
+    insert into db_service_kit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="labelId != null" >
+        label_id,
+      </if>
+      <if test="tagName != null" >
+        tag_name,
+      </if>
+      <if test="tagType != null" >
+        tag_type,
+      </if>
+      <if test="tagIp != null" >
+        tag_ip,
+      </if>
+      <if test="macAddress != null" >
+        mac_address,
+      </if>
+      <if test="tagPort != null" >
+        tag_port,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id,
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id,
+      </if>
+      <if test="updTm != null" >
+        upd_tm,
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id,
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id,
+      </if>
+      <if test="crtTm != null" >
+        crt_tm,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="labelId != null" >
+        #{labelId,jdbcType=VARCHAR},
+      </if>
+      <if test="tagName != null" >
+        #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="tagType != null" >
+        #{tagType,jdbcType=VARCHAR},
+      </if>
+      <if test="tagIp != null" >
+        #{tagIp,jdbcType=VARCHAR},
+      </if>
+      <if test="macAddress != null" >
+        #{macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tagPort != null" >
+        #{tagPort,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DbServiceKitExample" resultType="java.lang.Integer" >
+    select count(*) from db_service_kit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update db_service_kit
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgId != null" >
+        org_id = #{record.orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.labelId != null" >
+        label_id = #{record.labelId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tagName != null" >
+        tag_name = #{record.tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tagType != null" >
+        tag_type = #{record.tagType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tagIp != null" >
+        tag_ip = #{record.tagIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.macAddress != null" >
+        mac_address = #{record.macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tagPort != null" >
+        tag_port = #{record.tagPort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updUserId != null" >
+        upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updOrgId != null" >
+        upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updTm != null" >
+        upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.crtUserId != null" >
+        crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtOrgId != null" >
+        crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update db_service_kit
+    set id = #{record.id,jdbcType=VARCHAR},
+      org_id = #{record.orgId,jdbcType=VARCHAR},
+      label_id = #{record.labelId,jdbcType=VARCHAR},
+      tag_name = #{record.tagName,jdbcType=VARCHAR},
+      tag_type = #{record.tagType,jdbcType=VARCHAR},
+      tag_ip = #{record.tagIp,jdbcType=VARCHAR},
+      mac_address = #{record.macAddress,jdbcType=VARCHAR},
+      tag_port = #{record.tagPort,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      del_status = #{record.delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.api.model.DbServiceKit" >
+    update db_service_kit
+    <set >
+      <if test="orgId != null" >
+        org_id = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="labelId != null" >
+        label_id = #{labelId,jdbcType=VARCHAR},
+      </if>
+      <if test="tagName != null" >
+        tag_name = #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="tagType != null" >
+        tag_type = #{tagType,jdbcType=VARCHAR},
+      </if>
+      <if test="tagIp != null" >
+        tag_ip = #{tagIp,jdbcType=VARCHAR},
+      </if>
+      <if test="macAddress != null" >
+        mac_address = #{macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tagPort != null" >
+        tag_port = #{tagPort,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.api.model.DbServiceKit" >
+    update db_service_kit
+    set org_id = #{orgId,jdbcType=VARCHAR},
+      label_id = #{labelId,jdbcType=VARCHAR},
+      tag_name = #{tagName,jdbcType=VARCHAR},
+      tag_type = #{tagType,jdbcType=VARCHAR},
+      tag_ip = #{tagIp,jdbcType=VARCHAR},
+      mac_address = #{macAddress,jdbcType=VARCHAR},
+      tag_port = #{tagPort,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      del_status = #{delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

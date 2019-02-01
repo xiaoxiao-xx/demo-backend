@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DbServiceRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.DbServiceRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pub_id" property="pubId" jdbcType="VARCHAR" />
+    <result column="pub_org_id" property="pubOrgId" jdbcType="VARCHAR" />
+    <result column="pub_user_id" property="pubUserId" jdbcType="VARCHAR" />
+    <result column="sub_id" property="subId" jdbcType="VARCHAR" />
+    <result column="sub_org_id" property="subOrgId" jdbcType="VARCHAR" />
+    <result column="sub_user_id" property="subUserId" jdbcType="VARCHAR" />
+    <result column="invoke_date" property="invokeDate" jdbcType="TIMESTAMP" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="month" property="month" jdbcType="VARCHAR" />
+    <result column="proxy_time" property="proxyTime" jdbcType="BIGINT" />
+    <result column="data_volume" property="dataVolume" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pub_id, pub_org_id, pub_user_id, sub_id, sub_org_id, sub_user_id, invoke_date, 
+    result, month, proxy_time, data_volume
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbServiceRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from db_service_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_service_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from db_service_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DbServiceRecordExample" >
+    delete from db_service_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.DbServiceRecord" >
+    insert into db_service_record (id, pub_id, pub_org_id, 
+      pub_user_id, sub_id, sub_org_id, 
+      sub_user_id, invoke_date, result, 
+      month, proxy_time, data_volume
+      )
+    values (#{id,jdbcType=VARCHAR}, #{pubId,jdbcType=VARCHAR}, #{pubOrgId,jdbcType=VARCHAR}, 
+      #{pubUserId,jdbcType=VARCHAR}, #{subId,jdbcType=VARCHAR}, #{subOrgId,jdbcType=VARCHAR}, 
+      #{subUserId,jdbcType=VARCHAR}, #{invokeDate,jdbcType=TIMESTAMP}, #{result,jdbcType=VARCHAR}, 
+      #{month,jdbcType=VARCHAR}, #{proxyTime,jdbcType=BIGINT}, #{dataVolume,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.DbServiceRecord" >
+    insert into db_service_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pubId != null" >
+        pub_id,
+      </if>
+      <if test="pubOrgId != null" >
+        pub_org_id,
+      </if>
+      <if test="pubUserId != null" >
+        pub_user_id,
+      </if>
+      <if test="subId != null" >
+        sub_id,
+      </if>
+      <if test="subOrgId != null" >
+        sub_org_id,
+      </if>
+      <if test="subUserId != null" >
+        sub_user_id,
+      </if>
+      <if test="invokeDate != null" >
+        invoke_date,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="proxyTime != null" >
+        proxy_time,
+      </if>
+      <if test="dataVolume != null" >
+        data_volume,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pubId != null" >
+        #{pubId,jdbcType=VARCHAR},
+      </if>
+      <if test="pubOrgId != null" >
+        #{pubOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="pubUserId != null" >
+        #{pubUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="subId != null" >
+        #{subId,jdbcType=VARCHAR},
+      </if>
+      <if test="subOrgId != null" >
+        #{subOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="subUserId != null" >
+        #{subUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="invokeDate != null" >
+        #{invokeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyTime != null" >
+        #{proxyTime,jdbcType=BIGINT},
+      </if>
+      <if test="dataVolume != null" >
+        #{dataVolume,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DbServiceRecordExample" resultType="java.lang.Integer" >
+    select count(*) from db_service_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update db_service_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubId != null" >
+        pub_id = #{record.pubId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubOrgId != null" >
+        pub_org_id = #{record.pubOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubUserId != null" >
+        pub_user_id = #{record.pubUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subId != null" >
+        sub_id = #{record.subId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subOrgId != null" >
+        sub_org_id = #{record.subOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subUserId != null" >
+        sub_user_id = #{record.subUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invokeDate != null" >
+        invoke_date = #{record.invokeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.result != null" >
+        result = #{record.result,jdbcType=VARCHAR},
+      </if>
+      <if test="record.month != null" >
+        month = #{record.month,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proxyTime != null" >
+        proxy_time = #{record.proxyTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.dataVolume != null" >
+        data_volume = #{record.dataVolume,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update db_service_record
+    set id = #{record.id,jdbcType=VARCHAR},
+      pub_id = #{record.pubId,jdbcType=VARCHAR},
+      pub_org_id = #{record.pubOrgId,jdbcType=VARCHAR},
+      pub_user_id = #{record.pubUserId,jdbcType=VARCHAR},
+      sub_id = #{record.subId,jdbcType=VARCHAR},
+      sub_org_id = #{record.subOrgId,jdbcType=VARCHAR},
+      sub_user_id = #{record.subUserId,jdbcType=VARCHAR},
+      invoke_date = #{record.invokeDate,jdbcType=TIMESTAMP},
+      result = #{record.result,jdbcType=VARCHAR},
+      month = #{record.month,jdbcType=VARCHAR},
+      proxy_time = #{record.proxyTime,jdbcType=BIGINT},
+      data_volume = #{record.dataVolume,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.DbServiceRecord" >
+    update db_service_record
+    <set >
+      <if test="pubId != null" >
+        pub_id = #{pubId,jdbcType=VARCHAR},
+      </if>
+      <if test="pubOrgId != null" >
+        pub_org_id = #{pubOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="pubUserId != null" >
+        pub_user_id = #{pubUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="subId != null" >
+        sub_id = #{subId,jdbcType=VARCHAR},
+      </if>
+      <if test="subOrgId != null" >
+        sub_org_id = #{subOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="subUserId != null" >
+        sub_user_id = #{subUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="invokeDate != null" >
+        invoke_date = #{invokeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        month = #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyTime != null" >
+        proxy_time = #{proxyTime,jdbcType=BIGINT},
+      </if>
+      <if test="dataVolume != null" >
+        data_volume = #{dataVolume,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.DbServiceRecord" >
+    update db_service_record
+    set pub_id = #{pubId,jdbcType=VARCHAR},
+      pub_org_id = #{pubOrgId,jdbcType=VARCHAR},
+      pub_user_id = #{pubUserId,jdbcType=VARCHAR},
+      sub_id = #{subId,jdbcType=VARCHAR},
+      sub_org_id = #{subOrgId,jdbcType=VARCHAR},
+      sub_user_id = #{subUserId,jdbcType=VARCHAR},
+      invoke_date = #{invokeDate,jdbcType=TIMESTAMP},
+      result = #{result,jdbcType=VARCHAR},
+      month = #{month,jdbcType=VARCHAR},
+      proxy_time = #{proxyTime,jdbcType=BIGINT},
+      data_volume = #{dataVolume,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

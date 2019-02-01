@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DbConnectionMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.DbConnection" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="db_version_id" property="dbVersionId" jdbcType="VARCHAR" />
+    <result column="version_name" property="versionName" jdbcType="VARCHAR" />
+    <result column="driver_class" property="driverClass" jdbcType="VARCHAR" />
+    <result column="connection_name" property="connectionName" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="port" property="port" jdbcType="VARCHAR" />
+    <result column="data_base_name" property="dataBaseName" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="org_id" property="orgId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+    <result column="upd_user_id" property="updUserId" jdbcType="VARCHAR" />
+    <result column="upd_org_id" property="updOrgId" jdbcType="VARCHAR" />
+    <result column="upd_tm" property="updTm" jdbcType="TIMESTAMP" />
+    <result column="crt_user_id" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="crt_org_id" property="crtOrgId" jdbcType="VARCHAR" />
+    <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, url, type, username, password, db_version_id, version_name, driver_class, connection_name, 
+    ip, port, data_base_name, remark, org_id, status, del_status, upd_user_id, upd_org_id, 
+    upd_tm, crt_user_id, crt_org_id, crt_tm
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbConnectionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from db_connection
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_connection
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from db_connection
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DbConnectionExample" >
+    delete from db_connection
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.DbConnection" >
+    insert into db_connection (id, url, type, 
+      username, password, db_version_id, 
+      version_name, driver_class, connection_name, 
+      ip, port, data_base_name, 
+      remark, org_id, status, 
+      del_status, upd_user_id, upd_org_id, 
+      upd_tm, crt_user_id, crt_org_id, 
+      crt_tm)
+    values (#{id,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{dbVersionId,jdbcType=VARCHAR}, 
+      #{versionName,jdbcType=VARCHAR}, #{driverClass,jdbcType=VARCHAR}, #{connectionName,jdbcType=VARCHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{port,jdbcType=VARCHAR}, #{dataBaseName,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{delStatus,jdbcType=VARCHAR}, #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, 
+      #{updTm,jdbcType=TIMESTAMP}, #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, 
+      #{crtTm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.DbConnection" >
+    insert into db_connection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="dbVersionId != null" >
+        db_version_id,
+      </if>
+      <if test="versionName != null" >
+        version_name,
+      </if>
+      <if test="driverClass != null" >
+        driver_class,
+      </if>
+      <if test="connectionName != null" >
+        connection_name,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="port != null" >
+        port,
+      </if>
+      <if test="dataBaseName != null" >
+        data_base_name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id,
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id,
+      </if>
+      <if test="updTm != null" >
+        upd_tm,
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id,
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id,
+      </if>
+      <if test="crtTm != null" >
+        crt_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="dbVersionId != null" >
+        #{dbVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="versionName != null" >
+        #{versionName,jdbcType=VARCHAR},
+      </if>
+      <if test="driverClass != null" >
+        #{driverClass,jdbcType=VARCHAR},
+      </if>
+      <if test="connectionName != null" >
+        #{connectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null" >
+        #{port,jdbcType=VARCHAR},
+      </if>
+      <if test="dataBaseName != null" >
+        #{dataBaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DbConnectionExample" resultType="java.lang.Integer" >
+    select count(*) from db_connection
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update db_connection
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dbVersionId != null" >
+        db_version_id = #{record.dbVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.versionName != null" >
+        version_name = #{record.versionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.driverClass != null" >
+        driver_class = #{record.driverClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.connectionName != null" >
+        connection_name = #{record.connectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.port != null" >
+        port = #{record.port,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataBaseName != null" >
+        data_base_name = #{record.dataBaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgId != null" >
+        org_id = #{record.orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updUserId != null" >
+        upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updOrgId != null" >
+        upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updTm != null" >
+        upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.crtUserId != null" >
+        crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtOrgId != null" >
+        crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update db_connection
+    set id = #{record.id,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      db_version_id = #{record.dbVersionId,jdbcType=VARCHAR},
+      version_name = #{record.versionName,jdbcType=VARCHAR},
+      driver_class = #{record.driverClass,jdbcType=VARCHAR},
+      connection_name = #{record.connectionName,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      port = #{record.port,jdbcType=VARCHAR},
+      data_base_name = #{record.dataBaseName,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      org_id = #{record.orgId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      del_status = #{record.delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{record.crtTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.DbConnection" >
+    update db_connection
+    <set >
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="dbVersionId != null" >
+        db_version_id = #{dbVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="versionName != null" >
+        version_name = #{versionName,jdbcType=VARCHAR},
+      </if>
+      <if test="driverClass != null" >
+        driver_class = #{driverClass,jdbcType=VARCHAR},
+      </if>
+      <if test="connectionName != null" >
+        connection_name = #{connectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null" >
+        port = #{port,jdbcType=VARCHAR},
+      </if>
+      <if test="dataBaseName != null" >
+        data_base_name = #{dataBaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        org_id = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.DbConnection" >
+    update db_connection
+    set url = #{url,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      db_version_id = #{dbVersionId,jdbcType=VARCHAR},
+      version_name = #{versionName,jdbcType=VARCHAR},
+      driver_class = #{driverClass,jdbcType=VARCHAR},
+      connection_name = #{connectionName,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      port = #{port,jdbcType=VARCHAR},
+      data_base_name = #{dataBaseName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      org_id = #{orgId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      del_status = #{delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{crtTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

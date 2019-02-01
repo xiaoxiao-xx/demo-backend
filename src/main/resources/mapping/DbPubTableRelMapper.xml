@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DbPubTableRelMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.DbPubTableRel" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pub_id" property="pubId" jdbcType="VARCHAR" />
+    <result column="table_name1" property="tableName1" jdbcType="VARCHAR" />
+    <result column="column_name1" property="columnName1" jdbcType="VARCHAR" />
+    <result column="table_name2" property="tableName2" jdbcType="VARCHAR" />
+    <result column="column_name2" property="columnName2" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pub_id, table_name1, column_name1, table_name2, column_name2, type, value
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbPubTableRelExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from db_pub_table_rel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_pub_table_rel
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from db_pub_table_rel
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DbPubTableRelExample" >
+    delete from db_pub_table_rel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.DbPubTableRel" >
+    insert into db_pub_table_rel (id, pub_id, table_name1, 
+      column_name1, table_name2, column_name2, 
+      type, value)
+    values (#{id,jdbcType=VARCHAR}, #{pubId,jdbcType=VARCHAR}, #{tableName1,jdbcType=VARCHAR}, 
+      #{columnName1,jdbcType=VARCHAR}, #{tableName2,jdbcType=VARCHAR}, #{columnName2,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.DbPubTableRel" >
+    insert into db_pub_table_rel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pubId != null" >
+        pub_id,
+      </if>
+      <if test="tableName1 != null" >
+        table_name1,
+      </if>
+      <if test="columnName1 != null" >
+        column_name1,
+      </if>
+      <if test="tableName2 != null" >
+        table_name2,
+      </if>
+      <if test="columnName2 != null" >
+        column_name2,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="value != null" >
+        value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pubId != null" >
+        #{pubId,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName1 != null" >
+        #{tableName1,jdbcType=VARCHAR},
+      </if>
+      <if test="columnName1 != null" >
+        #{columnName1,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName2 != null" >
+        #{tableName2,jdbcType=VARCHAR},
+      </if>
+      <if test="columnName2 != null" >
+        #{columnName2,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DbPubTableRelExample" resultType="java.lang.Integer" >
+    select count(*) from db_pub_table_rel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update db_pub_table_rel
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubId != null" >
+        pub_id = #{record.pubId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tableName1 != null" >
+        table_name1 = #{record.tableName1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.columnName1 != null" >
+        column_name1 = #{record.columnName1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tableName2 != null" >
+        table_name2 = #{record.tableName2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.columnName2 != null" >
+        column_name2 = #{record.columnName2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.value != null" >
+        value = #{record.value,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update db_pub_table_rel
+    set id = #{record.id,jdbcType=VARCHAR},
+      pub_id = #{record.pubId,jdbcType=VARCHAR},
+      table_name1 = #{record.tableName1,jdbcType=VARCHAR},
+      column_name1 = #{record.columnName1,jdbcType=VARCHAR},
+      table_name2 = #{record.tableName2,jdbcType=VARCHAR},
+      column_name2 = #{record.columnName2,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      value = #{record.value,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.DbPubTableRel" >
+    update db_pub_table_rel
+    <set >
+      <if test="pubId != null" >
+        pub_id = #{pubId,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName1 != null" >
+        table_name1 = #{tableName1,jdbcType=VARCHAR},
+      </if>
+      <if test="columnName1 != null" >
+        column_name1 = #{columnName1,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName2 != null" >
+        table_name2 = #{tableName2,jdbcType=VARCHAR},
+      </if>
+      <if test="columnName2 != null" >
+        column_name2 = #{columnName2,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.DbPubTableRel" >
+    update db_pub_table_rel
+    set pub_id = #{pubId,jdbcType=VARCHAR},
+      table_name1 = #{tableName1,jdbcType=VARCHAR},
+      column_name1 = #{columnName1,jdbcType=VARCHAR},
+      table_name2 = #{tableName2,jdbcType=VARCHAR},
+      column_name2 = #{columnName2,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      value = #{value,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

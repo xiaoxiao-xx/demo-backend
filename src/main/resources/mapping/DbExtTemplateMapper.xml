@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DbExtTemplateMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.DbExtTemplate" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ext_policy_cname" property="extPolicyCname" jdbcType="VARCHAR" />
+    <result column="ext_policy_ename" property="extPolicyEname" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="data_type" property="dataType" jdbcType="VARCHAR" />
+    <result column="enum_key" property="enumKey" jdbcType="VARCHAR" />
+    <result column="ext_comment" property="extComment" jdbcType="VARCHAR" />
+    <result column="template_type" property="templateType" jdbcType="VARCHAR" />
+    <result column="visiable" property="visiable" jdbcType="VARCHAR" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, ext_policy_cname, ext_policy_ename, version, data_type, enum_key, ext_comment, 
+    template_type, visiable, del_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbExtTemplateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from db_ext_template
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_ext_template
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from db_ext_template
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DbExtTemplateExample" >
+    delete from db_ext_template
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.DbExtTemplate" >
+    insert into db_ext_template (id, ext_policy_cname, ext_policy_ename, 
+      version, data_type, enum_key, 
+      ext_comment, template_type, visiable, 
+      del_status)
+    values (#{id,jdbcType=VARCHAR}, #{extPolicyCname,jdbcType=VARCHAR}, #{extPolicyEname,jdbcType=VARCHAR}, 
+      #{version,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{enumKey,jdbcType=VARCHAR}, 
+      #{extComment,jdbcType=VARCHAR}, #{templateType,jdbcType=VARCHAR}, #{visiable,jdbcType=VARCHAR}, 
+      #{delStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.DbExtTemplate" >
+    insert into db_ext_template
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="extPolicyCname != null" >
+        ext_policy_cname,
+      </if>
+      <if test="extPolicyEname != null" >
+        ext_policy_ename,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="dataType != null" >
+        data_type,
+      </if>
+      <if test="enumKey != null" >
+        enum_key,
+      </if>
+      <if test="extComment != null" >
+        ext_comment,
+      </if>
+      <if test="templateType != null" >
+        template_type,
+      </if>
+      <if test="visiable != null" >
+        visiable,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="extPolicyCname != null" >
+        #{extPolicyCname,jdbcType=VARCHAR},
+      </if>
+      <if test="extPolicyEname != null" >
+        #{extPolicyEname,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="enumKey != null" >
+        #{enumKey,jdbcType=VARCHAR},
+      </if>
+      <if test="extComment != null" >
+        #{extComment,jdbcType=VARCHAR},
+      </if>
+      <if test="templateType != null" >
+        #{templateType,jdbcType=VARCHAR},
+      </if>
+      <if test="visiable != null" >
+        #{visiable,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DbExtTemplateExample" resultType="java.lang.Integer" >
+    select count(*) from db_ext_template
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update db_ext_template
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.extPolicyCname != null" >
+        ext_policy_cname = #{record.extPolicyCname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.extPolicyEname != null" >
+        ext_policy_ename = #{record.extPolicyEname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataType != null" >
+        data_type = #{record.dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.enumKey != null" >
+        enum_key = #{record.enumKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.extComment != null" >
+        ext_comment = #{record.extComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templateType != null" >
+        template_type = #{record.templateType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visiable != null" >
+        visiable = #{record.visiable,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update db_ext_template
+    set id = #{record.id,jdbcType=VARCHAR},
+      ext_policy_cname = #{record.extPolicyCname,jdbcType=VARCHAR},
+      ext_policy_ename = #{record.extPolicyEname,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=VARCHAR},
+      data_type = #{record.dataType,jdbcType=VARCHAR},
+      enum_key = #{record.enumKey,jdbcType=VARCHAR},
+      ext_comment = #{record.extComment,jdbcType=VARCHAR},
+      template_type = #{record.templateType,jdbcType=VARCHAR},
+      visiable = #{record.visiable,jdbcType=VARCHAR},
+      del_status = #{record.delStatus,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.DbExtTemplate" >
+    update db_ext_template
+    <set >
+      <if test="extPolicyCname != null" >
+        ext_policy_cname = #{extPolicyCname,jdbcType=VARCHAR},
+      </if>
+      <if test="extPolicyEname != null" >
+        ext_policy_ename = #{extPolicyEname,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        data_type = #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="enumKey != null" >
+        enum_key = #{enumKey,jdbcType=VARCHAR},
+      </if>
+      <if test="extComment != null" >
+        ext_comment = #{extComment,jdbcType=VARCHAR},
+      </if>
+      <if test="templateType != null" >
+        template_type = #{templateType,jdbcType=VARCHAR},
+      </if>
+      <if test="visiable != null" >
+        visiable = #{visiable,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.DbExtTemplate" >
+    update db_ext_template
+    set ext_policy_cname = #{extPolicyCname,jdbcType=VARCHAR},
+      ext_policy_ename = #{extPolicyEname,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=VARCHAR},
+      enum_key = #{enumKey,jdbcType=VARCHAR},
+      ext_comment = #{extComment,jdbcType=VARCHAR},
+      template_type = #{templateType,jdbcType=VARCHAR},
+      visiable = #{visiable,jdbcType=VARCHAR},
+      del_status = #{delStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

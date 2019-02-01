@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DbSubServiceMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.DbSubService" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="target_ip" property="targetIp" jdbcType="VARCHAR" />
+    <result column="target_port" property="targetPort" jdbcType="INTEGER" />
+    <result column="interface_name" property="interfaceName" jdbcType="VARCHAR" />
+    <result column="interface_type" property="interfaceType" jdbcType="VARCHAR" />
+    <result column="request_mode" property="requestMode" jdbcType="VARCHAR" />
+    <result column="wsdl_method_name" property="wsdlMethodName" jdbcType="VARCHAR" />
+    <result column="chinese_describe" property="chineseDescribe" jdbcType="VARCHAR" />
+    <result column="word_example" property="wordExample" jdbcType="VARCHAR" />
+    <result column="pol_id" property="polId" jdbcType="VARCHAR" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="use_type" property="useType" jdbcType="VARCHAR" />
+    <result column="use_scope" property="useScope" jdbcType="VARCHAR" />
+    <result column="proxy_ip" property="proxyIp" jdbcType="VARCHAR" />
+    <result column="proxy_port" property="proxyPort" jdbcType="INTEGER" />
+    <result column="proxy_interface_name" property="proxyInterfaceName" jdbcType="VARCHAR" />
+    <result column="pub_status" property="pubStatus" jdbcType="VARCHAR" />
+    <result column="run_status" property="runStatus" jdbcType="VARCHAR" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+    <result column="crt_user_id" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="crt_org_id" property="crtOrgId" jdbcType="VARCHAR" />
+    <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
+    <result column="sub_user_id" property="subUserId" jdbcType="VARCHAR" />
+    <result column="sub_org_id" property="subOrgId" jdbcType="VARCHAR" />
+    <result column="sub_tm" property="subTm" jdbcType="TIMESTAMP" />
+    <result column="pub_service_id" property="pubServiceId" jdbcType="VARCHAR" />
+    <result column="sub_token" property="subToken" jdbcType="VARCHAR" />
+    <result column="publicKey" property="publickey" jdbcType="VARCHAR" />
+    <result column="privateKey" property="privatekey" jdbcType="VARCHAR" />
+    <result column="interface_url" property="interfaceUrl" jdbcType="VARCHAR" />
+    <result column="exchange_id" property="exchangeId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, target_ip, target_port, interface_name, interface_type, request_mode, wsdl_method_name, 
+    chinese_describe, word_example, pol_id, start_date, end_date, use_type, use_scope, 
+    proxy_ip, proxy_port, proxy_interface_name, pub_status, run_status, del_status, crt_user_id, 
+    crt_org_id, crt_tm, sub_user_id, sub_org_id, sub_tm, pub_service_id, sub_token, publicKey, 
+    privateKey, interface_url, exchange_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbSubServiceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from db_sub_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_sub_service
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from db_sub_service
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DbSubServiceExample" >
+    delete from db_sub_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.DbSubService" >
+    insert into db_sub_service (id, name, target_ip, 
+      target_port, interface_name, interface_type, 
+      request_mode, wsdl_method_name, chinese_describe, 
+      word_example, pol_id, start_date, 
+      end_date, use_type, use_scope, 
+      proxy_ip, proxy_port, proxy_interface_name, 
+      pub_status, run_status, del_status, 
+      crt_user_id, crt_org_id, crt_tm, 
+      sub_user_id, sub_org_id, sub_tm, 
+      pub_service_id, sub_token, publicKey, 
+      privateKey, interface_url, exchange_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{targetIp,jdbcType=VARCHAR}, 
+      #{targetPort,jdbcType=INTEGER}, #{interfaceName,jdbcType=VARCHAR}, #{interfaceType,jdbcType=VARCHAR}, 
+      #{requestMode,jdbcType=VARCHAR}, #{wsdlMethodName,jdbcType=VARCHAR}, #{chineseDescribe,jdbcType=VARCHAR}, 
+      #{wordExample,jdbcType=VARCHAR}, #{polId,jdbcType=VARCHAR}, #{startDate,jdbcType=DATE}, 
+      #{endDate,jdbcType=DATE}, #{useType,jdbcType=VARCHAR}, #{useScope,jdbcType=VARCHAR}, 
+      #{proxyIp,jdbcType=VARCHAR}, #{proxyPort,jdbcType=INTEGER}, #{proxyInterfaceName,jdbcType=VARCHAR}, 
+      #{pubStatus,jdbcType=VARCHAR}, #{runStatus,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, 
+      #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}, 
+      #{subUserId,jdbcType=VARCHAR}, #{subOrgId,jdbcType=VARCHAR}, #{subTm,jdbcType=TIMESTAMP}, 
+      #{pubServiceId,jdbcType=VARCHAR}, #{subToken,jdbcType=VARCHAR}, #{publickey,jdbcType=VARCHAR}, 
+      #{privatekey,jdbcType=VARCHAR}, #{interfaceUrl,jdbcType=VARCHAR}, #{exchangeId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.DbSubService" >
+    insert into db_sub_service
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="targetIp != null" >
+        target_ip,
+      </if>
+      <if test="targetPort != null" >
+        target_port,
+      </if>
+      <if test="interfaceName != null" >
+        interface_name,
+      </if>
+      <if test="interfaceType != null" >
+        interface_type,
+      </if>
+      <if test="requestMode != null" >
+        request_mode,
+      </if>
+      <if test="wsdlMethodName != null" >
+        wsdl_method_name,
+      </if>
+      <if test="chineseDescribe != null" >
+        chinese_describe,
+      </if>
+      <if test="wordExample != null" >
+        word_example,
+      </if>
+      <if test="polId != null" >
+        pol_id,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="useType != null" >
+        use_type,
+      </if>
+      <if test="useScope != null" >
+        use_scope,
+      </if>
+      <if test="proxyIp != null" >
+        proxy_ip,
+      </if>
+      <if test="proxyPort != null" >
+        proxy_port,
+      </if>
+      <if test="proxyInterfaceName != null" >
+        proxy_interface_name,
+      </if>
+      <if test="pubStatus != null" >
+        pub_status,
+      </if>
+      <if test="runStatus != null" >
+        run_status,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id,
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id,
+      </if>
+      <if test="crtTm != null" >
+        crt_tm,
+      </if>
+      <if test="subUserId != null" >
+        sub_user_id,
+      </if>
+      <if test="subOrgId != null" >
+        sub_org_id,
+      </if>
+      <if test="subTm != null" >
+        sub_tm,
+      </if>
+      <if test="pubServiceId != null" >
+        pub_service_id,
+      </if>
+      <if test="subToken != null" >
+        sub_token,
+      </if>
+      <if test="publickey != null" >
+        publicKey,
+      </if>
+      <if test="privatekey != null" >
+        privateKey,
+      </if>
+      <if test="interfaceUrl != null" >
+        interface_url,
+      </if>
+      <if test="exchangeId != null" >
+        exchange_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="targetIp != null" >
+        #{targetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="targetPort != null" >
+        #{targetPort,jdbcType=INTEGER},
+      </if>
+      <if test="interfaceName != null" >
+        #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null" >
+        #{interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMode != null" >
+        #{requestMode,jdbcType=VARCHAR},
+      </if>
+      <if test="wsdlMethodName != null" >
+        #{wsdlMethodName,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseDescribe != null" >
+        #{chineseDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="wordExample != null" >
+        #{wordExample,jdbcType=VARCHAR},
+      </if>
+      <if test="polId != null" >
+        #{polId,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=DATE},
+      </if>
+      <if test="useType != null" >
+        #{useType,jdbcType=VARCHAR},
+      </if>
+      <if test="useScope != null" >
+        #{useScope,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyIp != null" >
+        #{proxyIp,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyPort != null" >
+        #{proxyPort,jdbcType=INTEGER},
+      </if>
+      <if test="proxyInterfaceName != null" >
+        #{proxyInterfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        #{pubStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="runStatus != null" >
+        #{runStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="crtUserId != null" >
+        #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="subUserId != null" >
+        #{subUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="subOrgId != null" >
+        #{subOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="subTm != null" >
+        #{subTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pubServiceId != null" >
+        #{pubServiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="subToken != null" >
+        #{subToken,jdbcType=VARCHAR},
+      </if>
+      <if test="publickey != null" >
+        #{publickey,jdbcType=VARCHAR},
+      </if>
+      <if test="privatekey != null" >
+        #{privatekey,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceUrl != null" >
+        #{interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeId != null" >
+        #{exchangeId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DbSubServiceExample" resultType="java.lang.Integer" >
+    select count(*) from db_sub_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update db_sub_service
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.targetIp != null" >
+        target_ip = #{record.targetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.targetPort != null" >
+        target_port = #{record.targetPort,jdbcType=INTEGER},
+      </if>
+      <if test="record.interfaceName != null" >
+        interface_name = #{record.interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceType != null" >
+        interface_type = #{record.interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestMode != null" >
+        request_mode = #{record.requestMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wsdlMethodName != null" >
+        wsdl_method_name = #{record.wsdlMethodName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chineseDescribe != null" >
+        chinese_describe = #{record.chineseDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wordExample != null" >
+        word_example = #{record.wordExample,jdbcType=VARCHAR},
+      </if>
+      <if test="record.polId != null" >
+        pol_id = #{record.polId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startDate != null" >
+        start_date = #{record.startDate,jdbcType=DATE},
+      </if>
+      <if test="record.endDate != null" >
+        end_date = #{record.endDate,jdbcType=DATE},
+      </if>
+      <if test="record.useType != null" >
+        use_type = #{record.useType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useScope != null" >
+        use_scope = #{record.useScope,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proxyIp != null" >
+        proxy_ip = #{record.proxyIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proxyPort != null" >
+        proxy_port = #{record.proxyPort,jdbcType=INTEGER},
+      </if>
+      <if test="record.proxyInterfaceName != null" >
+        proxy_interface_name = #{record.proxyInterfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubStatus != null" >
+        pub_status = #{record.pubStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.runStatus != null" >
+        run_status = #{record.runStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtUserId != null" >
+        crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtOrgId != null" >
+        crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.subUserId != null" >
+        sub_user_id = #{record.subUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subOrgId != null" >
+        sub_org_id = #{record.subOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subTm != null" >
+        sub_tm = #{record.subTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.pubServiceId != null" >
+        pub_service_id = #{record.pubServiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subToken != null" >
+        sub_token = #{record.subToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publickey != null" >
+        publicKey = #{record.publickey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.privatekey != null" >
+        privateKey = #{record.privatekey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceUrl != null" >
+        interface_url = #{record.interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exchangeId != null" >
+        exchange_id = #{record.exchangeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update db_sub_service
+    set id = #{record.id,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      target_ip = #{record.targetIp,jdbcType=VARCHAR},
+      target_port = #{record.targetPort,jdbcType=INTEGER},
+      interface_name = #{record.interfaceName,jdbcType=VARCHAR},
+      interface_type = #{record.interfaceType,jdbcType=VARCHAR},
+      request_mode = #{record.requestMode,jdbcType=VARCHAR},
+      wsdl_method_name = #{record.wsdlMethodName,jdbcType=VARCHAR},
+      chinese_describe = #{record.chineseDescribe,jdbcType=VARCHAR},
+      word_example = #{record.wordExample,jdbcType=VARCHAR},
+      pol_id = #{record.polId,jdbcType=VARCHAR},
+      start_date = #{record.startDate,jdbcType=DATE},
+      end_date = #{record.endDate,jdbcType=DATE},
+      use_type = #{record.useType,jdbcType=VARCHAR},
+      use_scope = #{record.useScope,jdbcType=VARCHAR},
+      proxy_ip = #{record.proxyIp,jdbcType=VARCHAR},
+      proxy_port = #{record.proxyPort,jdbcType=INTEGER},
+      proxy_interface_name = #{record.proxyInterfaceName,jdbcType=VARCHAR},
+      pub_status = #{record.pubStatus,jdbcType=VARCHAR},
+      run_status = #{record.runStatus,jdbcType=VARCHAR},
+      del_status = #{record.delStatus,jdbcType=VARCHAR},
+      crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      sub_user_id = #{record.subUserId,jdbcType=VARCHAR},
+      sub_org_id = #{record.subOrgId,jdbcType=VARCHAR},
+      sub_tm = #{record.subTm,jdbcType=TIMESTAMP},
+      pub_service_id = #{record.pubServiceId,jdbcType=VARCHAR},
+      sub_token = #{record.subToken,jdbcType=VARCHAR},
+      publicKey = #{record.publickey,jdbcType=VARCHAR},
+      privateKey = #{record.privatekey,jdbcType=VARCHAR},
+      interface_url = #{record.interfaceUrl,jdbcType=VARCHAR},
+      exchange_id = #{record.exchangeId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.DbSubService" >
+    update db_sub_service
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="targetIp != null" >
+        target_ip = #{targetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="targetPort != null" >
+        target_port = #{targetPort,jdbcType=INTEGER},
+      </if>
+      <if test="interfaceName != null" >
+        interface_name = #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null" >
+        interface_type = #{interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMode != null" >
+        request_mode = #{requestMode,jdbcType=VARCHAR},
+      </if>
+      <if test="wsdlMethodName != null" >
+        wsdl_method_name = #{wsdlMethodName,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseDescribe != null" >
+        chinese_describe = #{chineseDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="wordExample != null" >
+        word_example = #{wordExample,jdbcType=VARCHAR},
+      </if>
+      <if test="polId != null" >
+        pol_id = #{polId,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=DATE},
+      </if>
+      <if test="useType != null" >
+        use_type = #{useType,jdbcType=VARCHAR},
+      </if>
+      <if test="useScope != null" >
+        use_scope = #{useScope,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyIp != null" >
+        proxy_ip = #{proxyIp,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyPort != null" >
+        proxy_port = #{proxyPort,jdbcType=INTEGER},
+      </if>
+      <if test="proxyInterfaceName != null" >
+        proxy_interface_name = #{proxyInterfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        pub_status = #{pubStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="runStatus != null" >
+        run_status = #{runStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="subUserId != null" >
+        sub_user_id = #{subUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="subOrgId != null" >
+        sub_org_id = #{subOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="subTm != null" >
+        sub_tm = #{subTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pubServiceId != null" >
+        pub_service_id = #{pubServiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="subToken != null" >
+        sub_token = #{subToken,jdbcType=VARCHAR},
+      </if>
+      <if test="publickey != null" >
+        publicKey = #{publickey,jdbcType=VARCHAR},
+      </if>
+      <if test="privatekey != null" >
+        privateKey = #{privatekey,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceUrl != null" >
+        interface_url = #{interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeId != null" >
+        exchange_id = #{exchangeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.DbSubService" >
+    update db_sub_service
+    set name = #{name,jdbcType=VARCHAR},
+      target_ip = #{targetIp,jdbcType=VARCHAR},
+      target_port = #{targetPort,jdbcType=INTEGER},
+      interface_name = #{interfaceName,jdbcType=VARCHAR},
+      interface_type = #{interfaceType,jdbcType=VARCHAR},
+      request_mode = #{requestMode,jdbcType=VARCHAR},
+      wsdl_method_name = #{wsdlMethodName,jdbcType=VARCHAR},
+      chinese_describe = #{chineseDescribe,jdbcType=VARCHAR},
+      word_example = #{wordExample,jdbcType=VARCHAR},
+      pol_id = #{polId,jdbcType=VARCHAR},
+      start_date = #{startDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      use_type = #{useType,jdbcType=VARCHAR},
+      use_scope = #{useScope,jdbcType=VARCHAR},
+      proxy_ip = #{proxyIp,jdbcType=VARCHAR},
+      proxy_port = #{proxyPort,jdbcType=INTEGER},
+      proxy_interface_name = #{proxyInterfaceName,jdbcType=VARCHAR},
+      pub_status = #{pubStatus,jdbcType=VARCHAR},
+      run_status = #{runStatus,jdbcType=VARCHAR},
+      del_status = #{delStatus,jdbcType=VARCHAR},
+      crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      sub_user_id = #{subUserId,jdbcType=VARCHAR},
+      sub_org_id = #{subOrgId,jdbcType=VARCHAR},
+      sub_tm = #{subTm,jdbcType=TIMESTAMP},
+      pub_service_id = #{pubServiceId,jdbcType=VARCHAR},
+      sub_token = #{subToken,jdbcType=VARCHAR},
+      publicKey = #{publickey,jdbcType=VARCHAR},
+      privateKey = #{privatekey,jdbcType=VARCHAR},
+      interface_url = #{interfaceUrl,jdbcType=VARCHAR},
+      exchange_id = #{exchangeId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

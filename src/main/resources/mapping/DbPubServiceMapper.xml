@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DbPubServiceMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.DbPubService" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="model_id" property="modelId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="interface_url" property="interfaceUrl" jdbcType="VARCHAR" />
+    <result column="target_ip" property="targetIp" jdbcType="VARCHAR" />
+    <result column="target_port" property="targetPort" jdbcType="INTEGER" />
+    <result column="interface_name" property="interfaceName" jdbcType="VARCHAR" />
+    <result column="interface_type" property="interfaceType" jdbcType="VARCHAR" />
+    <result column="request_mode" property="requestMode" jdbcType="VARCHAR" />
+    <result column="wsdl_method_name" property="wsdlMethodName" jdbcType="VARCHAR" />
+    <result column="chinese_describe" property="chineseDescribe" jdbcType="VARCHAR" />
+    <result column="word_example" property="wordExample" jdbcType="VARCHAR" />
+    <result column="pol_id" property="polId" jdbcType="VARCHAR" />
+    <result column="use_frequency" property="useFrequency" jdbcType="INTEGER" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="use_type" property="useType" jdbcType="VARCHAR" />
+    <result column="use_scope" property="useScope" jdbcType="VARCHAR" />
+    <result column="data_type" property="dataType" jdbcType="VARCHAR" />
+    <result column="second_auth" property="secondAuth" jdbcType="VARCHAR" />
+    <result column="report_situation" property="reportSituation" jdbcType="VARCHAR" />
+    <result column="security_level" property="securityLevel" jdbcType="VARCHAR" />
+    <result column="cover_type" property="coverType" jdbcType="VARCHAR" />
+    <result column="proxy_ip" property="proxyIp" jdbcType="VARCHAR" />
+    <result column="proxy_port" property="proxyPort" jdbcType="INTEGER" />
+    <result column="proxy_interface_name" property="proxyInterfaceName" jdbcType="VARCHAR" />
+    <result column="is_sign" property="isSign" jdbcType="VARCHAR" />
+    <result column="pub_status" property="pubStatus" jdbcType="VARCHAR" />
+    <result column="auto_app" property="autoApp" jdbcType="VARCHAR" />
+    <result column="run_status" property="runStatus" jdbcType="VARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="template_id" property="templateId" jdbcType="VARCHAR" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+    <result column="upd_user_id" property="updUserId" jdbcType="VARCHAR" />
+    <result column="upd_org_id" property="updOrgId" jdbcType="VARCHAR" />
+    <result column="upd_tm" property="updTm" jdbcType="TIMESTAMP" />
+    <result column="crt_user_id" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="crt_org_id" property="crtOrgId" jdbcType="VARCHAR" />
+    <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, model_id, name, interface_url, target_ip, target_port, interface_name, interface_type, 
+    request_mode, wsdl_method_name, chinese_describe, word_example, pol_id, use_frequency, 
+    start_date, end_date, use_type, use_scope, data_type, second_auth, report_situation, 
+    security_level, cover_type, proxy_ip, proxy_port, proxy_interface_name, is_sign, 
+    pub_status, auto_app, run_status, keywords, template_id, del_status, upd_user_id, 
+    upd_org_id, upd_tm, crt_user_id, crt_org_id, crt_tm
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbPubServiceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from db_pub_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_pub_service
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from db_pub_service
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DbPubServiceExample" >
+    delete from db_pub_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.DbPubService" >
+    insert into db_pub_service (id, model_id, name, 
+      interface_url, target_ip, target_port, 
+      interface_name, interface_type, request_mode, 
+      wsdl_method_name, chinese_describe, word_example, 
+      pol_id, use_frequency, start_date, 
+      end_date, use_type, use_scope, 
+      data_type, second_auth, report_situation, 
+      security_level, cover_type, proxy_ip, 
+      proxy_port, proxy_interface_name, is_sign, 
+      pub_status, auto_app, run_status, 
+      keywords, template_id, del_status, 
+      upd_user_id, upd_org_id, upd_tm, 
+      crt_user_id, crt_org_id, crt_tm
+      )
+    values (#{id,jdbcType=VARCHAR}, #{modelId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{interfaceUrl,jdbcType=VARCHAR}, #{targetIp,jdbcType=VARCHAR}, #{targetPort,jdbcType=INTEGER}, 
+      #{interfaceName,jdbcType=VARCHAR}, #{interfaceType,jdbcType=VARCHAR}, #{requestMode,jdbcType=VARCHAR}, 
+      #{wsdlMethodName,jdbcType=VARCHAR}, #{chineseDescribe,jdbcType=VARCHAR}, #{wordExample,jdbcType=VARCHAR}, 
+      #{polId,jdbcType=VARCHAR}, #{useFrequency,jdbcType=INTEGER}, #{startDate,jdbcType=DATE}, 
+      #{endDate,jdbcType=DATE}, #{useType,jdbcType=VARCHAR}, #{useScope,jdbcType=VARCHAR}, 
+      #{dataType,jdbcType=VARCHAR}, #{secondAuth,jdbcType=VARCHAR}, #{reportSituation,jdbcType=VARCHAR}, 
+      #{securityLevel,jdbcType=VARCHAR}, #{coverType,jdbcType=VARCHAR}, #{proxyIp,jdbcType=VARCHAR}, 
+      #{proxyPort,jdbcType=INTEGER}, #{proxyInterfaceName,jdbcType=VARCHAR}, #{isSign,jdbcType=VARCHAR}, 
+      #{pubStatus,jdbcType=VARCHAR}, #{autoApp,jdbcType=VARCHAR}, #{runStatus,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{templateId,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, 
+      #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, #{updTm,jdbcType=TIMESTAMP}, 
+      #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.DbPubService" >
+    insert into db_pub_service
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="modelId != null" >
+        model_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="interfaceUrl != null" >
+        interface_url,
+      </if>
+      <if test="targetIp != null" >
+        target_ip,
+      </if>
+      <if test="targetPort != null" >
+        target_port,
+      </if>
+      <if test="interfaceName != null" >
+        interface_name,
+      </if>
+      <if test="interfaceType != null" >
+        interface_type,
+      </if>
+      <if test="requestMode != null" >
+        request_mode,
+      </if>
+      <if test="wsdlMethodName != null" >
+        wsdl_method_name,
+      </if>
+      <if test="chineseDescribe != null" >
+        chinese_describe,
+      </if>
+      <if test="wordExample != null" >
+        word_example,
+      </if>
+      <if test="polId != null" >
+        pol_id,
+      </if>
+      <if test="useFrequency != null" >
+        use_frequency,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="useType != null" >
+        use_type,
+      </if>
+      <if test="useScope != null" >
+        use_scope,
+      </if>
+      <if test="dataType != null" >
+        data_type,
+      </if>
+      <if test="secondAuth != null" >
+        second_auth,
+      </if>
+      <if test="reportSituation != null" >
+        report_situation,
+      </if>
+      <if test="securityLevel != null" >
+        security_level,
+      </if>
+      <if test="coverType != null" >
+        cover_type,
+      </if>
+      <if test="proxyIp != null" >
+        proxy_ip,
+      </if>
+      <if test="proxyPort != null" >
+        proxy_port,
+      </if>
+      <if test="proxyInterfaceName != null" >
+        proxy_interface_name,
+      </if>
+      <if test="isSign != null" >
+        is_sign,
+      </if>
+      <if test="pubStatus != null" >
+        pub_status,
+      </if>
+      <if test="autoApp != null" >
+        auto_app,
+      </if>
+      <if test="runStatus != null" >
+        run_status,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="templateId != null" >
+        template_id,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id,
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id,
+      </if>
+      <if test="updTm != null" >
+        upd_tm,
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id,
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id,
+      </if>
+      <if test="crtTm != null" >
+        crt_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceUrl != null" >
+        #{interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="targetIp != null" >
+        #{targetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="targetPort != null" >
+        #{targetPort,jdbcType=INTEGER},
+      </if>
+      <if test="interfaceName != null" >
+        #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null" >
+        #{interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMode != null" >
+        #{requestMode,jdbcType=VARCHAR},
+      </if>
+      <if test="wsdlMethodName != null" >
+        #{wsdlMethodName,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseDescribe != null" >
+        #{chineseDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="wordExample != null" >
+        #{wordExample,jdbcType=VARCHAR},
+      </if>
+      <if test="polId != null" >
+        #{polId,jdbcType=VARCHAR},
+      </if>
+      <if test="useFrequency != null" >
+        #{useFrequency,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=DATE},
+      </if>
+      <if test="useType != null" >
+        #{useType,jdbcType=VARCHAR},
+      </if>
+      <if test="useScope != null" >
+        #{useScope,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="secondAuth != null" >
+        #{secondAuth,jdbcType=VARCHAR},
+      </if>
+      <if test="reportSituation != null" >
+        #{reportSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="securityLevel != null" >
+        #{securityLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="coverType != null" >
+        #{coverType,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyIp != null" >
+        #{proxyIp,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyPort != null" >
+        #{proxyPort,jdbcType=INTEGER},
+      </if>
+      <if test="proxyInterfaceName != null" >
+        #{proxyInterfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="isSign != null" >
+        #{isSign,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        #{pubStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="autoApp != null" >
+        #{autoApp,jdbcType=VARCHAR},
+      </if>
+      <if test="runStatus != null" >
+        #{runStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null" >
+        #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DbPubServiceExample" resultType="java.lang.Integer" >
+    select count(*) from db_pub_service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update db_pub_service
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modelId != null" >
+        model_id = #{record.modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceUrl != null" >
+        interface_url = #{record.interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.targetIp != null" >
+        target_ip = #{record.targetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.targetPort != null" >
+        target_port = #{record.targetPort,jdbcType=INTEGER},
+      </if>
+      <if test="record.interfaceName != null" >
+        interface_name = #{record.interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceType != null" >
+        interface_type = #{record.interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestMode != null" >
+        request_mode = #{record.requestMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wsdlMethodName != null" >
+        wsdl_method_name = #{record.wsdlMethodName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chineseDescribe != null" >
+        chinese_describe = #{record.chineseDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wordExample != null" >
+        word_example = #{record.wordExample,jdbcType=VARCHAR},
+      </if>
+      <if test="record.polId != null" >
+        pol_id = #{record.polId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useFrequency != null" >
+        use_frequency = #{record.useFrequency,jdbcType=INTEGER},
+      </if>
+      <if test="record.startDate != null" >
+        start_date = #{record.startDate,jdbcType=DATE},
+      </if>
+      <if test="record.endDate != null" >
+        end_date = #{record.endDate,jdbcType=DATE},
+      </if>
+      <if test="record.useType != null" >
+        use_type = #{record.useType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useScope != null" >
+        use_scope = #{record.useScope,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataType != null" >
+        data_type = #{record.dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.secondAuth != null" >
+        second_auth = #{record.secondAuth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reportSituation != null" >
+        report_situation = #{record.reportSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.securityLevel != null" >
+        security_level = #{record.securityLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coverType != null" >
+        cover_type = #{record.coverType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proxyIp != null" >
+        proxy_ip = #{record.proxyIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proxyPort != null" >
+        proxy_port = #{record.proxyPort,jdbcType=INTEGER},
+      </if>
+      <if test="record.proxyInterfaceName != null" >
+        proxy_interface_name = #{record.proxyInterfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSign != null" >
+        is_sign = #{record.isSign,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubStatus != null" >
+        pub_status = #{record.pubStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.autoApp != null" >
+        auto_app = #{record.autoApp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.runStatus != null" >
+        run_status = #{record.runStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keywords != null" >
+        keywords = #{record.keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templateId != null" >
+        template_id = #{record.templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updUserId != null" >
+        upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updOrgId != null" >
+        upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updTm != null" >
+        upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.crtUserId != null" >
+        crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtOrgId != null" >
+        crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update db_pub_service
+    set id = #{record.id,jdbcType=VARCHAR},
+      model_id = #{record.modelId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      interface_url = #{record.interfaceUrl,jdbcType=VARCHAR},
+      target_ip = #{record.targetIp,jdbcType=VARCHAR},
+      target_port = #{record.targetPort,jdbcType=INTEGER},
+      interface_name = #{record.interfaceName,jdbcType=VARCHAR},
+      interface_type = #{record.interfaceType,jdbcType=VARCHAR},
+      request_mode = #{record.requestMode,jdbcType=VARCHAR},
+      wsdl_method_name = #{record.wsdlMethodName,jdbcType=VARCHAR},
+      chinese_describe = #{record.chineseDescribe,jdbcType=VARCHAR},
+      word_example = #{record.wordExample,jdbcType=VARCHAR},
+      pol_id = #{record.polId,jdbcType=VARCHAR},
+      use_frequency = #{record.useFrequency,jdbcType=INTEGER},
+      start_date = #{record.startDate,jdbcType=DATE},
+      end_date = #{record.endDate,jdbcType=DATE},
+      use_type = #{record.useType,jdbcType=VARCHAR},
+      use_scope = #{record.useScope,jdbcType=VARCHAR},
+      data_type = #{record.dataType,jdbcType=VARCHAR},
+      second_auth = #{record.secondAuth,jdbcType=VARCHAR},
+      report_situation = #{record.reportSituation,jdbcType=VARCHAR},
+      security_level = #{record.securityLevel,jdbcType=VARCHAR},
+      cover_type = #{record.coverType,jdbcType=VARCHAR},
+      proxy_ip = #{record.proxyIp,jdbcType=VARCHAR},
+      proxy_port = #{record.proxyPort,jdbcType=INTEGER},
+      proxy_interface_name = #{record.proxyInterfaceName,jdbcType=VARCHAR},
+      is_sign = #{record.isSign,jdbcType=VARCHAR},
+      pub_status = #{record.pubStatus,jdbcType=VARCHAR},
+      auto_app = #{record.autoApp,jdbcType=VARCHAR},
+      run_status = #{record.runStatus,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      template_id = #{record.templateId,jdbcType=VARCHAR},
+      del_status = #{record.delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{record.crtTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.DbPubService" >
+    update db_pub_service
+    <set >
+      <if test="modelId != null" >
+        model_id = #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceUrl != null" >
+        interface_url = #{interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="targetIp != null" >
+        target_ip = #{targetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="targetPort != null" >
+        target_port = #{targetPort,jdbcType=INTEGER},
+      </if>
+      <if test="interfaceName != null" >
+        interface_name = #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null" >
+        interface_type = #{interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMode != null" >
+        request_mode = #{requestMode,jdbcType=VARCHAR},
+      </if>
+      <if test="wsdlMethodName != null" >
+        wsdl_method_name = #{wsdlMethodName,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseDescribe != null" >
+        chinese_describe = #{chineseDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="wordExample != null" >
+        word_example = #{wordExample,jdbcType=VARCHAR},
+      </if>
+      <if test="polId != null" >
+        pol_id = #{polId,jdbcType=VARCHAR},
+      </if>
+      <if test="useFrequency != null" >
+        use_frequency = #{useFrequency,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=DATE},
+      </if>
+      <if test="useType != null" >
+        use_type = #{useType,jdbcType=VARCHAR},
+      </if>
+      <if test="useScope != null" >
+        use_scope = #{useScope,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        data_type = #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="secondAuth != null" >
+        second_auth = #{secondAuth,jdbcType=VARCHAR},
+      </if>
+      <if test="reportSituation != null" >
+        report_situation = #{reportSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="securityLevel != null" >
+        security_level = #{securityLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="coverType != null" >
+        cover_type = #{coverType,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyIp != null" >
+        proxy_ip = #{proxyIp,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyPort != null" >
+        proxy_port = #{proxyPort,jdbcType=INTEGER},
+      </if>
+      <if test="proxyInterfaceName != null" >
+        proxy_interface_name = #{proxyInterfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="isSign != null" >
+        is_sign = #{isSign,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        pub_status = #{pubStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="autoApp != null" >
+        auto_app = #{autoApp,jdbcType=VARCHAR},
+      </if>
+      <if test="runStatus != null" >
+        run_status = #{runStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null" >
+        template_id = #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.DbPubService" >
+    update db_pub_service
+    set model_id = #{modelId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      interface_url = #{interfaceUrl,jdbcType=VARCHAR},
+      target_ip = #{targetIp,jdbcType=VARCHAR},
+      target_port = #{targetPort,jdbcType=INTEGER},
+      interface_name = #{interfaceName,jdbcType=VARCHAR},
+      interface_type = #{interfaceType,jdbcType=VARCHAR},
+      request_mode = #{requestMode,jdbcType=VARCHAR},
+      wsdl_method_name = #{wsdlMethodName,jdbcType=VARCHAR},
+      chinese_describe = #{chineseDescribe,jdbcType=VARCHAR},
+      word_example = #{wordExample,jdbcType=VARCHAR},
+      pol_id = #{polId,jdbcType=VARCHAR},
+      use_frequency = #{useFrequency,jdbcType=INTEGER},
+      start_date = #{startDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      use_type = #{useType,jdbcType=VARCHAR},
+      use_scope = #{useScope,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=VARCHAR},
+      second_auth = #{secondAuth,jdbcType=VARCHAR},
+      report_situation = #{reportSituation,jdbcType=VARCHAR},
+      security_level = #{securityLevel,jdbcType=VARCHAR},
+      cover_type = #{coverType,jdbcType=VARCHAR},
+      proxy_ip = #{proxyIp,jdbcType=VARCHAR},
+      proxy_port = #{proxyPort,jdbcType=INTEGER},
+      proxy_interface_name = #{proxyInterfaceName,jdbcType=VARCHAR},
+      is_sign = #{isSign,jdbcType=VARCHAR},
+      pub_status = #{pubStatus,jdbcType=VARCHAR},
+      auto_app = #{autoApp,jdbcType=VARCHAR},
+      run_status = #{runStatus,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      template_id = #{templateId,jdbcType=VARCHAR},
+      del_status = #{delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{crtTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

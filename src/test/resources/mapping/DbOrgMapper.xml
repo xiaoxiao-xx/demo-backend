@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DbOrgMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.api.model.DbOrg" >
+    <id column="org_id" property="orgId" jdbcType="VARCHAR" />
+    <result column="org_pid" property="orgPid" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="org_full_name" property="orgFullName" jdbcType="VARCHAR" />
+    <result column="org_sort" property="orgSort" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="person" property="person" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="org_remark" property="orgRemark" jdbcType="VARCHAR" />
+    <result column="key_value" property="keyValue" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+    <result column="upd_user_id" property="updUserId" jdbcType="VARCHAR" />
+    <result column="upd_org_id" property="updOrgId" jdbcType="VARCHAR" />
+    <result column="upd_tm" property="updTm" jdbcType="TIMESTAMP" />
+    <result column="crt_user_id" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="crt_org_id" property="crtOrgId" jdbcType="VARCHAR" />
+    <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    org_id, org_pid, org_name, org_full_name, org_sort, address, person, phone, org_remark, 
+    key_value, status, del_status, upd_user_id, upd_org_id, upd_tm, crt_user_id, crt_org_id, 
+    crt_tm
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbOrgExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from db_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_org
+    where org_id = #{orgId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from db_org
+    where org_id = #{orgId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DbOrgExample" >
+    delete from db_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.api.model.DbOrg" >
+    insert into db_org (org_id, org_pid, org_name, 
+      org_full_name, org_sort, address, 
+      person, phone, org_remark, 
+      key_value, status, del_status, 
+      upd_user_id, upd_org_id, upd_tm, 
+      crt_user_id, crt_org_id, crt_tm
+      )
+    values (#{orgId,jdbcType=VARCHAR}, #{orgPid,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, 
+      #{orgFullName,jdbcType=VARCHAR}, #{orgSort,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{person,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{orgRemark,jdbcType=VARCHAR}, 
+      #{keyValue,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, 
+      #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, #{updTm,jdbcType=TIMESTAMP}, 
+      #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.api.model.DbOrg" >
+    insert into db_org
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="orgPid != null" >
+        org_pid,
+      </if>
+      <if test="orgName != null" >
+        org_name,
+      </if>
+      <if test="orgFullName != null" >
+        org_full_name,
+      </if>
+      <if test="orgSort != null" >
+        org_sort,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="person != null" >
+        person,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="orgRemark != null" >
+        org_remark,
+      </if>
+      <if test="keyValue != null" >
+        key_value,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id,
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id,
+      </if>
+      <if test="updTm != null" >
+        upd_tm,
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id,
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id,
+      </if>
+      <if test="crtTm != null" >
+        crt_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgPid != null" >
+        #{orgPid,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgFullName != null" >
+        #{orgFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgSort != null" >
+        #{orgSort,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="person != null" >
+        #{person,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="orgRemark != null" >
+        #{orgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="keyValue != null" >
+        #{keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DbOrgExample" resultType="java.lang.Integer" >
+    select count(*) from db_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update db_org
+    <set >
+      <if test="record.orgId != null" >
+        org_id = #{record.orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgPid != null" >
+        org_pid = #{record.orgPid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgName != null" >
+        org_name = #{record.orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgFullName != null" >
+        org_full_name = #{record.orgFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgSort != null" >
+        org_sort = #{record.orgSort,jdbcType=INTEGER},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.person != null" >
+        person = #{record.person,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgRemark != null" >
+        org_remark = #{record.orgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keyValue != null" >
+        key_value = #{record.keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updUserId != null" >
+        upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updOrgId != null" >
+        upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updTm != null" >
+        upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.crtUserId != null" >
+        crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtOrgId != null" >
+        crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update db_org
+    set org_id = #{record.orgId,jdbcType=VARCHAR},
+      org_pid = #{record.orgPid,jdbcType=VARCHAR},
+      org_name = #{record.orgName,jdbcType=VARCHAR},
+      org_full_name = #{record.orgFullName,jdbcType=VARCHAR},
+      org_sort = #{record.orgSort,jdbcType=INTEGER},
+      address = #{record.address,jdbcType=VARCHAR},
+      person = #{record.person,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      org_remark = #{record.orgRemark,jdbcType=VARCHAR},
+      key_value = #{record.keyValue,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      del_status = #{record.delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{record.crtTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.api.model.DbOrg" >
+    update db_org
+    <set >
+      <if test="orgPid != null" >
+        org_pid = #{orgPid,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgFullName != null" >
+        org_full_name = #{orgFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgSort != null" >
+        org_sort = #{orgSort,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="person != null" >
+        person = #{person,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="orgRemark != null" >
+        org_remark = #{orgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="keyValue != null" >
+        key_value = #{keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where org_id = #{orgId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.api.model.DbOrg" >
+    update db_org
+    set org_pid = #{orgPid,jdbcType=VARCHAR},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      org_full_name = #{orgFullName,jdbcType=VARCHAR},
+      org_sort = #{orgSort,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      person = #{person,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      org_remark = #{orgRemark,jdbcType=VARCHAR},
+      key_value = #{keyValue,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      del_status = #{delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{crtTm,jdbcType=TIMESTAMP}
+    where org_id = #{orgId,jdbcType=VARCHAR}
+  </update>
+</mapper>

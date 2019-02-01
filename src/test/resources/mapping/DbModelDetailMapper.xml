@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DbModelDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.DbModelDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="model_id" property="modelId" jdbcType="VARCHAR" />
+    <result column="data_level" property="dataLevel" jdbcType="VARCHAR" />
+    <result column="field_ename" property="fieldEname" jdbcType="VARCHAR" />
+    <result column="field_cname" property="fieldCname" jdbcType="VARCHAR" />
+    <result column="field_type" property="fieldType" jdbcType="VARCHAR" />
+    <result column="field_desc" property="fieldDesc" jdbcType="VARCHAR" />
+    <result column="relation" property="relation" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="ename" property="ename" jdbcType="VARCHAR" />
+    <result column="sname" property="sname" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="data_type" property="dataType" jdbcType="VARCHAR" />
+    <result column="data_list" property="dataList" jdbcType="VARCHAR" />
+    <result column="data_condition" property="dataCondition" jdbcType="VARCHAR" />
+    <result column="show_times" property="showTimes" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+    <result column="upd_user_id" property="updUserId" jdbcType="VARCHAR" />
+    <result column="upd_org_id" property="updOrgId" jdbcType="VARCHAR" />
+    <result column="upd_tm" property="updTm" jdbcType="TIMESTAMP" />
+    <result column="crt_user_id" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="crt_org_id" property="crtOrgId" jdbcType="VARCHAR" />
+    <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pid, model_id, data_level, field_ename, field_cname, field_type, field_desc, 
+    relation, type, ename, sname, remark, data_type, data_list, data_condition, show_times, 
+    status, del_status, upd_user_id, upd_org_id, upd_tm, crt_user_id, crt_org_id, crt_tm
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbModelDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from db_model_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from db_model_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from db_model_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DbModelDetailExample" >
+    delete from db_model_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.DbModelDetail" >
+    insert into db_model_detail (id, pid, model_id, 
+      data_level, field_ename, field_cname, 
+      field_type, field_desc, relation, 
+      type, ename, sname, 
+      remark, data_type, data_list, 
+      data_condition, show_times, status, 
+      del_status, upd_user_id, upd_org_id, 
+      upd_tm, crt_user_id, crt_org_id, 
+      crt_tm)
+    values (#{id,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, #{modelId,jdbcType=VARCHAR}, 
+      #{dataLevel,jdbcType=VARCHAR}, #{fieldEname,jdbcType=VARCHAR}, #{fieldCname,jdbcType=VARCHAR}, 
+      #{fieldType,jdbcType=VARCHAR}, #{fieldDesc,jdbcType=VARCHAR}, #{relation,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{ename,jdbcType=VARCHAR}, #{sname,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{dataList,jdbcType=VARCHAR}, 
+      #{dataCondition,jdbcType=VARCHAR}, #{showTimes,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{delStatus,jdbcType=VARCHAR}, #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, 
+      #{updTm,jdbcType=TIMESTAMP}, #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, 
+      #{crtTm,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.DbModelDetail" >
+    insert into db_model_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="modelId != null" >
+        model_id,
+      </if>
+      <if test="dataLevel != null" >
+        data_level,
+      </if>
+      <if test="fieldEname != null" >
+        field_ename,
+      </if>
+      <if test="fieldCname != null" >
+        field_cname,
+      </if>
+      <if test="fieldType != null" >
+        field_type,
+      </if>
+      <if test="fieldDesc != null" >
+        field_desc,
+      </if>
+      <if test="relation != null" >
+        relation,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="ename != null" >
+        ename,
+      </if>
+      <if test="sname != null" >
+        sname,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="dataType != null" >
+        data_type,
+      </if>
+      <if test="dataList != null" >
+        data_list,
+      </if>
+      <if test="dataCondition != null" >
+        data_condition,
+      </if>
+      <if test="showTimes != null" >
+        show_times,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id,
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id,
+      </if>
+      <if test="updTm != null" >
+        upd_tm,
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id,
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id,
+      </if>
+      <if test="crtTm != null" >
+        crt_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="dataLevel != null" >
+        #{dataLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldEname != null" >
+        #{fieldEname,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldCname != null" >
+        #{fieldCname,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldType != null" >
+        #{fieldType,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldDesc != null" >
+        #{fieldDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null" >
+        #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="ename != null" >
+        #{ename,jdbcType=VARCHAR},
+      </if>
+      <if test="sname != null" >
+        #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="dataList != null" >
+        #{dataList,jdbcType=VARCHAR},
+      </if>
+      <if test="dataCondition != null" >
+        #{dataCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="showTimes != null" >
+        #{showTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DbModelDetailExample" resultType="java.lang.Integer" >
+    select count(*) from db_model_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update db_model_detail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modelId != null" >
+        model_id = #{record.modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataLevel != null" >
+        data_level = #{record.dataLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fieldEname != null" >
+        field_ename = #{record.fieldEname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fieldCname != null" >
+        field_cname = #{record.fieldCname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fieldType != null" >
+        field_type = #{record.fieldType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fieldDesc != null" >
+        field_desc = #{record.fieldDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relation != null" >
+        relation = #{record.relation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ename != null" >
+        ename = #{record.ename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sname != null" >
+        sname = #{record.sname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataType != null" >
+        data_type = #{record.dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataList != null" >
+        data_list = #{record.dataList,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataCondition != null" >
+        data_condition = #{record.dataCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.showTimes != null" >
+        show_times = #{record.showTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updUserId != null" >
+        upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updOrgId != null" >
+        upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updTm != null" >
+        upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.crtUserId != null" >
+        crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtOrgId != null" >
+        crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update db_model_detail
+    set id = #{record.id,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=VARCHAR},
+      model_id = #{record.modelId,jdbcType=VARCHAR},
+      data_level = #{record.dataLevel,jdbcType=VARCHAR},
+      field_ename = #{record.fieldEname,jdbcType=VARCHAR},
+      field_cname = #{record.fieldCname,jdbcType=VARCHAR},
+      field_type = #{record.fieldType,jdbcType=VARCHAR},
+      field_desc = #{record.fieldDesc,jdbcType=VARCHAR},
+      relation = #{record.relation,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      ename = #{record.ename,jdbcType=VARCHAR},
+      sname = #{record.sname,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      data_type = #{record.dataType,jdbcType=VARCHAR},
+      data_list = #{record.dataList,jdbcType=VARCHAR},
+      data_condition = #{record.dataCondition,jdbcType=VARCHAR},
+      show_times = #{record.showTimes,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      del_status = #{record.delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{record.crtTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.DbModelDetail" >
+    update db_model_detail
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        model_id = #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="dataLevel != null" >
+        data_level = #{dataLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldEname != null" >
+        field_ename = #{fieldEname,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldCname != null" >
+        field_cname = #{fieldCname,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldType != null" >
+        field_type = #{fieldType,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldDesc != null" >
+        field_desc = #{fieldDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null" >
+        relation = #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="ename != null" >
+        ename = #{ename,jdbcType=VARCHAR},
+      </if>
+      <if test="sname != null" >
+        sname = #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        data_type = #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="dataList != null" >
+        data_list = #{dataList,jdbcType=VARCHAR},
+      </if>
+      <if test="dataCondition != null" >
+        data_condition = #{dataCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="showTimes != null" >
+        show_times = #{showTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.DbModelDetail" >
+    update db_model_detail
+    set pid = #{pid,jdbcType=VARCHAR},
+      model_id = #{modelId,jdbcType=VARCHAR},
+      data_level = #{dataLevel,jdbcType=VARCHAR},
+      field_ename = #{fieldEname,jdbcType=VARCHAR},
+      field_cname = #{fieldCname,jdbcType=VARCHAR},
+      field_type = #{fieldType,jdbcType=VARCHAR},
+      field_desc = #{fieldDesc,jdbcType=VARCHAR},
+      relation = #{relation,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      ename = #{ename,jdbcType=VARCHAR},
+      sname = #{sname,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=VARCHAR},
+      data_list = #{dataList,jdbcType=VARCHAR},
+      data_condition = #{dataCondition,jdbcType=VARCHAR},
+      show_times = #{showTimes,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      del_status = #{delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{crtTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
