@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.AlarmStrategyMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.AlarmStrategy" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="alarm_name" property="alarmName" jdbcType="VARCHAR" />
+    <result column="alarm_num" property="alarmNum" jdbcType="VARCHAR" />
+    <result column="alarm_type" property="alarmType" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="alarm_place" property="alarmPlace" jdbcType="VARCHAR" />
+    <result column="user_role" property="userRole" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="alarm_tm" property="alarmTm" jdbcType="TIMESTAMP" />
+    <result column="stay_tm" property="stayTm" jdbcType="BIGINT" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+    <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, alarm_name, alarm_num, alarm_type, user_id, alarm_place, user_role, user_name, 
+    alarm_tm, stay_tm, del_status, crt_tm
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.AlarmStrategyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from alarm_strategy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from alarm_strategy
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alarm_strategy
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.AlarmStrategyExample" >
+    delete from alarm_strategy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.AlarmStrategy" >
+    insert into alarm_strategy (id, alarm_name, alarm_num, 
+      alarm_type, user_id, alarm_place, 
+      user_role, user_name, alarm_tm, 
+      stay_tm, del_status, crt_tm
+      )
+    values (#{id,jdbcType=VARCHAR}, #{alarmName,jdbcType=VARCHAR}, #{alarmNum,jdbcType=VARCHAR}, 
+      #{alarmType,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{alarmPlace,jdbcType=VARCHAR}, 
+      #{userRole,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{alarmTm,jdbcType=TIMESTAMP}, 
+      #{stayTm,jdbcType=BIGINT}, #{delStatus,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.AlarmStrategy" >
+    insert into alarm_strategy
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="alarmName != null" >
+        alarm_name,
+      </if>
+      <if test="alarmNum != null" >
+        alarm_num,
+      </if>
+      <if test="alarmType != null" >
+        alarm_type,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="alarmPlace != null" >
+        alarm_place,
+      </if>
+      <if test="userRole != null" >
+        user_role,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="alarmTm != null" >
+        alarm_tm,
+      </if>
+      <if test="stayTm != null" >
+        stay_tm,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+      <if test="crtTm != null" >
+        crt_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmName != null" >
+        #{alarmName,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmNum != null" >
+        #{alarmNum,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmType != null" >
+        #{alarmType,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPlace != null" >
+        #{alarmPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="userRole != null" >
+        #{userRole,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmTm != null" >
+        #{alarmTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stayTm != null" >
+        #{stayTm,jdbcType=BIGINT},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.AlarmStrategyExample" resultType="java.lang.Integer" >
+    select count(*) from alarm_strategy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update alarm_strategy
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alarmName != null" >
+        alarm_name = #{record.alarmName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alarmNum != null" >
+        alarm_num = #{record.alarmNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alarmType != null" >
+        alarm_type = #{record.alarmType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alarmPlace != null" >
+        alarm_place = #{record.alarmPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userRole != null" >
+        user_role = #{record.userRole,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alarmTm != null" >
+        alarm_tm = #{record.alarmTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.stayTm != null" >
+        stay_tm = #{record.stayTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update alarm_strategy
+    set id = #{record.id,jdbcType=VARCHAR},
+      alarm_name = #{record.alarmName,jdbcType=VARCHAR},
+      alarm_num = #{record.alarmNum,jdbcType=VARCHAR},
+      alarm_type = #{record.alarmType,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      alarm_place = #{record.alarmPlace,jdbcType=VARCHAR},
+      user_role = #{record.userRole,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      alarm_tm = #{record.alarmTm,jdbcType=TIMESTAMP},
+      stay_tm = #{record.stayTm,jdbcType=BIGINT},
+      del_status = #{record.delStatus,jdbcType=VARCHAR},
+      crt_tm = #{record.crtTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.AlarmStrategy" >
+    update alarm_strategy
+    <set >
+      <if test="alarmName != null" >
+        alarm_name = #{alarmName,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmNum != null" >
+        alarm_num = #{alarmNum,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmType != null" >
+        alarm_type = #{alarmType,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPlace != null" >
+        alarm_place = #{alarmPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="userRole != null" >
+        user_role = #{userRole,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmTm != null" >
+        alarm_tm = #{alarmTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stayTm != null" >
+        stay_tm = #{stayTm,jdbcType=BIGINT},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.AlarmStrategy" >
+    update alarm_strategy
+    set alarm_name = #{alarmName,jdbcType=VARCHAR},
+      alarm_num = #{alarmNum,jdbcType=VARCHAR},
+      alarm_type = #{alarmType,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      alarm_place = #{alarmPlace,jdbcType=VARCHAR},
+      user_role = #{userRole,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      alarm_tm = #{alarmTm,jdbcType=TIMESTAMP},
+      stay_tm = #{stayTm,jdbcType=BIGINT},
+      del_status = #{delStatus,jdbcType=VARCHAR},
+      crt_tm = #{crtTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
