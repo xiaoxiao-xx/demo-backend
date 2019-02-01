@@ -2,10 +2,7 @@ package com.microcore.center.controller;
 
 import com.microcore.center.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 节点上传使用记录
@@ -14,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("uploadRecord")
 public class UploadRecordController {
 
-	@PostMapping("serviceRecord")
+	@GetMapping("serviceRecord")
 	public ResultVo serviceRecord() {
-		return ResultVo.ok();
+		return ResultVo.ok("asdfasdf");
 	}
 
 	@RequestMapping("addDbFileRecord")
