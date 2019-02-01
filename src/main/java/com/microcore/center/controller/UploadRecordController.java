@@ -1,10 +1,6 @@
 package com.microcore.center.controller;
 
-import com.microcore.center.model.DbFileRecord;
-import com.microcore.center.model.DbServiceRecord;
-import com.microcore.center.service.DbFileRecordService;
-import com.microcore.center.service.UploadRecordService;
-import com.microcore.common.util.ResultVo;
+import com.microcore.center.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,27 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("uploadRecord")
 public class UploadRecordController {
 
-	private final UploadRecordService uploadRecordService;
-
-	private final DbFileRecordService dbFileRecordService;
-
-	@Autowired
-	public UploadRecordController(UploadRecordService uploadRecordService, DbFileRecordService dbFileRecordService) {
-		this.uploadRecordService = uploadRecordService;
-		this.dbFileRecordService = dbFileRecordService;
-	}
-
-	/**
-	 * 上传服务接口调用记录
-	 */
 	@PostMapping("serviceRecord")
-	public ResultVo serviceRecord(@RequestBody DbServiceRecord dbServiceRecord) {
-		return uploadRecordService.serviceRecord(dbServiceRecord);
+	public ResultVo serviceRecord() {
+		return ResultVo.ok();
 	}
 
 	@RequestMapping("addDbFileRecord")
-	public ResultVo addDbFileRecord(@RequestBody DbFileRecord dbFileRecord) {
-		return dbFileRecordService.addDbFileRecord(dbFileRecord);
+	public ResultVo addDbFileRecord() {
+		return ResultVo.ok();
 	}
 
 }
