@@ -441,6 +441,76 @@ public class EquipmentManageExample {
             return (Criteria) this;
         }
 
+        public Criteria andEquiTypeIdIsNull() {
+            addCriterion("equi_type_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdIsNotNull() {
+            addCriterion("equi_type_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdEqualTo(String value) {
+            addCriterion("equi_type_id =", value, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdNotEqualTo(String value) {
+            addCriterion("equi_type_id <>", value, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdGreaterThan(String value) {
+            addCriterion("equi_type_id >", value, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdGreaterThanOrEqualTo(String value) {
+            addCriterion("equi_type_id >=", value, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdLessThan(String value) {
+            addCriterion("equi_type_id <", value, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdLessThanOrEqualTo(String value) {
+            addCriterion("equi_type_id <=", value, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdLike(String value) {
+            addCriterion("equi_type_id like", value, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdNotLike(String value) {
+            addCriterion("equi_type_id not like", value, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdIn(List<String> values) {
+            addCriterion("equi_type_id in", values, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdNotIn(List<String> values) {
+            addCriterion("equi_type_id not in", values, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdBetween(String value1, String value2) {
+            addCriterion("equi_type_id between", value1, value2, "equiTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEquiTypeIdNotBetween(String value1, String value2) {
+            addCriterion("equi_type_id not between", value1, value2, "equiTypeId");
+            return (Criteria) this;
+        }
+
         public Criteria andUserIdIsNull() {
             addCriterion("user_id is null");
             return (Criteria) this;

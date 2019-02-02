@@ -2,9 +2,8 @@ package com.microcore.center.mapper;
 
 import com.microcore.center.model.EquipmentManage;
 import com.microcore.center.model.EquipmentManageExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface EquipmentManageMapper {
     /**

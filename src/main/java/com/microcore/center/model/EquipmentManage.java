@@ -26,6 +26,11 @@ public class EquipmentManage {
     /**
      * 
      */
+    private String equiTypeId;
+
+    /**
+     * 
+     */
     private String userId;
 
     /**
@@ -120,6 +125,22 @@ public class EquipmentManage {
      */
     public void setEquiType(String equiType) {
         this.equiType = equiType == null ? null : equiType.trim();
+    }
+
+    /**
+     * 
+     * @return equi_type_id 
+     */
+    public String getEquiTypeId() {
+        return equiTypeId;
+    }
+
+    /**
+     * 
+     * @param equiTypeId 
+     */
+    public void setEquiTypeId(String equiTypeId) {
+        this.equiTypeId = equiTypeId == null ? null : equiTypeId.trim();
     }
 
     /**

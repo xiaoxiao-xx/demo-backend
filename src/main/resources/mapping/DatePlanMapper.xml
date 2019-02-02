@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.DatePlanMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.DatePlan" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="do_tm" property="doTm" jdbcType="TIMESTAMP" />
+    <result column="tm_slot" property="tmSlot" jdbcType="VARCHAR" />
+    <result column="plan" property="plan" jdbcType="VARCHAR" />
+    <result column="team" property="team" jdbcType="VARCHAR" />
+    <result column="place" property="place" jdbcType="VARCHAR" />
+    <result column="teacher" property="teacher" jdbcType="VARCHAR" />
+    <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, do_tm, tm_slot, plan, team, place, teacher, crt_tm, del_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DatePlanExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from date_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from date_plan
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from date_plan
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.DatePlanExample" >
+    delete from date_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.DatePlan" >
+    insert into date_plan (id, do_tm, tm_slot, 
+      plan, team, place, 
+      teacher, crt_tm, del_status
+      )
+    values (#{id,jdbcType=VARCHAR}, #{doTm,jdbcType=TIMESTAMP}, #{tmSlot,jdbcType=VARCHAR}, 
+      #{plan,jdbcType=VARCHAR}, #{team,jdbcType=VARCHAR}, #{place,jdbcType=VARCHAR}, 
+      #{teacher,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}, #{delStatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.DatePlan" >
+    insert into date_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="doTm != null" >
+        do_tm,
+      </if>
+      <if test="tmSlot != null" >
+        tm_slot,
+      </if>
+      <if test="plan != null" >
+        plan,
+      </if>
+      <if test="team != null" >
+        team,
+      </if>
+      <if test="place != null" >
+        place,
+      </if>
+      <if test="teacher != null" >
+        teacher,
+      </if>
+      <if test="crtTm != null" >
+        crt_tm,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="doTm != null" >
+        #{doTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tmSlot != null" >
+        #{tmSlot,jdbcType=VARCHAR},
+      </if>
+      <if test="plan != null" >
+        #{plan,jdbcType=VARCHAR},
+      </if>
+      <if test="team != null" >
+        #{team,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null" >
+        #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="teacher != null" >
+        #{teacher,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.DatePlanExample" resultType="java.lang.Integer" >
+    select count(*) from date_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update date_plan
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.doTm != null" >
+        do_tm = #{record.doTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tmSlot != null" >
+        tm_slot = #{record.tmSlot,jdbcType=VARCHAR},
+      </if>
+      <if test="record.plan != null" >
+        plan = #{record.plan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.team != null" >
+        team = #{record.team,jdbcType=VARCHAR},
+      </if>
+      <if test="record.place != null" >
+        place = #{record.place,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacher != null" >
+        teacher = #{record.teacher,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update date_plan
+    set id = #{record.id,jdbcType=VARCHAR},
+      do_tm = #{record.doTm,jdbcType=TIMESTAMP},
+      tm_slot = #{record.tmSlot,jdbcType=VARCHAR},
+      plan = #{record.plan,jdbcType=VARCHAR},
+      team = #{record.team,jdbcType=VARCHAR},
+      place = #{record.place,jdbcType=VARCHAR},
+      teacher = #{record.teacher,jdbcType=VARCHAR},
+      crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
+      del_status = #{record.delStatus,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.DatePlan" >
+    update date_plan
+    <set >
+      <if test="doTm != null" >
+        do_tm = #{doTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tmSlot != null" >
+        tm_slot = #{tmSlot,jdbcType=VARCHAR},
+      </if>
+      <if test="plan != null" >
+        plan = #{plan,jdbcType=VARCHAR},
+      </if>
+      <if test="team != null" >
+        team = #{team,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null" >
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="teacher != null" >
+        teacher = #{teacher,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.DatePlan" >
+    update date_plan
+    set do_tm = #{doTm,jdbcType=TIMESTAMP},
+      tm_slot = #{tmSlot,jdbcType=VARCHAR},
+      plan = #{plan,jdbcType=VARCHAR},
+      team = #{team,jdbcType=VARCHAR},
+      place = #{place,jdbcType=VARCHAR},
+      teacher = #{teacher,jdbcType=VARCHAR},
+      crt_tm = #{crtTm,jdbcType=TIMESTAMP},
+      del_status = #{delStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

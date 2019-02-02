@@ -6,6 +6,7 @@
     <result column="charge_user" property="chargeUser" jdbcType="VARCHAR" />
     <result column="alarm_num" property="alarmNum" jdbcType="VARCHAR" />
     <result column="equi_type" property="equiType" jdbcType="VARCHAR" />
+    <result column="equi_type_id" property="equiTypeId" jdbcType="VARCHAR" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="equi_place" property="equiPlace" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, charge_user, alarm_num, equi_type, user_id, equi_place, remark, trouble, up_tm, 
-    del_status, crt_tm
+    id, charge_user, alarm_num, equi_type, equi_type_id, user_id, equi_place, remark, 
+    trouble, up_tm, del_status, crt_tm
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.EquipmentManageExample" >
     select
@@ -109,13 +110,15 @@
   </delete>
   <insert id="insert" parameterType="com.microcore.center.model.EquipmentManage" >
     insert into equipment_manage (id, charge_user, alarm_num, 
-      equi_type, user_id, equi_place, 
-      remark, trouble, up_tm, 
-      del_status, crt_tm)
+      equi_type, equi_type_id, user_id, 
+      equi_place, remark, trouble, 
+      up_tm, del_status, crt_tm
+      )
     values (#{id,jdbcType=VARCHAR}, #{chargeUser,jdbcType=VARCHAR}, #{alarmNum,jdbcType=VARCHAR}, 
-      #{equiType,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{equiPlace,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{trouble,jdbcType=VARCHAR}, #{upTm,jdbcType=TIMESTAMP}, 
-      #{delStatus,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP})
+      #{equiType,jdbcType=VARCHAR}, #{equiTypeId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{equiPlace,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{trouble,jdbcType=VARCHAR}, 
+      #{upTm,jdbcType=TIMESTAMP}, #{delStatus,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.EquipmentManage" >
     insert into equipment_manage
@@ -131,6 +134,9 @@
       </if>
       <if test="equiType != null" >
         equi_type,
+      </if>
+      <if test="equiTypeId != null" >
+        equi_type_id,
       </if>
       <if test="userId != null" >
         user_id,
@@ -166,6 +172,9 @@
       </if>
       <if test="equiType != null" >
         #{equiType,jdbcType=VARCHAR},
+      </if>
+      <if test="equiTypeId != null" >
+        #{equiTypeId,jdbcType=VARCHAR},
       </if>
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
@@ -211,6 +220,9 @@
       <if test="record.equiType != null" >
         equi_type = #{record.equiType,jdbcType=VARCHAR},
       </if>
+      <if test="record.equiTypeId != null" >
+        equi_type_id = #{record.equiTypeId,jdbcType=VARCHAR},
+      </if>
       <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=VARCHAR},
       </if>
@@ -243,6 +255,7 @@
       charge_user = #{record.chargeUser,jdbcType=VARCHAR},
       alarm_num = #{record.alarmNum,jdbcType=VARCHAR},
       equi_type = #{record.equiType,jdbcType=VARCHAR},
+      equi_type_id = #{record.equiTypeId,jdbcType=VARCHAR},
       user_id = #{record.userId,jdbcType=VARCHAR},
       equi_place = #{record.equiPlace,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
@@ -265,6 +278,9 @@
       </if>
       <if test="equiType != null" >
         equi_type = #{equiType,jdbcType=VARCHAR},
+      </if>
+      <if test="equiTypeId != null" >
+        equi_type_id = #{equiTypeId,jdbcType=VARCHAR},
       </if>
       <if test="userId != null" >
         user_id = #{userId,jdbcType=VARCHAR},
@@ -295,6 +311,7 @@
     set charge_user = #{chargeUser,jdbcType=VARCHAR},
       alarm_num = #{alarmNum,jdbcType=VARCHAR},
       equi_type = #{equiType,jdbcType=VARCHAR},
+      equi_type_id = #{equiTypeId,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR},
       equi_place = #{equiPlace,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
