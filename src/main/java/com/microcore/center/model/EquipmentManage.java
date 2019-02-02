@@ -237,8 +237,8 @@ public class EquipmentManage {
     }
 
     /**
-     * 1启用0停用
-     * @param upStatus 1启用0停用
+     * 启用停用
+     * @param upStatus 启用停用
      */
     public void setUpStatus(String upStatus) {
         this.upStatus = upStatus == null ? null : upStatus.trim();

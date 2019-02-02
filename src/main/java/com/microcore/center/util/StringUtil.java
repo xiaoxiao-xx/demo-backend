@@ -1,5 +1,7 @@
 package com.microcore.center.util;
 
+import java.util.UUID;
+
 public class StringUtil {
 
 	/**
@@ -12,6 +14,9 @@ public class StringUtil {
 		return str != null && str.length() != 0;
 	}
 
+	public static String getUUID() {
+		return UUID.randomUUID().toString();
+	}
 	/**
 	 * 给定字符串是否为空或空串
 	 *
