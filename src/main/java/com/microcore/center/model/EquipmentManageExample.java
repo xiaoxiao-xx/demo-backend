@@ -791,63 +791,133 @@ public class EquipmentManageExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpTmIsNull() {
-            addCriterion("up_tm is null");
+        public Criteria andOnlineTmIsNull() {
+            addCriterion("online_tm is null");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmIsNotNull() {
-            addCriterion("up_tm is not null");
+        public Criteria andOnlineTmIsNotNull() {
+            addCriterion("online_tm is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmEqualTo(Date value) {
-            addCriterion("up_tm =", value, "upTm");
+        public Criteria andOnlineTmEqualTo(Date value) {
+            addCriterion("online_tm =", value, "onlineTm");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmNotEqualTo(Date value) {
-            addCriterion("up_tm <>", value, "upTm");
+        public Criteria andOnlineTmNotEqualTo(Date value) {
+            addCriterion("online_tm <>", value, "onlineTm");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmGreaterThan(Date value) {
-            addCriterion("up_tm >", value, "upTm");
+        public Criteria andOnlineTmGreaterThan(Date value) {
+            addCriterion("online_tm >", value, "onlineTm");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmGreaterThanOrEqualTo(Date value) {
-            addCriterion("up_tm >=", value, "upTm");
+        public Criteria andOnlineTmGreaterThanOrEqualTo(Date value) {
+            addCriterion("online_tm >=", value, "onlineTm");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmLessThan(Date value) {
-            addCriterion("up_tm <", value, "upTm");
+        public Criteria andOnlineTmLessThan(Date value) {
+            addCriterion("online_tm <", value, "onlineTm");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmLessThanOrEqualTo(Date value) {
-            addCriterion("up_tm <=", value, "upTm");
+        public Criteria andOnlineTmLessThanOrEqualTo(Date value) {
+            addCriterion("online_tm <=", value, "onlineTm");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmIn(List<Date> values) {
-            addCriterion("up_tm in", values, "upTm");
+        public Criteria andOnlineTmIn(List<Date> values) {
+            addCriterion("online_tm in", values, "onlineTm");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmNotIn(List<Date> values) {
-            addCriterion("up_tm not in", values, "upTm");
+        public Criteria andOnlineTmNotIn(List<Date> values) {
+            addCriterion("online_tm not in", values, "onlineTm");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmBetween(Date value1, Date value2) {
-            addCriterion("up_tm between", value1, value2, "upTm");
+        public Criteria andOnlineTmBetween(Date value1, Date value2) {
+            addCriterion("online_tm between", value1, value2, "onlineTm");
             return (Criteria) this;
         }
 
-        public Criteria andUpTmNotBetween(Date value1, Date value2) {
-            addCriterion("up_tm not between", value1, value2, "upTm");
+        public Criteria andOnlineTmNotBetween(Date value1, Date value2) {
+            addCriterion("online_tm not between", value1, value2, "onlineTm");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusIsNull() {
+            addCriterion("up_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusIsNotNull() {
+            addCriterion("up_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusEqualTo(String value) {
+            addCriterion("up_status =", value, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusNotEqualTo(String value) {
+            addCriterion("up_status <>", value, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusGreaterThan(String value) {
+            addCriterion("up_status >", value, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("up_status >=", value, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusLessThan(String value) {
+            addCriterion("up_status <", value, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusLessThanOrEqualTo(String value) {
+            addCriterion("up_status <=", value, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusLike(String value) {
+            addCriterion("up_status like", value, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusNotLike(String value) {
+            addCriterion("up_status not like", value, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusIn(List<String> values) {
+            addCriterion("up_status in", values, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusNotIn(List<String> values) {
+            addCriterion("up_status not in", values, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusBetween(String value1, String value2) {
+            addCriterion("up_status between", value1, value2, "upStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpStatusNotBetween(String value1, String value2) {
+            addCriterion("up_status not between", value1, value2, "upStatus");
             return (Criteria) this;
         }
 

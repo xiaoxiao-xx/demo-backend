@@ -51,7 +51,12 @@ public class EquipmentManage {
     /**
      * 上线时间
      */
-    private Date upTm;
+    private Date onlineTm;
+
+    /**
+     * 1启用0停用
+     */
+    private String upStatus;
 
     /**
      * 是否删除(1删除，0非--)
@@ -209,18 +214,34 @@ public class EquipmentManage {
 
     /**
      * 上线时间
-     * @return up_tm 上线时间
+     * @return online_tm 上线时间
      */
-    public Date getUpTm() {
-        return upTm;
+    public Date getOnlineTm() {
+        return onlineTm;
     }
 
     /**
      * 上线时间
-     * @param upTm 上线时间
+     * @param onlineTm 上线时间
      */
-    public void setUpTm(Date upTm) {
-        this.upTm = upTm;
+    public void setOnlineTm(Date onlineTm) {
+        this.onlineTm = onlineTm;
+    }
+
+    /**
+     * 1启用0停用
+     * @return up_status 1启用0停用
+     */
+    public String getUpStatus() {
+        return upStatus;
+    }
+
+    /**
+     * 1启用0停用
+     * @param upStatus 1启用0停用
+     */
+    public void setUpStatus(String upStatus) {
+        this.upStatus = upStatus == null ? null : upStatus.trim();
     }
 
     /**

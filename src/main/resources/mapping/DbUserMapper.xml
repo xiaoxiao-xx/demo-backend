@@ -14,7 +14,7 @@
     <result column="jobin_tm" property="jobinTm" jdbcType="TIMESTAMP" />
     <result column="photo" property="photo" jdbcType="VARCHAR" />
     <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
-    <result column="follow" property="follow" jdbcType="VARCHAR" />
+    <result column="more_care" property="moreCare" jdbcType="VARCHAR" />
     <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -77,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, account, username, password, sex, org_name, tel, birthday, job, jobin_tm, photo, 
-    del_status, follow, crt_tm
+    del_status, more_care, crt_tm
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DbUserExample" >
     select
@@ -114,12 +114,12 @@
     insert into db_user (id, account, username, 
       password, sex, org_name, 
       tel, birthday, job, jobin_tm, 
-      photo, del_status, follow, 
+      photo, del_status, more_care, 
       crt_tm)
     values (#{id,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, 
       #{tel,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{job,jdbcType=VARCHAR}, #{jobinTm,jdbcType=TIMESTAMP}, 
-      #{photo,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, #{follow,jdbcType=VARCHAR}, 
+      #{photo,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, #{moreCare,jdbcType=VARCHAR}, 
       #{crtTm,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.DbUser" >
@@ -161,8 +161,8 @@
       <if test="delStatus != null" >
         del_status,
       </if>
-      <if test="follow != null" >
-        follow,
+      <if test="moreCare != null" >
+        more_care,
       </if>
       <if test="crtTm != null" >
         crt_tm,
@@ -205,8 +205,8 @@
       <if test="delStatus != null" >
         #{delStatus,jdbcType=VARCHAR},
       </if>
-      <if test="follow != null" >
-        #{follow,jdbcType=VARCHAR},
+      <if test="moreCare != null" >
+        #{moreCare,jdbcType=VARCHAR},
       </if>
       <if test="crtTm != null" >
         #{crtTm,jdbcType=TIMESTAMP},
@@ -258,8 +258,8 @@
       <if test="record.delStatus != null" >
         del_status = #{record.delStatus,jdbcType=VARCHAR},
       </if>
-      <if test="record.follow != null" >
-        follow = #{record.follow,jdbcType=VARCHAR},
+      <if test="record.moreCare != null" >
+        more_care = #{record.moreCare,jdbcType=VARCHAR},
       </if>
       <if test="record.crtTm != null" >
         crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
@@ -283,7 +283,7 @@
       jobin_tm = #{record.jobinTm,jdbcType=TIMESTAMP},
       photo = #{record.photo,jdbcType=VARCHAR},
       del_status = #{record.delStatus,jdbcType=VARCHAR},
-      follow = #{record.follow,jdbcType=VARCHAR},
+      more_care = #{record.moreCare,jdbcType=VARCHAR},
       crt_tm = #{record.crtTm,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -325,8 +325,8 @@
       <if test="delStatus != null" >
         del_status = #{delStatus,jdbcType=VARCHAR},
       </if>
-      <if test="follow != null" >
-        follow = #{follow,jdbcType=VARCHAR},
+      <if test="moreCare != null" >
+        more_care = #{moreCare,jdbcType=VARCHAR},
       </if>
       <if test="crtTm != null" >
         crt_tm = #{crtTm,jdbcType=TIMESTAMP},
@@ -347,7 +347,7 @@
       jobin_tm = #{jobinTm,jdbcType=TIMESTAMP},
       photo = #{photo,jdbcType=VARCHAR},
       del_status = #{delStatus,jdbcType=VARCHAR},
-      follow = #{follow,jdbcType=VARCHAR},
+      more_care = #{moreCare,jdbcType=VARCHAR},
       crt_tm = #{crtTm,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>

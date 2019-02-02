@@ -1008,73 +1008,73 @@ public class DbUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andFollowIsNull() {
-            addCriterion("follow is null");
+        public Criteria andMoreCareIsNull() {
+            addCriterion("more_care is null");
             return (Criteria) this;
         }
 
-        public Criteria andFollowIsNotNull() {
-            addCriterion("follow is not null");
+        public Criteria andMoreCareIsNotNull() {
+            addCriterion("more_care is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFollowEqualTo(String value) {
-            addCriterion("follow =", value, "follow");
+        public Criteria andMoreCareEqualTo(String value) {
+            addCriterion("more_care =", value, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowNotEqualTo(String value) {
-            addCriterion("follow <>", value, "follow");
+        public Criteria andMoreCareNotEqualTo(String value) {
+            addCriterion("more_care <>", value, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowGreaterThan(String value) {
-            addCriterion("follow >", value, "follow");
+        public Criteria andMoreCareGreaterThan(String value) {
+            addCriterion("more_care >", value, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowGreaterThanOrEqualTo(String value) {
-            addCriterion("follow >=", value, "follow");
+        public Criteria andMoreCareGreaterThanOrEqualTo(String value) {
+            addCriterion("more_care >=", value, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowLessThan(String value) {
-            addCriterion("follow <", value, "follow");
+        public Criteria andMoreCareLessThan(String value) {
+            addCriterion("more_care <", value, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowLessThanOrEqualTo(String value) {
-            addCriterion("follow <=", value, "follow");
+        public Criteria andMoreCareLessThanOrEqualTo(String value) {
+            addCriterion("more_care <=", value, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowLike(String value) {
-            addCriterion("follow like", value, "follow");
+        public Criteria andMoreCareLike(String value) {
+            addCriterion("more_care like", value, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowNotLike(String value) {
-            addCriterion("follow not like", value, "follow");
+        public Criteria andMoreCareNotLike(String value) {
+            addCriterion("more_care not like", value, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowIn(List<String> values) {
-            addCriterion("follow in", values, "follow");
+        public Criteria andMoreCareIn(List<String> values) {
+            addCriterion("more_care in", values, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowNotIn(List<String> values) {
-            addCriterion("follow not in", values, "follow");
+        public Criteria andMoreCareNotIn(List<String> values) {
+            addCriterion("more_care not in", values, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowBetween(String value1, String value2) {
-            addCriterion("follow between", value1, value2, "follow");
+        public Criteria andMoreCareBetween(String value1, String value2) {
+            addCriterion("more_care between", value1, value2, "moreCare");
             return (Criteria) this;
         }
 
-        public Criteria andFollowNotBetween(String value1, String value2) {
-            addCriterion("follow not between", value1, value2, "follow");
+        public Criteria andMoreCareNotBetween(String value1, String value2) {
+            addCriterion("more_care not between", value1, value2, "moreCare");
             return (Criteria) this;
         }
 

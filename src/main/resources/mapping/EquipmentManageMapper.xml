@@ -11,7 +11,8 @@
     <result column="equi_place" property="equiPlace" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="trouble" property="trouble" jdbcType="VARCHAR" />
-    <result column="up_tm" property="upTm" jdbcType="TIMESTAMP" />
+    <result column="online_tm" property="onlineTm" jdbcType="TIMESTAMP" />
+    <result column="up_status" property="upStatus" jdbcType="VARCHAR" />
     <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
     <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, charge_user, alarm_num, equi_type, equi_type_id, user_id, equi_place, remark, 
-    trouble, up_tm, del_status, crt_tm
+    trouble, online_tm, up_status, del_status, crt_tm
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.EquipmentManageExample" >
     select
@@ -112,13 +113,13 @@
     insert into equipment_manage (id, charge_user, alarm_num, 
       equi_type, equi_type_id, user_id, 
       equi_place, remark, trouble, 
-      up_tm, del_status, crt_tm
-      )
+      online_tm, up_status, del_status, 
+      crt_tm)
     values (#{id,jdbcType=VARCHAR}, #{chargeUser,jdbcType=VARCHAR}, #{alarmNum,jdbcType=VARCHAR}, 
       #{equiType,jdbcType=VARCHAR}, #{equiTypeId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
       #{equiPlace,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{trouble,jdbcType=VARCHAR}, 
-      #{upTm,jdbcType=TIMESTAMP}, #{delStatus,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}
-      )
+      #{onlineTm,jdbcType=TIMESTAMP}, #{upStatus,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, 
+      #{crtTm,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.EquipmentManage" >
     insert into equipment_manage
@@ -150,8 +151,11 @@
       <if test="trouble != null" >
         trouble,
       </if>
-      <if test="upTm != null" >
-        up_tm,
+      <if test="onlineTm != null" >
+        online_tm,
+      </if>
+      <if test="upStatus != null" >
+        up_status,
       </if>
       <if test="delStatus != null" >
         del_status,
@@ -188,8 +192,11 @@
       <if test="trouble != null" >
         #{trouble,jdbcType=VARCHAR},
       </if>
-      <if test="upTm != null" >
-        #{upTm,jdbcType=TIMESTAMP},
+      <if test="onlineTm != null" >
+        #{onlineTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upStatus != null" >
+        #{upStatus,jdbcType=VARCHAR},
       </if>
       <if test="delStatus != null" >
         #{delStatus,jdbcType=VARCHAR},
@@ -235,8 +242,11 @@
       <if test="record.trouble != null" >
         trouble = #{record.trouble,jdbcType=VARCHAR},
       </if>
-      <if test="record.upTm != null" >
-        up_tm = #{record.upTm,jdbcType=TIMESTAMP},
+      <if test="record.onlineTm != null" >
+        online_tm = #{record.onlineTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.upStatus != null" >
+        up_status = #{record.upStatus,jdbcType=VARCHAR},
       </if>
       <if test="record.delStatus != null" >
         del_status = #{record.delStatus,jdbcType=VARCHAR},
@@ -260,7 +270,8 @@
       equi_place = #{record.equiPlace,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       trouble = #{record.trouble,jdbcType=VARCHAR},
-      up_tm = #{record.upTm,jdbcType=TIMESTAMP},
+      online_tm = #{record.onlineTm,jdbcType=TIMESTAMP},
+      up_status = #{record.upStatus,jdbcType=VARCHAR},
       del_status = #{record.delStatus,jdbcType=VARCHAR},
       crt_tm = #{record.crtTm,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -294,8 +305,11 @@
       <if test="trouble != null" >
         trouble = #{trouble,jdbcType=VARCHAR},
       </if>
-      <if test="upTm != null" >
-        up_tm = #{upTm,jdbcType=TIMESTAMP},
+      <if test="onlineTm != null" >
+        online_tm = #{onlineTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upStatus != null" >
+        up_status = #{upStatus,jdbcType=VARCHAR},
       </if>
       <if test="delStatus != null" >
         del_status = #{delStatus,jdbcType=VARCHAR},
@@ -316,7 +330,8 @@
       equi_place = #{equiPlace,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       trouble = #{trouble,jdbcType=VARCHAR},
-      up_tm = #{upTm,jdbcType=TIMESTAMP},
+      online_tm = #{onlineTm,jdbcType=TIMESTAMP},
+      up_status = #{upStatus,jdbcType=VARCHAR},
       del_status = #{delStatus,jdbcType=VARCHAR},
       crt_tm = #{crtTm,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}

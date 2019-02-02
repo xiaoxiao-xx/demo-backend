@@ -1,11 +1,9 @@
 package com.microcore.center.mapper;
 
-
 import com.microcore.center.model.DbUser;
 import com.microcore.center.model.DbUserExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface DbUserMapper {
     /**

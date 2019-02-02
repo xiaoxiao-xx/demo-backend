@@ -66,7 +66,7 @@ public class DbUser {
     /**
      * 重点关注(1重点关注，0非--)
      */
-    private String follow;
+    private String moreCare;
 
     /**
      * 创建时间
@@ -267,18 +267,18 @@ public class DbUser {
 
     /**
      * 重点关注(1重点关注，0非--)
-     * @return follow 重点关注(1重点关注，0非--)
+     * @return more_care 重点关注(1重点关注，0非--)
      */
-    public String getFollow() {
-        return follow;
+    public String getMoreCare() {
+        return moreCare;
     }
 
     /**
      * 重点关注(1重点关注，0非--)
-     * @param follow 重点关注(1重点关注，0非--)
+     * @param moreCare 重点关注(1重点关注，0非--)
      */
-    public void setFollow(String follow) {
-        this.follow = follow == null ? null : follow.trim();
+    public void setMoreCare(String moreCare) {
+        this.moreCare = moreCare == null ? null : moreCare.trim();
     }
 
     /**
