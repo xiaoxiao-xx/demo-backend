@@ -3,9 +3,8 @@ package com.microcore.center.controller;
 import com.microcore.center.mapper.AlarmStrategyMapper;
 import com.microcore.center.mapper.DbUserMapper;
 import com.microcore.center.mapper.EquipmentManageMapper;
-import com.microcore.center.model.AlarmStrategyExample;
-import com.microcore.center.model.DbUserExample;
-import com.microcore.center.model.EquipmentManageExample;
+import com.microcore.center.mapper.RealTimeMapper;
+import com.microcore.center.model.*;
 import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("commonController")
@@ -27,12 +28,15 @@ public class CommonController {
     @Autowired
     private AlarmStrategyMapper alarmStrategyMapper;
 
+    @Autowired
+    private RealTimeMapper realTimeMapper;
+
     @GetMapping("getUserList")
     public ResultVo getUserInfo(@RequestParam String name) {
         DbUserExample example = new DbUserExample();
         DbUserExample.Criteria criteria = example.createCriteria();
         if (StringUtil.isNotEmpty(name)) {
-            criteria.andUsernameLike("%"+name.trim()+"%");
+            criteria.andUsernameLike("%" + name.trim() + "%");
         }
         criteria.andDelStatusEqualTo("NOR");
         return ResultVo.ok(dbUserMapper.selectByExample(example));
@@ -72,6 +76,12 @@ public class CommonController {
         return ResultVo.ok(alarmStrategyMapper.selectByExample(example));
     }
 
-
+    @GetMapping("getRealTime")
+    public ResultVo getRealTime() {
+        RealTimeExample example = new RealTimeExample();
+        RealTimeExample.Criteria criteria = example.createCriteria();
+        List<RealTime> realTimes = realTimeMapper.selectByExample(example);
+        return ResultVo.ok(realTimes);
+    }
 
 }
