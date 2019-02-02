@@ -76,12 +76,12 @@ public class CommonController {
         return ResultVo.ok(alarmStrategyMapper.selectByExample(example));
     }
 
-    @GetMapping("getRealTime")
-    public ResultVo getRealTime() {
-        RealTimeExample example = new RealTimeExample();
-        RealTimeExample.Criteria criteria = example.createCriteria();
-        List<RealTime> realTimes = realTimeMapper.selectByExample(example);
-        return ResultVo.ok(realTimes);
-    }
+//    @GetMapping("getRealTime")
+//    public ResultVo getRealTime() {
+//        RealTimeExample example = new RealTimeExample();
+//        RealTimeExample.Criteria criteria = example.createCriteria();
+//        List<RealTime> realTimes = realTimeMapper.selectByExample(example);
+//        return ResultVo.ok(realTimes);
+//    }
 
 }
