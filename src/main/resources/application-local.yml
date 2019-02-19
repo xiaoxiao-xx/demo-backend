@@ -36,3 +36,4 @@ spring:
       enabled: true
       max-file-size: 52428800
       max-request-size: 52428800
+sls.FILE_PATH: /
