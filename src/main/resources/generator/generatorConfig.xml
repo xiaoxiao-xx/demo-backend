@@ -13,7 +13,7 @@
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.1.140/demo_db"
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.1.140/psm"
                         userId="root" password="root">
         </jdbcConnection>
         <javaTypeResolver>
@@ -34,16 +34,43 @@
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
 
-        <table tableName="db_user" domainObjectName="DbUser" enableCountByExample="true"
+        <table tableName="psm_alarm_mode_t" domainObjectName="PsmAlarmMode" enableCountByExample="true"
                enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"></table>
-        <table tableName="equipment_history" domainObjectName="EquipmentHistory" enableCountByExample="true"
+        <table tableName="psm_alarm_strategy_t" domainObjectName="PsmAlarmStrategy" enableCountByExample="true"
                enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"></table>
-        <table tableName="equipment_manage" domainObjectName="EquipmentManage" enableCountByExample="true"
+        <table tableName="psm_deal_res_detail_t" domainObjectName="PsmDealResDetail" enableCountByExample="true"
                enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"></table>
-        <table tableName="user_history" domainObjectName="UserHistory" enableCountByExample="true"
+        <table tableName="psm_deal_res_t" domainObjectName="PsmDealRes" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"></table>
+        <table tableName="psm_device_t" domainObjectName="PsmDevice" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"></table>
+        <table tableName="psm_device_version_t" domainObjectName="PsmDeviceVersion" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"></table>
+        <table tableName="psm_oper_his_t" domainObjectName="PsmOperHis" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"></table>
+        <table tableName="psm_para_define_t" domainObjectName="PsmParaDefine" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"></table>
+        <table tableName="psm_person_info_t" domainObjectName="PsmPersonInfo" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"></table>
+        <table tableName="psm_roll_call_t" domainObjectName="PsmRollCall" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"></table>
+        <table tableName="psm_schedule_config_t" domainObjectName="PsmScheduleConfig" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"></table>
+        <table tableName="psm_schedule_detail_t" domainObjectName="PsmScheduleDetail" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"></table>
+        <table tableName="psm_src_record_t" domainObjectName="PsmSrcRecord" enableCountByExample="true"
                enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"></table>
     </context>

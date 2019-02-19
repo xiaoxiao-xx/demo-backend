@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.PsmSrcRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.PsmSrcRecord" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="src_device" property="srcDevice" jdbcType="VARCHAR" />
+    <result column="create_type" property="createType" jdbcType="VARCHAR" />
+    <result column="get_object" property="getObject" jdbcType="VARCHAR" />
+    <result column="get_event_id" property="getEventId" jdbcType="VARCHAR" />
+    <result column="src_type" property="srcType" jdbcType="VARCHAR" />
+    <result column="src_address" property="srcAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, create_time, src_device, create_type, get_object, get_event_id, src_type, src_address
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.PsmSrcRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from psm_src_record_t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.PsmSrcRecordExample" >
+    delete from psm_src_record_t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.PsmSrcRecord" >
+    insert into psm_src_record_t (id, create_time, src_device, 
+      create_type, get_object, get_event_id, 
+      src_type, src_address)
+    values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{srcDevice,jdbcType=VARCHAR}, 
+      #{createType,jdbcType=VARCHAR}, #{getObject,jdbcType=VARCHAR}, #{getEventId,jdbcType=VARCHAR}, 
+      #{srcType,jdbcType=VARCHAR}, #{srcAddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.PsmSrcRecord" >
+    insert into psm_src_record_t
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="srcDevice != null" >
+        src_device,
+      </if>
+      <if test="createType != null" >
+        create_type,
+      </if>
+      <if test="getObject != null" >
+        get_object,
+      </if>
+      <if test="getEventId != null" >
+        get_event_id,
+      </if>
+      <if test="srcType != null" >
+        src_type,
+      </if>
+      <if test="srcAddress != null" >
+        src_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="srcDevice != null" >
+        #{srcDevice,jdbcType=VARCHAR},
+      </if>
+      <if test="createType != null" >
+        #{createType,jdbcType=VARCHAR},
+      </if>
+      <if test="getObject != null" >
+        #{getObject,jdbcType=VARCHAR},
+      </if>
+      <if test="getEventId != null" >
+        #{getEventId,jdbcType=VARCHAR},
+      </if>
+      <if test="srcType != null" >
+        #{srcType,jdbcType=VARCHAR},
+      </if>
+      <if test="srcAddress != null" >
+        #{srcAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.PsmSrcRecordExample" resultType="java.lang.Integer" >
+    select count(*) from psm_src_record_t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update psm_src_record_t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=DATE},
+      </if>
+      <if test="record.srcDevice != null" >
+        src_device = #{record.srcDevice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createType != null" >
+        create_type = #{record.createType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.getObject != null" >
+        get_object = #{record.getObject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.getEventId != null" >
+        get_event_id = #{record.getEventId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcType != null" >
+        src_type = #{record.srcType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcAddress != null" >
+        src_address = #{record.srcAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update psm_src_record_t
+    set id = #{record.id,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=DATE},
+      src_device = #{record.srcDevice,jdbcType=VARCHAR},
+      create_type = #{record.createType,jdbcType=VARCHAR},
+      get_object = #{record.getObject,jdbcType=VARCHAR},
+      get_event_id = #{record.getEventId,jdbcType=VARCHAR},
+      src_type = #{record.srcType,jdbcType=VARCHAR},
+      src_address = #{record.srcAddress,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
