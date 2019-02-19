@@ -13,4 +13,6 @@ public interface DeviceVersionService {
     ResultVo getDeviceVersionList(String version, String type);
 
     ResultVo getDeviceVersion(String id);
+
+    ResultVo getVersion();
 }
