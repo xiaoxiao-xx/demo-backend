@@ -2,6 +2,7 @@ package com.microcore.center.service.impl;
 
 import com.microcore.center.dto.PsmDeviceDto;
 import com.microcore.center.mapper.PsmDeviceMapper;
+import com.microcore.center.mapper.PsmDeviceVersionMapper;
 import com.microcore.center.model.PsmDevice;
 import com.microcore.center.model.PsmDeviceExample;
 import com.microcore.center.service.PsmDeviceService;
@@ -20,6 +21,9 @@ public class DeviceServiceImpl implements PsmDeviceService {
 
     @Autowired
     private PsmDeviceMapper psmDeviceMapper;
+
+    @Autowired
+    private PsmDeviceVersionMapper psmDeviceVersionService;
 
     public List<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal, String state) {
         PsmDeviceExample example = new PsmDeviceExample();
@@ -41,7 +45,7 @@ public class DeviceServiceImpl implements PsmDeviceService {
 
     @Override
     public void add(PsmDeviceVo vo) {
-
+        psmDeviceMapper.insert(vo);
     }
 
     @Override
@@ -65,7 +69,6 @@ public class DeviceServiceImpl implements PsmDeviceService {
         PsmDevice psmDevice = new PsmDevice();
         psmDevice.setDeviceId(deviceId);
         psmDevice.setState(state);
-//        Constants.DEVICE_STATE_ENABLE
 
         PsmDeviceExample example = new PsmDeviceExample();
         PsmDeviceExample.Criteria criteria = example.createCriteria();

@@ -1,4 +1,4 @@
-package com.microcore.common.constant;
+package com.microcore.center.constant;
 
 /**
  * 常量
@@ -34,7 +34,6 @@ public class Constants {
 	public static final String DEVICE_STATE_ENABLE = "E";
 
 	public static final String DEVICE_STATE_DISABLE = "D";
-
 
 }
 

@@ -1,9 +1,9 @@
 package com.microcore.center.controller;
 
+import com.microcore.center.constant.Constants;
 import com.microcore.center.service.PsmDeviceService;
 import com.microcore.center.vo.PsmDeviceVo;
 import com.microcore.center.vo.ResultVo;
-import com.microcore.common.constant.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,19 +21,19 @@ public class DeviceController {
         return ResultVo.ok(psmDeviceService.getDeviceList(deviceId, devtypeVal, state));
     }
 
-    @PostMapping("add")
+    @PostMapping("addDevice")
     public ResultVo addDevice(@RequestBody PsmDeviceVo vo) {
         psmDeviceService.add(vo);
         return ResultVo.ok();
     }
 
-    @PostMapping("delete")
+    @PostMapping("deleteDevice")
     public ResultVo deleteDevice(@RequestParam String id) {
         psmDeviceService.delete(id);
         return ResultVo.ok();
     }
 
-    @PostMapping("update")
+    @PostMapping("updateDevice")
     public ResultVo updateDevice(@RequestBody PsmDeviceVo vo) {
         psmDeviceService.update(vo);
         return ResultVo.ok();
