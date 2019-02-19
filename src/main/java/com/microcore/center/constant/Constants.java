@@ -35,6 +35,5 @@ public class Constants {
 
 	public static final String DEVICE_STATE_DISABLE = "D";
 
-
 }
 

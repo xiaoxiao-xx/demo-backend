@@ -21,19 +21,19 @@ public class DeviceController {
         return ResultVo.ok(psmDeviceService.getDeviceList(deviceId, devtypeVal, state));
     }
 
-    @PostMapping("add")
+    @PostMapping("addDevice")
     public ResultVo addDevice(@RequestBody PsmDeviceVo vo) {
         psmDeviceService.add(vo);
         return ResultVo.ok();
     }
 
-    @PostMapping("delete")
+    @PostMapping("deleteDevice")
     public ResultVo deleteDevice(@RequestParam String id) {
         psmDeviceService.delete(id);
         return ResultVo.ok();
     }
 
-    @PostMapping("update")
+    @PostMapping("updateDevice")
     public ResultVo updateDevice(@RequestBody PsmDeviceVo vo) {
         psmDeviceService.update(vo);
         return ResultVo.ok();
