@@ -7,7 +7,7 @@ public class PsmAlarmStrategy {
     private String id;
 
     /**
-     * 告警类型
+     * 告警类型:非法出现，越界，超时停留，缺勤
      */
     private String alarmType;
 
