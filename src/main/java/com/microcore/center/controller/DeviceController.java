@@ -1,9 +1,9 @@
 package com.microcore.center.controller;
 
+import com.microcore.center.constant.Constants;
 import com.microcore.center.service.PsmDeviceService;
 import com.microcore.center.vo.PsmDeviceVo;
 import com.microcore.center.vo.ResultVo;
-import com.microcore.common.constant.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

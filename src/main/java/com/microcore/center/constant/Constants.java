@@ -1,4 +1,4 @@
-package com.microcore.common.constant;
+package com.microcore.center.constant;
 
 /**
  * 常量

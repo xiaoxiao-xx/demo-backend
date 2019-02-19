@@ -13,4 +13,6 @@ public interface PersonService {
     ResultVo getPersonList(String name);
 
     ResultVo importantCare(PersonInfoVo personInfoVo);
+
+    ResultVo imageAcquisition(PersonInfoVo personInfoVo);
 }

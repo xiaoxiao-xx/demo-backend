@@ -3,6 +3,7 @@ package com.microcore.center.service.impl;
 import com.microcore.center.mapper.PsmPersonInfoMapper;
 import com.microcore.center.model.PsmPersonInfoExample;
 import com.microcore.center.service.PersonService;
+import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.PersonInfoVo;
 import com.microcore.center.vo.ResultVo;
@@ -15,7 +16,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 
 @Service
@@ -31,21 +31,18 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public ResultVo add(PersonInfoVo personInfoVo) {
         upLoad();
+        personInfoVo.setPersonId(CommonUtil.getUUID());
         psmPersonInfoMapper.insertSelective(personInfoVo);
         return ResultVo.ok();
     }
 
     private void upLoad() {
-        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
-        String path = System.getProperty("user.dir");
-        String filePath = path + "/photo/";
-        if (files.isEmpty()) {
+        MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
+        if (file.isEmpty()) {
             return;
         }
-        for (MultipartFile file : files) {
-            if (file.isEmpty()) {
-                return;
-            }
+        String path = System.getProperty("user.dir");
+        String filePath = path + "/photo/";
             String fileName = file.getOriginalFilename();
             File dest = new File(filePath + fileName);
             try {
@@ -53,7 +50,6 @@ public class PersonServiceImpl implements PersonService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
     }
 
     @Override
@@ -85,5 +81,11 @@ public class PersonServiceImpl implements PersonService {
         return ResultVo.ok();
     }
 
+    @Override
+    public ResultVo imageAcquisition(PersonInfoVo personInfoVo) {
+        upLoad();
+        psmPersonInfoMapper.updateByPrimaryKeySelective(personInfoVo);
+        return ResultVo.ok();
+    }
 
 }

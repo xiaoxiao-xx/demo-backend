@@ -74,6 +74,11 @@ public class PsmPersonInfo {
     private String para;
 
     /**
+     * 组织机构ID
+     */
+    private String deptId;
+
+    /**
      * 
      * @return person_id 
      */
@@ -295,5 +300,21 @@ public class PsmPersonInfo {
      */
     public void setPara(String para) {
         this.para = para == null ? null : para.trim();
+    }
+
+    /**
+     * 组织机构ID
+     * @return dept_id 组织机构ID
+     */
+    public String getDeptId() {
+        return deptId;
+    }
+
+    /**
+     * 组织机构ID
+     * @param deptId 组织机构ID
+     */
+    public void setDeptId(String deptId) {
+        this.deptId = deptId == null ? null : deptId.trim();
     }
 }

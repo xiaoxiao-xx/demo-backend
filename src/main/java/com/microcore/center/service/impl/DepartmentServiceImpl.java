@@ -3,6 +3,7 @@ package com.microcore.center.service.impl;
 import com.microcore.center.mapper.PsmDeptInfoMapper;
 import com.microcore.center.model.PsmDeptInfoExample;
 import com.microcore.center.service.DepartmentService;
+import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.DepartmentVo;
 import com.microcore.center.vo.ResultVo;
@@ -19,6 +20,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public ResultVo add(DepartmentVo departmentVo) {
+        departmentVo.setDeptId(CommonUtil.getUUID());
         psmDeptInfoMapper.insertSelective(departmentVo);
         return ResultVo.ok();
     }
