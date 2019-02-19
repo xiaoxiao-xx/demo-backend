@@ -1,6 +1,7 @@
 package com.microcore.center.controller;
 
 import com.microcore.center.service.DeviceVersionService;
+import com.microcore.center.service.ParaDefineService;
 import com.microcore.center.vo.DeviceVersionVo;
 import com.microcore.center.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ public class DeviceVersionController {
 
     @Autowired
     private DeviceVersionService deviceVersionService;
+
+    @Autowired
+    private ParaDefineService paraDefineService;
 
     @PostMapping("add")
     public ResultVo add(@RequestBody DeviceVersionVo deviceVersionVo) {
@@ -37,5 +41,17 @@ public class DeviceVersionController {
     public ResultVo getDeviceVersion(@RequestParam String id){
         return deviceVersionService.getDeviceVersion(id);
     }
+
+    @GetMapping("getDeviceTypes")
+    public ResultVo getDeviceTypes(){
+        return ResultVo.ok(paraDefineService.getPsmParaDefineByType("DEVICE_TYPE"));
+    }
+
+    @GetMapping("getVersion")
+    public ResultVo getVersion(){
+        return deviceVersionService.getVersion();
+    }
+
+
 
 }
