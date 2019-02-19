@@ -22,6 +22,12 @@ public interface PsmOperHisMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmOperHis record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmOperHisMapper {
      *
      * @mbggenerated
      */
+    PsmOperHis selectByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmOperHis record, @Param("example") PsmOperHisExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmOperHisMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmOperHis record, @Param("example") PsmOperHisExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmOperHis record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmOperHis record);
 }

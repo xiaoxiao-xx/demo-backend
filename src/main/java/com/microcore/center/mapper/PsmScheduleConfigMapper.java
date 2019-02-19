@@ -22,6 +22,12 @@ public interface PsmScheduleConfigMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmScheduleConfig record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmScheduleConfigMapper {
      *
      * @mbggenerated
      */
+    PsmScheduleConfig selectByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmScheduleConfig record, @Param("example") PsmScheduleConfigExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmScheduleConfigMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmScheduleConfig record, @Param("example") PsmScheduleConfigExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmScheduleConfig record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmScheduleConfig record);
 }

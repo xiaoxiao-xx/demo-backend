@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.microcore.center.mapper.PsmScheduleConfigMapper" >
   <resultMap id="BaseResultMap" type="com.microcore.center.model.PsmScheduleConfig" >
-    <result column="id" property="id" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="object_type" property="objectType" jdbcType="VARCHAR" />
     <result column="object_id" property="objectId" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="INTEGER" />
@@ -91,6 +91,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from psm_schedule_config_t
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from psm_schedule_config_t
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="com.microcore.center.model.PsmScheduleConfigExample" >
     delete from psm_schedule_config_t
     <if test="_parameter != null" >
@@ -243,5 +253,55 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.PsmScheduleConfig" >
+    update psm_schedule_config_t
+    <set >
+      <if test="objectType != null" >
+        object_type = #{objectType,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        object_id = #{objectId,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="someDate != null" >
+        some_date = #{someDate,jdbcType=DATE},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=DATE},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="event != null" >
+        event = #{event,jdbcType=VARCHAR},
+      </if>
+      <if test="teacher != null" >
+        teacher = #{teacher,jdbcType=VARCHAR},
+      </if>
+      <if test="repeatType != null" >
+        repeat_type = #{repeatType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmScheduleConfig" >
+    update psm_schedule_config_t
+    set object_type = #{objectType,jdbcType=VARCHAR},
+      object_id = #{objectId,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      some_date = #{someDate,jdbcType=DATE},
+      start_time = #{startTime,jdbcType=DATE},
+      end_time = #{endTime,jdbcType=DATE},
+      address = #{address,jdbcType=VARCHAR},
+      event = #{event,jdbcType=VARCHAR},
+      teacher = #{teacher,jdbcType=VARCHAR},
+      repeat_type = #{repeatType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

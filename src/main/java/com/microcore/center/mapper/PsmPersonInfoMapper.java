@@ -22,6 +22,12 @@ public interface PsmPersonInfoMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String personId);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmPersonInfo record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmPersonInfoMapper {
      *
      * @mbggenerated
      */
+    PsmPersonInfo selectByPrimaryKey(String personId);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmPersonInfo record, @Param("example") PsmPersonInfoExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmPersonInfoMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmPersonInfo record, @Param("example") PsmPersonInfoExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmPersonInfo record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmPersonInfo record);
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.microcore.center.mapper.PsmDealResMapper" >
   <resultMap id="BaseResultMap" type="com.microcore.center.model.PsmDealRes" >
-    <result column="id" property="id" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="src_id" property="srcId" jdbcType="VARCHAR" />
     <result column="deal_state" property="dealState" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="DATE" />
@@ -92,6 +92,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from psm_deal_res_t
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from psm_deal_res_t
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="com.microcore.center.model.PsmDealResExample" >
     delete from psm_deal_res_t
     <if test="_parameter != null" >
@@ -256,5 +266,59 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.PsmDealRes" >
+    update psm_deal_res_t
+    <set >
+      <if test="srcId != null" >
+        src_id = #{srcId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealState != null" >
+        deal_state = #{dealState,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="completeTime != null" >
+        complete_time = #{completeTime,jdbcType=DATE},
+      </if>
+      <if test="validState != null" >
+        valid_state = #{validState,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=DATE},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="character != null" >
+        character = #{character,jdbcType=VARCHAR},
+      </if>
+      <if test="event != null" >
+        event = #{event,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmState != null" >
+        alarm_state = #{alarmState,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmType != null" >
+        alarm_type = #{alarmType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmDealRes" >
+    update psm_deal_res_t
+    set src_id = #{srcId,jdbcType=VARCHAR},
+      deal_state = #{dealState,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=DATE},
+      complete_time = #{completeTime,jdbcType=DATE},
+      valid_state = #{validState,jdbcType=VARCHAR},
+      time = #{time,jdbcType=DATE},
+      address = #{address,jdbcType=VARCHAR},
+      character = #{character,jdbcType=VARCHAR},
+      event = #{event,jdbcType=VARCHAR},
+      alarm_state = #{alarmState,jdbcType=VARCHAR},
+      alarm_type = #{alarmType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

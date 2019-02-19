@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.microcore.center.mapper.PsmAlarmStrategyMapper" >
   <resultMap id="BaseResultMap" type="com.microcore.center.model.PsmAlarmStrategy" >
-    <result column="id" property="id" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="alarm_type" property="alarmType" jdbcType="VARCHAR" />
     <result column="strategy" property="strategy" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="VARCHAR" />
@@ -85,6 +85,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from psm_alarm_strategy_t
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from psm_alarm_strategy_t
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="com.microcore.center.model.PsmAlarmStrategyExample" >
     delete from psm_alarm_strategy_t
     <if test="_parameter != null" >
@@ -185,5 +195,35 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.PsmAlarmStrategy" >
+    update psm_alarm_strategy_t
+    <set >
+      <if test="alarmType != null" >
+        alarm_type = #{alarmType,jdbcType=VARCHAR},
+      </if>
+      <if test="strategy != null" >
+        strategy = #{strategy,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="expr != null" >
+        expr = #{expr,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmMode != null" >
+        alarm_mode = #{alarmMode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmAlarmStrategy" >
+    update psm_alarm_strategy_t
+    set alarm_type = #{alarmType,jdbcType=VARCHAR},
+      strategy = #{strategy,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      expr = #{expr,jdbcType=VARCHAR},
+      alarm_mode = #{alarmMode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

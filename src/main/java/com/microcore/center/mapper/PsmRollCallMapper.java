@@ -22,6 +22,12 @@ public interface PsmRollCallMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmRollCall record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmRollCallMapper {
      *
      * @mbggenerated
      */
+    PsmRollCall selectByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmRollCall record, @Param("example") PsmRollCallExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmRollCallMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmRollCall record, @Param("example") PsmRollCallExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmRollCall record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmRollCall record);
 }

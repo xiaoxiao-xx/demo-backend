@@ -22,6 +22,12 @@ public interface PsmDealResDetailMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String resId);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmDealResDetail record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmDealResDetailMapper {
      *
      * @mbggenerated
      */
+    PsmDealResDetail selectByPrimaryKey(String resId);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmDealResDetail record, @Param("example") PsmDealResDetailExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmDealResDetailMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmDealResDetail record, @Param("example") PsmDealResDetailExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmDealResDetail record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmDealResDetail record);
 }

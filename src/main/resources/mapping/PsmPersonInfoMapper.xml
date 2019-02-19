@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.microcore.center.mapper.PsmPersonInfoMapper" >
   <resultMap id="BaseResultMap" type="com.microcore.center.model.PsmPersonInfo" >
-    <result column="person_id" property="personId" jdbcType="VARCHAR" />
+    <id column="person_id" property="personId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="VARCHAR" />
     <result column="birth_date" property="birthDate" jdbcType="DATE" />
@@ -94,6 +94,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from psm_person_info_t
+    where person_id = #{personId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from psm_person_info_t
+    where person_id = #{personId,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="com.microcore.center.model.PsmPersonInfoExample" >
     delete from psm_person_info_t
     <if test="_parameter != null" >
@@ -278,5 +288,67 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.PsmPersonInfo" >
+    update psm_person_info_t
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDate != null" >
+        birth_date = #{birthDate,jdbcType=DATE},
+      </if>
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="joinDate != null" >
+        join_date = #{joinDate,jdbcType=DATE},
+      </if>
+      <if test="rank != null" >
+        rank = #{rank,jdbcType=VARCHAR},
+      </if>
+      <if test="personalPhoto1 != null" >
+        personal_photo1 = #{personalPhoto1,jdbcType=VARCHAR},
+      </if>
+      <if test="personalPhoto2 != null" >
+        personal_photo2 = #{personalPhoto2,jdbcType=VARCHAR},
+      </if>
+      <if test="careStatus != null" >
+        care_status = #{careStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="imptCareStatus != null" >
+        impt_care_status = #{imptCareStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="imptCareReason != null" >
+        impt_care_reason = #{imptCareReason,jdbcType=VARCHAR},
+      </if>
+      <if test="para != null" >
+        para = #{para,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where person_id = #{personId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmPersonInfo" >
+    update psm_person_info_t
+    set name = #{name,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      birth_date = #{birthDate,jdbcType=DATE},
+      card_type = #{cardType,jdbcType=VARCHAR},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      join_date = #{joinDate,jdbcType=DATE},
+      rank = #{rank,jdbcType=VARCHAR},
+      personal_photo1 = #{personalPhoto1,jdbcType=VARCHAR},
+      personal_photo2 = #{personalPhoto2,jdbcType=VARCHAR},
+      care_status = #{careStatus,jdbcType=VARCHAR},
+      impt_care_status = #{imptCareStatus,jdbcType=VARCHAR},
+      impt_care_reason = #{imptCareReason,jdbcType=VARCHAR},
+      para = #{para,jdbcType=VARCHAR}
+    where person_id = #{personId,jdbcType=VARCHAR}
   </update>
 </mapper>

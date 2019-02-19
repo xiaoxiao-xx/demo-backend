@@ -22,6 +22,12 @@ public interface PsmAlarmStrategyMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmAlarmStrategy record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmAlarmStrategyMapper {
      *
      * @mbggenerated
      */
+    PsmAlarmStrategy selectByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmAlarmStrategy record, @Param("example") PsmAlarmStrategyExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmAlarmStrategyMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmAlarmStrategy record, @Param("example") PsmAlarmStrategyExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmAlarmStrategy record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmAlarmStrategy record);
 }

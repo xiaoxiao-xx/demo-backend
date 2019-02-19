@@ -37,41 +37,5 @@
         <table tableName="psm_alarm_mode_t" domainObjectName="PsmAlarmMode" enableCountByExample="true"
                enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"></table>
-        <table tableName="psm_alarm_strategy_t" domainObjectName="PsmAlarmStrategy" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_deal_res_detail_t" domainObjectName="PsmDealResDetail" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_deal_res_t" domainObjectName="PsmDealRes" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_device_t" domainObjectName="PsmDevice" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_device_version_t" domainObjectName="PsmDeviceVersion" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_oper_his_t" domainObjectName="PsmOperHis" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_para_define_t" domainObjectName="PsmParaDefine" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_person_info_t" domainObjectName="PsmPersonInfo" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_roll_call_t" domainObjectName="PsmRollCall" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_schedule_config_t" domainObjectName="PsmScheduleConfig" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_schedule_detail_t" domainObjectName="PsmScheduleDetail" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
-        <table tableName="psm_src_record_t" domainObjectName="PsmSrcRecord" enableCountByExample="true"
-               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"></table>
     </context>
 </generatorConfiguration>

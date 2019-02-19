@@ -22,6 +22,12 @@ public interface PsmAlarmModeMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmAlarmMode record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmAlarmModeMapper {
      *
      * @mbggenerated
      */
+    PsmAlarmMode selectByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmAlarmMode record, @Param("example") PsmAlarmModeExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmAlarmModeMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmAlarmMode record, @Param("example") PsmAlarmModeExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmAlarmMode record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmAlarmMode record);
 }

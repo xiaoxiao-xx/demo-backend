@@ -22,6 +22,12 @@ public interface PsmDeviceMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String deviceId);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmDevice record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmDeviceMapper {
      *
      * @mbggenerated
      */
+    PsmDevice selectByPrimaryKey(String deviceId);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmDevice record, @Param("example") PsmDeviceExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmDeviceMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmDevice record, @Param("example") PsmDeviceExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmDevice record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmDevice record);
 }

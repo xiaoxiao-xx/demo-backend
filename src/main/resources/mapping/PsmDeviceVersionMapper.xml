@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.microcore.center.mapper.PsmDeviceVersionMapper" >
   <resultMap id="BaseResultMap" type="com.microcore.center.model.PsmDeviceVersion" >
-    <result column="devversion_id" property="devversionId" jdbcType="VARCHAR" />
+    <id column="devversion_id" property="devversionId" jdbcType="VARCHAR" />
     <result column="devtype_code" property="devtypeCode" jdbcType="VARCHAR" />
     <result column="devtype_val" property="devtypeVal" jdbcType="VARCHAR" />
     <result column="device_version" property="deviceVersion" jdbcType="VARCHAR" />
@@ -86,6 +86,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from psm_device_version_t
+    where devversion_id = #{devversionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from psm_device_version_t
+    where devversion_id = #{devversionId,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="com.microcore.center.model.PsmDeviceVersionExample" >
     delete from psm_device_version_t
     <if test="_parameter != null" >
@@ -196,5 +206,39 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.PsmDeviceVersion" >
+    update psm_device_version_t
+    <set >
+      <if test="devtypeCode != null" >
+        devtype_code = #{devtypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="devtypeVal != null" >
+        devtype_val = #{devtypeVal,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceVersion != null" >
+        device_version = #{deviceVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceFirm != null" >
+        device_firm = #{deviceFirm,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="para != null" >
+        para = #{para,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where devversion_id = #{devversionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmDeviceVersion" >
+    update psm_device_version_t
+    set devtype_code = #{devtypeCode,jdbcType=VARCHAR},
+      devtype_val = #{devtypeVal,jdbcType=VARCHAR},
+      device_version = #{deviceVersion,jdbcType=VARCHAR},
+      device_firm = #{deviceFirm,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      para = #{para,jdbcType=VARCHAR}
+    where devversion_id = #{devversionId,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -22,6 +22,12 @@ public interface PsmSrcRecordMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmSrcRecord record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmSrcRecordMapper {
      *
      * @mbggenerated
      */
+    PsmSrcRecord selectByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmSrcRecord record, @Param("example") PsmSrcRecordExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmSrcRecordMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmSrcRecord record, @Param("example") PsmSrcRecordExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmSrcRecord record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmSrcRecord record);
 }

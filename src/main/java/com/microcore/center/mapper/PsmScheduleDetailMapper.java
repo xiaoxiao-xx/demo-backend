@@ -22,6 +22,12 @@ public interface PsmScheduleDetailMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmScheduleDetail record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmScheduleDetailMapper {
      *
      * @mbggenerated
      */
+    PsmScheduleDetail selectByPrimaryKey(String id);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmScheduleDetail record, @Param("example") PsmScheduleDetailExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmScheduleDetailMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmScheduleDetail record, @Param("example") PsmScheduleDetailExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmScheduleDetail record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmScheduleDetail record);
 }

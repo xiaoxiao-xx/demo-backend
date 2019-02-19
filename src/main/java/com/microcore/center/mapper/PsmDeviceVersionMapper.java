@@ -22,6 +22,12 @@ public interface PsmDeviceVersionMapper {
      *
      * @mbggenerated
      */
+    int deleteByPrimaryKey(String devversionId);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int insert(PsmDeviceVersion record);
 
     /**
@@ -40,6 +46,12 @@ public interface PsmDeviceVersionMapper {
      *
      * @mbggenerated
      */
+    PsmDeviceVersion selectByPrimaryKey(String devversionId);
+
+    /**
+     *
+     * @mbggenerated
+     */
     int updateByExampleSelective(@Param("record") PsmDeviceVersion record, @Param("example") PsmDeviceVersionExample example);
 
     /**
@@ -47,4 +59,16 @@ public interface PsmDeviceVersionMapper {
      * @mbggenerated
      */
     int updateByExample(@Param("record") PsmDeviceVersion record, @Param("example") PsmDeviceVersionExample example);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKeySelective(PsmDeviceVersion record);
+
+    /**
+     *
+     * @mbggenerated
+     */
+    int updateByPrimaryKey(PsmDeviceVersion record);
 }
