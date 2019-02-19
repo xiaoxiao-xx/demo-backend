@@ -11,7 +11,7 @@ spring:
 
     # 设置下面的三项以正确连接数据库
     # 加上?后面的可以解决不能查询出中文的问题
-    url: jdbc:mysql://192.168.1.140:3306/demo_db?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://192.168.1.140:3306/psm?useUnicode=true&characterEncoding=UTF-8
     username: root
     password: root
 
@@ -36,9 +36,3 @@ spring:
       enabled: true
       max-file-size: 52428800
       max-request-size: 52428800
-
-#策略服务
-sls-policy.ip: 192.168.1.140
-sls-policy.port: 2001
-
-sls.FILE_PATH: C:/sls/filePath

@@ -2,7 +2,7 @@ spring.profiles.active: local
 
 spring:
   application:
-    name: sls-center
+    name: demo-backend
 
 mybatis:
   mapper-locations: classpath:mapping/*.xml
@@ -18,12 +18,6 @@ pagehelper:
 logging:
   path: logs/${spring.application.name}
   level: debug
-
-#区块链公私钥对：004
-BLOCK_ChAIN_SERVICE:
-  privateKey: 668be5705fd0779bce8b2e8d64e935f203750578d2d448969f3204ced905562d
-  publicKey: 04bd91600c6107acb5fe8bc5d025adb339344101d1c54f010b65503b916efc8bf34ff98e9aa629631b82889b4c5e6f71f8235a9209acb1376139b13ef3a56c2701
-  ip: 192.168.0.30
 
 #登陆jwt 变量设置
 jwt:
