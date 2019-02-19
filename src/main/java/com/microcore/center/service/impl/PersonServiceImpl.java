@@ -1,5 +1,7 @@
 package com.microcore.center.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.microcore.center.mapper.PsmPersonInfoMapper;
 import com.microcore.center.model.PsmPersonInfoExample;
 import com.microcore.center.service.PersonService;
@@ -7,6 +9,7 @@ import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.PersonInfoVo;
 import com.microcore.center.vo.ResultVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,13 +68,17 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public ResultVo getPersonList(String name) {
+    public ResultVo getPersonList(String name, String deptId, Integer pageIndex, Integer pageSize) {
         PsmPersonInfoExample example = new PsmPersonInfoExample();
         PsmPersonInfoExample.Criteria criteria = example.createCriteria();
         if (StringUtil.isNotEmpty(name)) {
             criteria.andNameLike("%" + name.trim() + "%");
         }
-        return ResultVo.ok(psmPersonInfoMapper.selectByExample(example));
+        if (StringUtils.isNotEmpty(deptId)) {
+            criteria.andDeptIdEqualTo(deptId);
+        }
+        PageInfo<Object> pageInfo = PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(() -> psmPersonInfoMapper.selectByExample(example));
+        return ResultVo.ok(pageInfo);
     }
 
     @Override
