@@ -38,4 +38,9 @@ public class PersonInfoController {
         return personService.importantCare(personInfoVo);
     }
 
+    @PostMapping("imageAcquisition")
+    public ResultVo imageAcquisition(@RequestBody PersonInfoVo personInfoVo) {
+        return personService.imageAcquisition(personInfoVo);
+    }
+
 }

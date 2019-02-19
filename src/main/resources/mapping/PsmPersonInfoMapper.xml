@@ -16,6 +16,7 @@
     <result column="impt_care_status" property="imptCareStatus" jdbcType="VARCHAR" />
     <result column="impt_care_reason" property="imptCareReason" jdbcType="VARCHAR" />
     <result column="para" property="para" jdbcType="VARCHAR" />
+    <result column="dept_id" property="deptId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -77,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List" >
     person_id, name, gender, birth_date, card_type, card_no, join_date, rank, personal_photo1, 
-    personal_photo2, care_status, impt_care_status, impt_care_reason, para
+    personal_photo2, care_status, impt_care_status, impt_care_reason, para, dept_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.PsmPersonInfoExample" >
     select
@@ -115,12 +116,14 @@
       birth_date, card_type, card_no, 
       join_date, rank, personal_photo1, 
       personal_photo2, care_status, impt_care_status, 
-      impt_care_reason, para)
+      impt_care_reason, para, dept_id
+      )
     values (#{personId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
       #{birthDate,jdbcType=DATE}, #{cardType,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, 
       #{joinDate,jdbcType=DATE}, #{rank,jdbcType=VARCHAR}, #{personalPhoto1,jdbcType=VARCHAR}, 
       #{personalPhoto2,jdbcType=VARCHAR}, #{careStatus,jdbcType=VARCHAR}, #{imptCareStatus,jdbcType=VARCHAR}, 
-      #{imptCareReason,jdbcType=VARCHAR}, #{para,jdbcType=VARCHAR})
+      #{imptCareReason,jdbcType=VARCHAR}, #{para,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.PsmPersonInfo" >
     insert into psm_person_info_t
@@ -167,6 +170,9 @@
       <if test="para != null" >
         para,
       </if>
+      <if test="deptId != null" >
+        dept_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="personId != null" >
@@ -210,6 +216,9 @@
       </if>
       <if test="para != null" >
         #{para,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -264,6 +273,9 @@
       <if test="record.para != null" >
         para = #{record.para,jdbcType=VARCHAR},
       </if>
+      <if test="record.deptId != null" >
+        dept_id = #{record.deptId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -284,7 +296,8 @@
       care_status = #{record.careStatus,jdbcType=VARCHAR},
       impt_care_status = #{record.imptCareStatus,jdbcType=VARCHAR},
       impt_care_reason = #{record.imptCareReason,jdbcType=VARCHAR},
-      para = #{record.para,jdbcType=VARCHAR}
+      para = #{record.para,jdbcType=VARCHAR},
+      dept_id = #{record.deptId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -331,6 +344,9 @@
       <if test="para != null" >
         para = #{para,jdbcType=VARCHAR},
       </if>
+      <if test="deptId != null" >
+        dept_id = #{deptId,jdbcType=VARCHAR},
+      </if>
     </set>
     where person_id = #{personId,jdbcType=VARCHAR}
   </update>
@@ -348,7 +364,8 @@
       care_status = #{careStatus,jdbcType=VARCHAR},
       impt_care_status = #{imptCareStatus,jdbcType=VARCHAR},
       impt_care_reason = #{imptCareReason,jdbcType=VARCHAR},
-      para = #{para,jdbcType=VARCHAR}
+      para = #{para,jdbcType=VARCHAR},
+      dept_id = #{deptId,jdbcType=VARCHAR}
     where person_id = #{personId,jdbcType=VARCHAR}
   </update>
 </mapper>
