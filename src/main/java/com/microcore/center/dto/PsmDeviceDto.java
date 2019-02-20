@@ -8,4 +8,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class PsmDeviceDto extends PsmDevice {
 
+    /**
+     * 设备位置
+     */
+    private String deviceLocation;
+
 }

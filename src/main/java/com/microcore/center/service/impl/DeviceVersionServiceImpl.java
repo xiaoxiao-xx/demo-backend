@@ -6,7 +6,6 @@ import com.microcore.center.mapper.PsmDeviceVersionMapper;
 import com.microcore.center.model.PsmDeviceVersionExample;
 import com.microcore.center.service.CommonService;
 import com.microcore.center.service.DeviceVersionService;
-import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.DeviceVersionVo;
 import com.microcore.center.vo.ResultVo;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.microcore.center.util.CommonUtil.getUUID;
+
 @Service
 @Transactional
 public class DeviceVersionServiceImpl implements DeviceVersionService {
@@ -28,7 +29,7 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
 
     @Override
     public ResultVo add(DeviceVersionVo deviceVersionVo) {
-        deviceVersionVo.setDevversionId(CommonUtil.getUUID());
+        deviceVersionVo.setDevversionId(getUUID());
         deviceVersionMapper.insert(deviceVersionVo);
         return ResultVo.ok();
     }
@@ -49,13 +50,16 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
     public ResultVo getDeviceVersionList(String version, String type, Integer pageIndex, Integer pageSize) {
         PsmDeviceVersionExample example = new PsmDeviceVersionExample();
         PsmDeviceVersionExample.Criteria criteria = example.createCriteria();
+        // 按型号查
         if (StringUtils.isNotEmpty(version)) {
             criteria.andDeviceVersionEqualTo(version);
         }
+        // 按类型中文查
         if (StringUtils.isNotEmpty(type)) {
             criteria.andDevtypeValEqualTo(type);
         }
-        PageInfo<Object> pageInfo = PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(() -> deviceVersionMapper.selectByExample(example));
+        PageInfo<Object> pageInfo = PageHelper.startPage(pageIndex, pageSize)
+                .doSelectPageInfo(() -> deviceVersionMapper.selectByExample(example));
         return ResultVo.ok(pageInfo);
     }
 
@@ -79,4 +83,21 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
         }
         return ResultVo.ok(li);
     }
+
+    @Override
+    public ResultVo batchDelete(String idList) {
+        idList = idList.trim();
+        if (StringUtils.isEmpty(idList)) {
+            return ResultVo.ok();
+        }
+
+        String[] ids = idList.split(",");
+        for (String i : ids) {
+            deviceVersionMapper.deleteByPrimaryKey(i);
+        }
+
+        return ResultVo.ok();
+    }
+
 }
+
