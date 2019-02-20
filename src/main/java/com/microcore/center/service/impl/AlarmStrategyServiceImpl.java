@@ -57,7 +57,6 @@ public class AlarmStrategyServiceImpl implements AlarmStrategyService {
 		if (StringUtil.isNotEmpty(strategy)) {
 			criteria.andStrategyLike("%" + strategy.trim() + "%");
 		}
-		psmAlarmStrategyMapper.selectByExample(example);
 		PageInfo<PsmAlarmStrategy> psmAlarmStrategyPage = PageHelper.startPage(pageIndex, pageSize)
 				.doSelectPageInfo(() -> psmAlarmStrategyMapper.selectByExample(example));
 		List<PsmAlarmStrategyVo> list = new ArrayList<>();

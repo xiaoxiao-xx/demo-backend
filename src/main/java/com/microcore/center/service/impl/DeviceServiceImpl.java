@@ -42,6 +42,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public void add(PsmDeviceVo vo) {
+        vo.setDeviceId(CommonUtil.getUUID());
         psmDeviceMapper.insert(vo);
     }
 

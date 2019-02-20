@@ -77,7 +77,8 @@ public class PersonServiceImpl implements PersonService {
         if (StringUtils.isNotEmpty(deptId)) {
             criteria.andDeptIdEqualTo(deptId);
         }
-        PageInfo<Object> pageInfo = PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(() -> psmPersonInfoMapper.selectByExample(example));
+        PageInfo<Object> pageInfo = PageHelper.startPage(pageIndex, pageSize)
+                .doSelectPageInfo(() -> psmPersonInfoMapper.selectByExample(example));
         return ResultVo.ok(pageInfo);
     }
 
