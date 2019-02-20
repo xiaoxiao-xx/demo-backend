@@ -26,7 +26,7 @@ public class Encode {
 	}
 
 	public static String MD5Encode(String data) {
-		return Base64.getEncoder().encodeToString(MD5Encode(Base64.getDecoder().decode(data)));
+		return Base64.getEncoder().encodeToString(MD5Encode(data.getBytes()));
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class Encode {
 	}
 
 	public static String SHAEncode(String data) {
-		return Base64.getEncoder().encodeToString(SHAEncode(Base64.getDecoder().decode(data)));
+		return Base64.getEncoder().encodeToString(SHAEncode(data.getBytes()));
 	}
 
 }

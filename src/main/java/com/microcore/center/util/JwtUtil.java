@@ -1,11 +1,7 @@
 package com.microcore.center.util;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
 
 import io.jsonwebtoken.Claims;
@@ -86,8 +82,10 @@ public class JwtUtil {
 		System.out.println(t3-t2);
 		
 		System.out.println(JwtUtil.createJwtToken("1000000000001", null));*/
-		String token = JwtUtil.createJwtToken("1000000000001", new Date()) ;
-		System.out.println(JwtUtil.createJwtToken("1000000000001", null));
-		System.out.println(JwtUtil.parseJwtToken(token));;
+		String token = JwtUtil.createJwtToken("1000000000001", null) ;
+		System.out.println(JwtUtil.parseJwtToken(token));
+		System.out.println(JwtUtil.parseJwtToken(token).getBody());
+		System.out.println(JwtUtil.parseJwtToken(token).getBody().get("jti"));
+		System.out.println(Encode.SHAEncode("super_admin123456"));;
 	}
 }

@@ -8,13 +8,31 @@ import com.microcore.center.model.PsmUser;
 import lombok.Data;
 
 @Data
-public class UserInfo implements Serializable{
+public class UserInfo implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 390931695727428049L;
+
+	/**
+	 * 20分钟
+	 */
+	private static long SESSION_TIME = 1000 * 60 * 20;
 	
-	private PsmUser psmUser ;
-	
-	private Date visitTime ;
+	private PsmUser psmUser;
+
+	private Date visitTime;
+
+	public boolean isSessionOut() {
+		if (visitTime == null) {
+			return true;
+		}
+		if (new Date().getTime() - visitTime.getTime() >= SESSION_TIME) {
+			return true;
+		}
+		return false;
+	}
+	public void refresh() {
+		this.visitTime = new Date();
+	}
 }
