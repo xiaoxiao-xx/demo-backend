@@ -69,7 +69,10 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public ResultVo delete(String id) {
-        psmPersonInfoMapper.deleteByPrimaryKey(id);
+        String[] ids = id.split(",");
+		for (String i : ids) {
+			psmPersonInfoMapper.deleteByPrimaryKey(i);
+		}
         return ResultVo.ok();
     }
 
@@ -92,7 +95,9 @@ public class PersonServiceImpl implements PersonService {
         	personInfoVo.setDeptName(deptName);
         	listPersonInfoVo.add(personInfoVo);
 		}
-        return ResultVo.ok(new PageInfo(listPersonInfoVo));
+        PageInfo<PersonInfoVo> pageInfo =  new PageInfo(listPersonInfoVo) ;
+        pageInfo.setTotal(psmPersonInfoPage.getTotal());
+        return ResultVo.ok(pageInfo);
     }
 
     @Override

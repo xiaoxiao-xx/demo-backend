@@ -48,7 +48,10 @@ public class DealResultDetailServiceImpl implements DealResultDetailService {
 
     @Override
     public ResultVo delete(String id) {
-        psmDealResDetailMapper.deleteByPrimaryKey(id);
+        String[] ids = id.split(",");
+		for (String i : ids) {
+			psmDealResDetailMapper.deleteByPrimaryKey(i);
+		}
         return ResultVo.ok();
     }
 

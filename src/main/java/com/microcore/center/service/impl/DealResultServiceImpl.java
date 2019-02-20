@@ -42,7 +42,12 @@ public class DealResultServiceImpl implements DealResultService {
 
     @Override
     public ResultVo delete(String id) {
-        psmDealResMapper.deleteByPrimaryKey(id);
+        
+        String[] ids = id.split(",");
+		for (String i : ids) {
+			psmDealResMapper.deleteByPrimaryKey(i);
+		}
+        
         return ResultVo.ok();
     }
 

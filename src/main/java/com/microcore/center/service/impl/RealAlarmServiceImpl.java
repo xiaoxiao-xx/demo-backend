@@ -46,7 +46,12 @@ public class RealAlarmServiceImpl implements RealAlarmService {
 
     @Override
     public ResultVo delete(String id) {
-        psmRealAlarmMapper.deleteByPrimaryKey(id);
+        
+        String[] ids = id.split(",");
+		for (String i : ids) {
+			psmRealAlarmMapper.deleteByPrimaryKey(i);
+		}
+        
         return ResultVo.ok();
     }
 

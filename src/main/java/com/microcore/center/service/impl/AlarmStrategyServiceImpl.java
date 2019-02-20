@@ -43,7 +43,10 @@ public class AlarmStrategyServiceImpl implements AlarmStrategyService {
 
 	@Override
 	public ResultVo delete(String id) {
-		psmAlarmStrategyMapper.deleteByPrimaryKey(id);
+		String[] ids = id.split(",");
+		for (String i : ids) {
+			psmAlarmStrategyMapper.deleteByPrimaryKey(i);
+		}
 		return ResultVo.ok();
 	}
 
@@ -65,7 +68,10 @@ public class AlarmStrategyServiceImpl implements AlarmStrategyService {
 			BeanUtils.copyProperties(psmAlarmStrategy, vo);
 			list.add(vo);
 		}
-		return new PageInfo<>(list);
+		PageInfo<PsmAlarmStrategyVo> pageInfo = new PageInfo<>();
+		pageInfo.setList(list);
+		pageInfo.setTotal(psmAlarmStrategyPage.getTotal());
+		return pageInfo;
 	}
 
 }
