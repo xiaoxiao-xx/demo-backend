@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
 import com.microcore.center.service.AlarmStrategyService;
+import com.microcore.center.vo.AlarmStrategyOpt;
 import com.microcore.center.vo.PsmAlarmStrategyVo;
 import com.microcore.center.vo.ResultVo;
 
@@ -48,4 +49,12 @@ public class AlarmStrategyController {
 	public ResultVo delete(@RequestBody String id) {
 		return alarmStrategyService.delete(id);
 	}
+	
+	@ApiOperation(value = "告警策略启动/停止", notes = "告警策略启动/停止")
+	@PostMapping("startStop")
+	public ResultVo startStop(@RequestBody AlarmStrategyOpt alarmStrategyOpt) {
+		return alarmStrategyService.startStop(alarmStrategyOpt);
+	}
+	
+	
 }

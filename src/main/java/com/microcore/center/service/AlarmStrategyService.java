@@ -1,6 +1,7 @@
 package com.microcore.center.service;
 
 import com.github.pagehelper.PageInfo;
+import com.microcore.center.vo.AlarmStrategyOpt;
 import com.microcore.center.vo.PsmAlarmStrategyVo;
 import com.microcore.center.vo.ResultVo;
 
@@ -11,4 +12,6 @@ public interface AlarmStrategyService {
 	public ResultVo update(PsmAlarmStrategyVo alarmStrategyVo);
 
 	public ResultVo delete(String id);
+	
+	public ResultVo startStop(AlarmStrategyOpt alarmStrategyOpt);
 }

@@ -18,6 +18,7 @@ import com.microcore.center.service.AlarmStrategyService;
 import com.microcore.center.service.ParaDefineService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
+import com.microcore.center.vo.AlarmStrategyOpt;
 import com.microcore.center.vo.PsmAlarmStrategyVo;
 import com.microcore.center.vo.ResultVo;
 
@@ -79,6 +80,14 @@ public class AlarmStrategyServiceImpl implements AlarmStrategyService {
 		pageInfo.setList(list);
 		pageInfo.setTotal(psmAlarmStrategyPage.getTotal());
 		return pageInfo;
+	}
+
+	@Override
+	public ResultVo startStop(AlarmStrategyOpt alarmStrategyOpt) {
+		PsmAlarmStrategy p = psmAlarmStrategyMapper.selectByPrimaryKey(alarmStrategyOpt.getId());
+		p.setState(alarmStrategyOpt.getOpt());
+		psmAlarmStrategyMapper.updateByPrimaryKey(p);
+		return ResultVo.ok();
 	}
 
 }
