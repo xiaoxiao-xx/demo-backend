@@ -35,5 +35,7 @@ public class Constants {
 
 	public static final String DEVICE_STATE_DISABLE = "D";
 
+	public static final String DEVICE_TYPE = "DEVICE_TYPE";
+
 }
 

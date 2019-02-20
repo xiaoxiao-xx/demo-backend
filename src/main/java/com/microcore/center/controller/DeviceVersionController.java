@@ -32,6 +32,11 @@ public class DeviceVersionController {
         return deviceVersionService.delete(id);
     }
 
+    @PostMapping("batchDelete")
+    public ResultVo batchDelete(@RequestBody String idList) {
+        return deviceVersionService.batchDelete(idList);
+    }
+
     @GetMapping("getDeviceVersionList")
     public ResultVo getDeviceVersionList(@RequestParam(required = false) String version, @RequestParam(required = false) String type,
                                          @RequestParam(name = "pageIndex") Integer pageIndex,

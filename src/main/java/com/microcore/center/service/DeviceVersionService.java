@@ -15,4 +15,7 @@ public interface DeviceVersionService {
     ResultVo getDeviceVersion(String id);
 
     ResultVo getVersion();
+
+    ResultVo batchDelete(String idList);
+
 }

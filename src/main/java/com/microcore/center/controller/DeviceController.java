@@ -15,25 +15,32 @@ public class DeviceController {
     private DeviceService deviceService;
 
     @GetMapping("getDeviceList")
-    public ResultVo getDeviceList(@RequestParam String deviceId, @RequestParam String devtypeVal,
-                                  @RequestParam String state, @RequestParam Integer pageIndex,
+    public ResultVo getDeviceList(@RequestParam(required = false) String deviceId,
+                                  @RequestParam(required = false) String devtypeVal,
+                                  @RequestParam(required = false) String state,
+                                  @RequestParam Integer pageIndex,
                                   @RequestParam Integer pageSize) {
         return ResultVo.ok(deviceService.getDeviceList(deviceId, devtypeVal, state, pageIndex, pageSize));
     }
 
-    @PostMapping("addDevice")
+    @PostMapping("add")
     public ResultVo addDevice(@RequestBody PsmDeviceVo vo) {
         deviceService.add(vo);
         return ResultVo.ok();
     }
 
-    @PostMapping("deleteDevice")
+    @PostMapping("delete")
     public ResultVo deleteDevice(@RequestParam String id) {
         deviceService.delete(id);
         return ResultVo.ok();
     }
 
-    @PostMapping("updateDevice")
+    @PostMapping("batchDelete")
+    public ResultVo batchDelete(@RequestBody String idList) {
+        return deviceService.batchDelete(idList);
+    }
+
+    @PostMapping("update")
     public ResultVo updateDevice(@RequestBody PsmDeviceVo vo) {
         deviceService.update(vo);
         return ResultVo.ok();
@@ -49,6 +56,11 @@ public class DeviceController {
     public ResultVo disableDevice(@RequestParam String id) {
         deviceService.setDeviceState(id, Constants.DEVICE_STATE_DISABLE);
         return ResultVo.ok();
+    }
+
+    @GetMapping("getDeviceTypes")
+    public ResultVo getDeviceTypes() {
+        return ResultVo.ok(deviceService.getDeviceTypes());
     }
 
 }
