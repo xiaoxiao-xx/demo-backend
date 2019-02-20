@@ -718,143 +718,143 @@ public class PsmDealResExample {
             return (Criteria) this;
         }
 
-        public Criteria andCharacterIsNull() {
-            addCriterion("character is null");
+        public Criteria andCharactersIsNull() {
+            addCriterion("characters is null");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterIsNotNull() {
-            addCriterion("character is not null");
+        public Criteria andCharactersIsNotNull() {
+            addCriterion("characters is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterEqualTo(String value) {
-            addCriterion("character =", value, "character");
+        public Criteria andCharactersEqualTo(String value) {
+            addCriterion("characters =", value, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterNotEqualTo(String value) {
-            addCriterion("character <>", value, "character");
+        public Criteria andCharactersNotEqualTo(String value) {
+            addCriterion("characters <>", value, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterGreaterThan(String value) {
-            addCriterion("character >", value, "character");
+        public Criteria andCharactersGreaterThan(String value) {
+            addCriterion("characters >", value, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterGreaterThanOrEqualTo(String value) {
-            addCriterion("character >=", value, "character");
+        public Criteria andCharactersGreaterThanOrEqualTo(String value) {
+            addCriterion("characters >=", value, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterLessThan(String value) {
-            addCriterion("character <", value, "character");
+        public Criteria andCharactersLessThan(String value) {
+            addCriterion("characters <", value, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterLessThanOrEqualTo(String value) {
-            addCriterion("character <=", value, "character");
+        public Criteria andCharactersLessThanOrEqualTo(String value) {
+            addCriterion("characters <=", value, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterLike(String value) {
-            addCriterion("character like", value, "character");
+        public Criteria andCharactersLike(String value) {
+            addCriterion("characters like", value, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterNotLike(String value) {
-            addCriterion("character not like", value, "character");
+        public Criteria andCharactersNotLike(String value) {
+            addCriterion("characters not like", value, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterIn(List<String> values) {
-            addCriterion("character in", values, "character");
+        public Criteria andCharactersIn(List<String> values) {
+            addCriterion("characters in", values, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterNotIn(List<String> values) {
-            addCriterion("character not in", values, "character");
+        public Criteria andCharactersNotIn(List<String> values) {
+            addCriterion("characters not in", values, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterBetween(String value1, String value2) {
-            addCriterion("character between", value1, value2, "character");
+        public Criteria andCharactersBetween(String value1, String value2) {
+            addCriterion("characters between", value1, value2, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andCharacterNotBetween(String value1, String value2) {
-            addCriterion("character not between", value1, value2, "character");
+        public Criteria andCharactersNotBetween(String value1, String value2) {
+            addCriterion("characters not between", value1, value2, "characters");
             return (Criteria) this;
         }
 
-        public Criteria andEventIsNull() {
-            addCriterion("event is null");
+        public Criteria andDealEventIsNull() {
+            addCriterion("deal_event is null");
             return (Criteria) this;
         }
 
-        public Criteria andEventIsNotNull() {
-            addCriterion("event is not null");
+        public Criteria andDealEventIsNotNull() {
+            addCriterion("deal_event is not null");
             return (Criteria) this;
         }
 
-        public Criteria andEventEqualTo(String value) {
-            addCriterion("event =", value, "event");
+        public Criteria andDealEventEqualTo(String value) {
+            addCriterion("deal_event =", value, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventNotEqualTo(String value) {
-            addCriterion("event <>", value, "event");
+        public Criteria andDealEventNotEqualTo(String value) {
+            addCriterion("deal_event <>", value, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventGreaterThan(String value) {
-            addCriterion("event >", value, "event");
+        public Criteria andDealEventGreaterThan(String value) {
+            addCriterion("deal_event >", value, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventGreaterThanOrEqualTo(String value) {
-            addCriterion("event >=", value, "event");
+        public Criteria andDealEventGreaterThanOrEqualTo(String value) {
+            addCriterion("deal_event >=", value, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventLessThan(String value) {
-            addCriterion("event <", value, "event");
+        public Criteria andDealEventLessThan(String value) {
+            addCriterion("deal_event <", value, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventLessThanOrEqualTo(String value) {
-            addCriterion("event <=", value, "event");
+        public Criteria andDealEventLessThanOrEqualTo(String value) {
+            addCriterion("deal_event <=", value, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventLike(String value) {
-            addCriterion("event like", value, "event");
+        public Criteria andDealEventLike(String value) {
+            addCriterion("deal_event like", value, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventNotLike(String value) {
-            addCriterion("event not like", value, "event");
+        public Criteria andDealEventNotLike(String value) {
+            addCriterion("deal_event not like", value, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventIn(List<String> values) {
-            addCriterion("event in", values, "event");
+        public Criteria andDealEventIn(List<String> values) {
+            addCriterion("deal_event in", values, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventNotIn(List<String> values) {
-            addCriterion("event not in", values, "event");
+        public Criteria andDealEventNotIn(List<String> values) {
+            addCriterion("deal_event not in", values, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventBetween(String value1, String value2) {
-            addCriterion("event between", value1, value2, "event");
+        public Criteria andDealEventBetween(String value1, String value2) {
+            addCriterion("deal_event between", value1, value2, "dealEvent");
             return (Criteria) this;
         }
 
-        public Criteria andEventNotBetween(String value1, String value2) {
-            addCriterion("event not between", value1, value2, "event");
+        public Criteria andDealEventNotBetween(String value1, String value2) {
+            addCriterion("deal_event not between", value1, value2, "dealEvent");
             return (Criteria) this;
         }
 

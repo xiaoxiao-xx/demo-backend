@@ -46,12 +46,12 @@ public class PsmDealRes {
     /**
      * 人物：也可以是车辆，把所有识别出来的对象用逗号隔开，记录在该字段
      */
-    private String character;
+    private String characters;
 
     /**
      * 事件
      */
-    private String event;
+    private String dealEvent;
 
     /**
      * 是否告警
@@ -193,34 +193,34 @@ public class PsmDealRes {
 
     /**
      * 人物：也可以是车辆，把所有识别出来的对象用逗号隔开，记录在该字段
-     * @return character 人物：也可以是车辆，把所有识别出来的对象用逗号隔开，记录在该字段
+     * @return characters 人物：也可以是车辆，把所有识别出来的对象用逗号隔开，记录在该字段
      */
-    public String getCharacter() {
-        return character;
+    public String getCharacters() {
+        return characters;
     }
 
     /**
      * 人物：也可以是车辆，把所有识别出来的对象用逗号隔开，记录在该字段
-     * @param character 人物：也可以是车辆，把所有识别出来的对象用逗号隔开，记录在该字段
+     * @param characters 人物：也可以是车辆，把所有识别出来的对象用逗号隔开，记录在该字段
      */
-    public void setCharacter(String character) {
-        this.character = character == null ? null : character.trim();
+    public void setCharacters(String characters) {
+        this.characters = characters == null ? null : characters.trim();
     }
 
     /**
      * 事件
-     * @return event 事件
+     * @return deal_event 事件
      */
-    public String getEvent() {
-        return event;
+    public String getDealEvent() {
+        return dealEvent;
     }
 
     /**
      * 事件
-     * @param event 事件
+     * @param dealEvent 事件
      */
-    public void setEvent(String event) {
-        this.event = event == null ? null : event.trim();
+    public void setDealEvent(String dealEvent) {
+        this.dealEvent = dealEvent == null ? null : dealEvent.trim();
     }
 
     /**
