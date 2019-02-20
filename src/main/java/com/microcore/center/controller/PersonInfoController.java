@@ -30,8 +30,8 @@ public class PersonInfoController {
 	}
 
     @GetMapping("getPersonList")
-    public ResultVo getPersonList(@RequestParam(required = false) String name,
-                                  @RequestParam(required = false) String deptId,
+    public ResultVo getPersonList(@RequestParam(name = "name",required = false) String name,
+                                  @RequestParam(name = "deptId",required = false) String deptId,
                                   @RequestParam(name = "pageIndex") Integer pageIndex,
                                   @RequestParam(name = "pageSize") Integer pageSize){
         return personService.getPersonList(name, deptId, pageIndex, pageSize);
