@@ -1,8 +1,9 @@
 package com.microcore.center.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.microcore.center.dto.PsmDeviceDto;
 import com.microcore.center.mapper.PsmDeviceMapper;
-import com.microcore.center.mapper.PsmDeviceVersionMapper;
 import com.microcore.center.model.PsmDevice;
 import com.microcore.center.model.PsmDeviceExample;
 import com.microcore.center.service.DeviceService;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.microcore.center.util.CommonUtil.getUUID;
+
 @Service
 @Transactional
 public class DeviceServiceImpl implements DeviceService {
@@ -22,7 +25,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private PsmDeviceMapper psmDeviceMapper;
 
-    public List<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal, String state) {
+    public PageInfo<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal, String state, Integer pageIndex, Integer pageSize) {
         PsmDeviceExample example = new PsmDeviceExample();
         PsmDeviceExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotEmpty(deviceId)) {
@@ -35,14 +38,19 @@ public class DeviceServiceImpl implements DeviceService {
             criteria.andStateEqualTo(state.trim());
         }
 
-        List<PsmDevice> deviceList = psmDeviceMapper.selectByExample(example);
-        List<PsmDeviceDto> deviceDtoList = CommonUtil.listPo2VO(deviceList, PsmDeviceDto.class);
-        return deviceDtoList;
+        PageInfo<PsmDevice> pageInfo = PageHelper.startPage(pageIndex, pageSize)
+                .doSelectPageInfo(() -> psmDeviceMapper.selectByExample(example));
+
+        List<PsmDeviceDto> deviceDtoList = CommonUtil.listPo2VO(pageInfo.getList(), PsmDeviceDto.class);
+        PageInfo<PsmDeviceDto> deviceDtoPageInfo = CommonUtil.po2VO(pageInfo, PageInfo.class);
+        deviceDtoPageInfo.setList(deviceDtoList);
+
+        return deviceDtoPageInfo;
     }
 
     @Override
     public void add(PsmDeviceVo vo) {
-        vo.setDeviceId(CommonUtil.getUUID());
+        vo.setDeviceId(getUUID());
         psmDeviceMapper.insert(vo);
     }
 

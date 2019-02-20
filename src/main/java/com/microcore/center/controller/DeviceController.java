@@ -16,9 +16,9 @@ public class DeviceController {
 
     @GetMapping("getDeviceList")
     public ResultVo getDeviceList(@RequestParam String deviceId, @RequestParam String devtypeVal,
-                                  @RequestParam String state, @RequestParam String pageIndex,
-                                  @RequestParam String pageSize) {
-        return ResultVo.ok(deviceService.getDeviceList(deviceId, devtypeVal, state));
+                                  @RequestParam String state, @RequestParam Integer pageIndex,
+                                  @RequestParam Integer pageSize) {
+        return ResultVo.ok(deviceService.getDeviceList(deviceId, devtypeVal, state, pageIndex, pageSize));
     }
 
     @PostMapping("addDevice")
