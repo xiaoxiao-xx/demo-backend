@@ -1,21 +1,29 @@
 package com.microcore.center.service.impl;
 
-import com.microcore.center.mapper.PsmPersonInfoMapper;
-import com.microcore.center.model.PsmPersonInfoExample;
-import com.microcore.center.service.PersonService;
-import com.microcore.center.util.CommonUtil;
-import com.microcore.center.util.StringUtil;
-import com.microcore.center.vo.PersonInfoVo;
-import com.microcore.center.vo.ResultVo;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.microcore.center.mapper.PsmPersonInfoMapper;
+import com.microcore.center.model.PsmPersonInfo;
+import com.microcore.center.model.PsmPersonInfoExample;
+import com.microcore.center.service.DepartmentService;
+import com.microcore.center.service.PersonService;
+import com.microcore.center.util.CommonUtil;
+import com.microcore.center.util.StringUtil;
+import com.microcore.center.vo.PersonInfoVo;
+import com.microcore.center.vo.ResultVo;
 
 
 @Service
@@ -28,6 +36,9 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private DepartmentService departmentService ;
+    
     @Override
     public ResultVo add(PersonInfoVo personInfoVo) {
         upLoad();
@@ -37,7 +48,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private void upLoad() {
-        MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
+        /*MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
         if (file.isEmpty()) {
             return;
         }
@@ -49,7 +60,7 @@ public class PersonServiceImpl implements PersonService {
                 file.transferTo(dest);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
     }
 
     @Override
@@ -65,13 +76,22 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public ResultVo getPersonList(String name) {
+    public ResultVo getPersonList(String name,Integer pageIndex, Integer pageSize) {
         PsmPersonInfoExample example = new PsmPersonInfoExample();
         PsmPersonInfoExample.Criteria criteria = example.createCriteria();
         if (StringUtil.isNotEmpty(name)) {
             criteria.andNameLike("%" + name.trim() + "%");
         }
-        return ResultVo.ok(psmPersonInfoMapper.selectByExample(example));
+        List<PersonInfoVo> listPersonInfoVo = new ArrayList<>();
+        PageInfo<PsmPersonInfo> psmPersonInfoPage = PageHelper.startPage(pageIndex, pageSize)
+				.doSelectPageInfo(() -> psmPersonInfoMapper.selectByExample(example));
+        for (PsmPersonInfo psmPersonInfo : psmPersonInfoPage.getList()) {
+        	String deptName = departmentService.getDepartmentName(psmPersonInfo.getDeptId());
+        	PersonInfoVo personInfoVo = CommonUtil.po2VO(psmPersonInfo, PersonInfoVo.class);
+        	personInfoVo.setDeptName(deptName);
+        	listPersonInfoVo.add(personInfoVo);
+		}
+        return ResultVo.ok(new PageInfo(listPersonInfoVo));
     }
 
     @Override

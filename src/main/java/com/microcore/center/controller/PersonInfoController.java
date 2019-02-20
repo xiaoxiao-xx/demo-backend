@@ -10,37 +10,38 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("personInfoController")
 public class PersonInfoController {
 
-    @Autowired
-    private PersonService personService ;
+	@Autowired
+	private PersonService personService;
 
-    @PostMapping("add")
-    public ResultVo add(@RequestBody PersonInfoVo personInfoVo) {
-        return personService.add(personInfoVo);
-    }
+	@PostMapping("add")
+	public ResultVo add(@RequestBody PersonInfoVo personInfoVo) {
+		return personService.add(personInfoVo);
+	}
 
-    @PostMapping("update")
-    public ResultVo update(@RequestBody PersonInfoVo personInfoVo) {
-        return personService.update(personInfoVo);
-    }
+	@PostMapping("update")
+	public ResultVo update(@RequestBody PersonInfoVo personInfoVo) {
+		return personService.update(personInfoVo);
+	}
 
-    @PostMapping("delete")
-    public ResultVo delete(@RequestBody String id) {
-        return personService.delete(id);
-    }
+	@PostMapping("delete")
+	public ResultVo delete(@RequestBody String id) {
+		return personService.delete(id);
+	}
 
-    @GetMapping("getPersonList")
-    public ResultVo getPersonList(@RequestParam String name){
-        return personService.getPersonList(name);
-    }
+	@GetMapping("getPersonList")
+	public ResultVo getPersonList(@RequestParam(name = "name", required = false) String name,
+			@RequestParam(name = "pageIndex") Integer pageIndex, @RequestParam(name = "pageSize") Integer pageSize) {
+		return personService.getPersonList(name,pageIndex,pageSize);
+	}
 
-    @PostMapping("importantCare")
-    public ResultVo importantCare(@RequestBody PersonInfoVo personInfoVo) {
-        return personService.importantCare(personInfoVo);
-    }
+	@PostMapping("importantCare")
+	public ResultVo importantCare(@RequestBody PersonInfoVo personInfoVo) {
+		return personService.importantCare(personInfoVo);
+	}
 
-    @PostMapping("imageAcquisition")
-    public ResultVo imageAcquisition(@RequestBody PersonInfoVo personInfoVo) {
-        return personService.imageAcquisition(personInfoVo);
-    }
+	@PostMapping("imageAcquisition")
+	public ResultVo imageAcquisition(@RequestBody PersonInfoVo personInfoVo) {
+		return personService.imageAcquisition(personInfoVo);
+	}
 
 }

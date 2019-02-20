@@ -10,7 +10,7 @@ public interface PersonService {
 
     ResultVo delete(String id);
 
-    ResultVo getPersonList(String name);
+    ResultVo getPersonList(String name,Integer pageIndex, Integer pageSize);
 
     ResultVo importantCare(PersonInfoVo personInfoVo);
 

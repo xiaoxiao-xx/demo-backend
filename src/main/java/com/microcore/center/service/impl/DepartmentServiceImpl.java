@@ -1,6 +1,7 @@
 package com.microcore.center.service.impl;
 
 import com.microcore.center.mapper.PsmDeptInfoMapper;
+import com.microcore.center.model.PsmDeptInfo;
 import com.microcore.center.model.PsmDeptInfoExample;
 import com.microcore.center.service.DepartmentService;
 import com.microcore.center.util.CommonUtil;
@@ -15,35 +16,49 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DepartmentServiceImpl implements DepartmentService {
 
-    @Autowired
-    private PsmDeptInfoMapper psmDeptInfoMapper;
+	@Autowired
+	private PsmDeptInfoMapper psmDeptInfoMapper;
 
-    @Override
-    public ResultVo add(DepartmentVo departmentVo) {
-        departmentVo.setDeptId(CommonUtil.getUUID());
-        psmDeptInfoMapper.insertSelective(departmentVo);
-        return ResultVo.ok();
-    }
+	@Override
+	public ResultVo add(DepartmentVo departmentVo) {
+		departmentVo.setDeptId(CommonUtil.getUUID());
+		psmDeptInfoMapper.insertSelective(departmentVo);
+		return ResultVo.ok();
+	}
 
-    @Override
-    public ResultVo update(DepartmentVo departmentVo) {
-        psmDeptInfoMapper.updateByPrimaryKeySelective(departmentVo);
-        return ResultVo.ok();
-    }
+	@Override
+	public ResultVo update(DepartmentVo departmentVo) {
+		psmDeptInfoMapper.updateByPrimaryKeySelective(departmentVo);
+		return ResultVo.ok();
+	}
 
-    @Override
-    public ResultVo delete(String id) {
-        psmDeptInfoMapper.deleteByPrimaryKey(id);
-        return ResultVo.ok();
-    }
+	@Override
+	public ResultVo delete(String id) {
+		psmDeptInfoMapper.deleteByPrimaryKey(id);
+		return ResultVo.ok();
+	}
 
-    @Override
-    public ResultVo getDeptList(String name) {
-        PsmDeptInfoExample example = new PsmDeptInfoExample();
-        PsmDeptInfoExample.Criteria criteria = example.createCriteria();
-        if (StringUtil.isNotEmpty(name)) {
-            criteria.andDeptNameLike("%" + name.trim() + "%");
-        }
-        return ResultVo.ok(psmDeptInfoMapper.selectByExample(example));
-    }
+	@Override
+	public ResultVo getDeptList(String name) {
+		PsmDeptInfoExample example = new PsmDeptInfoExample();
+		PsmDeptInfoExample.Criteria criteria = example.createCriteria();
+		if (StringUtil.isNotEmpty(name)) {
+			criteria.andDeptNameLike("%" + name.trim() + "%");
+		}
+		return ResultVo.ok(psmDeptInfoMapper.selectByExample(example));
+	}
+
+	@Override
+	public String getDepartmentName(String id) {
+		PsmDeptInfo psmDeptInfo = getDepartment(id);
+		if (psmDeptInfo != null) {
+			return psmDeptInfo.getDeptName();
+		}
+		return null;
+	}
+
+	@Override
+	public PsmDeptInfo getDepartment(String id) {
+		return psmDeptInfoMapper.selectByPrimaryKey(id);
+	}
 }
