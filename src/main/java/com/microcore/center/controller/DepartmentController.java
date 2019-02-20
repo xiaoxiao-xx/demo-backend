@@ -32,4 +32,10 @@ public class DepartmentController {
     public ResultVo getDeptList(@RequestParam String name){
         return departmentService.getDeptList(name);
     }
+    
+    @GetMapping("getDeptTree")
+    public ResultVo getDeptTree(){
+        return ResultVo.ok(departmentService.getDeptTree());
+    }
+    
 }

@@ -1,5 +1,11 @@
 package com.microcore.center.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.microcore.center.mapper.PsmDeptInfoMapper;
 import com.microcore.center.model.PsmDeptInfo;
 import com.microcore.center.model.PsmDeptInfoExample;
@@ -8,9 +14,6 @@ import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.DepartmentVo;
 import com.microcore.center.vo.ResultVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -66,4 +69,26 @@ public class DepartmentServiceImpl implements DepartmentService {
 	public PsmDeptInfo getDepartment(String id) {
 		return psmDeptInfoMapper.selectByPrimaryKey(id);
 	}
+
+	@Override
+	public List<DepartmentVo> getDeptTree() {
+		PsmDeptInfoExample example = new PsmDeptInfoExample() ;
+		PsmDeptInfoExample.Criteria criteria =  example.createCriteria();
+		criteria.andDeptLevEqualTo(1);
+		List<PsmDeptInfo> list = psmDeptInfoMapper.selectByExample(example);
+		List<DepartmentVo> listVo = CommonUtil.listPo2VO(list, DepartmentVo.class);
+		for (DepartmentVo departmentVo : listVo) {
+			departmentVo.setChildren(getChildrenDept(departmentVo.getDeptId()));
+		}
+		return listVo;
+	}
+	public List<DepartmentVo> getChildrenDept (String deptId){
+		PsmDeptInfoExample example = new PsmDeptInfoExample() ;
+		PsmDeptInfoExample.Criteria criteria =  example.createCriteria();
+		criteria.andParentDeptidEqualTo(deptId);
+		List<PsmDeptInfo> list = psmDeptInfoMapper.selectByExample(example);
+		return CommonUtil.listPo2VO(list, DepartmentVo.class) ;
+	}
+	
+	
 }
