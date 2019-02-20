@@ -1,11 +1,11 @@
 package com.microcore.center.vo;
 
-import com.microcore.center.model.PsmScheduleDetail;
+import com.microcore.center.model.PsmDealResDetail;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class PsmScheduleDetailVo extends PsmScheduleDetail {
+public class PsmDealDetailResVo extends PsmDealResDetail {
 
 }

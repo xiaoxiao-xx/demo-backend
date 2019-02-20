@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 public class AlarmModeController {
 	@Autowired
 	private AlarmModeService alarmModeService;
+
 	@ApiOperation(value = "告警方式列表查询", notes = "告警方式列表查询")
 	@GetMapping("getAlarmMode")
 	public ResultVo getAlarmMode() {
