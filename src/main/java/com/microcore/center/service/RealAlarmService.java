@@ -17,4 +17,5 @@ public interface RealAlarmService {
 
     ResultVo add(PsmRealAlarmVo vo);
 
+    ResultVo dealRealAlarm(PsmRealAlarmVo vo);
 }

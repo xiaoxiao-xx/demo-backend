@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.microcore.center.mapper.PsmRealAlarmMapper;
 import com.microcore.center.model.PsmRealAlarm;
 import com.microcore.center.model.PsmRealAlarmExample;
+import com.microcore.center.service.ParaDefineService;
 import com.microcore.center.service.RealAlarmService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.PsmRealAlarmVo;
@@ -24,7 +25,8 @@ public class RealAlarmServiceImpl implements RealAlarmService {
 
     @Autowired
     private PsmRealAlarmMapper psmRealAlarmMapper;
-
+    @Autowired
+	private ParaDefineService paraDefineService;
     @Override
     public PageInfo<PsmRealAlarmVo> getRealAlarmList(String alarmType, String operator, Integer pageIndex, Integer pageSize) {
         PsmRealAlarmExample example = new PsmRealAlarmExample();
@@ -37,10 +39,13 @@ public class RealAlarmServiceImpl implements RealAlarmService {
                 .doSelectPageInfo(() -> psmRealAlarmMapper.selectByExample(example));
 
         List<PsmRealAlarmVo> list = CommonUtil.listPo2VO(realAlarmPageInfo.getList(), PsmRealAlarmVo.class);
-
-        PageInfo<PsmRealAlarmVo> pageInfo = CommonUtil.po2VO(realAlarmPageInfo, PageInfo.class);
+        for (PsmRealAlarmVo psmRealAlarmVo : list) {
+        	psmRealAlarmVo.setStateName(paraDefineService.getValueByTypeAnd("REAL_ALARM_STATE", psmRealAlarmVo.getState()));
+		}
+        PageInfo<PsmRealAlarmVo> pageInfo = new PageInfo<>();
+        
         pageInfo.setList(list);
-
+        pageInfo.setTotal(realAlarmPageInfo.getTotal());
         return pageInfo;
     }
 
@@ -71,5 +76,14 @@ public class RealAlarmServiceImpl implements RealAlarmService {
 
         return ResultVo.ok();
     }
+
+	@Override
+	public ResultVo dealRealAlarm(PsmRealAlarmVo vo) {
+		PsmRealAlarm psmRealAlarm = psmRealAlarmMapper.selectByPrimaryKey(vo.getId());
+		psmRealAlarm.setRemark(vo.getRemark());
+		psmRealAlarm.setState(vo.getState());
+		psmRealAlarmMapper.updateByPrimaryKey(psmRealAlarm);
+		return ResultVo.ok();
+	}
 
 }
