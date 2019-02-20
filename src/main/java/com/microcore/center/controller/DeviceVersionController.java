@@ -49,11 +49,6 @@ public class DeviceVersionController {
         return deviceVersionService.getDeviceVersion(id);
     }
 
-    @GetMapping("getDeviceTypes")
-    public ResultVo getDeviceTypes(){
-        return ResultVo.ok(paraDefineService.getPsmParaDefineByType("DEVICE_TYPE"));
-    }
-
     @GetMapping("getVersion")
     public ResultVo getVersion(){
         return deviceVersionService.getVersion();
