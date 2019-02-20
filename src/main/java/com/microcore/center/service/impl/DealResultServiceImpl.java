@@ -59,6 +59,7 @@ public class DealResultServiceImpl implements DealResultService {
 
     @Override
     public ResultVo add(PsmDealResVo vo) {
+    	vo.setId(CommonUtil.getUUID());
         psmDealResMapper.insert(vo);
         return ResultVo.ok();
     }
