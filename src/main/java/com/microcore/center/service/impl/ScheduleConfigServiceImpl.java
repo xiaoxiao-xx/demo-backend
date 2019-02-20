@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.microcore.center.util.CommonUtil.getUUID;
+
 @Service
 @Transactional
 public class ScheduleConfigServiceImpl implements ScheduleConfigService {
@@ -21,6 +23,7 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
 
     @Override
     public ResultVo add(PsmScheduleConfigVo vo) {
+        vo.setId(getUUID());
         psmScheduleConfigMapper.insert(vo);
         return ResultVo.ok();
     }
