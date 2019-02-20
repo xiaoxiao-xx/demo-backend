@@ -37,6 +37,11 @@ public class PsmDevice {
     private String state;
 
     /**
+     * 设备编号
+     */
+    private String identifier;
+
+    /**
      * 
      * @return device_id 
      */
@@ -146,5 +151,21 @@ public class PsmDevice {
      */
     public void setState(String state) {
         this.state = state == null ? null : state.trim();
+    }
+
+    /**
+     * 设备编号
+     * @return identifier 设备编号
+     */
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    /**
+     * 设备编号
+     * @param identifier 设备编号
+     */
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier == null ? null : identifier.trim();
     }
 }
