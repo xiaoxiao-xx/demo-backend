@@ -22,7 +22,7 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
 		// registry.addResourceHandler("/myres/**").addResourceLocations("classpath:/myres/");
 //		registry.addResourceHandler("/static/**").addResourceLocations(SUFFIX + filePath);
 		registry.addResourceHandler("/swagger*.html").addResourceLocations("/");
-		registry.addResourceHandler("/**").addResourceLocations(SUFFIX + filePath + "/");
+		registry.addResourceHandler("/static/**").addResourceLocations(SUFFIX + filePath + "/");
 		super.addResourceHandlers(registry);
 	}
 

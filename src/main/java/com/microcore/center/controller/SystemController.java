@@ -37,7 +37,8 @@ public class SystemController {
 	}
 
 	@PostMapping("logout")
-	public ResultVo logout(@RequestBody String username) {
+	public ResultVo logout(@RequestBody String userName) {
+		SessionManage.logout(userName);
 		return ResultVo.ok();
 	}
 
