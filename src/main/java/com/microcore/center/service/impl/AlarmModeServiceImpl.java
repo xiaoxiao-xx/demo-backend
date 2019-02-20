@@ -23,4 +23,18 @@ public class AlarmModeServiceImpl implements AlarmModeService {
 		return psmAlarmModeMapper.selectByExample(example);
 	}
 
+	@Override
+	public String getAlarmMode(String id) {
+		PsmAlarmMode mode = psmAlarmModeMapper.selectByPrimaryKey(id);
+		if(mode != null) {
+			return mode.getAlarmMode();
+		}
+		return null;
+	}
+
+	@Override
+	public PsmAlarmMode getPsmAlarmMode(String id) {
+		return psmAlarmModeMapper.selectByPrimaryKey(id);
+	}
+
 }

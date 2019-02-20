@@ -13,7 +13,9 @@ import com.github.pagehelper.PageInfo;
 import com.microcore.center.mapper.PsmAlarmStrategyMapper;
 import com.microcore.center.model.PsmAlarmStrategy;
 import com.microcore.center.model.PsmAlarmStrategyExample;
+import com.microcore.center.service.AlarmModeService;
 import com.microcore.center.service.AlarmStrategyService;
+import com.microcore.center.service.ParaDefineService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.PsmAlarmStrategyVo;
@@ -25,7 +27,10 @@ public class AlarmStrategyServiceImpl implements AlarmStrategyService {
 
 	@Autowired
 	private PsmAlarmStrategyMapper psmAlarmStrategyMapper;
-
+	@Autowired
+	private ParaDefineService paraDefineService;
+	@Autowired
+	private AlarmModeService alarmModeService ;
 	@Override
 	public ResultVo add(PsmAlarmStrategyVo alarmStrategyVo) {
 		PsmAlarmStrategy p = CommonUtil.po2VO(alarmStrategyVo, PsmAlarmStrategy.class);
@@ -66,6 +71,8 @@ public class AlarmStrategyServiceImpl implements AlarmStrategyService {
 		for (PsmAlarmStrategy psmAlarmStrategy : psmAlarmStrategyPage.getList()) {
 			PsmAlarmStrategyVo vo = new PsmAlarmStrategyVo();
 			BeanUtils.copyProperties(psmAlarmStrategy, vo);
+			vo.setAlarmTypeName(paraDefineService.getValueByTypeAnd("ALARM_MODE", psmAlarmStrategy.getAlarmType()));
+			vo.setAlarmModeName(alarmModeService.getAlarmMode(psmAlarmStrategy.getAlarmMode()));
 			list.add(vo);
 		}
 		PageInfo<PsmAlarmStrategyVo> pageInfo = new PageInfo<>();

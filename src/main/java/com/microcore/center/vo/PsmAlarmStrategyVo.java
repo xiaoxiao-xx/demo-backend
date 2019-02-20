@@ -7,5 +7,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class PsmAlarmStrategyVo extends PsmAlarmStrategy {
-
+	private String alarmTypeName ;
+	private String alarmModeName ;
 }
