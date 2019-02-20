@@ -1,7 +1,7 @@
 package com.microcore.center.controller;
 
 import com.microcore.center.constant.Constants;
-import com.microcore.center.service.PsmDeviceService;
+import com.microcore.center.service.DeviceService;
 import com.microcore.center.vo.PsmDeviceVo;
 import com.microcore.center.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,42 +12,42 @@ import org.springframework.web.bind.annotation.*;
 public class DeviceController {
 
     @Autowired
-    private PsmDeviceService psmDeviceService;
+    private DeviceService deviceService;
 
     @GetMapping("getDeviceList")
     public ResultVo getDeviceList(@RequestParam String deviceId, @RequestParam String devtypeVal,
                                   @RequestParam String state, @RequestParam String pageIndex,
                                   @RequestParam String pageSize) {
-        return ResultVo.ok(psmDeviceService.getDeviceList(deviceId, devtypeVal, state));
+        return ResultVo.ok(deviceService.getDeviceList(deviceId, devtypeVal, state));
     }
 
     @PostMapping("addDevice")
     public ResultVo addDevice(@RequestBody PsmDeviceVo vo) {
-        psmDeviceService.add(vo);
+        deviceService.add(vo);
         return ResultVo.ok();
     }
 
     @PostMapping("deleteDevice")
     public ResultVo deleteDevice(@RequestParam String id) {
-        psmDeviceService.delete(id);
+        deviceService.delete(id);
         return ResultVo.ok();
     }
 
     @PostMapping("updateDevice")
     public ResultVo updateDevice(@RequestBody PsmDeviceVo vo) {
-        psmDeviceService.update(vo);
+        deviceService.update(vo);
         return ResultVo.ok();
     }
 
     @PostMapping("enableDevice")
     public ResultVo enableDevice(@RequestParam String id) {
-        psmDeviceService.setDeviceState(id, Constants.DEVICE_STATE_ENABLE);
+        deviceService.setDeviceState(id, Constants.DEVICE_STATE_ENABLE);
         return ResultVo.ok();
     }
 
     @PostMapping("disableDevice")
     public ResultVo disableDevice(@RequestParam String id) {
-        psmDeviceService.setDeviceState(id, Constants.DEVICE_STATE_DISABLE);
+        deviceService.setDeviceState(id, Constants.DEVICE_STATE_DISABLE);
         return ResultVo.ok();
     }
 

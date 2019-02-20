@@ -10,7 +10,7 @@ public interface DeviceVersionService {
 
     ResultVo delete(String id);
 
-    ResultVo getDeviceVersionList(String version, String type);
+    ResultVo getDeviceVersionList(String version, String type, Integer pageIndex, Integer pageSize);
 
     ResultVo getDeviceVersion(String id);
 

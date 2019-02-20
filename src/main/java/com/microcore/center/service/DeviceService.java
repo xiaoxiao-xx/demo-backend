@@ -5,7 +5,7 @@ import com.microcore.center.vo.PsmDeviceVo;
 
 import java.util.List;
 
-public interface PsmDeviceService {
+public interface DeviceService {
 
     List<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal, String state);
 

@@ -1,17 +1,14 @@
 package com.microcore.center.service.impl;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,6 +21,7 @@ import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.PersonInfoVo;
 import com.microcore.center.vo.ResultVo;
+
 
 
 @Service
@@ -76,11 +74,14 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public ResultVo getPersonList(String name,Integer pageIndex, Integer pageSize) {
+    public ResultVo getPersonList(String name, String deptId, Integer pageIndex, Integer pageSize) {
         PsmPersonInfoExample example = new PsmPersonInfoExample();
         PsmPersonInfoExample.Criteria criteria = example.createCriteria();
         if (StringUtil.isNotEmpty(name)) {
             criteria.andNameLike("%" + name.trim() + "%");
+        }
+        if (StringUtils.isNotEmpty(deptId)) {
+            criteria.andDeptIdEqualTo(deptId);
         }
         List<PersonInfoVo> listPersonInfoVo = new ArrayList<>();
         PageInfo<PsmPersonInfo> psmPersonInfoPage = PageHelper.startPage(pageIndex, pageSize)
@@ -107,5 +108,6 @@ public class PersonServiceImpl implements PersonService {
         psmPersonInfoMapper.updateByPrimaryKeySelective(personInfoVo);
         return ResultVo.ok();
     }
+
 
 }

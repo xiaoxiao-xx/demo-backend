@@ -5,7 +5,7 @@ import com.microcore.center.mapper.PsmDeviceMapper;
 import com.microcore.center.mapper.PsmDeviceVersionMapper;
 import com.microcore.center.model.PsmDevice;
 import com.microcore.center.model.PsmDeviceExample;
-import com.microcore.center.service.PsmDeviceService;
+import com.microcore.center.service.DeviceService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.PsmDeviceVo;
 import org.apache.commons.lang3.StringUtils;
@@ -17,13 +17,10 @@ import java.util.List;
 
 @Service
 @Transactional
-public class DeviceServiceImpl implements PsmDeviceService {
+public class DeviceServiceImpl implements DeviceService {
 
     @Autowired
     private PsmDeviceMapper psmDeviceMapper;
-
-    @Autowired
-    private PsmDeviceVersionMapper psmDeviceVersionService;
 
     public List<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal, String state) {
         PsmDeviceExample example = new PsmDeviceExample();
@@ -45,6 +42,7 @@ public class DeviceServiceImpl implements PsmDeviceService {
 
     @Override
     public void add(PsmDeviceVo vo) {
+        vo.setDeviceId(CommonUtil.getUUID());
         psmDeviceMapper.insert(vo);
     }
 

@@ -24,8 +24,7 @@ public class AlarmStrategyController {
 
 	@ApiOperation(value = "告警策略查询", notes = "告警策略查询")
 	@GetMapping("query")
-	public ResultVo<PageInfo<PsmAlarmStrategyVo>> query(
-														@RequestParam(name = "alarmType", required = false) String alarmType,
+	public ResultVo<PageInfo<PsmAlarmStrategyVo>> query(@RequestParam(name = "alarmType", required = false) String alarmType,
 														@RequestParam(name = "strategy", required = false) String strategy, 
 														@RequestParam(name = "pageIndex") Integer pageIndex,
 														@RequestParam(name = "pageSize") Integer pageSize) {

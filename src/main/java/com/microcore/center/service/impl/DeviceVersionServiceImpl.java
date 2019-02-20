@@ -1,7 +1,8 @@
 package com.microcore.center.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.microcore.center.mapper.PsmDeviceVersionMapper;
-import com.microcore.center.model.PsmDeviceVersion;
 import com.microcore.center.model.PsmDeviceVersionExample;
 import com.microcore.center.service.CommonService;
 import com.microcore.center.service.DeviceVersionService;
@@ -45,7 +46,7 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
     }
 
     @Override
-    public ResultVo getDeviceVersionList(String version, String type) {
+    public ResultVo getDeviceVersionList(String version, String type, Integer pageIndex, Integer pageSize) {
         PsmDeviceVersionExample example = new PsmDeviceVersionExample();
         PsmDeviceVersionExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotEmpty(version)) {
@@ -54,8 +55,8 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
         if (StringUtils.isNotEmpty(type)) {
             criteria.andDevtypeValEqualTo(type);
         }
-        List<PsmDeviceVersion> list = deviceVersionMapper.selectByExample(example);
-        return ResultVo.ok(list.isEmpty() ? new ArrayList<>() : list);
+        PageInfo<Object> pageInfo = PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(() -> deviceVersionMapper.selectByExample(example));
+        return ResultVo.ok(pageInfo);
     }
 
     @Override
@@ -65,15 +66,16 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
 
     @Autowired
     private CommonService commonService;
+
     @Override
     public ResultVo getVersion() {
         Map<String, Object> prams = new HashMap<>();
-        String sql = "SELECT  DISTINCT device_version from psm_device_version_t";
+        String sql = "SELECT DISTINCT device_version from psm_device_version_t";
         prams.put("sql", sql);
         List<Map<String, Object>> list = commonService.executeSelectSQL(prams);
         List<String> li = new ArrayList<>();
         for (Map<String, Object> map : list) {
-          li.add((String) map.get("device_version"));
+            li.add((String) map.get("device_version"));
         }
         return ResultVo.ok(li);
     }

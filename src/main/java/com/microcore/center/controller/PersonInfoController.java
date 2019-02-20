@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("personInfoController")
 public class PersonInfoController {
+    //TODO 操作记录
 
 	@Autowired
 	private PersonService personService;
@@ -28,11 +29,13 @@ public class PersonInfoController {
 		return personService.delete(id);
 	}
 
-	@GetMapping("getPersonList")
-	public ResultVo getPersonList(@RequestParam(name = "name", required = false) String name,
-			@RequestParam(name = "pageIndex") Integer pageIndex, @RequestParam(name = "pageSize") Integer pageSize) {
-		return personService.getPersonList(name,pageIndex,pageSize);
-	}
+    @GetMapping("getPersonList")
+    public ResultVo getPersonList(@RequestParam(required = false) String name,
+                                  @RequestParam(required = false) String deptId,
+                                  @RequestParam(name = "pageIndex") Integer pageIndex,
+                                  @RequestParam(name = "pageSize") Integer pageSize){
+        return personService.getPersonList(name, deptId, pageIndex, pageSize);
+    }
 
 	@PostMapping("importantCare")
 	public ResultVo importantCare(@RequestBody PersonInfoVo personInfoVo) {

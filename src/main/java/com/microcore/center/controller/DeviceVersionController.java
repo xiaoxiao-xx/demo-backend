@@ -33,8 +33,10 @@ public class DeviceVersionController {
     }
 
     @GetMapping("getDeviceVersionList")
-    public ResultVo getDeviceVersionList(@RequestParam String version, @RequestParam String type ){
-        return deviceVersionService.getDeviceVersionList(version, type);
+    public ResultVo getDeviceVersionList(@RequestParam(required = false) String version, @RequestParam(required = false) String type,
+                                         @RequestParam(name = "pageIndex") Integer pageIndex,
+                                         @RequestParam(name = "pageSize") Integer pageSize){
+        return deviceVersionService.getDeviceVersionList(version, type, pageIndex, pageSize);
     }
 
     @GetMapping("getDeviceVersion")
@@ -51,7 +53,5 @@ public class DeviceVersionController {
     public ResultVo getVersion(){
         return deviceVersionService.getVersion();
     }
-
-
 
 }
