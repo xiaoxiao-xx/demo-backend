@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.model.PsmRollCall;
 import com.microcore.center.service.PsmRollCallService;
+import com.microcore.center.vo.PsmRollCallVo;
 import com.microcore.center.vo.ResultVo;
 
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +28,7 @@ public class RollCallController {
 	
 	@ApiOperation(value = "电子点名查询", notes = "电子点名查询")
 	@GetMapping("query")
-	public ResultVo<PageInfo<PsmRollCall>> query(@RequestParam(name = "team", required = false) String team, 
+	public ResultVo<PageInfo<PsmRollCallVo>> query(@RequestParam(name = "team", required = false) String team, 
 												 @RequestParam(name = "callTime", required = false) Date callTime, 
 												 @RequestParam(name = "pageIndex") Integer pageIndex,
 												 @RequestParam(name = "pageSize") Integer pageSize) {
