@@ -42,6 +42,11 @@ public class PsmDevice {
     private String identifier;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 
      * @return device_id 
      */
@@ -167,5 +172,21 @@ public class PsmDevice {
      */
     public void setIdentifier(String identifier) {
         this.identifier = identifier == null ? null : identifier.trim();
+    }
+
+    /**
+     * 备注
+     * @return remark 备注
+     */
+    public String getRemark() {
+        return remark;
+    }
+
+    /**
+     * 备注
+     * @param remark 备注
+     */
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }
