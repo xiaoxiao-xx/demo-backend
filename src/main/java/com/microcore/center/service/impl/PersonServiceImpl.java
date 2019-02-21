@@ -3,8 +3,6 @@ package com.microcore.center.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.microcore.center.constant.Constants;
 import com.microcore.center.mapper.PsmPersonInfoMapper;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.model.PsmPersonInfoExample;
 import com.microcore.center.service.DepartmentService;
+import com.microcore.center.service.OperHisService;
 import com.microcore.center.service.PersonService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
@@ -32,38 +32,23 @@ public class PersonServiceImpl implements PersonService {
     private PsmPersonInfoMapper psmPersonInfoMapper;
 
     @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
     private DepartmentService departmentService ;
+    @Autowired
+    private OperHisService operHisService ;
     
     @Override
     public ResultVo add(PersonInfoVo personInfoVo) {
-        upLoad();
         personInfoVo.setPersonId(CommonUtil.getUUID());
         psmPersonInfoMapper.insertSelective(personInfoVo);
+        operHisService.add(personInfoVo.getPersonId(), Constants.OPER_HIS_ADD);
         return ResultVo.ok();
     }
 
-    private void upLoad() {
-        /*MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
-        if (file.isEmpty()) {
-            return;
-        }
-        String path = System.getProperty("user.dir");
-        String filePath = path + "/photo/";
-            String fileName = file.getOriginalFilename();
-            File dest = new File(filePath + fileName);
-            try {
-                file.transferTo(dest);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-    }
 
     @Override
     public ResultVo update(PersonInfoVo personInfoVo) {
         psmPersonInfoMapper.updateByPrimaryKeySelective(personInfoVo);
+        operHisService.add(personInfoVo.getPersonId(), Constants.OPER_HIS_UPD);
         return ResultVo.ok();
     }
 
@@ -72,6 +57,7 @@ public class PersonServiceImpl implements PersonService {
         String[] ids = id.split(",");
 		for (String i : ids) {
 			psmPersonInfoMapper.deleteByPrimaryKey(i);
+			operHisService.add(i, Constants.OPER_HIS_DEL);
 		}
         return ResultVo.ok();
     }
@@ -109,7 +95,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public ResultVo imageAcquisition(PersonInfoVo personInfoVo) {
-        upLoad();
         psmPersonInfoMapper.updateByPrimaryKeySelective(personInfoVo);
         return ResultVo.ok();
     }

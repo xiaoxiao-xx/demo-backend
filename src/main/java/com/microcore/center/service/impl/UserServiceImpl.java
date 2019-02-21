@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public PsmUser getPsmUser(String userName) {
-		if(StringUtil.isEmpty(userName)) {
-			return null ;
+		if (StringUtil.isEmpty(userName)) {
+			return null;
 		}
 		PsmUserExample example = new PsmUserExample();
 		PsmUserExample.Criteria criteria = example.createCriteria();
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void add(PsmUser psmUser) {
-		if(getPsmUser(psmUser.getUsername())!=null) {
+		if (getPsmUser(psmUser.getUsername()) != null) {
 			throw new CommonException("用户名重复！");
 		}
 		psmUser.setId(CommonUtil.getUUID());
@@ -66,6 +66,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void update(PsmUser psmUser) {
 		psmUserMapper.updateByPrimaryKey(psmUser);
+	}
+
+	@Override
+	public String getPsmUserRealName(String userName) {
+		PsmUser psmUser = this.getPsmUser(userName);
+		if (psmUser != null) {
+			return psmUser.getRealname();
+		}
+		return null;
 	}
 
 }

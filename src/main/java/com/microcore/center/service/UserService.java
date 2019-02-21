@@ -6,6 +6,8 @@ public interface UserService {
 	
 	public PsmUser getPsmUser(String userName);
 
+	public String getPsmUserRealName(String userName);
+	
 	public PsmUser getPsmUserById(String id);
 
 	public void add(PsmUser psmUser);

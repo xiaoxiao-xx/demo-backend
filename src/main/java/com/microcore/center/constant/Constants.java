@@ -36,6 +36,13 @@ public class Constants {
 	public static final String DEVICE_STATE_DISABLE = "D";
 
 	public static final String DEVICE_TYPE = "DEVICE_TYPE";
+	
+	public static final String OPER_HIS_ADD = "ADD";
+
+	public static final String OPER_HIS_UPD = "UPD";
+
+	public static final String OPER_HIS_DEL = "DEL";
+	
 
 }
 
