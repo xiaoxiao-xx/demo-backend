@@ -10,6 +10,7 @@
     <result column="position_area" property="positionArea" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="identifier" property="identifier" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,7 +72,7 @@
   </sql>
   <sql id="Base_Column_List" >
     device_id, devtype_code, devtype_val, device_version, position_xy, position_area, 
-    state, identifier
+    state, identifier, remark
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.PsmDeviceExample" >
     select
@@ -107,10 +108,12 @@
   <insert id="insert" parameterType="com.microcore.center.model.PsmDevice" >
     insert into psm_device_t (device_id, devtype_code, devtype_val, 
       device_version, position_xy, position_area, 
-      state, identifier)
+      state, identifier, remark
+      )
     values (#{deviceId,jdbcType=VARCHAR}, #{devtypeCode,jdbcType=VARCHAR}, #{devtypeVal,jdbcType=VARCHAR}, 
       #{deviceVersion,jdbcType=VARCHAR}, #{positionXy,jdbcType=VARCHAR}, #{positionArea,jdbcType=VARCHAR}, 
-      #{state,jdbcType=VARCHAR}, #{identifier,jdbcType=VARCHAR})
+      #{state,jdbcType=VARCHAR}, #{identifier,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.PsmDevice" >
     insert into psm_device_t
@@ -139,6 +142,9 @@
       <if test="identifier != null" >
         identifier,
       </if>
+      <if test="remark != null" >
+        remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="deviceId != null" >
@@ -164,6 +170,9 @@
       </if>
       <if test="identifier != null" >
         #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -200,6 +209,9 @@
       <if test="record.identifier != null" >
         identifier = #{record.identifier,jdbcType=VARCHAR},
       </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -214,7 +226,8 @@
       position_xy = #{record.positionXy,jdbcType=VARCHAR},
       position_area = #{record.positionArea,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=VARCHAR},
-      identifier = #{record.identifier,jdbcType=VARCHAR}
+      identifier = #{record.identifier,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -243,6 +256,9 @@
       <if test="identifier != null" >
         identifier = #{identifier,jdbcType=VARCHAR},
       </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
     </set>
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </update>
@@ -254,7 +270,8 @@
       position_xy = #{positionXy,jdbcType=VARCHAR},
       position_area = #{positionArea,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},
-      identifier = #{identifier,jdbcType=VARCHAR}
+      identifier = #{identifier,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </update>
 </mapper>

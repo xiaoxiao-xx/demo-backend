@@ -27,10 +27,7 @@ public class UserInfo implements Serializable {
 		if (visitTime == null) {
 			return true;
 		}
-		if (new Date().getTime() - visitTime.getTime() >= SESSION_TIME) {
-			return true;
-		}
-		return false;
+		return new Date().getTime() - visitTime.getTime() >= SESSION_TIME;
 	}
 	public void refresh() {
 		this.visitTime = new Date();

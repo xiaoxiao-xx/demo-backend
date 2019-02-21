@@ -72,16 +72,17 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
     private CommonService commonService;
 
     @Override
-    public ResultVo getVersion() {
+    public ResultVo getVersion(String devTypeCode) {
         Map<String, Object> prams = new HashMap<>();
-        String sql = "SELECT DISTINCT device_version from psm_device_version_t";
+        String sql = "SELECT DISTINCT device_version from psm_device_version_t where devtype_code = #{devTypeCode}";
         prams.put("sql", sql);
+        prams.put("devTypeCode", devTypeCode);
         List<Map<String, Object>> list = commonService.executeSelectSQL(prams);
-        List<String> li = new ArrayList<>();
-        for (Map<String, Object> map : list) {
-            li.add((String) map.get("device_version"));
-        }
-        return ResultVo.ok(li);
+//        List<String> li = new ArrayList<>();
+//        for (Map<String, Object> map : list) {
+//            li.add((String) map.get("device_version"));
+//        }
+        return ResultVo.ok(list);
     }
 
     @Override
