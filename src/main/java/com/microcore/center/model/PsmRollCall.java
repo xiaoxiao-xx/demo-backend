@@ -39,6 +39,11 @@ public class PsmRollCall {
     private Integer absentNumber;
 
     /**
+     * 应到人数
+     */
+    private Integer totalNumber;
+
+    /**
      * 
      * @return id 
      */
@@ -148,5 +153,21 @@ public class PsmRollCall {
      */
     public void setAbsentNumber(Integer absentNumber) {
         this.absentNumber = absentNumber;
+    }
+
+    /**
+     * 应到人数
+     * @return total_number 应到人数
+     */
+    public Integer getTotalNumber() {
+        return totalNumber;
+    }
+
+    /**
+     * 应到人数
+     * @param totalNumber 应到人数
+     */
+    public void setTotalNumber(Integer totalNumber) {
+        this.totalNumber = totalNumber;
     }
 }

@@ -657,6 +657,66 @@ public class PsmRollCallExample {
             addCriterion("absent_number not between", value1, value2, "absentNumber");
             return (Criteria) this;
         }
+
+        public Criteria andTotalNumberIsNull() {
+            addCriterion("total_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberIsNotNull() {
+            addCriterion("total_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberEqualTo(Integer value) {
+            addCriterion("total_number =", value, "totalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberNotEqualTo(Integer value) {
+            addCriterion("total_number <>", value, "totalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberGreaterThan(Integer value) {
+            addCriterion("total_number >", value, "totalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("total_number >=", value, "totalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberLessThan(Integer value) {
+            addCriterion("total_number <", value, "totalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("total_number <=", value, "totalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberIn(List<Integer> values) {
+            addCriterion("total_number in", values, "totalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberNotIn(List<Integer> values) {
+            addCriterion("total_number not in", values, "totalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberBetween(Integer value1, Integer value2) {
+            addCriterion("total_number between", value1, value2, "totalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("total_number not between", value1, value2, "totalNumber");
+            return (Criteria) this;
+        }
     }
 
     /**
