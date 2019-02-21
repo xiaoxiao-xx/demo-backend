@@ -14,9 +14,6 @@ public class DeviceVersionController {
     @Autowired
     private DeviceVersionService deviceVersionService;
 
-    @Autowired
-    private ParaDefineService paraDefineService;
-
     @PostMapping("add")
     public ResultVo add(@RequestBody DeviceVersionVo deviceVersionVo) {
         return deviceVersionService.add(deviceVersionVo);

@@ -4,10 +4,7 @@ import com.microcore.center.service.ScheduleConfigService;
 import com.microcore.center.vo.PsmScheduleConfigVo;
 import com.microcore.center.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("schedule")
@@ -17,17 +14,17 @@ public class ScheduleController {
     private ScheduleConfigService scheduleConfigService;
 
     @PostMapping("addConfig")
-    public ResultVo addConfig(PsmScheduleConfigVo vo) {
+    public ResultVo addConfig(@RequestBody PsmScheduleConfigVo vo) {
         return scheduleConfigService.add(vo);
     }
 
     @PostMapping("updateConfig")
-    public ResultVo updateConfig(PsmScheduleConfigVo vo) {
+    public ResultVo updateConfig(@RequestBody PsmScheduleConfigVo vo) {
         return scheduleConfigService.update(vo);
     }
 
     @PostMapping("deleteConfig")
-    public ResultVo deleteConfig(String id) {
+    public ResultVo deleteConfig(@RequestParam String id) {
         scheduleConfigService.delete(id);
         return ResultVo.ok();
     }
@@ -38,10 +35,17 @@ public class ScheduleController {
         return ResultVo.ok();
     }
 
-    @PostMapping("getScheduleConfigList")
-    public ResultVo getScheduleConfigList(@RequestParam Integer pageIndex,
+    @GetMapping("getScheduleConfigList")
+    public ResultVo getScheduleConfigList(@RequestParam(required = false) String team,
+                                          @RequestParam Integer pageIndex,
                                           @RequestParam Integer pageSize) {
-        return scheduleConfigService.getScheduleConfigList(pageIndex, pageSize);
+        return scheduleConfigService.getScheduleConfigList(team, pageIndex, pageSize);
     }
+
+    @PostMapping("repeat")
+    public ResultVo repeat(@RequestParam String id, @RequestParam String repeatType) {
+        return scheduleConfigService.setRepeatType(id, repeatType);
+    }
+
 
 }
