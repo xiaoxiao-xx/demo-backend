@@ -25,9 +25,10 @@ public class AlarmDealResultController {
     @ApiOperation(value = "查询告警处理信息", notes = "查询告警处理信息")
     @GetMapping("query")
     public ResultVo<PageInfo<PsmDealResVo>> query(@RequestParam(name = "alarmType", required = false) String alarmType,
+    											  @RequestParam(name = "dealState", required = false) String dealState,
                                                   @RequestParam(name = "pageIndex") Integer pageIndex,
                                                   @RequestParam(name = "pageSize") Integer pageSize) {
-        return ResultVo.ok(dealResultService.getDealResultList(alarmType, pageIndex, pageSize));
+        return ResultVo.ok(dealResultService.getDealResultList(alarmType,dealState, pageIndex, pageSize));
     }
 
     @ApiOperation(value = "告警处理结果新增", notes = "告警处理结果新增")
@@ -47,5 +48,10 @@ public class AlarmDealResultController {
     public ResultVo delete(@RequestBody String id) {
         return dealResultService.delete(id);
     }
-
+    
+    @ApiOperation(value = "告警处理结果处理", notes = "告警处理结果处理")
+    @PostMapping("deal")
+    public ResultVo deal(@RequestBody PsmDealResVo dealResVo) {
+        return dealResultService.deal(dealResVo);
+    }
 }

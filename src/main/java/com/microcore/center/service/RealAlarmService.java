@@ -9,7 +9,7 @@ import com.microcore.center.vo.ResultVo;
  */
 public interface RealAlarmService {
 
-    PageInfo<PsmRealAlarmVo> getRealAlarmList(String alarmType, String operator, Integer pageIndex, Integer pageSize);
+    PageInfo<PsmRealAlarmVo> getRealAlarmList(String alarmType, String operator,String state, Integer pageIndex, Integer pageSize);
 
     ResultVo delete(String id);
 

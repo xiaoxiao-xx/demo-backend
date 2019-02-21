@@ -28,13 +28,18 @@ public class RealAlarmServiceImpl implements RealAlarmService {
     @Autowired
 	private ParaDefineService paraDefineService;
     @Override
-    public PageInfo<PsmRealAlarmVo> getRealAlarmList(String alarmType, String operator, Integer pageIndex, Integer pageSize) {
+    public PageInfo<PsmRealAlarmVo> getRealAlarmList(String alarmType, String operator,String state, Integer pageIndex, Integer pageSize) {
         PsmRealAlarmExample example = new PsmRealAlarmExample();
         PsmRealAlarmExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotEmpty(alarmType)) {
             criteria.andAlarmTypeEqualTo(alarmType);
         }
-
+        if (StringUtils.isNotEmpty(operator)) {
+            criteria.andOperatorEqualTo(operator);
+        }
+        if (StringUtils.isNotEmpty(state)) {
+            criteria.andStateEqualTo(state);
+        }
         PageInfo<PsmRealAlarm> realAlarmPageInfo = PageHelper.startPage(pageIndex, pageSize)
                 .doSelectPageInfo(() -> psmRealAlarmMapper.selectByExample(example));
 
@@ -82,6 +87,7 @@ public class RealAlarmServiceImpl implements RealAlarmService {
 		PsmRealAlarm psmRealAlarm = psmRealAlarmMapper.selectByPrimaryKey(vo.getId());
 		psmRealAlarm.setRemark(vo.getRemark());
 		psmRealAlarm.setState(vo.getState());
+		psmRealAlarm.setOperator(CommonUtil.getCurrentUserId());
 		psmRealAlarmMapper.updateByPrimaryKey(psmRealAlarm);
 		return ResultVo.ok();
 	}

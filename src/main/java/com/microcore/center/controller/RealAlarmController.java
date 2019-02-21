@@ -19,9 +19,10 @@ public class RealAlarmController {
     @GetMapping("getRealAlarmList")
     public ResultVo<PageInfo<PsmRealAlarmVo>> query(@RequestParam(name = "alarmType", required = false) String alarmType,
                                                     @RequestParam(name = "operator", required = false) String operator,
+                                                    @RequestParam(name = "state", required = false) String state,
                                                     @RequestParam(name = "pageIndex") Integer pageIndex,
                                                     @RequestParam(name = "pageSize") Integer pageSize) {
-        return ResultVo.ok(realAlarmService.getRealAlarmList(alarmType, operator, pageIndex, pageSize));
+        return ResultVo.ok(realAlarmService.getRealAlarmList(alarmType, operator,state, pageIndex, pageSize));
     }
 
     @ApiOperation(value = "告警信息新增", notes = "告警信息新增")

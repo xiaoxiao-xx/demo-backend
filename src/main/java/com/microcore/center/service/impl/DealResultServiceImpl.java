@@ -24,13 +24,15 @@ public class DealResultServiceImpl implements DealResultService {
     private PsmDealResMapper psmDealResMapper;
 
     @Override
-    public PageInfo<PsmDealResVo> getDealResultList(String alarmType, Integer pageIndex, Integer pageSize) {
+    public PageInfo<PsmDealResVo> getDealResultList(String alarmType,String dealState, Integer pageIndex, Integer pageSize) {
         PsmDealResExample example = new PsmDealResExample();
         PsmDealResExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotEmpty(alarmType)) {
             criteria.andAlarmTypeEqualTo(alarmType);
         }
-
+        if (StringUtils.isNotEmpty(dealState)) {
+            criteria.andDealStateEqualTo(dealState);
+        }
         PageInfo<PsmDealRes> psmDealResPageInfo = PageHelper.startPage(pageIndex, pageSize)
                 .doSelectPageInfo(() -> psmDealResMapper.selectByExample(example));
 
@@ -63,5 +65,19 @@ public class DealResultServiceImpl implements DealResultService {
         psmDealResMapper.insert(vo);
         return ResultVo.ok();
     }
+
+	@Override
+	public ResultVo deal(PsmDealResVo dealResVo) {
+		
+		PsmDealRes psmDealRes = psmDealResMapper.selectByPrimaryKey(dealResVo.getId());
+		if(psmDealRes==null) {
+			return ResultVo.fail("非法数据！");
+		}
+		
+		/*psmDealRes.setDealState(dealState);
+		psmDealRes.set*/
+		
+		return ResultVo.ok();
+	}
 
 }
