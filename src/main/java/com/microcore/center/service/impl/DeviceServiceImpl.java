@@ -12,6 +12,9 @@ import com.microcore.center.service.DeviceService;
 import com.microcore.center.service.ParaDefineService;
 import com.microcore.center.vo.PsmDeviceVo;
 import com.microcore.center.vo.ResultVo;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,12 +35,83 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private ParaDefineService paraDefineService;
 
-    private List<String> locationList = new ArrayList<>();
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @Setter
+    private static class Point {
+
+        Point() {
+        }
+
+        Point(Integer x, Integer y) {
+            setX(x);
+            setY(y);
+        }
+
+        /**
+         * X坐标
+         */
+        private Integer x;
+
+        /**
+         * Y坐标
+         */
+        private Integer y;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    private static class Area {
+
+        Area() {
+        }
+
+        Area(String name, Point p1, Point p2) {
+            setName(name);
+            setP1(p1);
+            setP2(p2);
+        }
+
+        /**
+         * 区域名
+         */
+        private String name;
+
+        /**
+         * 左上角坐标
+         */
+        private Point p1;
+
+        /**
+         * 右下角坐标
+         */
+        private Point p2;
+    }
+
+    private List<Area> areaList = new ArrayList<>(3);
 
     {
-        locationList.add("教学楼");
-        locationList.add("篮球场");
-        locationList.add("仓库");
+        areaList.add(new Area("办公楼", new Point(31, 41), new Point(107, 118)));
+        areaList.add(new Area("教师宿舍", new Point(560, 89), new Point(628, 143)));
+        areaList.add(new Area("生物园地", new Point(634, 149), new Point(762, 197)));
+        areaList.add(new Area("篮球场", new Point(279, 82), new Point(451, 168)));
+        areaList.add(new Area("少年宫", new Point(31, 129), new Point(107, 200)));
+    }
+
+    private String getDeviceLocation(Point point) {
+        Integer x = point.getX();
+        Integer y = point.getY();
+
+        for (Area area : areaList) {
+            Point p1 = area.getP1();
+            Point p2 = area.getP2();
+
+            if (x >= p1.getX() && x <= p2.getX()
+                    && y >= p1.getY() && y <= p2.getY()) {
+                return area.getName();
+            }
+        }
+        return "";
     }
 
     public PageInfo<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal,
@@ -59,10 +133,14 @@ public class DeviceServiceImpl implements DeviceService {
 
         List<PsmDeviceDto> deviceDtoList = listPo2VO(pageInfo.getList(), PsmDeviceDto.class);
 
-        int i = 0;
         for (PsmDeviceDto device : deviceDtoList) {
-            device.setDeviceLocation(locationList.get(i));
-            i = (i + 1) % locationList.size();
+            String xy = device.getPositionXy();
+            String[] xys = xy.split(",");
+            Integer x = Integer.parseInt(xys[0]);
+            Integer y = Integer.parseInt(xys[1]);
+            Point point = new Point(x, y);
+            String location = getDeviceLocation(point);
+            device.setDeviceLocation(location);
         }
 
         PageInfo<PsmDeviceDto> deviceDtoPageInfo = po2VO(pageInfo, PageInfo.class);

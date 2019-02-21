@@ -11,6 +11,8 @@ public interface ScheduleConfigService {
 
     ResultVo delete(String id);
 
-    ResultVo getScheduleConfigList();
+    ResultVo getScheduleConfigList(Integer pageIndex, Integer pageSize);
+
+    void batchDelete(String idList);
 
 }

@@ -36,7 +36,7 @@ public class DeviceController {
     }
 
     @PostMapping("batchDelete")
-    public ResultVo batchDelete(@RequestBody String idList) {
+    public ResultVo batchDelete(@RequestParam String idList) {
         return deviceService.batchDelete(idList);
     }
 

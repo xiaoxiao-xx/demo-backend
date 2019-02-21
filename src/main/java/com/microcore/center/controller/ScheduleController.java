@@ -6,6 +6,7 @@ import com.microcore.center.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,9 +32,16 @@ public class ScheduleController {
         return ResultVo.ok();
     }
 
+    @PostMapping("batchDelete")
+    public ResultVo batchDeleteConfig(@RequestParam String idList) {
+        scheduleConfigService.batchDelete(idList);
+        return ResultVo.ok();
+    }
+
     @PostMapping("getScheduleConfigList")
-    public ResultVo getScheduleConfigList() {
-        return scheduleConfigService.getScheduleConfigList();
+    public ResultVo getScheduleConfigList(@RequestParam Integer pageIndex,
+                                          @RequestParam Integer pageSize) {
+        return scheduleConfigService.getScheduleConfigList(pageIndex, pageSize);
     }
 
 }
