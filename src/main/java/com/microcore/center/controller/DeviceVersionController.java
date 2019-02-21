@@ -50,8 +50,8 @@ public class DeviceVersionController {
     }
 
     @GetMapping("getVersion")
-    public ResultVo getVersion(){
-        return deviceVersionService.getVersion();
+    public ResultVo getVersion(@RequestParam String devTypeCode){
+        return deviceVersionService.getVersion(devTypeCode);
     }
 
 }
