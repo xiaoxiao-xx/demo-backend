@@ -1,5 +1,7 @@
 package com.microcore.center.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class PsmScheduleConfig {
@@ -31,11 +33,13 @@ public class PsmScheduleConfig {
     /**
      * 开始时间：只有时分秒hh24miss
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "GMT+8")
     private Date startTime;
 
     /**
      * 结束时间：只有时分秒hh24miss
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
