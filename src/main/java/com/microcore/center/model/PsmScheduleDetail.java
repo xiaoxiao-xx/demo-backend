@@ -24,6 +24,11 @@ public class PsmScheduleDetail {
     private Integer number;
 
     /**
+     * 日期
+     */
+    private Date someDate;
+
+    /**
      * 开始时间：完整时间yyyymmddhh24miss
      */
     private Date startTime;
@@ -110,6 +115,22 @@ public class PsmScheduleDetail {
      */
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    /**
+     * 日期
+     * @return some_date 日期
+     */
+    public Date getSomeDate() {
+        return someDate;
+    }
+
+    /**
+     * 日期
+     * @param someDate 日期
+     */
+    public void setSomeDate(Date someDate) {
+        this.someDate = someDate;
     }
 
     /**
