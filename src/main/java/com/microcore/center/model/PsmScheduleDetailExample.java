@@ -458,6 +458,66 @@ public class PsmScheduleDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andSomeDateIsNull() {
+            addCriterion("some_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateIsNotNull() {
+            addCriterion("some_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateEqualTo(Date value) {
+            addCriterionForJDBCDate("some_date =", value, "someDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateNotEqualTo(Date value) {
+            addCriterionForJDBCDate("some_date <>", value, "someDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateGreaterThan(Date value) {
+            addCriterionForJDBCDate("some_date >", value, "someDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("some_date >=", value, "someDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateLessThan(Date value) {
+            addCriterionForJDBCDate("some_date <", value, "someDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("some_date <=", value, "someDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateIn(List<Date> values) {
+            addCriterionForJDBCDate("some_date in", values, "someDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateNotIn(List<Date> values) {
+            addCriterionForJDBCDate("some_date not in", values, "someDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("some_date between", value1, value2, "someDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSomeDateNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("some_date not between", value1, value2, "someDate");
+            return (Criteria) this;
+        }
+
         public Criteria andStartTimeIsNull() {
             addCriterion("start_time is null");
             return (Criteria) this;

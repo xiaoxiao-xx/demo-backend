@@ -4,6 +4,7 @@ import com.microcore.center.mapper.PsmScheduleDetailMapper;
 import com.microcore.center.model.PsmScheduleDetail;
 import com.microcore.center.model.PsmScheduleDetailExample;
 import com.microcore.center.service.ScheduleDetailService;
+import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.PsmScheduleDetailVo;
 import com.microcore.center.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,14 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
     @Override
     public ResultVo add(PsmScheduleDetailVo vo) {
-        psmScheduleDetailMapper.insertSelective(vo);
+        addDetail(vo);
         return ResultVo.ok();
+    }
+
+    @Override
+    public void addDetail(PsmScheduleDetail detail) {
+        detail.setId(CommonUtil.getUUID());
+        psmScheduleDetailMapper.insertSelective(detail);
     }
 
     @Override

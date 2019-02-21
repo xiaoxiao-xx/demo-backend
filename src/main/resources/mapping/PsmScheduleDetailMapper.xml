@@ -6,6 +6,7 @@
     <result column="object_type" property="objectType" jdbcType="VARCHAR" />
     <result column="object_id" property="objectId" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="some_date" property="someDate" jdbcType="DATE" />
     <result column="start_time" property="startTime" jdbcType="DATE" />
     <result column="end_time" property="endTime" jdbcType="DATE" />
     <result column="address" property="address" jdbcType="VARCHAR" />
@@ -71,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, object_type, object_id, number, start_time, end_time, address, event, teacher
+    id, object_type, object_id, number, some_date, start_time, end_time, address, event, 
+    teacher
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.PsmScheduleDetailExample" >
     select
@@ -106,13 +108,13 @@
   </delete>
   <insert id="insert" parameterType="com.microcore.center.model.PsmScheduleDetail" >
     insert into psm_schedule_detail_t (id, object_type, object_id, 
-      number, start_time, end_time, 
-      address, event, teacher
-      )
+      number, some_date, start_time, 
+      end_time, address, event, 
+      teacher)
     values (#{id,jdbcType=VARCHAR}, #{objectType,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}, 
-      #{number,jdbcType=INTEGER}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, 
-      #{address,jdbcType=VARCHAR}, #{event,jdbcType=VARCHAR}, #{teacher,jdbcType=VARCHAR}
-      )
+      #{number,jdbcType=INTEGER}, #{someDate,jdbcType=DATE}, #{startTime,jdbcType=DATE}, 
+      #{endTime,jdbcType=DATE}, #{address,jdbcType=VARCHAR}, #{event,jdbcType=VARCHAR}, 
+      #{teacher,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.PsmScheduleDetail" >
     insert into psm_schedule_detail_t
@@ -128,6 +130,9 @@
       </if>
       <if test="number != null" >
         number,
+      </if>
+      <if test="someDate != null" >
+        some_date,
       </if>
       <if test="startTime != null" >
         start_time,
@@ -157,6 +162,9 @@
       </if>
       <if test="number != null" >
         #{number,jdbcType=INTEGER},
+      </if>
+      <if test="someDate != null" >
+        #{someDate,jdbcType=DATE},
       </if>
       <if test="startTime != null" >
         #{startTime,jdbcType=DATE},
@@ -196,6 +204,9 @@
       <if test="record.number != null" >
         number = #{record.number,jdbcType=INTEGER},
       </if>
+      <if test="record.someDate != null" >
+        some_date = #{record.someDate,jdbcType=DATE},
+      </if>
       <if test="record.startTime != null" >
         start_time = #{record.startTime,jdbcType=DATE},
       </if>
@@ -222,6 +233,7 @@
       object_type = #{record.objectType,jdbcType=VARCHAR},
       object_id = #{record.objectId,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=INTEGER},
+      some_date = #{record.someDate,jdbcType=DATE},
       start_time = #{record.startTime,jdbcType=DATE},
       end_time = #{record.endTime,jdbcType=DATE},
       address = #{record.address,jdbcType=VARCHAR},
@@ -242,6 +254,9 @@
       </if>
       <if test="number != null" >
         number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="someDate != null" >
+        some_date = #{someDate,jdbcType=DATE},
       </if>
       <if test="startTime != null" >
         start_time = #{startTime,jdbcType=DATE},
@@ -266,6 +281,7 @@
     set object_type = #{objectType,jdbcType=VARCHAR},
       object_id = #{objectId,jdbcType=VARCHAR},
       number = #{number,jdbcType=INTEGER},
+      some_date = #{someDate,jdbcType=DATE},
       start_time = #{startTime,jdbcType=DATE},
       end_time = #{endTime,jdbcType=DATE},
       address = #{address,jdbcType=VARCHAR},

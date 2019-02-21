@@ -42,8 +42,7 @@ public class RealAlarmController {
     public ResultVo delete(@RequestBody String id) {
         return realAlarmService.delete(id);
     }
-    
-    
+
     @ApiOperation(value = "告警信息处理", notes = "告警信息处理")
     @PostMapping("dealRealAlarm")
     public ResultVo dealRealAlarm(@RequestBody PsmRealAlarmVo vo) {
