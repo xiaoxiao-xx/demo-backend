@@ -17,6 +17,7 @@ public class SlsCenterApplication {
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(SlsCenterApplication.class).web(true).run(args);
 	}
+
 	@Bean
 	RestTemplate restTemplate() {
 		return new RestTemplate();
