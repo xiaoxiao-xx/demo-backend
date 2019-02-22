@@ -161,6 +161,22 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
 
                 resultList.add(detail);
             }
+        } else if ("W".equals(repeatType)) {
+            for (int i = 0; i < 10; i++) {
+                Date nextMonth = addOneWeek(detail.getSomeDate());
+                detail.setSomeDate(nextMonth);
+
+                resultList.add(detail);
+            }
+        } else if ("Y".equals(repeatType)) {
+            for (int i = 0; i < 10; i++) {
+                Date nextMonth = addOneYear(detail.getSomeDate());
+                detail.setSomeDate(nextMonth);
+
+                resultList.add(detail);
+            }
+        } else if ("N".equals(repeatType)) {
+            // do nothing
         }
 
         return resultList;
@@ -179,12 +195,27 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
         return ResultVo.ok();
     }
 
+    private Date addOneYear(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.YEAR, 1);
+        return c.getTime();
+    }
+
     private Date addOneMonth(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        c.add(Calendar.MONTH, 1);  // 今天+1天
+        c.add(Calendar.MONTH, 1);
         return c.getTime();
     }
+
+    private Date addOneWeek(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.WEEK_OF_MONTH, 1);
+        return c.getTime();
+    }
+
 
     private Date addOneDay(Date date) {
         Calendar c = Calendar.getInstance();
