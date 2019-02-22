@@ -3,6 +3,7 @@ package com.microcore.center.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.microcore.center.mapper.PsmDeviceVersionMapper;
+import com.microcore.center.model.PsmDeviceVersion;
 import com.microcore.center.model.PsmDeviceVersionExample;
 import com.microcore.center.service.CommonService;
 import com.microcore.center.service.DeviceVersionService;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +65,14 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
 
     @Override
     public ResultVo getDeviceVersion(String id) {
-        return ResultVo.ok(deviceVersionMapper.selectByPrimaryKey(id));
+        return ResultVo.ok(getDeviceVersionById(id));
     }
+
+    @Override
+    public PsmDeviceVersion getDeviceVersionById(String id) {
+        return deviceVersionMapper.selectByPrimaryKey(id);
+    }
+
 
     @Autowired
     private CommonService commonService;
@@ -74,14 +80,12 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
     @Override
     public ResultVo getVersion(String devTypeCode) {
         Map<String, Object> prams = new HashMap<>();
-        String sql = "SELECT DISTINCT device_version from psm_device_version_t where devtype_code = #{devTypeCode}";
+        String sql = "select * from psm_device_version_t "
+                + "where devtype_code = #{devTypeCode} "
+                + "group by device_version";
         prams.put("sql", sql);
         prams.put("devTypeCode", devTypeCode);
         List<Map<String, Object>> list = commonService.executeSelectSQL(prams);
-//        List<String> li = new ArrayList<>();
-//        for (Map<String, Object> map : list) {
-//            li.add((String) map.get("device_version"));
-//        }
         return ResultVo.ok(list);
     }
 
@@ -98,6 +102,15 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
         }
 
         return ResultVo.ok();
+    }
+
+    @Override
+    public String getDeviceVersionStringById(String id) {
+        PsmDeviceVersion deviceVersion = getDeviceVersionById(id);
+        if (deviceVersion == null) {
+            return "";
+        }
+        return deviceVersion.getDeviceVersion();
     }
 
 }

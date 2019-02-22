@@ -9,6 +9,7 @@ import com.microcore.center.model.PsmDevice;
 import com.microcore.center.model.PsmDeviceExample;
 import com.microcore.center.model.PsmParaDefine;
 import com.microcore.center.service.DeviceService;
+import com.microcore.center.service.DeviceVersionService;
 import com.microcore.center.service.ParaDefineService;
 import com.microcore.center.vo.PsmDeviceVo;
 import com.microcore.center.vo.ResultVo;
@@ -34,6 +35,9 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Autowired
     private ParaDefineService paraDefineService;
+
+    @Autowired
+    private DeviceVersionService deviceVersionService;
 
     @Data
     @EqualsAndHashCode(callSuper = false)
@@ -132,8 +136,8 @@ public class DeviceServiceImpl implements DeviceService {
                 .doSelectPageInfo(() -> psmDeviceMapper.selectByExample(example));
 
         List<PsmDeviceDto> deviceDtoList = listPo2VO(pageInfo.getList(), PsmDeviceDto.class);
-
         for (PsmDeviceDto device : deviceDtoList) {
+            // 设置DeviceLocation
             String xy = device.getPositionXy();
             String[] xys = xy.split(",");
             Integer x = Integer.parseInt(xys[0]);
@@ -141,6 +145,9 @@ public class DeviceServiceImpl implements DeviceService {
             Point point = new Point(x, y);
             String location = getDeviceLocation(point);
             device.setDeviceLocation(location);
+
+            // 设置DeviceVersion
+            device.setDeviceVersion(deviceVersionService.getDeviceVersionStringById(device.getDeviceVersion()));
         }
 
         PageInfo<PsmDeviceDto> deviceDtoPageInfo = po2VO(pageInfo, PageInfo.class);
