@@ -100,4 +100,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
 
+	@Override
+	public ResultVo list() {
+		PsmPersonInfoExample example = new PsmPersonInfoExample();
+        PsmPersonInfoExample.Criteria criteria = example.createCriteria();
+		return ResultVo.ok(psmPersonInfoMapper.selectByExample(example));
+	}
+
+
 }

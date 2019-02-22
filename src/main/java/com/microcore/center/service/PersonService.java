@@ -15,4 +15,5 @@ public interface PersonService {
     ResultVo importantCare(PersonInfoVo personInfoVo);
 
     ResultVo imageAcquisition(PersonInfoVo personInfoVo);
+    ResultVo list();
 }

@@ -36,6 +36,11 @@ public class PersonInfoController {
                                   @RequestParam(name = "pageSize") Integer pageSize){
         return personService.getPersonList(name, deptId, pageIndex, pageSize);
     }
+    
+    @GetMapping("list")
+    public ResultVo list(){
+        return personService.list();
+    }
 
 	@PostMapping("importantCare")
 	public ResultVo importantCare(@RequestBody PersonInfoVo personInfoVo) {
