@@ -11,6 +11,21 @@ public class PsmScheduleConfig {
     private String id;
 
     /**
+     * 配置类型
+     */
+    private String configType;
+
+    /**
+     * 是否选择个人,是否
+     */
+    private String selectFlag;
+
+    /**
+     * 团队ID
+     */
+    private String teamId;
+
+    /**
      * 团队或个人标志
      */
     private String objectType;
@@ -91,6 +106,54 @@ public class PsmScheduleConfig {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 配置类型
+     * @return config_type 配置类型
+     */
+    public String getConfigType() {
+        return configType;
+    }
+
+    /**
+     * 配置类型
+     * @param configType 配置类型
+     */
+    public void setConfigType(String configType) {
+        this.configType = configType == null ? null : configType.trim();
+    }
+
+    /**
+     * 是否选择个人,是否
+     * @return select_flag 是否选择个人,是否
+     */
+    public String getSelectFlag() {
+        return selectFlag;
+    }
+
+    /**
+     * 是否选择个人,是否
+     * @param selectFlag 是否选择个人,是否
+     */
+    public void setSelectFlag(String selectFlag) {
+        this.selectFlag = selectFlag == null ? null : selectFlag.trim();
+    }
+
+    /**
+     * 团队ID
+     * @return team_id 团队ID
+     */
+    public String getTeamId() {
+        return teamId;
+    }
+
+    /**
+     * 团队ID
+     * @param teamId 团队ID
+     */
+    public void setTeamId(String teamId) {
+        this.teamId = teamId == null ? null : teamId.trim();
     }
 
     /**

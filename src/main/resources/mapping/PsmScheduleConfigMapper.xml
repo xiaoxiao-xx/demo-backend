@@ -3,6 +3,9 @@
 <mapper namespace="com.microcore.center.mapper.PsmScheduleConfigMapper" >
   <resultMap id="BaseResultMap" type="com.microcore.center.model.PsmScheduleConfig" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="config_type" property="configType" jdbcType="VARCHAR" />
+    <result column="select_flag" property="selectFlag" jdbcType="VARCHAR" />
+    <result column="team_id" property="teamId" jdbcType="VARCHAR" />
     <result column="object_type" property="objectType" jdbcType="VARCHAR" />
     <result column="object_id" property="objectId" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="INTEGER" />
@@ -76,8 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, object_type, object_id, number, some_date, start_time, end_time, address, event, 
-    teacher, repeat_type, check_start_time, check_end_time, check_flag
+    id, config_type, select_flag, team_id, object_type, object_id, number, some_date, 
+    start_time, end_time, address, event, teacher, repeat_type, check_start_time, check_end_time, 
+    check_flag
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.PsmScheduleConfigExample" >
     select
@@ -111,12 +115,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.microcore.center.model.PsmScheduleConfig" >
-    insert into psm_schedule_config_t (id, object_type, object_id, 
+    insert into psm_schedule_config_t (id, config_type, select_flag, 
+      team_id, object_type, object_id, 
       number, some_date, start_time, 
       end_time, address, event, 
       teacher, repeat_type, check_start_time, 
       check_end_time, check_flag)
-    values (#{id,jdbcType=VARCHAR}, #{objectType,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{configType,jdbcType=VARCHAR}, #{selectFlag,jdbcType=VARCHAR}, 
+      #{teamId,jdbcType=VARCHAR}, #{objectType,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}, 
       #{number,jdbcType=INTEGER}, #{someDate,jdbcType=DATE}, #{startTime,jdbcType=TIME}, 
       #{endTime,jdbcType=TIME}, #{address,jdbcType=VARCHAR}, #{event,jdbcType=VARCHAR}, 
       #{teacher,jdbcType=VARCHAR}, #{repeatType,jdbcType=VARCHAR}, #{checkStartTime,jdbcType=TIMESTAMP}, 
@@ -127,6 +133,15 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="configType != null" >
+        config_type,
+      </if>
+      <if test="selectFlag != null" >
+        select_flag,
+      </if>
+      <if test="teamId != null" >
+        team_id,
       </if>
       <if test="objectType != null" >
         object_type,
@@ -171,6 +186,15 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="configType != null" >
+        #{configType,jdbcType=VARCHAR},
+      </if>
+      <if test="selectFlag != null" >
+        #{selectFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="teamId != null" >
+        #{teamId,jdbcType=VARCHAR},
       </if>
       <if test="objectType != null" >
         #{objectType,jdbcType=VARCHAR},
@@ -225,6 +249,15 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.configType != null" >
+        config_type = #{record.configType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.selectFlag != null" >
+        select_flag = #{record.selectFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teamId != null" >
+        team_id = #{record.teamId,jdbcType=VARCHAR},
+      </if>
       <if test="record.objectType != null" >
         object_type = #{record.objectType,jdbcType=VARCHAR},
       </if>
@@ -272,6 +305,9 @@
   <update id="updateByExample" parameterType="map" >
     update psm_schedule_config_t
     set id = #{record.id,jdbcType=VARCHAR},
+      config_type = #{record.configType,jdbcType=VARCHAR},
+      select_flag = #{record.selectFlag,jdbcType=VARCHAR},
+      team_id = #{record.teamId,jdbcType=VARCHAR},
       object_type = #{record.objectType,jdbcType=VARCHAR},
       object_id = #{record.objectId,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=INTEGER},
@@ -292,6 +328,15 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.PsmScheduleConfig" >
     update psm_schedule_config_t
     <set >
+      <if test="configType != null" >
+        config_type = #{configType,jdbcType=VARCHAR},
+      </if>
+      <if test="selectFlag != null" >
+        select_flag = #{selectFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="teamId != null" >
+        team_id = #{teamId,jdbcType=VARCHAR},
+      </if>
       <if test="objectType != null" >
         object_type = #{objectType,jdbcType=VARCHAR},
       </if>
@@ -336,7 +381,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmScheduleConfig" >
     update psm_schedule_config_t
-    set object_type = #{objectType,jdbcType=VARCHAR},
+    set config_type = #{configType,jdbcType=VARCHAR},
+      select_flag = #{selectFlag,jdbcType=VARCHAR},
+      team_id = #{teamId,jdbcType=VARCHAR},
+      object_type = #{objectType,jdbcType=VARCHAR},
       object_id = #{objectId,jdbcType=VARCHAR},
       number = #{number,jdbcType=INTEGER},
       some_date = #{someDate,jdbcType=DATE},

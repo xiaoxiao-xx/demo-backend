@@ -54,9 +54,9 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
         if (StringUtils.isNotEmpty(version)) {
             criteria.andDeviceVersionEqualTo(version);
         }
-        // 按类型中文查
+        // 按类型查
         if (StringUtils.isNotEmpty(type)) {
-            criteria.andDevtypeValEqualTo(type);
+            criteria.andDevtypeCodeEqualTo(type);
         }
         PageInfo<Object> pageInfo = PageHelper.startPage(pageIndex, pageSize)
                 .doSelectPageInfo(() -> deviceVersionMapper.selectByExample(example));

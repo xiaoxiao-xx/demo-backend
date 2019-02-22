@@ -26,23 +26,27 @@ public class FileController {
 
 	@Autowired
 	private FileService fileService ;
-	
+
 	@PostMapping("fileUpload")
 	@ResponseBody
 	public ResultVo fileUpload(@RequestParam("fileName") MultipartFile file) {
 		if (file.isEmpty()) {
 			return ResultVo.fail("文件不能为空！");
 		}
-		String fileName = file.getOriginalFilename();
-		String path = filePath;
+
+		// 用UUID重新命名上传的文件
 		String fileId = CommonUtil.getUUID();
+		String fileName = file.getOriginalFilename();
 		String newFileName = fileId + "." + getSuffix(fileName);
-		File dest = new File(path + "/" + newFileName);
-		if (!dest.getParentFile().exists()) { // 判断文件父目录是否存在
-			dest.getParentFile().mkdir();
+		File destFile = new File(filePath + "/" + newFileName);
+
+		if (!destFile.getParentFile().exists()) { // 判断文件父目录是否存在
+			destFile.getParentFile().mkdir();
 		}
+
 		try {
-			file.transferTo(dest); // 保存文件
+			file.transferTo(destFile); // 保存文件
+
 			PsmFile psmFile = new PsmFile();
 			psmFile.setId(fileId);
 			psmFile.setOldFileName(fileName);
@@ -50,15 +54,13 @@ public class FileController {
 			psmFile.setStoreFileName(newFileName);
 			psmFile.setCrtDate(CommonUtil.getCurrentTime());
 			fileService.add(psmFile);
+
 			return ResultVo.ok(newFileName);
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-			return ResultVo.fail("文件上传失败！");
-		} catch (IOException e) {
+		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 			return ResultVo.fail("文件上传失败！");
 		}
-	}
+    }
 
 	private String getSuffix(String fileName) {
 		String[] names = fileName.split("\\.");

@@ -68,7 +68,15 @@ public class UserServiceImpl implements UserService {
 		psmUserMapper.updateByPrimaryKey(psmUser);
 	}
 
-	@Override
+    @Override
+    public List<PsmUser> getUserListByOrgId(String orgId) {
+		PsmUserExample example = new PsmUserExample();
+		PsmUserExample.Criteria criteria = example.createCriteria();
+		criteria.andOrgIdEqualTo(orgId);
+		return psmUserMapper.selectByExample(example);
+    }
+
+    @Override
 	public String getPsmUserRealName(String userName) {
 		PsmUser psmUser = this.getPsmUser(userName);
 		if (psmUser != null) {

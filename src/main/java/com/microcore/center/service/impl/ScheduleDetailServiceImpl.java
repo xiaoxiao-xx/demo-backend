@@ -47,6 +47,7 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
     @Override
     public ResultVo getScheduleDetailList(String objectType) {
         PsmScheduleDetailExample example = new PsmScheduleDetailExample();
+        example.setOrderByClause("start_time asc");
         PsmScheduleDetailExample.Criteria criteria = example.createCriteria();
         criteria.andObjectTypeLike("%" + objectType.trim() + "%");
         List<PsmScheduleDetail> psmScheduleDetails = psmScheduleDetailMapper.selectByExample(example);

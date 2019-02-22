@@ -1,6 +1,7 @@
 package com.microcore.center.controller;
 
 import com.microcore.center.service.ScheduleConfigService;
+import com.microcore.center.service.ScheduleDetailService;
 import com.microcore.center.vo.PsmScheduleConfigVo;
 import com.microcore.center.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ public class ScheduleController {
 
     @Autowired
     private ScheduleConfigService scheduleConfigService;
+
+    @Autowired
+    private ScheduleDetailService scheduleDetailService;
 
     @PostMapping("addConfig")
     public ResultVo addConfig(@RequestBody PsmScheduleConfigVo vo) {
@@ -47,5 +51,9 @@ public class ScheduleController {
         return scheduleConfigService.setRepeatType(id, repeatType);
     }
 
+    @GetMapping("getScheduleDetailList")
+    public ResultVo getScheduleDetailList(@RequestParam String objectType) {
+        return scheduleDetailService.getScheduleDetailList(objectType);
+    }
 
 }

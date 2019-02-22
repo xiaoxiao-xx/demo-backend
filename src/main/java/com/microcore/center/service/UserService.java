@@ -2,20 +2,24 @@ package com.microcore.center.service;
 
 import com.microcore.center.model.PsmUser;
 
+import java.util.List;
+
 public interface UserService {
 	
-	public PsmUser getPsmUser(String userName);
+	PsmUser getPsmUser(String userName);
 
-	public String getPsmUserRealName(String userName);
+	String getPsmUserRealName(String userName);
 	
-	public PsmUser getPsmUserById(String id);
+	PsmUser getPsmUserById(String id);
 
-	public void add(PsmUser psmUser);
+	void add(PsmUser psmUser);
 
-	public void delete(String userName);
+	void delete(String userName);
 
-	public void deleteById(String id);
+	void deleteById(String id);
 
-	public void update(PsmUser psmUser);
+	void update(PsmUser psmUser);
+
+	List<PsmUser> getUserListByOrgId(String orgId);
 
 }

@@ -284,6 +284,216 @@ public class PsmScheduleConfigExample {
             return (Criteria) this;
         }
 
+        public Criteria andConfigTypeIsNull() {
+            addCriterion("config_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeIsNotNull() {
+            addCriterion("config_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeEqualTo(String value) {
+            addCriterion("config_type =", value, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeNotEqualTo(String value) {
+            addCriterion("config_type <>", value, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeGreaterThan(String value) {
+            addCriterion("config_type >", value, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("config_type >=", value, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeLessThan(String value) {
+            addCriterion("config_type <", value, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeLessThanOrEqualTo(String value) {
+            addCriterion("config_type <=", value, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeLike(String value) {
+            addCriterion("config_type like", value, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeNotLike(String value) {
+            addCriterion("config_type not like", value, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeIn(List<String> values) {
+            addCriterion("config_type in", values, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeNotIn(List<String> values) {
+            addCriterion("config_type not in", values, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeBetween(String value1, String value2) {
+            addCriterion("config_type between", value1, value2, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfigTypeNotBetween(String value1, String value2) {
+            addCriterion("config_type not between", value1, value2, "configType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagIsNull() {
+            addCriterion("select_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagIsNotNull() {
+            addCriterion("select_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagEqualTo(String value) {
+            addCriterion("select_flag =", value, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagNotEqualTo(String value) {
+            addCriterion("select_flag <>", value, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagGreaterThan(String value) {
+            addCriterion("select_flag >", value, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagGreaterThanOrEqualTo(String value) {
+            addCriterion("select_flag >=", value, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagLessThan(String value) {
+            addCriterion("select_flag <", value, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagLessThanOrEqualTo(String value) {
+            addCriterion("select_flag <=", value, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagLike(String value) {
+            addCriterion("select_flag like", value, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagNotLike(String value) {
+            addCriterion("select_flag not like", value, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagIn(List<String> values) {
+            addCriterion("select_flag in", values, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagNotIn(List<String> values) {
+            addCriterion("select_flag not in", values, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagBetween(String value1, String value2) {
+            addCriterion("select_flag between", value1, value2, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSelectFlagNotBetween(String value1, String value2) {
+            addCriterion("select_flag not between", value1, value2, "selectFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdIsNull() {
+            addCriterion("team_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdIsNotNull() {
+            addCriterion("team_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdEqualTo(String value) {
+            addCriterion("team_id =", value, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdNotEqualTo(String value) {
+            addCriterion("team_id <>", value, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdGreaterThan(String value) {
+            addCriterion("team_id >", value, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdGreaterThanOrEqualTo(String value) {
+            addCriterion("team_id >=", value, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdLessThan(String value) {
+            addCriterion("team_id <", value, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdLessThanOrEqualTo(String value) {
+            addCriterion("team_id <=", value, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdLike(String value) {
+            addCriterion("team_id like", value, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdNotLike(String value) {
+            addCriterion("team_id not like", value, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdIn(List<String> values) {
+            addCriterion("team_id in", values, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdNotIn(List<String> values) {
+            addCriterion("team_id not in", values, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdBetween(String value1, String value2) {
+            addCriterion("team_id between", value1, value2, "teamId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIdNotBetween(String value1, String value2) {
+            addCriterion("team_id not between", value1, value2, "teamId");
+            return (Criteria) this;
+        }
+
         public Criteria andObjectTypeIsNull() {
             addCriterion("object_type is null");
             return (Criteria) this;
