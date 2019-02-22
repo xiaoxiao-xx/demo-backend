@@ -63,6 +63,21 @@ public class PsmScheduleConfig {
     private String repeatType;
 
     /**
+     * 考核开始时间
+     */
+    private Date checkStartTime;
+
+    /**
+     * 考核结束时间
+     */
+    private Date checkEndTime;
+
+    /**
+     * 考核标识，是否
+     */
+    private String checkFlag;
+
+    /**
      * 
      * @return id 
      */
@@ -236,5 +251,53 @@ public class PsmScheduleConfig {
      */
     public void setRepeatType(String repeatType) {
         this.repeatType = repeatType == null ? null : repeatType.trim();
+    }
+
+    /**
+     * 考核开始时间
+     * @return check_start_time 考核开始时间
+     */
+    public Date getCheckStartTime() {
+        return checkStartTime;
+    }
+
+    /**
+     * 考核开始时间
+     * @param checkStartTime 考核开始时间
+     */
+    public void setCheckStartTime(Date checkStartTime) {
+        this.checkStartTime = checkStartTime;
+    }
+
+    /**
+     * 考核结束时间
+     * @return check_end_time 考核结束时间
+     */
+    public Date getCheckEndTime() {
+        return checkEndTime;
+    }
+
+    /**
+     * 考核结束时间
+     * @param checkEndTime 考核结束时间
+     */
+    public void setCheckEndTime(Date checkEndTime) {
+        this.checkEndTime = checkEndTime;
+    }
+
+    /**
+     * 考核标识，是否
+     * @return check_flag 考核标识，是否
+     */
+    public String getCheckFlag() {
+        return checkFlag;
+    }
+
+    /**
+     * 考核标识，是否
+     * @param checkFlag 考核标识，是否
+     */
+    public void setCheckFlag(String checkFlag) {
+        this.checkFlag = checkFlag == null ? null : checkFlag.trim();
     }
 }

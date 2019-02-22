@@ -13,6 +13,9 @@
     <result column="event" property="event" jdbcType="VARCHAR" />
     <result column="teacher" property="teacher" jdbcType="VARCHAR" />
     <result column="repeat_type" property="repeatType" jdbcType="VARCHAR" />
+    <result column="check_start_time" property="checkStartTime" jdbcType="TIMESTAMP" />
+    <result column="check_end_time" property="checkEndTime" jdbcType="TIMESTAMP" />
+    <result column="check_flag" property="checkFlag" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, object_type, object_id, number, some_date, start_time, end_time, address, event, 
-    teacher, repeat_type
+    teacher, repeat_type, check_start_time, check_end_time, check_flag
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.PsmScheduleConfigExample" >
     select
@@ -111,11 +114,13 @@
     insert into psm_schedule_config_t (id, object_type, object_id, 
       number, some_date, start_time, 
       end_time, address, event, 
-      teacher, repeat_type)
+      teacher, repeat_type, check_start_time, 
+      check_end_time, check_flag)
     values (#{id,jdbcType=VARCHAR}, #{objectType,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}, 
       #{number,jdbcType=INTEGER}, #{someDate,jdbcType=DATE}, #{startTime,jdbcType=TIME}, 
       #{endTime,jdbcType=TIME}, #{address,jdbcType=VARCHAR}, #{event,jdbcType=VARCHAR}, 
-      #{teacher,jdbcType=VARCHAR}, #{repeatType,jdbcType=VARCHAR})
+      #{teacher,jdbcType=VARCHAR}, #{repeatType,jdbcType=VARCHAR}, #{checkStartTime,jdbcType=TIMESTAMP}, 
+      #{checkEndTime,jdbcType=TIMESTAMP}, #{checkFlag,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.PsmScheduleConfig" >
     insert into psm_schedule_config_t
@@ -153,6 +158,15 @@
       <if test="repeatType != null" >
         repeat_type,
       </if>
+      <if test="checkStartTime != null" >
+        check_start_time,
+      </if>
+      <if test="checkEndTime != null" >
+        check_end_time,
+      </if>
+      <if test="checkFlag != null" >
+        check_flag,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -187,6 +201,15 @@
       </if>
       <if test="repeatType != null" >
         #{repeatType,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStartTime != null" >
+        #{checkStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkEndTime != null" >
+        #{checkEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkFlag != null" >
+        #{checkFlag,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -232,6 +255,15 @@
       <if test="record.repeatType != null" >
         repeat_type = #{record.repeatType,jdbcType=VARCHAR},
       </if>
+      <if test="record.checkStartTime != null" >
+        check_start_time = #{record.checkStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.checkEndTime != null" >
+        check_end_time = #{record.checkEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.checkFlag != null" >
+        check_flag = #{record.checkFlag,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -249,7 +281,10 @@
       address = #{record.address,jdbcType=VARCHAR},
       event = #{record.event,jdbcType=VARCHAR},
       teacher = #{record.teacher,jdbcType=VARCHAR},
-      repeat_type = #{record.repeatType,jdbcType=VARCHAR}
+      repeat_type = #{record.repeatType,jdbcType=VARCHAR},
+      check_start_time = #{record.checkStartTime,jdbcType=TIMESTAMP},
+      check_end_time = #{record.checkEndTime,jdbcType=TIMESTAMP},
+      check_flag = #{record.checkFlag,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -287,6 +322,15 @@
       <if test="repeatType != null" >
         repeat_type = #{repeatType,jdbcType=VARCHAR},
       </if>
+      <if test="checkStartTime != null" >
+        check_start_time = #{checkStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkEndTime != null" >
+        check_end_time = #{checkEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkFlag != null" >
+        check_flag = #{checkFlag,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -301,7 +345,10 @@
       address = #{address,jdbcType=VARCHAR},
       event = #{event,jdbcType=VARCHAR},
       teacher = #{teacher,jdbcType=VARCHAR},
-      repeat_type = #{repeatType,jdbcType=VARCHAR}
+      repeat_type = #{repeatType,jdbcType=VARCHAR},
+      check_start_time = #{checkStartTime,jdbcType=TIMESTAMP},
+      check_end_time = #{checkEndTime,jdbcType=TIMESTAMP},
+      check_flag = #{checkFlag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

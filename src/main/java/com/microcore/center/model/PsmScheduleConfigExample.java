@@ -943,6 +943,196 @@ public class PsmScheduleConfigExample {
             addCriterion("repeat_type not between", value1, value2, "repeatType");
             return (Criteria) this;
         }
+
+        public Criteria andCheckStartTimeIsNull() {
+            addCriterion("check_start_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeIsNotNull() {
+            addCriterion("check_start_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeEqualTo(Date value) {
+            addCriterion("check_start_time =", value, "checkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeNotEqualTo(Date value) {
+            addCriterion("check_start_time <>", value, "checkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeGreaterThan(Date value) {
+            addCriterion("check_start_time >", value, "checkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("check_start_time >=", value, "checkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeLessThan(Date value) {
+            addCriterion("check_start_time <", value, "checkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeLessThanOrEqualTo(Date value) {
+            addCriterion("check_start_time <=", value, "checkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeIn(List<Date> values) {
+            addCriterion("check_start_time in", values, "checkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeNotIn(List<Date> values) {
+            addCriterion("check_start_time not in", values, "checkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeBetween(Date value1, Date value2) {
+            addCriterion("check_start_time between", value1, value2, "checkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckStartTimeNotBetween(Date value1, Date value2) {
+            addCriterion("check_start_time not between", value1, value2, "checkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeIsNull() {
+            addCriterion("check_end_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeIsNotNull() {
+            addCriterion("check_end_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeEqualTo(Date value) {
+            addCriterion("check_end_time =", value, "checkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeNotEqualTo(Date value) {
+            addCriterion("check_end_time <>", value, "checkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeGreaterThan(Date value) {
+            addCriterion("check_end_time >", value, "checkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("check_end_time >=", value, "checkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeLessThan(Date value) {
+            addCriterion("check_end_time <", value, "checkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeLessThanOrEqualTo(Date value) {
+            addCriterion("check_end_time <=", value, "checkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeIn(List<Date> values) {
+            addCriterion("check_end_time in", values, "checkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeNotIn(List<Date> values) {
+            addCriterion("check_end_time not in", values, "checkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeBetween(Date value1, Date value2) {
+            addCriterion("check_end_time between", value1, value2, "checkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckEndTimeNotBetween(Date value1, Date value2) {
+            addCriterion("check_end_time not between", value1, value2, "checkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagIsNull() {
+            addCriterion("check_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagIsNotNull() {
+            addCriterion("check_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagEqualTo(String value) {
+            addCriterion("check_flag =", value, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagNotEqualTo(String value) {
+            addCriterion("check_flag <>", value, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagGreaterThan(String value) {
+            addCriterion("check_flag >", value, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagGreaterThanOrEqualTo(String value) {
+            addCriterion("check_flag >=", value, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagLessThan(String value) {
+            addCriterion("check_flag <", value, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagLessThanOrEqualTo(String value) {
+            addCriterion("check_flag <=", value, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagLike(String value) {
+            addCriterion("check_flag like", value, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagNotLike(String value) {
+            addCriterion("check_flag not like", value, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagIn(List<String> values) {
+            addCriterion("check_flag in", values, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagNotIn(List<String> values) {
+            addCriterion("check_flag not in", values, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagBetween(String value1, String value2) {
+            addCriterion("check_flag between", value1, value2, "checkFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckFlagNotBetween(String value1, String value2) {
+            addCriterion("check_flag not between", value1, value2, "checkFlag");
+            return (Criteria) this;
+        }
     }
 
     /**
