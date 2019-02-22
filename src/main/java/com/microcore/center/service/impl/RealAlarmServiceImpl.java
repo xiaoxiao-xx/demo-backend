@@ -46,6 +46,7 @@ public class RealAlarmServiceImpl implements RealAlarmService {
         List<PsmRealAlarmVo> list = CommonUtil.listPo2VO(realAlarmPageInfo.getList(), PsmRealAlarmVo.class);
         for (PsmRealAlarmVo psmRealAlarmVo : list) {
         	psmRealAlarmVo.setStateName(paraDefineService.getValueByTypeAnd("REAL_ALARM_STATE", psmRealAlarmVo.getState()));
+        	psmRealAlarmVo.setAlarmTypeName(paraDefineService.getValueByTypeAnd("ALARM_MODE", psmRealAlarmVo.getAlarmType()));
 		}
         PageInfo<PsmRealAlarmVo> pageInfo = new PageInfo<>();
         
