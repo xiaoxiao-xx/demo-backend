@@ -7,8 +7,8 @@
     <result column="valid_state" property="validState" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="DATE" />
     <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="character" property="character" jdbcType="VARCHAR" />
-    <result column="event" property="event" jdbcType="VARCHAR" />
+    <result column="character_info" property="characterInfo" jdbcType="VARCHAR" />
+    <result column="event_info" property="eventInfo" jdbcType="VARCHAR" />
     <result column="alarm_state" property="alarmState" jdbcType="VARCHAR" />
     <result column="alarm_type" property="alarmType" jdbcType="VARCHAR" />
   </resultMap>
@@ -71,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    res_id, src_id, valid_state, time, address, character, event, alarm_state, alarm_type
+    res_id, src_id, valid_state, time, address, character_info, event_info, alarm_state, 
+    alarm_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.PsmDealResDetailExample" >
     select
@@ -106,12 +107,12 @@
   </delete>
   <insert id="insert" parameterType="com.microcore.center.model.PsmDealResDetail" >
     insert into psm_deal_res_detail_t (res_id, src_id, valid_state, 
-      time, address, character, 
-      event, alarm_state, alarm_type
+      time, address, character_info, 
+      event_info, alarm_state, alarm_type
       )
     values (#{resId,jdbcType=VARCHAR}, #{srcId,jdbcType=VARCHAR}, #{validState,jdbcType=VARCHAR}, 
-      #{time,jdbcType=DATE}, #{address,jdbcType=VARCHAR}, #{character,jdbcType=VARCHAR}, 
-      #{event,jdbcType=VARCHAR}, #{alarmState,jdbcType=VARCHAR}, #{alarmType,jdbcType=VARCHAR}
+      #{time,jdbcType=DATE}, #{address,jdbcType=VARCHAR}, #{characterInfo,jdbcType=VARCHAR}, 
+      #{eventInfo,jdbcType=VARCHAR}, #{alarmState,jdbcType=VARCHAR}, #{alarmType,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.PsmDealResDetail" >
@@ -132,11 +133,11 @@
       <if test="address != null" >
         address,
       </if>
-      <if test="character != null" >
-        character,
+      <if test="characterInfo != null" >
+        character_info,
       </if>
-      <if test="event != null" >
-        event,
+      <if test="eventInfo != null" >
+        event_info,
       </if>
       <if test="alarmState != null" >
         alarm_state,
@@ -161,11 +162,11 @@
       <if test="address != null" >
         #{address,jdbcType=VARCHAR},
       </if>
-      <if test="character != null" >
-        #{character,jdbcType=VARCHAR},
+      <if test="characterInfo != null" >
+        #{characterInfo,jdbcType=VARCHAR},
       </if>
-      <if test="event != null" >
-        #{event,jdbcType=VARCHAR},
+      <if test="eventInfo != null" >
+        #{eventInfo,jdbcType=VARCHAR},
       </if>
       <if test="alarmState != null" >
         #{alarmState,jdbcType=VARCHAR},
@@ -199,11 +200,11 @@
       <if test="record.address != null" >
         address = #{record.address,jdbcType=VARCHAR},
       </if>
-      <if test="record.character != null" >
-        character = #{record.character,jdbcType=VARCHAR},
+      <if test="record.characterInfo != null" >
+        character_info = #{record.characterInfo,jdbcType=VARCHAR},
       </if>
-      <if test="record.event != null" >
-        event = #{record.event,jdbcType=VARCHAR},
+      <if test="record.eventInfo != null" >
+        event_info = #{record.eventInfo,jdbcType=VARCHAR},
       </if>
       <if test="record.alarmState != null" >
         alarm_state = #{record.alarmState,jdbcType=VARCHAR},
@@ -223,8 +224,8 @@
       valid_state = #{record.validState,jdbcType=VARCHAR},
       time = #{record.time,jdbcType=DATE},
       address = #{record.address,jdbcType=VARCHAR},
-      character = #{record.character,jdbcType=VARCHAR},
-      event = #{record.event,jdbcType=VARCHAR},
+      character_info = #{record.characterInfo,jdbcType=VARCHAR},
+      event_info = #{record.eventInfo,jdbcType=VARCHAR},
       alarm_state = #{record.alarmState,jdbcType=VARCHAR},
       alarm_type = #{record.alarmType,jdbcType=VARCHAR}
     <if test="_parameter != null" >
@@ -246,11 +247,11 @@
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="character != null" >
-        character = #{character,jdbcType=VARCHAR},
+      <if test="characterInfo != null" >
+        character_info = #{characterInfo,jdbcType=VARCHAR},
       </if>
-      <if test="event != null" >
-        event = #{event,jdbcType=VARCHAR},
+      <if test="eventInfo != null" >
+        event_info = #{eventInfo,jdbcType=VARCHAR},
       </if>
       <if test="alarmState != null" >
         alarm_state = #{alarmState,jdbcType=VARCHAR},
@@ -267,8 +268,8 @@
       valid_state = #{validState,jdbcType=VARCHAR},
       time = #{time,jdbcType=DATE},
       address = #{address,jdbcType=VARCHAR},
-      character = #{character,jdbcType=VARCHAR},
-      event = #{event,jdbcType=VARCHAR},
+      character_info = #{characterInfo,jdbcType=VARCHAR},
+      event_info = #{eventInfo,jdbcType=VARCHAR},
       alarm_state = #{alarmState,jdbcType=VARCHAR},
       alarm_type = #{alarmType,jdbcType=VARCHAR}
     where res_id = #{resId,jdbcType=VARCHAR}

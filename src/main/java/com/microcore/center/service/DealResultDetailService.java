@@ -5,7 +5,7 @@ import com.microcore.center.vo.PsmDealResDetailVo;
 import com.microcore.center.vo.ResultVo;
 
 /**
- * 告警处理结果明细服务
+ * 素材处理结果明细服务
  */
 public interface DealResultDetailService {
 

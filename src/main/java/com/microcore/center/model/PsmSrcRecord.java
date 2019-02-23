@@ -44,6 +44,11 @@ public class PsmSrcRecord {
     private String srcAddress;
 
     /**
+     * 素材处理状态
+     */
+    private String srcState;
+
+    /**
      * 
      * @return id 
      */
@@ -169,5 +174,21 @@ public class PsmSrcRecord {
      */
     public void setSrcAddress(String srcAddress) {
         this.srcAddress = srcAddress == null ? null : srcAddress.trim();
+    }
+
+    /**
+     * 素材处理状态
+     * @return src_state 素材处理状态
+     */
+    public String getSrcState() {
+        return srcState;
+    }
+
+    /**
+     * 素材处理状态
+     * @param srcState 素材处理状态
+     */
+    public void setSrcState(String srcState) {
+        this.srcState = srcState == null ? null : srcState.trim();
     }
 }

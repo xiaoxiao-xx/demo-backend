@@ -1,7 +1,9 @@
 package com.microcore.center.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import com.microcore.center.constant.Constants;
 import com.microcore.center.mapper.PsmPersonInfoMapper;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.model.PsmPersonInfoExample;
+import com.microcore.center.service.CommonService;
 import com.microcore.center.service.DepartmentService;
 import com.microcore.center.service.OperHisService;
 import com.microcore.center.service.PersonService;
@@ -35,6 +38,8 @@ public class PersonServiceImpl implements PersonService {
     private DepartmentService departmentService ;
     @Autowired
     private OperHisService operHisService ;
+    @Autowired
+    private CommonService commonService ;
     
     @Override
     public ResultVo add(PersonInfoVo personInfoVo) {
@@ -45,6 +50,13 @@ public class PersonServiceImpl implements PersonService {
     }
 
 
+    public PsmPersonInfo getRadomPerson() {
+    	Map<String,Object> params = new HashMap<>();
+    	params.put("sql", "SELECT * FROM psm_person_info_t ORDER BY RAND() LIMIT 1");
+    	Map<String,Object> record = commonService.findOne(params);
+    	return CommonUtil.map2PO(record, PsmPersonInfo.class);
+    }
+    
     @Override
     public ResultVo update(PersonInfoVo personInfoVo) {
         psmPersonInfoMapper.updateByPrimaryKeySelective(personInfoVo);

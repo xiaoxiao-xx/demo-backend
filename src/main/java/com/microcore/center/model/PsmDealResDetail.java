@@ -31,12 +31,12 @@ public class PsmDealResDetail {
     /**
      * 人物：也可以是车辆，记录某一个对象
      */
-    private String character;
+    private String characterInfo;
 
     /**
      * 事件
      */
-    private String event;
+    private String eventInfo;
 
     /**
      * 是否告警
@@ -130,34 +130,34 @@ public class PsmDealResDetail {
 
     /**
      * 人物：也可以是车辆，记录某一个对象
-     * @return character 人物：也可以是车辆，记录某一个对象
+     * @return character_info 人物：也可以是车辆，记录某一个对象
      */
-    public String getCharacter() {
-        return character;
+    public String getCharacterInfo() {
+        return characterInfo;
     }
 
     /**
      * 人物：也可以是车辆，记录某一个对象
-     * @param character 人物：也可以是车辆，记录某一个对象
+     * @param characterInfo 人物：也可以是车辆，记录某一个对象
      */
-    public void setCharacter(String character) {
-        this.character = character == null ? null : character.trim();
+    public void setCharacterInfo(String characterInfo) {
+        this.characterInfo = characterInfo == null ? null : characterInfo.trim();
     }
 
     /**
      * 事件
-     * @return event 事件
+     * @return event_info 事件
      */
-    public String getEvent() {
-        return event;
+    public String getEventInfo() {
+        return eventInfo;
     }
 
     /**
      * 事件
-     * @param event 事件
+     * @param eventInfo 事件
      */
-    public void setEvent(String event) {
-        this.event = event == null ? null : event.trim();
+    public void setEventInfo(String eventInfo) {
+        this.eventInfo = eventInfo == null ? null : eventInfo.trim();
     }
 
     /**

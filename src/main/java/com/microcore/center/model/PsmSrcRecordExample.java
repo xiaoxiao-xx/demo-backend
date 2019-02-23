@@ -737,6 +737,76 @@ public class PsmSrcRecordExample {
             addCriterion("src_address not between", value1, value2, "srcAddress");
             return (Criteria) this;
         }
+
+        public Criteria andSrcStateIsNull() {
+            addCriterion("src_state is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateIsNotNull() {
+            addCriterion("src_state is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateEqualTo(String value) {
+            addCriterion("src_state =", value, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateNotEqualTo(String value) {
+            addCriterion("src_state <>", value, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateGreaterThan(String value) {
+            addCriterion("src_state >", value, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateGreaterThanOrEqualTo(String value) {
+            addCriterion("src_state >=", value, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateLessThan(String value) {
+            addCriterion("src_state <", value, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateLessThanOrEqualTo(String value) {
+            addCriterion("src_state <=", value, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateLike(String value) {
+            addCriterion("src_state like", value, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateNotLike(String value) {
+            addCriterion("src_state not like", value, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateIn(List<String> values) {
+            addCriterion("src_state in", values, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateNotIn(List<String> values) {
+            addCriterion("src_state not in", values, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateBetween(String value1, String value2) {
+            addCriterion("src_state between", value1, value2, "srcState");
+            return (Criteria) this;
+        }
+
+        public Criteria andSrcStateNotBetween(String value1, String value2) {
+            addCriterion("src_state not between", value1, value2, "srcState");
+            return (Criteria) this;
+        }
     }
 
     /**

@@ -10,6 +10,7 @@
     <result column="get_event_id" property="getEventId" jdbcType="VARCHAR" />
     <result column="src_type" property="srcType" jdbcType="VARCHAR" />
     <result column="src_address" property="srcAddress" jdbcType="VARCHAR" />
+    <result column="src_state" property="srcState" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, create_time, src_device, create_type, get_object, get_event_id, src_type, src_address
+    id, create_time, src_device, create_type, get_object, get_event_id, src_type, src_address, 
+    src_state
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.PsmSrcRecordExample" >
     select
@@ -106,10 +108,12 @@
   <insert id="insert" parameterType="com.microcore.center.model.PsmSrcRecord" >
     insert into psm_src_record_t (id, create_time, src_device, 
       create_type, get_object, get_event_id, 
-      src_type, src_address)
+      src_type, src_address, src_state
+      )
     values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{srcDevice,jdbcType=VARCHAR}, 
       #{createType,jdbcType=VARCHAR}, #{getObject,jdbcType=VARCHAR}, #{getEventId,jdbcType=VARCHAR}, 
-      #{srcType,jdbcType=VARCHAR}, #{srcAddress,jdbcType=VARCHAR})
+      #{srcType,jdbcType=VARCHAR}, #{srcAddress,jdbcType=VARCHAR}, #{srcState,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.PsmSrcRecord" >
     insert into psm_src_record_t
@@ -138,6 +142,9 @@
       <if test="srcAddress != null" >
         src_address,
       </if>
+      <if test="srcState != null" >
+        src_state,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -163,6 +170,9 @@
       </if>
       <if test="srcAddress != null" >
         #{srcAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="srcState != null" >
+        #{srcState,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -199,6 +209,9 @@
       <if test="record.srcAddress != null" >
         src_address = #{record.srcAddress,jdbcType=VARCHAR},
       </if>
+      <if test="record.srcState != null" >
+        src_state = #{record.srcState,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -213,7 +226,8 @@
       get_object = #{record.getObject,jdbcType=VARCHAR},
       get_event_id = #{record.getEventId,jdbcType=VARCHAR},
       src_type = #{record.srcType,jdbcType=VARCHAR},
-      src_address = #{record.srcAddress,jdbcType=VARCHAR}
+      src_address = #{record.srcAddress,jdbcType=VARCHAR},
+      src_state = #{record.srcState,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -242,6 +256,9 @@
       <if test="srcAddress != null" >
         src_address = #{srcAddress,jdbcType=VARCHAR},
       </if>
+      <if test="srcState != null" >
+        src_state = #{srcState,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -253,7 +270,8 @@
       get_object = #{getObject,jdbcType=VARCHAR},
       get_event_id = #{getEventId,jdbcType=VARCHAR},
       src_type = #{srcType,jdbcType=VARCHAR},
-      src_address = #{srcAddress,jdbcType=VARCHAR}
+      src_address = #{srcAddress,jdbcType=VARCHAR},
+      src_state = #{srcState,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
