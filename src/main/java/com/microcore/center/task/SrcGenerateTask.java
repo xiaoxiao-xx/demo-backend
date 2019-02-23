@@ -77,7 +77,7 @@ public class SrcGenerateTask {
 	public void analysis() {
 		try {
 			PsmSrcRecord psmSrcRecord = QUEUE_SRC.poll(1, TimeUnit.SECONDS);
-			if(psmSrcRecord == null) {
+			if(psmSrcRecord == null || returnLfag()) {
 				return ;
 			}
 			psmSrcRecord.setSrcState("2");
@@ -87,6 +87,7 @@ public class SrcGenerateTask {
 			vo.setAlarmState(random("是","否"));
 			vo.setAlarmType(random("警告弹出框","警报声音"));
 			PsmPersonInfo psmPersonInfo = personService.getRadomPerson();
+			vo.setPsmPersonInfo(psmPersonInfo);
 			vo.setCharacterInfo(psmPersonInfo.getPersonId());
 			vo.setEventInfo(psmPersonInfo.getName()+"非法入内！");
 			vo.setResId(CommonUtil.getUUID());
@@ -98,6 +99,13 @@ public class SrcGenerateTask {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean returnLfag() {
+	  if(Math.random() * 100 > 10) {//10%的概率
+		  return true ;
+	  }
+	  return false ;
 	}
 	
 	public String random(String... type) {

@@ -12,7 +12,10 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class RabbitMQUtil {
 	private static Channel channel;
 
@@ -28,12 +31,13 @@ public class RabbitMQUtil {
 	}
 
 	public void sendMsg(String msg) {
-		try {
+		/*try {
+			log.info("消息[{}]",msg);
 			channel.basicPublish("amq.topic", "topic_test", null, msg.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 }
