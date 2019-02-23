@@ -80,11 +80,13 @@ public class PsmScheduleConfig {
     /**
      * 考核开始时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "GMT+8")
     private Date checkStartTime;
 
     /**
      * 考核结束时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "GMT+8")
     private Date checkEndTime;
 
     /**

@@ -6,9 +6,11 @@ import com.microcore.center.model.PsmScheduleConfig;
 import com.microcore.center.model.PsmScheduleConfigExample;
 import com.microcore.center.model.PsmScheduleDetail;
 import com.microcore.center.model.PsmUser;
+import com.microcore.center.service.ParaDefineService;
 import com.microcore.center.service.ScheduleConfigService;
 import com.microcore.center.service.ScheduleDetailService;
 import com.microcore.center.service.UserService;
+import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.PsmScheduleConfigVo;
 import com.microcore.center.vo.ResultVo;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +38,9 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ParaDefineService paraDefineService;
 
     @Override
     public ResultVo add(PsmScheduleConfigVo vo) {
@@ -123,7 +128,15 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
                 .doSelectPageInfo(() -> psmScheduleConfigMapper.selectByExample(example));
 
         List<PsmScheduleConfig> configList = scheduleConfigPageInfo.getList();
+
+
         List<PsmScheduleConfigVo> configVos = listPo2VO(configList, PsmScheduleConfigVo.class);
+        if (CommonUtil.isNotEmpty(configVos)) {
+            configVos.forEach(vo -> {
+                vo.setCheckFlag("Y".equals(vo.getCheckFlag()) ? "是" : "否");
+                vo.setConfigType(paraDefineService.getValueByTypeAnd("SCHEDULE_TYPE", vo.getConfigType()));
+            });
+        }
 
         PageInfo<PsmScheduleConfigVo> scheduleConfigVoPageInfo = po2VO(scheduleConfigPageInfo, PageInfo.class);
         scheduleConfigVoPageInfo.setList(configVos);
