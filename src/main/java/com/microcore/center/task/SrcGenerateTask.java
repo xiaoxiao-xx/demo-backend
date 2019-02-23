@@ -1,26 +1,24 @@
 package com.microcore.center.task;
 
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.Gson;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.model.PsmSrcRecord;
 import com.microcore.center.service.DealResultDetailService;
 import com.microcore.center.service.DealResultService;
 import com.microcore.center.service.PersonService;
+import com.microcore.center.service.RealAlarmService;
 import com.microcore.center.service.SrcRecordService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.RabbitMQUtil;
 import com.microcore.center.vo.PsmDealResDetailVo;
+import com.microcore.center.vo.PsmRealAlarmVo;
 
 /**
  * 素材记录产生任务
@@ -43,7 +41,8 @@ public class SrcGenerateTask {
 	private RabbitMQUtil rabbitMQUtil ;
 	@Autowired
 	private PersonService personService ;
-	
+	@Autowired
+	private RealAlarmService realAlarmService ;
 	/**
 	 * 初始化加载素材
 	 */
@@ -63,6 +62,7 @@ public class SrcGenerateTask {
 		srcRecord.setCreateType(random("自动采集","主动采集"));
 		srcRecord.setSrcType(random("图像","视频","位置"));
 		srcRecord.setGetEventId(random("电子点名","记录点名"));
+		srcRecord.setSrcAddress(random("食堂","教学楼","教师宿舍","仓库","生物园地","门卫室","乒乓球台","篮球场","少年宫","办公楼"));
 		srcRecord.setSrcState("1");
 		srcRecord.setSrcDevice(CommonUtil.getUUID());
 		if (QUEUE_SRC.offer(srcRecord)) {
@@ -95,7 +95,19 @@ public class SrcGenerateTask {
 			vo.setTime(CommonUtil.getCurrentTime());
 			vo.setValidState(random("是","否"));
 			dealResultDetailService.add(vo);
-			rabbitMQUtil.sendMsg(new Gson().toJson(vo));
+			rabbitMQUtil.sendMsg(vo.getEventInfo());
+			
+			
+			
+			PsmRealAlarmVo alarmVo = new PsmRealAlarmVo() ;
+			alarmVo.setAlarmReason(vo.getEventInfo());
+			alarmVo.setAlarmType(random("1","2"));
+			alarmVo.setObjectId(psmPersonInfo.getPersonId());
+			alarmVo.setObjectType(random("1","2"));
+			alarmVo.setTriggerTime(CommonUtil.getCurrentTime());
+			alarmVo.setState("0");
+			realAlarmService.add(alarmVo);
+			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

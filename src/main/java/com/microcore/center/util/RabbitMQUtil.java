@@ -31,13 +31,13 @@ public class RabbitMQUtil {
 	}
 
 	public void sendMsg(String msg) {
-		/*try {
+		try {
 			log.info("消息[{}]",msg);
 			channel.basicPublish("amq.topic", "topic_test", null, msg.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
+		}
 	}
 }

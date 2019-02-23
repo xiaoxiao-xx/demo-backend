@@ -120,4 +120,20 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 
+	@Override
+	public PsmPersonInfo getPsmPersonInfo(String id) {
+		return psmPersonInfoMapper.selectByPrimaryKey(id);
+	}
+
+
+	@Override
+	public String getPsmPersonInfoName(String id) {
+		PsmPersonInfo psmPersonInfo = getPsmPersonInfo(id);
+		if(psmPersonInfo!=null) {
+			return psmPersonInfo.getName() ;
+		}
+		return null;
+	}
+
+
 }

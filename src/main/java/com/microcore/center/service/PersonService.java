@@ -25,5 +25,9 @@ public interface PersonService {
 	 * @return
 	 */
 	public PsmPersonInfo getRadomPerson();
-
+	
+	
+	public PsmPersonInfo getPsmPersonInfo(String id);
+	
+	public String getPsmPersonInfoName(String id);
 }
