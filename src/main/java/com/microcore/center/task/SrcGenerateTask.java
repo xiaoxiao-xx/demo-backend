@@ -1,5 +1,6 @@
 package com.microcore.center.task;
 
+import java.text.SimpleDateFormat;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -89,7 +90,12 @@ public class SrcGenerateTask {
 			PsmPersonInfo psmPersonInfo = personService.getRadomPerson();
 			vo.setPsmPersonInfo(psmPersonInfo);
 			vo.setCharacterInfo(psmPersonInfo.getPersonId());
-			vo.setEventInfo(psmPersonInfo.getName()+"非法入内！");
+			vo.setEventInfo("人员："+psmPersonInfo.getName() + "，时间："
+					+ new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(CommonUtil.getCurrentTime())
+					+ random(
+							"进入非法区域(" + random("食堂", "教学楼", "教师宿舍", "仓库", "生物园地", "门卫室", "乒乓球台", "篮球场", "少年宫", "办公楼")
+									+ ")！",
+							random("食堂", "教学楼", "教师宿舍", "仓库", "生物园地", "门卫室", "乒乓球台", "篮球场", "少年宫", "办公楼") + "，集合缺勤"));
 			vo.setResId(CommonUtil.getUUID());
 			vo.setSrcId(psmSrcRecord.getId());
 			vo.setTime(CommonUtil.getCurrentTime());
