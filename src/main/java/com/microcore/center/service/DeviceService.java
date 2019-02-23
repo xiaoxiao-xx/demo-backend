@@ -24,4 +24,6 @@ public interface DeviceService {
 
     ResultVo batchDelete(String idList);
 
+    String getDevtypeValByTypeCode(String devtypeCode);
+
 }

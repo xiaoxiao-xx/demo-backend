@@ -148,12 +148,20 @@ public class DeviceServiceImpl implements DeviceService {
 
             // 设置DeviceVersion
             device.setDeviceVersion(deviceVersionService.getDeviceVersionStringById(device.getDeviceVersion()));
+
+            // 转设备类型为中文
+            device.setDevtypeVal(getDevtypeValByTypeCode(device.getDevtypeCode()));
         }
 
         PageInfo<PsmDeviceDto> deviceDtoPageInfo = po2VO(pageInfo, PageInfo.class);
         deviceDtoPageInfo.setList(deviceDtoList);
 
         return deviceDtoPageInfo;
+    }
+
+    @Override
+    public String getDevtypeValByTypeCode(String typeCode) {
+        return paraDefineService.getValueByTypeAnd(Constants.DEVICE_TYPE, typeCode);
     }
 
     @Override

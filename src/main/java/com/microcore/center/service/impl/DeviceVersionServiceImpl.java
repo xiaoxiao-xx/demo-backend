@@ -6,7 +6,9 @@ import com.microcore.center.mapper.PsmDeviceVersionMapper;
 import com.microcore.center.model.PsmDeviceVersion;
 import com.microcore.center.model.PsmDeviceVersionExample;
 import com.microcore.center.service.CommonService;
+import com.microcore.center.service.DeviceService;
 import com.microcore.center.service.DeviceVersionService;
+import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.DeviceVersionVo;
 import com.microcore.center.vo.ResultVo;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +28,9 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
 
     @Autowired
     private PsmDeviceVersionMapper deviceVersionMapper;
+
+    @Autowired
+    private DeviceService deviceService;
 
     @Override
     public ResultVo add(DeviceVersionVo deviceVersionVo) {
@@ -58,8 +63,18 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
         if (StringUtils.isNotEmpty(type)) {
             criteria.andDevtypeCodeEqualTo(type);
         }
-        PageInfo<Object> pageInfo = PageHelper.startPage(pageIndex, pageSize)
+
+        PageInfo<PsmDeviceVersion> pageInfo = PageHelper.startPage(pageIndex, pageSize)
                 .doSelectPageInfo(() -> deviceVersionMapper.selectByExample(example));
+
+        List<PsmDeviceVersion> list = pageInfo.getList();
+        if (CommonUtil.isNotEmpty(list)) {
+            list.forEach(device -> {
+                // 转设备类型为中文
+                device.setDevtypeVal(deviceService.getDevtypeValByTypeCode(device.getDevtypeCode()));
+            });
+        }
+
         return ResultVo.ok(pageInfo);
     }
 
