@@ -7,10 +7,10 @@ import com.microcore.center.vo.PsmOperHisVo;
 
 public interface OperHisService {
 	
-	public void add(String operTarget, String operType);
+	void add(String operTarget, String operType);
 
-	public void add(PsmOperHis psmOperHis);
+	void add(PsmOperHis psmOperHis);
 
-	public List<PsmOperHisVo> getPsmOperHis(String operTarget);
+	List<PsmOperHisVo> getPsmOperHis(String operTarget);
 
 }

@@ -26,7 +26,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 		}
 		/*response.getWriter().println(new Gson().toJson(ResultVo.sessionOut()));
 		return true;*/
-		log.error("会话失效！");
+		// log.error("会话失效！");
 		return true;
 	}
 

@@ -30,7 +30,7 @@ public class DeviceVersionController {
     }
 
     @PostMapping("batchDelete")
-    public ResultVo batchDelete(@RequestBody String idList) {
+    public ResultVo batchDelete(@RequestParam String idList) {
         return deviceVersionService.batchDelete(idList);
     }
 
