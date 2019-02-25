@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableScheduling
 @SpringBootApplication
 @MapperScan(basePackages = { "com.microcore.center.mapper" })
-@ComponentScan(basePackages = { "com.microcore.center" })
+//@ComponentScan(basePackages = { "com.microcore.center" })
 public class SlsCenterApplication {
 
 	public static void main(String[] args) {

@@ -11,7 +11,7 @@ spring:
 
     # 设置下面的三项以正确连接数据库
     # 加上?后面的可以解决不能查询出中文的问题
-    url: jdbc:mysql://192.168.1.140:3306/psm?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/psm?useUnicode=true&characterEncoding=UTF-8
     username: root
     password: root
 

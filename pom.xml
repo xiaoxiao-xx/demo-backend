@@ -4,8 +4,8 @@
     <groupId>com.microcore</groupId>
     <artifactId>demo-backend</artifactId>
     <version>0.1</version>
-    <name>中心节点</name>
-    <description>中心节点</description>
+    <name>Demo后台</name>
+    <description>Demo后台</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
