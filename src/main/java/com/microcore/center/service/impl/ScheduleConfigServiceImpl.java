@@ -122,7 +122,7 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
         PsmScheduleConfigExample example = new PsmScheduleConfigExample();
         PsmScheduleConfigExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotEmpty(team)) {
-            criteria.andObjectIdLike("%" + team + "%");
+            criteria.andTeamIdEqualTo(team);
         }
         PageInfo<PsmScheduleConfig> scheduleConfigPageInfo = startPage(pageIndex, pageSize)
                 .doSelectPageInfo(() -> psmScheduleConfigMapper.selectByExample(example));

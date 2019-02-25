@@ -112,6 +112,12 @@ public class DeviceServiceImpl implements DeviceService {
         indexPageAreaList.add(new Area("办公楼", new Point(58, 79), new Point(192, 230)));
         indexPageAreaList.add(new Area("少年宫", new Point(58, 250), new Point(194, 379)));
         indexPageAreaList.add(new Area("食堂", new Point(83, 16), new Point(455, 64)));
+        indexPageAreaList.add(new Area("教学楼", new Point(467, 12), new Point(928, 58)));
+        indexPageAreaList.add(new Area("厕所", new Point(1255, 71), new Point(1350, 131)));
+        indexPageAreaList.add(new Area("教师宿舍", new Point(1062, 174), new Point(1190, 274)));
+        indexPageAreaList.add(new Area("仓库", new Point(1270, 223), new Point(1400, 265)));
+        indexPageAreaList.add(new Area("生物园地", new Point(1202, 287), new Point(1445, 372)));
+        indexPageAreaList.add(new Area("篮球场", new Point(529, 155), new Point(852, 321)));
     }
 
     public String getDeviceLocation(Point point, List<Area> list) {
