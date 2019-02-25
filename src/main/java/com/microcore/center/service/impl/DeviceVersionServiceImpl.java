@@ -59,9 +59,9 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
         if (StringUtils.isNotEmpty(type) && !"x".equals(type)) {
             criteria.andDevtypeCodeEqualTo(type);
         }
-        // 按型号查
+        // 按型号的ID查
         if (StringUtils.isNotEmpty(version) && !"xt".equals(version)) {
-            criteria.andDeviceVersionEqualTo(version);
+            criteria.andDevversionIdEqualTo(version);
         }
 
         PageInfo<PsmDeviceVersion> pageInfo = PageHelper.startPage(pageIndex, pageSize)

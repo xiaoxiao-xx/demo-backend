@@ -56,4 +56,9 @@ public class ScheduleController {
         return scheduleDetailService.getScheduleDetailList(objectType);
     }
 
+    @GetMapping("getOnDutyData")
+    public ResultVo getOnDutyData() {
+        return scheduleDetailService.getOnDutyData();
+    }
+
 }

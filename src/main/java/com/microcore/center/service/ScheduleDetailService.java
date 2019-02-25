@@ -16,4 +16,6 @@ public interface ScheduleDetailService {
 
     ResultVo getScheduleDetailList(String objectType);
 
+    ResultVo getOnDutyData();
+
 }
