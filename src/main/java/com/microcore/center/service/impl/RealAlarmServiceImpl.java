@@ -30,6 +30,7 @@ public class RealAlarmServiceImpl implements RealAlarmService {
     @Override
     public PageInfo<PsmRealAlarmVo> getRealAlarmList(String alarmType, String operator,String state, Integer pageIndex, Integer pageSize) {
         PsmRealAlarmExample example = new PsmRealAlarmExample();
+        example.setOrderByClause("trigger_time desc");
         PsmRealAlarmExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotEmpty(alarmType)) {
             criteria.andAlarmTypeEqualTo(alarmType);

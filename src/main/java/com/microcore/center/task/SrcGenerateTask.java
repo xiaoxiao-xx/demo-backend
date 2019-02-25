@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.model.PsmSrcRecord;
 import com.microcore.center.service.DealResultDetailService;
-import com.microcore.center.service.DealResultService;
 import com.microcore.center.service.PersonService;
 import com.microcore.center.service.RealAlarmService;
 import com.microcore.center.service.SrcRecordService;
@@ -23,7 +22,7 @@ import com.microcore.center.vo.PsmRealAlarmVo;
 
 /**
  * 素材记录产生任务
- * 
+ *
  * @author Administrator
  *
  */
@@ -31,11 +30,9 @@ import com.microcore.center.vo.PsmRealAlarmVo;
 public class SrcGenerateTask {
 
 	private static BlockingQueue<PsmSrcRecord> QUEUE_SRC = new LinkedBlockingQueue<>();
-	
+
 	@Autowired
 	private SrcRecordService srcRecordService;
-	@Autowired
-	private DealResultService dealResultService ;
 	@Autowired
 	private DealResultDetailService dealResultDetailService ;
 	@Autowired
@@ -47,12 +44,14 @@ public class SrcGenerateTask {
 	/**
 	 * 初始化加载素材
 	 */
-	/*@PostConstruct
+	/*
+	@PostConstruct
 	public void init() {
 		List<PsmSrcRecord> list = srcRecordService.getPsmSrcRecord("1");
 		list.forEach((srcRecord) -> QUEUE_SRC.offer(srcRecord));
-	}*/
-	
+	}
+	*/
+
 	/**
 	 * 5秒心跳一次
 	 *      创建素材
@@ -70,7 +69,7 @@ public class SrcGenerateTask {
 			srcRecordService.add(srcRecord);
 		}
 	}
-	
+
 	/**
 	 * 1秒心跳一次
 	 */
@@ -78,7 +77,7 @@ public class SrcGenerateTask {
 	public void analysis() {
 		try {
 			PsmSrcRecord psmSrcRecord = QUEUE_SRC.poll(1, TimeUnit.SECONDS);
-			if(psmSrcRecord == null || returnLfag()) {
+			if(psmSrcRecord == null || returnFlag()) {
 				return ;
 			}
 			psmSrcRecord.setSrcState("2");
@@ -101,10 +100,9 @@ public class SrcGenerateTask {
 			vo.setTime(CommonUtil.getCurrentTime());
 			vo.setValidState(random("是","否"));
 			dealResultDetailService.add(vo);
+			// vo to json
 			rabbitMQUtil.sendMsg(vo.getEventInfo());
-			
-			
-			
+
 			PsmRealAlarmVo alarmVo = new PsmRealAlarmVo() ;
 			alarmVo.setAlarmReason(vo.getEventInfo());
 			alarmVo.setAlarmType(random("1","2"));
@@ -113,19 +111,18 @@ public class SrcGenerateTask {
 			alarmVo.setTriggerTime(CommonUtil.getCurrentTime());
 			alarmVo.setState("0");
 			realAlarmService.add(alarmVo);
-			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public boolean returnLfag() {
-	  if(Math.random() * 100 > 10) {//10%的概率
+
+	public boolean returnFlag() {
+	  if (Math.random() * 100 > 10) { // 10%的概率
 		  return true ;
 	  }
 	  return false ;
 	}
-	
+
 	public String random(String... type) {
 		return type[(int) (Math.random() * type.length)] ;
 	}

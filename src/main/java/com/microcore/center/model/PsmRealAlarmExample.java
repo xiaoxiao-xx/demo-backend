@@ -2,7 +2,6 @@ package com.microcore.center.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class PsmRealAlarmExample {
@@ -160,32 +159,6 @@ public class PsmRealAlarmExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                dateList.add(new java.sql.Date(iter.next().getTime()));
-            }
-            addCriterion(condition, dateList, property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -549,52 +522,52 @@ public class PsmRealAlarmExample {
         }
 
         public Criteria andTriggerTimeEqualTo(Date value) {
-            addCriterionForJDBCDate("trigger_time =", value, "triggerTime");
+            addCriterion("trigger_time =", value, "triggerTime");
             return (Criteria) this;
         }
 
         public Criteria andTriggerTimeNotEqualTo(Date value) {
-            addCriterionForJDBCDate("trigger_time <>", value, "triggerTime");
+            addCriterion("trigger_time <>", value, "triggerTime");
             return (Criteria) this;
         }
 
         public Criteria andTriggerTimeGreaterThan(Date value) {
-            addCriterionForJDBCDate("trigger_time >", value, "triggerTime");
+            addCriterion("trigger_time >", value, "triggerTime");
             return (Criteria) this;
         }
 
         public Criteria andTriggerTimeGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("trigger_time >=", value, "triggerTime");
+            addCriterion("trigger_time >=", value, "triggerTime");
             return (Criteria) this;
         }
 
         public Criteria andTriggerTimeLessThan(Date value) {
-            addCriterionForJDBCDate("trigger_time <", value, "triggerTime");
+            addCriterion("trigger_time <", value, "triggerTime");
             return (Criteria) this;
         }
 
         public Criteria andTriggerTimeLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("trigger_time <=", value, "triggerTime");
+            addCriterion("trigger_time <=", value, "triggerTime");
             return (Criteria) this;
         }
 
         public Criteria andTriggerTimeIn(List<Date> values) {
-            addCriterionForJDBCDate("trigger_time in", values, "triggerTime");
+            addCriterion("trigger_time in", values, "triggerTime");
             return (Criteria) this;
         }
 
         public Criteria andTriggerTimeNotIn(List<Date> values) {
-            addCriterionForJDBCDate("trigger_time not in", values, "triggerTime");
+            addCriterion("trigger_time not in", values, "triggerTime");
             return (Criteria) this;
         }
 
         public Criteria andTriggerTimeBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("trigger_time between", value1, value2, "triggerTime");
+            addCriterion("trigger_time between", value1, value2, "triggerTime");
             return (Criteria) this;
         }
 
         public Criteria andTriggerTimeNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("trigger_time not between", value1, value2, "triggerTime");
+            addCriterion("trigger_time not between", value1, value2, "triggerTime");
             return (Criteria) this;
         }
 

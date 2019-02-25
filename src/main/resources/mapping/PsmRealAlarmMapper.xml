@@ -7,7 +7,7 @@
     <result column="object_type" property="objectType" jdbcType="VARCHAR" />
     <result column="object_id" property="objectId" jdbcType="VARCHAR" />
     <result column="alarm_reason" property="alarmReason" jdbcType="VARCHAR" />
-    <result column="trigger_time" property="triggerTime" jdbcType="DATE" />
+    <result column="trigger_time" property="triggerTime" jdbcType="TIMESTAMP" />
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="operator" property="operator" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -111,7 +111,7 @@
       state, operator, remark
       )
     values (#{id,jdbcType=VARCHAR}, #{alarmType,jdbcType=VARCHAR}, #{objectType,jdbcType=VARCHAR}, 
-      #{objectId,jdbcType=VARCHAR}, #{alarmReason,jdbcType=VARCHAR}, #{triggerTime,jdbcType=DATE}, 
+      #{objectId,jdbcType=VARCHAR}, #{alarmReason,jdbcType=VARCHAR}, #{triggerTime,jdbcType=TIMESTAMP}, 
       #{state,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
       )
   </insert>
@@ -163,7 +163,7 @@
         #{alarmReason,jdbcType=VARCHAR},
       </if>
       <if test="triggerTime != null" >
-        #{triggerTime,jdbcType=DATE},
+        #{triggerTime,jdbcType=TIMESTAMP},
       </if>
       <if test="state != null" >
         #{state,jdbcType=VARCHAR},
@@ -201,7 +201,7 @@
         alarm_reason = #{record.alarmReason,jdbcType=VARCHAR},
       </if>
       <if test="record.triggerTime != null" >
-        trigger_time = #{record.triggerTime,jdbcType=DATE},
+        trigger_time = #{record.triggerTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.state != null" >
         state = #{record.state,jdbcType=VARCHAR},
@@ -224,7 +224,7 @@
       object_type = #{record.objectType,jdbcType=VARCHAR},
       object_id = #{record.objectId,jdbcType=VARCHAR},
       alarm_reason = #{record.alarmReason,jdbcType=VARCHAR},
-      trigger_time = #{record.triggerTime,jdbcType=DATE},
+      trigger_time = #{record.triggerTime,jdbcType=TIMESTAMP},
       state = #{record.state,jdbcType=VARCHAR},
       operator = #{record.operator,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR}
@@ -248,7 +248,7 @@
         alarm_reason = #{alarmReason,jdbcType=VARCHAR},
       </if>
       <if test="triggerTime != null" >
-        trigger_time = #{triggerTime,jdbcType=DATE},
+        trigger_time = #{triggerTime,jdbcType=TIMESTAMP},
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=VARCHAR},
@@ -268,7 +268,7 @@
       object_type = #{objectType,jdbcType=VARCHAR},
       object_id = #{objectId,jdbcType=VARCHAR},
       alarm_reason = #{alarmReason,jdbcType=VARCHAR},
-      trigger_time = #{triggerTime,jdbcType=DATE},
+      trigger_time = #{triggerTime,jdbcType=TIMESTAMP},
       state = #{state,jdbcType=VARCHAR},
       operator = #{operator,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR}
