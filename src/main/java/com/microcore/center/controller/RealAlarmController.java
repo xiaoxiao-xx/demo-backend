@@ -25,12 +25,6 @@ public class RealAlarmController {
         return ResultVo.ok(realAlarmService.getRealAlarmList(alarmType, operator,state, pageIndex, pageSize));
     }
 
-    @ApiOperation(value = "告警信息新增", notes = "告警信息新增")
-    @PostMapping("add")
-    public ResultVo add(@RequestBody PsmRealAlarmVo vo) {
-        return realAlarmService.add(vo);
-    }
-
     @ApiOperation(value = "告警信息修改", notes = "告警信息修改")
     @PostMapping("update")
     public ResultVo update(@RequestBody PsmRealAlarmVo vo) {
@@ -47,6 +41,12 @@ public class RealAlarmController {
     @PostMapping("dealRealAlarm")
     public ResultVo dealRealAlarm(@RequestBody PsmRealAlarmVo vo) {
         return realAlarmService.dealRealAlarm(vo);
+    }
+
+    @ApiOperation(value = "获取告警信息数量", notes = "获取告警信息数量")
+    @GetMapping("getAlarmCount")
+    public ResultVo getRealAlarmCount() {
+        return realAlarmService.getAlarmCount();
     }
 
 }

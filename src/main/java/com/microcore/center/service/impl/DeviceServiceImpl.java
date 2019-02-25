@@ -2,7 +2,6 @@ package com.microcore.center.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.constant.Constants;
 import com.microcore.center.dto.PsmDeviceDto;
 import com.microcore.center.mapper.PsmDeviceMapper;
 import com.microcore.center.model.PsmDevice;
@@ -10,6 +9,7 @@ import com.microcore.center.model.PsmDeviceExample;
 import com.microcore.center.model.PsmParaDefine;
 import com.microcore.center.service.DeviceService;
 import com.microcore.center.service.DeviceVersionService;
+import com.microcore.center.service.OperHisService;
 import com.microcore.center.service.ParaDefineService;
 import com.microcore.center.vo.PsmDeviceVo;
 import com.microcore.center.vo.ResultVo;
@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.microcore.center.constant.Constants.*;
 import static com.microcore.center.util.CommonUtil.*;
 
 @Service
@@ -39,10 +40,13 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceVersionService deviceVersionService;
 
+    @Autowired
+    private OperHisService operHisService;
+
     @Data
     @EqualsAndHashCode(callSuper = false)
     @Setter
-    private static class Point {
+    public static class Point {
 
         Point() {
         }
@@ -65,7 +69,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Data
     @EqualsAndHashCode(callSuper = false)
-    private static class Area {
+    public static class Area {
 
         Area() {
         }
@@ -102,11 +106,19 @@ public class DeviceServiceImpl implements DeviceService {
         areaList.add(new Area("少年宫", new Point(31, 129), new Point(107, 200)));
     }
 
-    private String getDeviceLocation(Point point) {
+    private List<Area> indexPageAreaList = new ArrayList<>(3);
+
+    {
+        indexPageAreaList.add(new Area("办公楼", new Point(58, 79), new Point(192, 230)));
+        indexPageAreaList.add(new Area("少年宫", new Point(58, 250), new Point(194, 379)));
+        indexPageAreaList.add(new Area("食堂", new Point(83, 16), new Point(455, 64)));
+    }
+
+    public String getDeviceLocation(Point point, List<Area> list) {
         Integer x = point.getX();
         Integer y = point.getY();
 
-        for (Area area : areaList) {
+        for (Area area : list) {
             Point p1 = area.getP1();
             Point p2 = area.getP2();
 
@@ -118,17 +130,21 @@ public class DeviceServiceImpl implements DeviceService {
         return "";
     }
 
+    @Override
+    public String getDeviceLocation(Integer x, Integer y) {
+        Point point = new Point(x, y);
+        return getDeviceLocation(point, indexPageAreaList);
+    }
+
     public PageInfo<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal,
                                                 String state, Integer pageIndex, Integer pageSize) {
         PsmDeviceExample example = new PsmDeviceExample();
         PsmDeviceExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotEmpty(deviceId)) {
-            criteria.andDeviceIdEqualTo(deviceId);
+
+        if (StringUtils.isNotEmpty(devtypeVal) && !"x".equals(devtypeVal)) {
+            criteria.andDevtypeCodeEqualTo(devtypeVal.trim());
         }
-        if (StringUtils.isNotEmpty(devtypeVal)) {
-            criteria.andDevtypeValLike("%" + devtypeVal.trim() + "%");
-        }
-        if (StringUtils.isNotEmpty(state)) {
+        if (StringUtils.isNotEmpty(state) && !"a".equals(state)) {
             criteria.andStateEqualTo(state.trim());
         }
 
@@ -143,7 +159,7 @@ public class DeviceServiceImpl implements DeviceService {
             Integer x = Integer.parseInt(xys[0]);
             Integer y = Integer.parseInt(xys[1]);
             Point point = new Point(x, y);
-            String location = getDeviceLocation(point);
+            String location = getDeviceLocation(point, areaList);
             device.setDeviceLocation(location);
 
             // 设置DeviceVersion
@@ -161,14 +177,16 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public String getDevtypeValByTypeCode(String typeCode) {
-        return paraDefineService.getValueByTypeAnd(Constants.DEVICE_TYPE, typeCode);
+        return paraDefineService.getValueByTypeAnd(DEVICE_TYPE, typeCode);
     }
 
     @Override
     public void add(PsmDeviceVo vo) {
         vo.setDeviceId(getUUID());
-        vo.setState(Constants.DEVICE_STATE_ENABLE);
+        vo.setState(DEVICE_STATE_ENABLE);
         psmDeviceMapper.insert(vo);
+
+        operHisService.add(vo.getDeviceId(), OPER_HIS_ADD);
     }
 
     @Override
@@ -179,6 +197,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public void update(PsmDeviceVo vo) {
         psmDeviceMapper.updateByPrimaryKeySelective(vo);
+        operHisService.add(vo.getDeviceId(), OPER_HIS_UPD);
     }
 
     @Override
@@ -187,11 +206,19 @@ public class DeviceServiceImpl implements DeviceService {
         device.setDeviceId(deviceId);
         device.setState(state);
         psmDeviceMapper.updateByPrimaryKeySelective(device);
+
+        String operType = "";
+        if ("E".equals(state)) {
+            operType = OPER_HIS_ENABLE;
+        } else if ("D".equals(state)) {
+            operType = OPER_HIS_DISABLE;
+        }
+        operHisService.add(device.getDeviceId(), operType);
     }
 
     @Override
     public List<PsmParaDefine> getDeviceTypes() {
-        return paraDefineService.getPsmParaDefineByType(Constants.DEVICE_TYPE);
+        return paraDefineService.getPsmParaDefineByType(DEVICE_TYPE);
     }
 
     @Override

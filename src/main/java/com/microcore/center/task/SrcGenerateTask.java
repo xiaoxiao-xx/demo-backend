@@ -78,7 +78,7 @@ public class SrcGenerateTask {
 		try {
 			PsmSrcRecord psmSrcRecord = QUEUE_SRC.poll(1, TimeUnit.SECONDS);
 			if(psmSrcRecord == null || returnFlag()) {
-				return ;
+				return;
 			}
 			psmSrcRecord.setSrcState("2");
 			srcRecordService.update(psmSrcRecord);
@@ -103,7 +103,7 @@ public class SrcGenerateTask {
 			// vo to json
 			rabbitMQUtil.sendMsg(vo.getEventInfo());
 
-			PsmRealAlarmVo alarmVo = new PsmRealAlarmVo() ;
+			PsmRealAlarmVo alarmVo = new PsmRealAlarmVo();
 			alarmVo.setAlarmReason(vo.getEventInfo());
 			alarmVo.setAlarmType(random("1","2"));
 			alarmVo.setObjectId(psmPersonInfo.getPersonId());
@@ -116,14 +116,14 @@ public class SrcGenerateTask {
 		}
 	}
 
-	public boolean returnFlag() {
+	private boolean returnFlag() {
 	  if (Math.random() * 100 > 10) { // 10%的概率
-		  return true ;
+		  return true;
 	  }
-	  return false ;
+	  return false;
 	}
 
-	public String random(String... type) {
-		return type[(int) (Math.random() * type.length)] ;
+	private String random(String... type) {
+		return type[(int) (Math.random() * type.length)];
 	}
 }

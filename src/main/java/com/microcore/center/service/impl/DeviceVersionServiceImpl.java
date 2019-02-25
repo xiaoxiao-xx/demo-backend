@@ -55,13 +55,13 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
     public ResultVo getDeviceVersionList(String version, String type, Integer pageIndex, Integer pageSize) {
         PsmDeviceVersionExample example = new PsmDeviceVersionExample();
         PsmDeviceVersionExample.Criteria criteria = example.createCriteria();
-        // 按型号查
-        if (StringUtils.isNotEmpty(version)) {
-            criteria.andDeviceVersionEqualTo(version);
-        }
         // 按类型查
-        if (StringUtils.isNotEmpty(type)) {
+        if (StringUtils.isNotEmpty(type) && !"x".equals(type)) {
             criteria.andDevtypeCodeEqualTo(type);
+        }
+        // 按型号查
+        if (StringUtils.isNotEmpty(version) && !"xt".equals(version)) {
+            criteria.andDeviceVersionEqualTo(version);
         }
 
         PageInfo<PsmDeviceVersion> pageInfo = PageHelper.startPage(pageIndex, pageSize)
@@ -87,7 +87,6 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
     public PsmDeviceVersion getDeviceVersionById(String id) {
         return deviceVersionMapper.selectByPrimaryKey(id);
     }
-
 
     @Autowired
     private CommonService commonService;

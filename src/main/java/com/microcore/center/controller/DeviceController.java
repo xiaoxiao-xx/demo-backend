@@ -63,4 +63,9 @@ public class DeviceController {
         return ResultVo.ok(deviceService.getDeviceTypes());
     }
 
+    @GetMapping("getLocationString")
+    public ResultVo getDeviceTypes(@RequestParam Integer x, @RequestParam Integer y) {
+        return ResultVo.ok(deviceService.getDeviceLocation(x, y));
+    }
+
 }

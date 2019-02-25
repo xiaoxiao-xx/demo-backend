@@ -35,7 +35,8 @@ public class DeviceVersionController {
     }
 
     @GetMapping("getDeviceVersionList")
-    public ResultVo getDeviceVersionList(@RequestParam(required = false) String version, @RequestParam(required = false) String type,
+    public ResultVo getDeviceVersionList(@RequestParam(required = false) String version,
+                                         @RequestParam(required = false) String type,
                                          @RequestParam(name = "pageIndex") Integer pageIndex,
                                          @RequestParam(name = "pageSize") Integer pageSize) {
         return deviceVersionService.getDeviceVersionList(version, type, pageIndex, pageSize);

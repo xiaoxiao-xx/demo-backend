@@ -10,7 +10,10 @@ import java.util.List;
 
 public interface DeviceService {
 
-    PageInfo<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal, String state, Integer pageIndex, Integer pageSize);
+    String getDeviceLocation(Integer x, Integer y);
+
+    PageInfo<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal, String state,
+                                         Integer pageIndex, Integer pageSize);
 
     void add(PsmDeviceVo vo);
 
