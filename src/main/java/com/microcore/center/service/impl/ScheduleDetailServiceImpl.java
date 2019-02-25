@@ -110,9 +110,9 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
     @Override
     public ResultVo getOnDutyData() {
         List<TeamStat> statList = new ArrayList<>(3);
-        statList.add(new TeamStat("团队一", 23, 23));
-        statList.add(new TeamStat("团队二", 17, 14));
-        statList.add(new TeamStat("团队三", 127, 126));
+        statList.add(new TeamStat("10所", 23, 23));
+        statList.add(new TeamStat("30所", 17, 14));
+        statList.add(new TeamStat("49所", 127, 126));
         Duty duty = new Duty("王志", "程开甲", statList);
         return ResultVo.ok(duty);
     }
