@@ -92,16 +92,12 @@ public class SrcGenerateTask {
 			vo.setPsmPersonInfo(psmPersonInfo);
 			vo.setCharacterInfo(psmPersonInfo.getPersonId());
 
-
-			// 某人离开或者进入区域也要推送
-			// 右侧
-			// 左侧告警
-			// 上面toast取消
+			// 某人离开或者进入区域也要推送消息
 			vo.setEventInfo("人员：" + psmPersonInfo.getName()
 							+ "，时间：" + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(CommonUtil.getCurrentTime())
 							+ random(
 					"，进入区域(" + random("食堂", "教学楼", "教师宿舍", "仓库", "生物园地", "门卫室", "乒乓球台", "篮球场", "少年宫", "办公楼") + ")",
-					"，进入区域(" + random("食堂", "教学楼", "教师宿舍", "仓库", "生物园地", "门卫室", "乒乓球台", "篮球场", "少年宫", "办公楼") + ")"
+					"，离开区域(" + random("食堂", "教学楼", "教师宿舍", "仓库", "生物园地", "门卫室", "乒乓球台", "篮球场", "少年宫", "办公楼") + ")"
 					)
 			);
 
@@ -110,8 +106,6 @@ public class SrcGenerateTask {
 			vo.setTime(CommonUtil.getCurrentTime());
 			vo.setValidState(random("是", "否"));
 			dealResultDetailService.add(vo);
-			// rabbitMQUtil.sendMsg(vo.getEventInfo());
-			// vo to json
 			rabbitMQUtil.sendMsg(gson.toJson(vo));
 
 			PsmRealAlarmVo alarmVo = new PsmRealAlarmVo();
@@ -137,11 +131,8 @@ public class SrcGenerateTask {
 	}
 
 	private boolean returnFlag() {
-		if (Math.random() * 100 > 10) { // 10%的概率
-			return true;
-		}
-
-		return false;
+		// 60%的概率
+		return Math.random() * 100 > 60;
 	}
 
 	private String random(String... type) {
