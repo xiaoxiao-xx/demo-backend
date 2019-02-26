@@ -1,8 +1,10 @@
 package com.microcore.center.service.impl;
 
 import com.microcore.center.mapper.PsmScheduleDetailMapper;
+import com.microcore.center.model.PsmDeptInfo;
 import com.microcore.center.model.PsmScheduleDetail;
 import com.microcore.center.model.PsmScheduleDetailExample;
+import com.microcore.center.service.DepartmentService;
 import com.microcore.center.service.ScheduleDetailService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.PsmScheduleDetailVo;
@@ -22,6 +24,9 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
     @Autowired
     private PsmScheduleDetailMapper psmScheduleDetailMapper;
+
+    @Autowired
+    private DepartmentService departmentService;
 
     @Override
     public ResultVo add(PsmScheduleDetailVo vo) {
@@ -110,9 +115,13 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
     @Override
     public ResultVo getOnDutyData() {
         List<TeamStat> statList = new ArrayList<>(3);
-        statList.add(new TeamStat("10所", 23, 23));
-        statList.add(new TeamStat("30所", 17, 14));
-        statList.add(new TeamStat("49所", 127, 126));
+        PsmDeptInfo departmentC = departmentService.getDepartment("0");
+        PsmDeptInfo departmentA = departmentService.getDepartment("1");
+        PsmDeptInfo departmentB = departmentService.getDepartment("2");
+
+        statList.add(new TeamStat(departmentA.getDeptName(), 23, 23));
+        statList.add(new TeamStat(departmentB.getDeptName(), 17, 14));
+        statList.add(new TeamStat(departmentC.getDeptName(), 127, 126));
         Duty duty = new Duty("王志", "程开甲", statList);
         return ResultVo.ok(duty);
     }
