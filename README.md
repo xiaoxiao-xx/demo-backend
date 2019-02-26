@@ -2,7 +2,7 @@
 demo后台
 
 
-## 安装
+### 安装
 
 本项目依赖于RabbitMQ, 需要先安装Erlang, 然后安装RabbitMQ。  
 安装RabbitMQ后, 在RabbitMQ的安装目录下的sbin目录(如C:\Program Files\RabbitMQ Server\rabbitmq_server-3.7.10\sbin) 下执行下面的命令以开启并启动必要的插件:
