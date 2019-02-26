@@ -118,10 +118,12 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
         PsmDeptInfo departmentC = departmentService.getDepartment("0");
         PsmDeptInfo departmentA = departmentService.getDepartment("1");
         PsmDeptInfo departmentB = departmentService.getDepartment("2");
+        PsmDeptInfo departmentD = departmentService.getDepartment("3");
 
         statList.add(new TeamStat(departmentA.getDeptName(), 23, 23));
         statList.add(new TeamStat(departmentB.getDeptName(), 17, 14));
         statList.add(new TeamStat(departmentC.getDeptName(), 127, 126));
+        statList.add(new TeamStat(departmentD.getDeptName(), 234, 229));
         Duty duty = new Duty("王志", "程开甲", statList);
         return ResultVo.ok(duty);
     }
