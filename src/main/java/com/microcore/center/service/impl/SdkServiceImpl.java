@@ -84,4 +84,39 @@ public class SdkServiceImpl implements SdkService {
         return sdk.NET_DVR_RealPlay_V30(lUserID, lpClientInfo, fRealDataCallBack_V30, pUser, bBlocked);
     }
 
+    @Override
+    public void realPlay(NativeLong lUserID, HCNetSDK.NET_DVR_CLIENTINFO lpClientInfo,
+                         Pointer pUser, boolean bBlocked) {
+        HCNetSDK.FRealDataCallBack_V30 fRealDataCallBack_V30 = (lRealHandle, dwDataType, pBuffer,
+                                                                dwBufSize, pUser1) -> {
+            // TODO 实时预览回调方法主体
+        };
+
+        NativeLong realPlay = realPlay(lUserID, lpClientInfo, fRealDataCallBack_V30, pUser, bBlocked);
+    }
+
+    @Override
+    public boolean setRealDataFlow(NativeLong lRealHandle, HCNetSDK.FRowDataCallBack fRealDataCallBack, int dwUser) {
+        return sdk.NET_DVR_SetRealDataCallBack(lRealHandle, fRealDataCallBack, dwUser);
+    }
+
+    @Override
+    public boolean setRealDataFlow(NativeLong lRealHandle, int dwUser) {
+        HCNetSDK.FRowDataCallBack fRealDataCallBack = (lUserID, sIPAddr, lRowAmout,
+                                                       pRecvDataBuffer, dwBufSize, dwUser1) -> {
+            // 实时码流数据回调方法主体
+            if (dwBufSize > 0) {
+
+
+
+
+
+
+
+            }
+        };
+
+        return sdk.NET_DVR_SetRealDataCallBack(lRealHandle, fRealDataCallBack, dwUser);
+    }
+
 }

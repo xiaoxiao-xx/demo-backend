@@ -52,4 +52,11 @@ public interface SdkService {
     NativeLong realPlay(NativeLong lUserID, HCNetSDK.NET_DVR_CLIENTINFO lpClientInfo,
                         HCNetSDK.FRealDataCallBack_V30 fRealDataCallBack_V30,
                         Pointer pUser, boolean bBlocked);
+
+    void realPlay(NativeLong lUserID, HCNetSDK.NET_DVR_CLIENTINFO lpClientInfo,
+                  Pointer pUser, boolean bBlocked);
+
+    boolean setRealDataFlow(NativeLong lRealHandle, HCNetSDK.FRowDataCallBack fRealDataCallBack, int dwUser);
+
+    boolean setRealDataFlow(NativeLong lRealHandle, int dwUser);
 }
