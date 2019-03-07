@@ -38,8 +38,8 @@ public class SdkServiceImpl implements SdkService {
      * @return
      */
     @Override
-    public NativeLong NET_DVR_Login_V30(String sDVRIP, short wDVRPort, String sUserName,
-                                        String sPassword, HCNetSDK.NET_DVR_DEVICEINFO_V30 lpDeviceInfo) {
+    public NativeLong loginDevice(String sDVRIP, short wDVRPort, String sUserName,
+                                  String sPassword, HCNetSDK.NET_DVR_DEVICEINFO_V30 lpDeviceInfo) {
 
         return sdk.NET_DVR_Login_V30(sDVRIP,
                 wDVRPort,

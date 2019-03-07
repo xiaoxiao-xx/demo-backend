@@ -20,8 +20,8 @@ public interface SdkService {
      * @param lpDeviceInfo
      * @return
      */
-    NativeLong NET_DVR_Login_V30(String sDVRIP, short wDVRPort, String sUserName,
-                                 String sPassword, HCNetSDK.NET_DVR_DEVICEINFO_V30 lpDeviceInfo);
+    NativeLong loginDevice(String sDVRIP, short wDVRPort, String sUserName,
+                           String sPassword, HCNetSDK.NET_DVR_DEVICEINFO_V30 lpDeviceInfo);
 
     /**
      * 单帧数据捕获并保存成 JPEG 存放在指定的内存空间中
