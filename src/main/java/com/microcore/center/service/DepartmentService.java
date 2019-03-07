@@ -7,6 +7,7 @@ import com.microcore.center.vo.DepartmentVo;
 import com.microcore.center.vo.ResultVo;
 
 public interface DepartmentService {
+
     ResultVo add(DepartmentVo departmentVo);
 
     ResultVo update(DepartmentVo departmentVo);
@@ -14,9 +15,11 @@ public interface DepartmentService {
     ResultVo delete(String id);
 
     ResultVo getDeptList(String name);
-    
-    
-    public String getDepartmentName(String id);
-    public PsmDeptInfo getDepartment(String id);
-    public List<DepartmentVo> getDeptTree();
+
+    String getDepartmentName(String id);
+
+    PsmDeptInfo getDepartment(String id);
+
+    List<DepartmentVo> getDeptTree();
+
 }

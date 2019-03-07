@@ -5,6 +5,7 @@ import com.microcore.center.vo.PersonInfoVo;
 import com.microcore.center.vo.ResultVo;
 
 public interface PersonService {
+
 	ResultVo add(PersonInfoVo personInfoVo);
 
 	ResultVo update(PersonInfoVo personInfoVo);
@@ -26,8 +27,8 @@ public interface PersonService {
 	 */
 	PsmPersonInfo getRadomPerson();
 	
-	
 	PsmPersonInfo getPsmPersonInfo(String id);
 	
 	String getPsmPersonInfoName(String id);
+
 }

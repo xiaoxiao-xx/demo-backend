@@ -6,5 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.microcore.center.vo.PsmRollCallVo;
 
 public interface PsmRollCallService {
-	public PageInfo<PsmRollCallVo> query(String team, Date callTime, Integer pageIndex, Integer pageSize);
+
+	PageInfo<PsmRollCallVo> query(String team, Date callTime, Integer pageIndex, Integer pageSize);
+
 }

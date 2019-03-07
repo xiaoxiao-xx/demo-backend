@@ -9,7 +9,8 @@ import com.microcore.center.vo.ResultVo;
  */
 public interface DealResultService {
 
-    PageInfo<PsmDealResVo> getDealResultList(String alarmType,String dealState, Integer pageIndex, Integer pageSize);
+    PageInfo<PsmDealResVo> getDealResultList(String alarmType,String dealState,
+                                             Integer pageIndex, Integer pageSize);
 
     ResultVo delete(String id);
 

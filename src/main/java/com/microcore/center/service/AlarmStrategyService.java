@@ -6,12 +6,16 @@ import com.microcore.center.vo.PsmAlarmStrategyVo;
 import com.microcore.center.vo.ResultVo;
 
 public interface AlarmStrategyService {
-	public PageInfo<PsmAlarmStrategyVo> query(String alarmType,String strategy,Integer pageIndex, Integer pageSize);
-	public ResultVo add(PsmAlarmStrategyVo alarmStrategyVo);
 
-	public ResultVo update(PsmAlarmStrategyVo alarmStrategyVo);
+	PageInfo<PsmAlarmStrategyVo> query(String alarmType, String strategy,
+									   Integer pageIndex, Integer pageSize);
 
-	public ResultVo delete(String id);
+	ResultVo add(PsmAlarmStrategyVo alarmStrategyVo);
+
+	ResultVo update(PsmAlarmStrategyVo alarmStrategyVo);
+
+	ResultVo delete(String id);
 	
-	public ResultVo startStop(AlarmStrategyOpt alarmStrategyOpt);
+	ResultVo startStop(AlarmStrategyOpt alarmStrategyOpt);
+
 }
