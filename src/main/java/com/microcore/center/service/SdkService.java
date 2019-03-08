@@ -10,6 +10,8 @@ import com.sun.jna.ptr.IntByReference;
  */
 public interface SdkService {
 
+    NativeLong getUserId();
+
     /**
      * 向海康威视的服务器注册设备
      *
@@ -59,4 +61,7 @@ public interface SdkService {
     boolean setRealDataFlow(NativeLong lRealHandle, HCNetSDK.FRowDataCallBack fRealDataCallBack, int dwUser);
 
     boolean setRealDataFlow(NativeLong lRealHandle, int dwUser);
+
+    void errMsg();
+
 }

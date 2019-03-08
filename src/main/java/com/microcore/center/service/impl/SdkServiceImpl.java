@@ -6,11 +6,49 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 @Service
 @Slf4j
 public class SdkServiceImpl implements SdkService {
+
+    /**
+     * 设备IP
+     */
+    @Value("${nvr.device.ip}")
+    private String deviceIp;
+
+    /**
+     * 设备Port
+     */
+    @Value("${nvr.device.port}")
+    private Short devicePort;
+
+    /**
+     * 用户登录名
+     */
+    @Value("${login.username}")
+    private String username;
+
+    /**
+     * 用户登录密码
+     */
+    @Value("${login.password}")
+    private String password;
+
+    private NativeLong lUserID;
+
+    private void setUserId(NativeLong userId) {
+        this.lUserID = userId;
+    }
+
+    @Override
+    public NativeLong getUserId() {
+        return this.lUserID;
+    }
 
     private HCNetSDK sdk = HCNetSDK.INSTANCE;
 
@@ -25,6 +63,22 @@ public class SdkServiceImpl implements SdkService {
 
         // 设置超时时间
         sdk.NET_DVR_SetConnectTime(12, 2);
+    }
+
+    @PostConstruct
+    private void startlogin() {
+        HCNetSDK.NET_DVR_DEVICEINFO_V30 netDvrDeviceinfoV30 = new HCNetSDK.NET_DVR_DEVICEINFO_V30();
+        // TODO NET_DVR_DEVICEINFO_V30的具体参数待设置
+        lUserID = loginDevice(deviceIp,
+                devicePort,
+                username,
+                password,
+                netDvrDeviceinfoV30);
+
+        if (lUserID.intValue() < 0) {
+            log.error("Login error");
+            errMsg();
+        }
     }
 
     /**
@@ -106,17 +160,21 @@ public class SdkServiceImpl implements SdkService {
                                                        pRecvDataBuffer, dwBufSize, dwUser1) -> {
             // 实时码流数据回调方法主体
             if (dwBufSize > 0) {
-
-
-
-
-
-
-
+                // TODO Capture the data stream from NVR device
             }
         };
 
         return sdk.NET_DVR_SetRealDataCallBack(lRealHandle, fRealDataCallBack, dwUser);
+    }
+
+    /**
+     * 输出错误信息
+     */
+    @Override
+    public void errMsg() {
+        // 获取最后的错误码
+        int error = sdk.NET_DVR_GetLastError();
+        log.error("Error: {}", error);
     }
 
 }

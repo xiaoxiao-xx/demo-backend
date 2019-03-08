@@ -45,3 +45,11 @@ rabbit:
   server.port: 5672
   username: admin
   password: 11111111
+
+nvr.device:
+  ip: 127.0.0.1
+  port: 8000
+
+login:
+  username: admin
+  password: 1111111
