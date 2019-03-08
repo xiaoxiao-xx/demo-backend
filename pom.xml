@@ -164,11 +164,15 @@
             <groupId>com.sun.jna</groupId>
             <artifactId>jna</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/lib/jna.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sun.jna.examples</groupId>
             <artifactId>examples</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/lib/examples.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -233,44 +237,44 @@
                 </dependencies>
             </plugin>
             <!-- 用maven-install-plugin插件安装的本地jar包 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.5</version>
-                <executions>
-                    <execution>
-                        <id>1</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <configuration>
-                            <groupId>com.sun.jna</groupId>
-                            <artifactId>jna</artifactId>
-                            <version>1.0</version>
-                            <packaging>jar</packaging>
-                            <file>${basedir}/src/main/lib/jna.jar</file>
-                        </configuration>
-                    </execution>
+            <!-- TODO 这种方式暂时不行 但是成功过一次 -->
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-install-plugin</artifactId>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<phase>initialize</phase>-->
+            <!--<goals>-->
+            <!--<goal>install-file</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<groupId>com.sun.jna</groupId>-->
+            <!--<artifactId>jna</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<packaging>jar</packaging>-->
+            <!--<file>${basedir}/src/main/lib/jna.jar</file>-->
+            <!--</configuration>-->
+            <!--</execution>-->
 
-                    <execution>
-                        <id>2</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <configuration>
-                            <groupId>com.sun.jna.examples</groupId>
-                            <artifactId>examples</artifactId>
-                            <version>1.0</version>
-                            <packaging>jar</packaging>
-                            <file>${basedir}/src/main/lib/examples.jar</file>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<execution>-->
+            <!--<id>2</id>-->
+            <!--<phase>initialize</phase>-->
+            <!--<goals>-->
+            <!--<goal>install-file</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<groupId>com.sun.jna.examples</groupId>-->
+            <!--<artifactId>examples</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<packaging>jar</packaging>-->
+            <!--<file>${basedir}/src/main/lib/examples.jar</file>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
         <!-- <finalName>hr</finalName> -->
     </build>
+
 
 </project>
