@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
- * @author
+ * 定时截图工具类
  */
 @Component
 public class CaptureTask {

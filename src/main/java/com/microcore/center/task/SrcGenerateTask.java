@@ -32,14 +32,19 @@ public class SrcGenerateTask {
 
 	@Autowired
 	private SrcRecordService srcRecordService;
+
 	@Autowired
 	private DealResultDetailService dealResultDetailService;
+
 	@Autowired
 	private RabbitMQUtil rabbitMQUtil;
+
 	@Autowired
 	private PersonService personService;
+
 	@Autowired
 	private RealAlarmService realAlarmService;
+
 	/**
 	 * 初始化加载素材
 	 */
