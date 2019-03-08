@@ -1,0 +1,23 @@
+代码组织结构说明
+----------------
+
+1. 控制层（Controller）的代码位于 com.microcore.center.controller 包中
+  
+2. 服务层（Service）的代码位于 com.microcore.center.service 包中
+
+   海康威视SDK调用代码即位于其中的 SdkService 和 SdkServiceImpl 两个文件中  
+  
+3. Http调用工具类 HttpTemplate 位于 com.microcore.center.cllient 包中
+  
+4. JSON工具类位于 JSONUtils 位于 com.microcore.center.util 包中
+
+5. 定时任务（如定时截图）代码位于 com.microcore.center.util 包中
+   com.microcore.center.task.CaptureTask   定时截图任务
+   
+6. com.microcore.center.hcnetsdk.HCNetSDK  是海康威视SDK的接口定义
+
+7. src/main/lib-resources 下都是海康威视的SDK文件
+
+8. src/main/lib 下是海康威视提供的两个jar包，需要添加到项目的classpath中
+
+9. src/main/resources 下的两个yml文件是项目的配置文件，里面的配置按自己的需求修改，然后打包，重新运行项目即可
