@@ -200,6 +200,14 @@
                     <include>**/*/*.*</include>
                 </includes>
             </resource>
+            <!-- 打包时包含本地jar包 -->
+            <resource>
+                <directory>src/main/lib</directory>
+                <targetPath>BOOT-INF/lib/</targetPath>
+                <includes>
+                    <include>**/*.jar</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
