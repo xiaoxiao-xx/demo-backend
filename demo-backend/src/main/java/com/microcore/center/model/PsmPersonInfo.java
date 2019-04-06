@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class PsmPersonInfo {
     /**
-     * 
+     *
      */
     private String personId;
 
@@ -14,7 +14,7 @@ public class PsmPersonInfo {
     private String name;
 
     /**
-     * 性别 性别
+     * 性别
      */
     private String gender;
 
@@ -79,16 +79,16 @@ public class PsmPersonInfo {
     private String deptId;
 
     /**
-     * 
-     * @return person_id 
+     *
+     * @return person_id
      */
     public String getPersonId() {
         return personId;
     }
 
     /**
-     * 
-     * @param personId 
+     *
+     * @param personId
      */
     public void setPersonId(String personId) {
         this.personId = personId == null ? null : personId.trim();
@@ -111,16 +111,20 @@ public class PsmPersonInfo {
     }
 
     /**
-     * 性别 性别
-     * @return gender 性别 性别
+     * 性别
+ 性别
+     * @return gender 性别
+ 性别
      */
     public String getGender() {
         return gender;
     }
 
     /**
-     * 性别 性别
-     * @param gender 性别 性别
+     * 性别
+ 性别
+     * @param gender 性别
+ 性别
      */
     public void setGender(String gender) {
         this.gender = gender == null ? null : gender.trim();
