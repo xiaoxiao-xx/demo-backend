@@ -47,9 +47,13 @@ rabbit:
   password: 11111111
 
 nvr.device:
-  ip: 127.0.0.1
+  ip: 192.168.254.2
   port: 8000
 
 login:
   username: admin
-  password: 1111111
+  password: rain@1234
+
+face.api:
+  ip: 127.0.0.1
+  port: 8889

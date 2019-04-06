@@ -70,7 +70,10 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -232,11 +235,11 @@
                     <verbose>true</verbose>
                 </configuration>
                 <dependencies>
-                    <!--<dependency>-->
-                    <!--<groupId>com.microcore</groupId>-->
-                    <!--<artifactId>mybatis-comment-generator</artifactId>-->
-                    <!--<version>0.0.1-SNAPSHOT</version>-->
-                    <!--</dependency>-->
+                    <dependency>
+                        <groupId>com.microcore</groupId>
+                        <artifactId>mybatis-comment-generator</artifactId>
+                        <version>0.0.1-SNAPSHOT</version>
+                    </dependency>
                 </dependencies>
             </plugin>
             <!-- 用maven-install-plugin插件安装的本地jar包 -->

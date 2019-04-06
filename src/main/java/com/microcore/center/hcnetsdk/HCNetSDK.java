@@ -16,6 +16,8 @@ import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.ShortByReference;
 import com.sun.jna.win32.StdCallLibrary;
 
+import java.nio.ByteBuffer;
+
 //SDK接口说明,HCNetSDK.dll
 public interface HCNetSDK extends StdCallLibrary {
 
@@ -2490,6 +2492,23 @@ public interface HCNetSDK extends StdCallLibrary {
         public String sMultiCastIP;
     }
 
+    //V40实时预览参数
+    class NET_DVR_PREVIEWINFO extends Structure {
+        public NativeLong lChannel;
+        public int dwStreamType;
+        public int dwLinkMode;
+        public HWND hPlayWnd;
+        public boolean bBlocked;
+        public boolean bPassbackRecord;
+        public byte byPreviewMode;
+        public byte byStreamID;
+        public byte byProtoType;
+        public byte byRes1;
+        public byte byVideoCodingType;
+        public int dwDisplayBufNum;
+        public byte[] byRes = new byte[216];
+    }
+
     //SDK状态信息(9000新增)
     class NET_DVR_SDKSTATE extends Structure {
         public int dwTotalLoginNum;        //当前login用户数
@@ -2770,6 +2789,8 @@ public interface HCNetSDK extends StdCallLibrary {
     NativeLong NET_DVR_RealPlay(NativeLong lUserID, NET_DVR_CLIENTINFO lpClientInfo);
 
     NativeLong NET_DVR_RealPlay_V30(NativeLong lUserID, NET_DVR_CLIENTINFO lpClientInfo, FRealDataCallBack_V30 fRealDataCallBack_V30, Pointer pUser, boolean bBlocked);
+    //新增V40接口
+    NativeLong NET_DVR_RealPlay_V40(NativeLong lUserID, NET_DVR_PREVIEWINFO lpClientInfo, FRealDataCallBack_V30 fRealDataCallBack_V30, Pointer pUser);
 
     boolean NET_DVR_StopRealPlay(NativeLong lRealHandle);
 
@@ -2801,6 +2822,7 @@ public interface HCNetSDK extends StdCallLibrary {
 
     boolean NET_DVR_CapturePicture(NativeLong lRealHandle, String sPicFileName);//bmp
 
+    boolean NET_DVR_CapturePictureBlock(NativeLong lRealHandle, String sPicFileName,int dwTimeOut);//bmp
     //动态生成I帧
     boolean NET_DVR_MakeKeyFrame(NativeLong lUserID, NativeLong lChannel);//主码流
 
@@ -3052,7 +3074,7 @@ public interface HCNetSDK extends StdCallLibrary {
     boolean NET_DVR_CaptureJPEGPicture(NativeLong lUserID, NativeLong lChannel, NET_DVR_JPEGPARA lpJpegPara, String sPicFileName);
 
     //JPEG抓图到内存
-    boolean NET_DVR_CaptureJPEGPicture_NEW(NativeLong lUserID, NativeLong lChannel, NET_DVR_JPEGPARA lpJpegPara, String sJpegPicBuffer, int dwPicSize, IntByReference lpSizeReturned);
+    boolean NET_DVR_CaptureJPEGPicture_NEW(NativeLong lUserID, NativeLong lChannel, NET_DVR_JPEGPARA lpJpegPara, ByteBuffer jpegBuffer, int dwPicSize, IntByReference lpSizeReturned);
 
 
     //2006-02-16

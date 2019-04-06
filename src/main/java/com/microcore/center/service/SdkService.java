@@ -5,6 +5,8 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
+import java.nio.ByteBuffer;
+
 /**
  * 海康威视SDK服务封装
  */
@@ -38,7 +40,7 @@ public interface SdkService {
      */
     boolean captureJpegPicture(NativeLong lUserID, NativeLong lChannel,
                                HCNetSDK.NET_DVR_JPEGPARA lpJpegPara,
-                               String sJpegPicBuffer, int dwPicSize,
+                               ByteBuffer jpegBuffer, int dwPicSize,
                                IntByReference lpSizeReturned);
 
     /**
@@ -51,12 +53,12 @@ public interface SdkService {
      * @param bBlocked
      * @return
      */
-    NativeLong realPlay(NativeLong lUserID, HCNetSDK.NET_DVR_CLIENTINFO lpClientInfo,
-                        HCNetSDK.FRealDataCallBack_V30 fRealDataCallBack_V30,
-                        Pointer pUser, boolean bBlocked);
+    NativeLong realplay2sdk(NativeLong lUserID, HCNetSDK.NET_DVR_PREVIEWINFO lpClientInfo,
+                            HCNetSDK.FRealDataCallBack_V30 fRealDataCallBack_V30,
+                            Pointer pUser);
 
-    void realPlay(NativeLong lUserID, HCNetSDK.NET_DVR_CLIENTINFO lpClientInfo,
-                  Pointer pUser, boolean bBlocked);
+    void realplay(NativeLong lUserID, HCNetSDK.NET_DVR_PREVIEWINFO lpClientInfo,
+                      Pointer pUser);
 
     boolean setRealDataFlow(NativeLong lRealHandle, HCNetSDK.FRowDataCallBack fRealDataCallBack, int dwUser);
 

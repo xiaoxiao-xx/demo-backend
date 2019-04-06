@@ -7,12 +7,14 @@ import java.util.Base64;
 /**
  * MD5加密算法<br/>
  * SHA加密算法<br/>
- * @author Administrator
  *
+ * @author Administrator
  */
 public class Encode {
 
-	/** MD5加密算法 **/
+	/**
+	 * MD5加密算法
+	 **/
 	public static byte[] MD5Encode(byte[] obj) {
 		MessageDigest md5;
 		try {
@@ -28,7 +30,7 @@ public class Encode {
 	public static String MD5Encode(String data) {
 		return Base64.getEncoder().encodeToString(MD5Encode(data.getBytes()));
 	}
-	
+
 	/**
 	 * SHA 加密算法
 	 **/
@@ -46,6 +48,10 @@ public class Encode {
 
 	public static String SHAEncode(String data) {
 		return Base64.getEncoder().encodeToString(SHAEncode(data.getBytes()));
+	}
+
+	public static String byte2Base64Str(byte[] b) {
+		return Base64.getEncoder().encodeToString(b);
 	}
 
 }

@@ -19,4 +19,5 @@ public class HeartBeatTask {
 	private void heartbeatToCenter() {
 		SessionManage.checkAllUser();
 	}
+
 }

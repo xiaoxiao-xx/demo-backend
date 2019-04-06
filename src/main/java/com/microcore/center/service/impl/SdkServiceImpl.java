@@ -6,10 +6,12 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.nio.ByteBuffer;
 
 @Service
 @Slf4j
@@ -63,6 +65,7 @@ public class SdkServiceImpl implements SdkService {
 
         // 设置超时时间
         sdk.NET_DVR_SetConnectTime(12, 2);
+
     }
 
     @PostConstruct
@@ -74,11 +77,28 @@ public class SdkServiceImpl implements SdkService {
                 username,
                 password,
                 netDvrDeviceinfoV30);
-
+        log.info("lUserID:"+lUserID.intValue());
         if (lUserID.intValue() < 0) {
             log.error("Login error");
             errMsg();
         }
+        //调用视频预览
+        HCNetSDK.NET_DVR_PREVIEWINFO ndPviewInfo= new HCNetSDK.NET_DVR_PREVIEWINFO();
+        ndPviewInfo.lChannel=new NativeLong(2);
+        ndPviewInfo.dwStreamType=0;
+        ndPviewInfo.dwLinkMode=0;
+        ndPviewInfo.hPlayWnd=null;
+        ndPviewInfo.bBlocked=false;
+        ndPviewInfo.bPassbackRecord=false;
+        ndPviewInfo.byPreviewMode=0;
+        ndPviewInfo.byStreamID=0;
+        ndPviewInfo.byProtoType=0;
+        ndPviewInfo.byVideoCodingType=0;
+        ndPviewInfo.dwDisplayBufNum=0;
+        ndPviewInfo.byRes=new byte[216];
+
+        realplay(lUserID,ndPviewInfo,null);
+
     }
 
     /**
@@ -103,6 +123,22 @@ public class SdkServiceImpl implements SdkService {
     }
 
     /**
+     * 实时预览
+     *
+     * @param lUserID
+     * @param lpClientInfo
+     * @param fRealDataCallBack_V30
+     * @param pUser
+     * @return
+     */
+    @Override
+    public NativeLong realplay2sdk(NativeLong lUserID, HCNetSDK.NET_DVR_PREVIEWINFO lpClientInfo,
+                                   HCNetSDK.FRealDataCallBack_V30 fRealDataCallBack_V30,
+                                   Pointer pUser) {
+        return sdk.NET_DVR_RealPlay_V40(lUserID, lpClientInfo, fRealDataCallBack_V30, pUser);
+    }
+
+    /**
      * 单帧数据捕获并保存成 JPEG 存放在指定的内存空间中
      *
      * @param lUserID
@@ -115,38 +151,30 @@ public class SdkServiceImpl implements SdkService {
      */
     @Override
     public boolean captureJpegPicture(NativeLong lUserID, NativeLong lChannel,
-                                      HCNetSDK.NET_DVR_JPEGPARA lpJpegPara, String sJpegPicBuffer,
+                                      HCNetSDK.NET_DVR_JPEGPARA lpJpegPara, ByteBuffer jpegBuffer,
                                       int dwPicSize, IntByReference lpSizeReturned) {
         return sdk.NET_DVR_CaptureJPEGPicture_NEW(lUserID, lChannel, lpJpegPara,
-                sJpegPicBuffer, dwPicSize, lpSizeReturned);
-    }
-
-    /**
-     * 实时预览
-     *
-     * @param lUserID
-     * @param lpClientInfo
-     * @param fRealDataCallBack_V30
-     * @param pUser
-     * @param bBlocked
-     * @return
-     */
-    @Override
-    public NativeLong realPlay(NativeLong lUserID, HCNetSDK.NET_DVR_CLIENTINFO lpClientInfo,
-                               HCNetSDK.FRealDataCallBack_V30 fRealDataCallBack_V30,
-                               Pointer pUser, boolean bBlocked) {
-        return sdk.NET_DVR_RealPlay_V30(lUserID, lpClientInfo, fRealDataCallBack_V30, pUser, bBlocked);
+                jpegBuffer, dwPicSize, lpSizeReturned);
     }
 
     @Override
-    public void realPlay(NativeLong lUserID, HCNetSDK.NET_DVR_CLIENTINFO lpClientInfo,
-                         Pointer pUser, boolean bBlocked) {
+    public void realplay(NativeLong lUserID, HCNetSDK.NET_DVR_PREVIEWINFO lpClientInfo,
+                             Pointer pUser) {
+
         HCNetSDK.FRealDataCallBack_V30 fRealDataCallBack_V30 = (lRealHandle, dwDataType, pBuffer,
                                                                 dwBufSize, pUser1) -> {
-            // TODO 实时预览回调方法主体
+            // 实时预览回调函数实现
+            switch (dwDataType) {
+                case HCNetSDK.NET_DVR_SYSHEAD:
+                    //TODO 码流中系统头处理
+                    log.info("realplay2sdk callback SYSHEAD......dwBufSize="+dwBufSize);
+                case HCNetSDK.NET_DVR_STREAMDATA:
+                    //TODO 码流中视频流处理
+                    log.info("realplay2sdk callback BODY......dwBufSize="+dwBufSize);
+            }
         };
 
-        NativeLong realPlay = realPlay(lUserID, lpClientInfo, fRealDataCallBack_V30, pUser, bBlocked);
+        NativeLong realPlay = realplay2sdk(lUserID, lpClientInfo, fRealDataCallBack_V30, pUser);
     }
 
     @Override
@@ -177,4 +205,7 @@ public class SdkServiceImpl implements SdkService {
         log.error("Error: {}", error);
     }
 
+    public static String byte2Base64Str(byte[] b){
+        return Base64.encodeBase64String(b);
+    }
 }

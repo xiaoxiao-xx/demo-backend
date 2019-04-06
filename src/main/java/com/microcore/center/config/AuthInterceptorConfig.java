@@ -10,7 +10,7 @@ import com.microcore.center.interceptor.AuthenticationInterceptor;
 @Configuration("authMvcInterceptor")
 @Primary
 public class AuthInterceptorConfig extends WebMvcConfigurerAdapter {
-	
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new AuthenticationInterceptor()).excludePathPatterns("/system/*").addPathPatterns("/**");

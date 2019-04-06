@@ -61,11 +61,11 @@ public class CommonUtil {
 
 	/**
 	 * 将List
-	 * <P>
+	 * <p>
 	 * 转成 List<V>
 	 *
 	 * @param list List
-	 *             <P>
+	 *             <p>
 	 * @param v    Class<V>
 	 * @return List<V>
 	 */
@@ -345,8 +345,8 @@ public class CommonUtil {
 	/**
 	 * 将同类型多个参数转为List
 	 *
-	 * @param ts 不定参数列表
-	 * @param    <T> 类型
+	 * @param ts  不定参数列表
+	 * @param <T> 类型
 	 * @return List<T>
 	 */
 	public static <T> List<T> array2List(T... ts) {
