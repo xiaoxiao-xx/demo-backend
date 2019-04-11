@@ -1,10 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>task-system</artifactId>
+    <groupId>com.microcore</groupId>
+    <artifactId>backend</artifactId>
     <version>0.1</version>
-    <name>TaskSystem</name>
-    <description>Demo后台</description>
+    <name>后台</name>
+    <description>后台</description>
 
     <parent>
         <groupId>com.yuhang</groupId>
@@ -208,7 +209,7 @@
                 <configuration>
                     <fork>true</fork>
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.microcore.center.SlsTaskSystemApplication</mainClass>
+                    <mainClass>com.microcore.center.BackendApplication</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
@@ -229,6 +230,42 @@
                     <verbose>true</verbose>
                 </configuration>
             </plugin>
+            <!-- 用maven-install-plugin插件安装的本地jar包 -->
+            <!-- TODO 这种方式暂时不行 但是成功过一次 -->
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-install-plugin</artifactId>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<phase>initialize</phase>-->
+            <!--<goals>-->
+            <!--<goal>install-file</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<groupId>com.sun.jna</groupId>-->
+            <!--<artifactId>jna</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<packaging>jar</packaging>-->
+            <!--<file>${basedir}/src/main/lib/jna.jar</file>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+
+            <!--<execution>-->
+            <!--<id>2</id>-->
+            <!--<phase>initialize</phase>-->
+            <!--<goals>-->
+            <!--<goal>install-file</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<groupId>com.sun.jna.examples</groupId>-->
+            <!--<artifactId>examples</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<packaging>jar</packaging>-->
+            <!--<file>${basedir}/src/main/lib/examples.jar</file>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
         <!-- <finalName>hr</finalName> -->
     </build>

@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>task-system</artifactId>
+    <artifactId>common</artifactId>
     <version>0.1</version>
-    <name>TaskSystem</name>
-    <description>Demo后台</description>
+    <name>common</name>
+    <description>公共模块</description>
 
     <parent>
         <groupId>com.yuhang</groupId>
@@ -13,11 +13,6 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>com.yuhang</groupId>
-            <artifactId>common</artifactId>
-            <version>0.1</version>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -150,21 +145,6 @@
                     <artifactId>commons-lang</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <!-- 依赖用maven-install-plugin插件安装的本地jar包 -->
-        <dependency>
-            <groupId>com.sun.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/lib/jna.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jna.examples</groupId>
-            <artifactId>examples</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/lib/examples.jar</systemPath>
         </dependency>
     </dependencies>
 
