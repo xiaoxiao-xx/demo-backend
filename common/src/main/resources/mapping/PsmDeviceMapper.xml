@@ -81,7 +81,7 @@
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from psm_device_t
+    from psm_device
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,21 +92,21 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from psm_device_t
+    from psm_device
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from psm_device_t
+    delete from psm_device
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.microcore.center.model.PsmDeviceExample" >
-    delete from psm_device_t
+    delete from psm_device
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="com.microcore.center.model.PsmDevice" >
-    insert into psm_device_t (device_id, devtype_code, devtype_val, 
+    insert into psm_device (device_id, devtype_code, devtype_val, 
       device_version, position_xy, position_area, 
       state, identifier, remark
       )
@@ -116,7 +116,7 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.PsmDevice" >
-    insert into psm_device_t
+    insert into psm_device
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="deviceId != null" >
         device_id,
@@ -177,13 +177,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.microcore.center.model.PsmDeviceExample" resultType="java.lang.Integer" >
-    select count(*) from psm_device_t
+    select count(*) from psm_device
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update psm_device_t
+    update psm_device
     <set >
       <if test="record.deviceId != null" >
         device_id = #{record.deviceId,jdbcType=VARCHAR},
@@ -218,7 +218,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update psm_device_t
+    update psm_device
     set device_id = #{record.deviceId,jdbcType=VARCHAR},
       devtype_code = #{record.devtypeCode,jdbcType=VARCHAR},
       devtype_val = #{record.devtypeVal,jdbcType=VARCHAR},
@@ -233,7 +233,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.PsmDevice" >
-    update psm_device_t
+    update psm_device
     <set >
       <if test="devtypeCode != null" >
         devtype_code = #{devtypeCode,jdbcType=VARCHAR},
@@ -263,7 +263,7 @@
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmDevice" >
-    update psm_device_t
+    update psm_device
     set devtype_code = #{devtypeCode,jdbcType=VARCHAR},
       devtype_val = #{devtypeVal,jdbcType=VARCHAR},
       device_version = #{deviceVersion,jdbcType=VARCHAR},

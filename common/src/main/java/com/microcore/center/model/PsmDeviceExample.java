@@ -5,17 +5,17 @@ import java.util.List;
 
 public class PsmDeviceExample {
     /**
-     * psm_device_t
+     * psm_device
      */
     protected String orderByClause;
 
     /**
-     * psm_device_t
+     * psm_device
      */
     protected boolean distinct;
 
     /**
-     * psm_device_t
+     * psm_device
      */
     protected List<Criteria> oredCriteria;
 
@@ -117,7 +117,7 @@ public class PsmDeviceExample {
     }
 
     /**
-     * psm_device_t null
+     * psm_device null
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -792,7 +792,7 @@ public class PsmDeviceExample {
     }
 
     /**
-     * psm_device_t
+     * psm_device
      */
     public static class Criteria extends GeneratedCriteria {
 
@@ -802,7 +802,7 @@ public class PsmDeviceExample {
     }
 
     /**
-     * psm_device_t null
+     * psm_device null
      */
     public static class Criterion {
         private String condition;
