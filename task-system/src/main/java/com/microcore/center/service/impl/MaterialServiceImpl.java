@@ -32,6 +32,11 @@ public class MaterialServiceImpl implements MaterialService {
 	}
 
 	@Override
+	public void addMaterial(PsmMaterial material) {
+		materialMapper.insert(material);
+	}
+
+	@Override
 	public void addFace(PsmFace face) {
 		faceMapper.insert(face);
 	}

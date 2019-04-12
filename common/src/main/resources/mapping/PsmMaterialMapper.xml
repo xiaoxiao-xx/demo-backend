@@ -5,6 +5,8 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="image_name" property="imageName" jdbcType="VARCHAR" />
+    <result column="device_id" property="deviceId" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -65,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, create_time, image_name
+    id, create_time, image_name, device_id, area_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.PsmMaterialExample" >
     select
@@ -99,10 +101,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.microcore.center.model.PsmMaterial" >
-    insert into psm_material (id, create_time, image_name
-      )
-    values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{imageName,jdbcType=VARCHAR}
-      )
+    insert into psm_material (id, create_time, image_name, 
+      device_id, area_id)
+    values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{imageName,jdbcType=VARCHAR}, 
+      #{deviceId,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.PsmMaterial" >
     insert into psm_material
@@ -116,6 +118,12 @@
       <if test="imageName != null" >
         image_name,
       </if>
+      <if test="deviceId != null" >
+        device_id,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -126,6 +134,12 @@
       </if>
       <if test="imageName != null" >
         #{imageName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null" >
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -147,6 +161,12 @@
       <if test="record.imageName != null" >
         image_name = #{record.imageName,jdbcType=VARCHAR},
       </if>
+      <if test="record.deviceId != null" >
+        device_id = #{record.deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaId != null" >
+        area_id = #{record.areaId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -156,7 +176,9 @@
     update psm_material
     set id = #{record.id,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      image_name = #{record.imageName,jdbcType=VARCHAR}
+      image_name = #{record.imageName,jdbcType=VARCHAR},
+      device_id = #{record.deviceId,jdbcType=VARCHAR},
+      area_id = #{record.areaId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -170,13 +192,21 @@
       <if test="imageName != null" >
         image_name = #{imageName,jdbcType=VARCHAR},
       </if>
+      <if test="deviceId != null" >
+        device_id = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmMaterial" >
     update psm_material
     set create_time = #{createTime,jdbcType=TIMESTAMP},
-      image_name = #{imageName,jdbcType=VARCHAR}
+      image_name = #{imageName,jdbcType=VARCHAR},
+      device_id = #{deviceId,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

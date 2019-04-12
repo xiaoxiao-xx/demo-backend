@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.microcore.center.mapper.PsmSummaryMapper" >
   <resultMap id="BaseResultMap" type="com.microcore.center.model.PsmSummary" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="period_head" property="periodHead" jdbcType="TIMESTAMP" />
     <result column="period_end" property="periodEnd" jdbcType="TIMESTAMP" />
     <result column="area_id" property="areaId" jdbcType="VARCHAR" />
@@ -84,15 +84,15 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from psm_summary
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from psm_summary
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.microcore.center.model.PsmSummaryExample" >
     delete from psm_summary
@@ -103,7 +103,7 @@
   <insert id="insert" parameterType="com.microcore.center.model.PsmSummary" >
     insert into psm_summary (id, period_head, period_end, 
       area_id, people_number)
-    values (#{id,jdbcType=INTEGER}, #{periodHead,jdbcType=TIMESTAMP}, #{periodEnd,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=VARCHAR}, #{periodHead,jdbcType=TIMESTAMP}, #{periodEnd,jdbcType=TIMESTAMP}, 
       #{areaId,jdbcType=VARCHAR}, #{peopleNumber,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.microcore.center.model.PsmSummary" >
@@ -127,7 +127,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="periodHead != null" >
         #{periodHead,jdbcType=TIMESTAMP},
@@ -153,7 +153,7 @@
     update psm_summary
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=VARCHAR},
       </if>
       <if test="record.periodHead != null" >
         period_head = #{record.periodHead,jdbcType=TIMESTAMP},
@@ -174,7 +174,7 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update psm_summary
-    set id = #{record.id,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=VARCHAR},
       period_head = #{record.periodHead,jdbcType=TIMESTAMP},
       period_end = #{record.periodEnd,jdbcType=TIMESTAMP},
       area_id = #{record.areaId,jdbcType=VARCHAR},
@@ -199,7 +199,7 @@
         people_number = #{peopleNumber,jdbcType=INTEGER},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmSummary" >
     update psm_summary
@@ -207,6 +207,6 @@
       period_end = #{periodEnd,jdbcType=TIMESTAMP},
       area_id = #{areaId,jdbcType=VARCHAR},
       people_number = #{peopleNumber,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

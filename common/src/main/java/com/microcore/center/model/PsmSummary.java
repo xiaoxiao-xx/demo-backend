@@ -6,7 +6,7 @@ public class PsmSummary {
     /**
      * ID
      */
-    private Integer id;
+    private String id;
 
     /**
      * 时间段起始
@@ -32,7 +32,7 @@ public class PsmSummary {
      * ID
      * @return id ID
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -40,8 +40,8 @@ public class PsmSummary {
      * ID
      * @param id ID
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     /**

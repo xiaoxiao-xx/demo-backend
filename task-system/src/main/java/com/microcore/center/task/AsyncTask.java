@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.microcore.center.cllient.HttpTemplate;
 import com.microcore.center.model.PsmFace;
 import com.microcore.center.service.MaterialService;
+import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.FaceSdkRecVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,10 @@ public class AsyncTask {
 		}
 
 		List<PsmFace> faceList = convertFaces(materialId, faces);
+		faceList.forEach(face -> {
+			face.setUserId(CommonUtil.random("1", "2", "u17", "u9", "u3", "u4", "u5", "u6", "u7", "u8"));
+		});
+
 		materialService.addFaceList(faceList);
 
 		log.info(">>>detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);

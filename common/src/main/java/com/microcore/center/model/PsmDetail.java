@@ -11,7 +11,7 @@ public class PsmDetail {
     /**
      * 汇总结果ID
      */
-    private Integer summaryId;
+    private String summaryId;
 
     /**
      * 区域ID
@@ -53,7 +53,7 @@ public class PsmDetail {
      * 汇总结果ID
      * @return summary_id 汇总结果ID
      */
-    public Integer getSummaryId() {
+    public String getSummaryId() {
         return summaryId;
     }
 
@@ -61,8 +61,8 @@ public class PsmDetail {
      * 汇总结果ID
      * @param summaryId 汇总结果ID
      */
-    public void setSummaryId(Integer summaryId) {
-        this.summaryId = summaryId;
+    public void setSummaryId(String summaryId) {
+        this.summaryId = summaryId == null ? null : summaryId.trim();
     }
 
     /**

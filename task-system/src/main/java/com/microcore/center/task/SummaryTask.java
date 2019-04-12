@@ -1,20 +1,20 @@
 package com.microcore.center.task;
 
-import com.google.gson.Gson;
-import com.microcore.center.cllient.HttpTemplate;
-import com.microcore.center.model.PsmFace;
-import com.microcore.center.service.MaterialService;
+import com.microcore.center.model.PsmDetail;
+import com.microcore.center.model.PsmSummary;
+import com.microcore.center.model.PsmUser;
+import com.microcore.center.service.CommonService;
 import com.microcore.center.service.SummaryService;
-import com.microcore.center.vo.FaceSdkRecVo;
+import com.microcore.center.service.UserService;
+import com.microcore.center.util.CommonUtil;
+import com.microcore.center.vo.FaceSummaryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.microcore.center.task.CaptureTask.convertFaces;
+import java.util.*;
 
 /**
  * 汇总任务
@@ -24,19 +24,74 @@ import static com.microcore.center.task.CaptureTask.convertFaces;
 public class SummaryTask {
 
 	@Autowired
-	private HttpTemplate httpTemplate;
-
-	@Autowired
-	private MaterialService materialService;
-
-	@Autowired
 	private SummaryService summaryService;
+
+	@Autowired
+	private CommonService commonService;
+
+	@Autowired
+	private UserService userService;
+
+	/**
+	 * 定期汇总时间间隔，单位为milisecond
+	 */
+	@Value("${summary.task.interval}")
+	private final int summaryTaskInterval = 60000;
 
 	/**
 	 *
 	 */
-	@Async
-	public void detect(String materialId, FaceSdkRecVo faceSdkRecVo) {
+	@Scheduled(fixedRate = summaryTaskInterval)
+	public void generateSummary() {
+		String sql = "SELECT f.*, m.create_time AS capture_time, m.area_id area_id \n" +
+				"FROM psm_face f \n" +
+				"LEFT JOIN psm_material m ON f.material_id = m.id \n" +
+				"WHERE m.create_time > DATE_SUB(NOW(), INTERVAL #{intervalTime} SECOND) \n" +
+				"ORDER BY m.create_time DESC";
+
+		Map<String, Object> params = new HashMap<>(3);
+		params.put("sql", sql);
+		params.put("intervalTime", summaryTaskInterval / 1000);
+		List<Map<String, Object>> list = commonService.executeSelectSQL(params);
+
+		List<FaceSummaryVo> faceSummaryVoList = CommonUtil.map2PO(list, FaceSummaryVo.class);
+
+		Date now = new Date();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(now);
+		calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) - summaryTaskInterval / 1000);
+		Date head = calendar.getTime();
+
+		String summaryId = CommonUtil.getUUID();
+		String areaId = "--";
+		PsmSummary summary = new PsmSummary();
+		summary.setId(summaryId);
+		summary.setPeriodHead(head);
+		summary.setPeriodEnd(now);
+		summary.setAreaId(areaId);
+		summary.setPeopleNumber(faceSummaryVoList.size());
+		summaryService.addSummary(summary);
+
+		faceSummaryVoList.forEach(faceSummaryVo -> {
+			PsmDetail detail = new PsmDetail();
+			String id = CommonUtil.getUUID();
+			detail.setId(id);
+			detail.setSummaryId(summaryId);
+			detail.setAreaId(faceSummaryVo.getAreaId());
+			detail.setTime(faceSummaryVo.getCaptureTime());
+			detail.setUserId(faceSummaryVo.getUserId());
+
+			PsmUser user = userService.getPsmUserById(faceSummaryVo.getUserId());
+			String username = "";
+			if (user != null) {
+				username = user.getUsername();
+			}
+			detail.setUserName(username);
+
+			summaryService.addDetail(detail);
+		});
 	}
 
 }
+

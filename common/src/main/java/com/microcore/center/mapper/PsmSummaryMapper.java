@@ -22,7 +22,7 @@ public interface PsmSummaryMapper {
      *
      * @mbggenerated
      */
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String id);
 
     /**
      *
@@ -46,7 +46,7 @@ public interface PsmSummaryMapper {
      *
      * @mbggenerated
      */
-    PsmSummary selectByPrimaryKey(Integer id);
+    PsmSummary selectByPrimaryKey(String id);
 
     /**
      *

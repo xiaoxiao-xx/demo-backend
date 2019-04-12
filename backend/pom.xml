@@ -220,16 +220,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.2</version>
-                <configuration>
-                    <configurationFile>${basedir}/src/main/resources/generator/generatorConfig.xml</configurationFile>
-                    <overwrite>true</overwrite>
-                    <verbose>true</verbose>
-                </configuration>
-            </plugin>
             <!-- 用maven-install-plugin插件安装的本地jar包 -->
             <!-- TODO 这种方式暂时不行 但是成功过一次 -->
             <!--<plugin>-->

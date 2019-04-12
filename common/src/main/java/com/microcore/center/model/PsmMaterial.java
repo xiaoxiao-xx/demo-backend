@@ -19,6 +19,16 @@ public class PsmMaterial {
     private String imageName;
 
     /**
+     * 设备ID
+     */
+    private String deviceId;
+
+    /**
+     * 区域ID
+     */
+    private String areaId;
+
+    /**
      * id
      * @return id id
      */
@@ -64,5 +74,37 @@ public class PsmMaterial {
      */
     public void setImageName(String imageName) {
         this.imageName = imageName == null ? null : imageName.trim();
+    }
+
+    /**
+     * 设备ID
+     * @return device_id 设备ID
+     */
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    /**
+     * 设备ID
+     * @param deviceId 设备ID
+     */
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId == null ? null : deviceId.trim();
+    }
+
+    /**
+     * 区域ID
+     * @return area_id 区域ID
+     */
+    public String getAreaId() {
+        return areaId;
+    }
+
+    /**
+     * 区域ID
+     * @param areaId 区域ID
+     */
+    public void setAreaId(String areaId) {
+        this.areaId = areaId == null ? null : areaId.trim();
     }
 }

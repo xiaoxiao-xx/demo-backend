@@ -241,52 +241,62 @@ public class PsmDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andSummaryIdEqualTo(Integer value) {
+        public Criteria andSummaryIdEqualTo(String value) {
             addCriterion("summary_id =", value, "summaryId");
             return (Criteria) this;
         }
 
-        public Criteria andSummaryIdNotEqualTo(Integer value) {
+        public Criteria andSummaryIdNotEqualTo(String value) {
             addCriterion("summary_id <>", value, "summaryId");
             return (Criteria) this;
         }
 
-        public Criteria andSummaryIdGreaterThan(Integer value) {
+        public Criteria andSummaryIdGreaterThan(String value) {
             addCriterion("summary_id >", value, "summaryId");
             return (Criteria) this;
         }
 
-        public Criteria andSummaryIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andSummaryIdGreaterThanOrEqualTo(String value) {
             addCriterion("summary_id >=", value, "summaryId");
             return (Criteria) this;
         }
 
-        public Criteria andSummaryIdLessThan(Integer value) {
+        public Criteria andSummaryIdLessThan(String value) {
             addCriterion("summary_id <", value, "summaryId");
             return (Criteria) this;
         }
 
-        public Criteria andSummaryIdLessThanOrEqualTo(Integer value) {
+        public Criteria andSummaryIdLessThanOrEqualTo(String value) {
             addCriterion("summary_id <=", value, "summaryId");
             return (Criteria) this;
         }
 
-        public Criteria andSummaryIdIn(List<Integer> values) {
+        public Criteria andSummaryIdLike(String value) {
+            addCriterion("summary_id like", value, "summaryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryIdNotLike(String value) {
+            addCriterion("summary_id not like", value, "summaryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryIdIn(List<String> values) {
             addCriterion("summary_id in", values, "summaryId");
             return (Criteria) this;
         }
 
-        public Criteria andSummaryIdNotIn(List<Integer> values) {
+        public Criteria andSummaryIdNotIn(List<String> values) {
             addCriterion("summary_id not in", values, "summaryId");
             return (Criteria) this;
         }
 
-        public Criteria andSummaryIdBetween(Integer value1, Integer value2) {
+        public Criteria andSummaryIdBetween(String value1, String value2) {
             addCriterion("summary_id between", value1, value2, "summaryId");
             return (Criteria) this;
         }
 
-        public Criteria andSummaryIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andSummaryIdNotBetween(String value1, String value2) {
             addCriterion("summary_id not between", value1, value2, "summaryId");
             return (Criteria) this;
         }

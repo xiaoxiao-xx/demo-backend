@@ -3,6 +3,7 @@ package com.microcore.center.task;
 import com.microcore.center.cllient.HttpTemplate;
 import com.microcore.center.hcnetsdk.HCNetSDK;
 import com.microcore.center.model.PsmFace;
+import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.service.MaterialService;
 import com.microcore.center.service.SdkService;
 import com.microcore.center.util.CommonUtil;
@@ -166,29 +167,20 @@ public class CaptureTask {
 		// 保存素材信息
 		String uuid = CommonUtil.getUUID();
 		String imageName = "input.jpeg";
-		materialService.addMaterial(uuid, imageName);
+
+		PsmMaterial material = new PsmMaterial();
+		material.setId(uuid);
+		material.setCreateTime(CommonUtil.getCurrentTime());
+		material.setImageName(imageName);
+		material.setDeviceId(CommonUtil.random("dev1", "dev2", "dev3"));
+		material.setAreaId(CommonUtil.random("1", "2", "3", "4", "5"));
+		materialService.addMaterial(material);
 
 		byte[] data = image2byte("D://imga/input.jpeg");
 		log.info("data.len=" + data.length);
 
 		faceSdkRecVo.setImage(Encode.byte2Base64Str(data));
 		log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
-
-//		String ret = httpTemplate.post("127.0.0.1", "8080", "/face/api/v1/detect", faceSdkRecVo, String.class);
-//
-		// 保存识别结果
-//		Gson gson = new Gson();
-//		DetectResult result = gson.fromJson(ret, DetectResult.class);
-
-//		List<FaceInfo> faces = result.getFaces();
-//		if (faces == null) {
-//			faces = new ArrayList<>();
-//		}
-
-//		List<PsmFace> faceList = convertFaces(uuid, faces);
-//		materialService.addFaceList(faceList);
-
-//		log.info(">>>detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
 		asyncTask.detect(uuid, faceSdkRecVo);
 	}

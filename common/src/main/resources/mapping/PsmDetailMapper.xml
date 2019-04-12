@@ -3,7 +3,7 @@
 <mapper namespace="com.microcore.center.mapper.PsmDetailMapper" >
   <resultMap id="BaseResultMap" type="com.microcore.center.model.PsmDetail" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="summary_id" property="summaryId" jdbcType="INTEGER" />
+    <result column="summary_id" property="summaryId" jdbcType="VARCHAR" />
     <result column="area_id" property="areaId" jdbcType="VARCHAR" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
@@ -105,7 +105,7 @@
     insert into psm_detail (id, summary_id, area_id, 
       user_id, user_name, time
       )
-    values (#{id,jdbcType=VARCHAR}, #{summaryId,jdbcType=INTEGER}, #{areaId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{summaryId,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR}, 
       #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -136,7 +136,7 @@
         #{id,jdbcType=VARCHAR},
       </if>
       <if test="summaryId != null" >
-        #{summaryId,jdbcType=INTEGER},
+        #{summaryId,jdbcType=VARCHAR},
       </if>
       <if test="areaId != null" >
         #{areaId,jdbcType=VARCHAR},
@@ -165,7 +165,7 @@
         id = #{record.id,jdbcType=VARCHAR},
       </if>
       <if test="record.summaryId != null" >
-        summary_id = #{record.summaryId,jdbcType=INTEGER},
+        summary_id = #{record.summaryId,jdbcType=VARCHAR},
       </if>
       <if test="record.areaId != null" >
         area_id = #{record.areaId,jdbcType=VARCHAR},
@@ -187,7 +187,7 @@
   <update id="updateByExample" parameterType="map" >
     update psm_detail
     set id = #{record.id,jdbcType=VARCHAR},
-      summary_id = #{record.summaryId,jdbcType=INTEGER},
+      summary_id = #{record.summaryId,jdbcType=VARCHAR},
       area_id = #{record.areaId,jdbcType=VARCHAR},
       user_id = #{record.userId,jdbcType=VARCHAR},
       user_name = #{record.userName,jdbcType=VARCHAR},
@@ -200,7 +200,7 @@
     update psm_detail
     <set >
       <if test="summaryId != null" >
-        summary_id = #{summaryId,jdbcType=INTEGER},
+        summary_id = #{summaryId,jdbcType=VARCHAR},
       </if>
       <if test="areaId != null" >
         area_id = #{areaId,jdbcType=VARCHAR},
@@ -219,7 +219,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmDetail" >
     update psm_detail
-    set summary_id = #{summaryId,jdbcType=INTEGER},
+    set summary_id = #{summaryId,jdbcType=VARCHAR},
       area_id = #{areaId,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR},
       user_name = #{userName,jdbcType=VARCHAR},

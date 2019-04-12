@@ -31,8 +31,8 @@ public class SummaryController {
 
 	@ApiOperation(value = "", notes = "")
 	@GetMapping("getDetailList")
-	public ResultVo getDetailList(@RequestParam Integer pageIndex, @RequestParam Integer pageSize) {
-		return ResultVo.ok(summaryService.getDetailList(pageIndex, pageSize));
+	public ResultVo getDetailList(@RequestParam String areaId) {
+		return ResultVo.ok(summaryService.getDetailList(areaId, null, null));
 	}
 
 }
