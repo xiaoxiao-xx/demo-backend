@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SummaryService {
 
-	List<DetailVo> getSummary();
+	List getSummary();
 
 	List<DetailVo> getDetailList(String areaId, Integer pageIndex, Integer pageSize);
 

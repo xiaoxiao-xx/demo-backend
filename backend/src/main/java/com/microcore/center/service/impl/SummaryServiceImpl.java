@@ -22,7 +22,7 @@ public class SummaryServiceImpl implements SummaryService {
 	private CommonService commonService;
 
 	@Override
-	public List<DetailVo> getSummary() {
+	public List getSummary() {
 		String sql = "SELECT\n" +
 				"\tarea_id,\n" +
 				"\tcount( 1 ) count \n" +
@@ -33,9 +33,8 @@ public class SummaryServiceImpl implements SummaryService {
 		Map<String, Object> params = new HashMap<>(3);
 		params.put("sql", sql);
 		params.put("intervalTime", summaryTaskInterval / 1000);
-		List<Map<String, Object>> list = commonService.executeSelectSQL(params);
 
-		return CommonUtil.map2PO(list, DetailVo.class);
+		return commonService.executeSelectSQL(params);
 	}
 
 	/**

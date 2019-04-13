@@ -135,7 +135,8 @@ public class CaptureTask {
 	// OK
 	@Scheduled(fixedRate = 200)
 	private void captureTaskimg() {
-		boolean captureTaskFlag = true;
+		boolean captureTaskFlag = false;
+		// boolean captureTaskFlag = true;
 		if (captureTaskFlag) {
 			return;
 		}
