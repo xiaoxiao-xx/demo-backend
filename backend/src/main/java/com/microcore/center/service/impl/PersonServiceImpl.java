@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.microcore.center.cllient.HttpTemplate;
-import com.microcore.center.util.Encode;
 import com.microcore.center.vo.FaceSdkUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

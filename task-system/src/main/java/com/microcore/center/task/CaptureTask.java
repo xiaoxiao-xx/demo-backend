@@ -7,7 +7,6 @@ import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.service.MaterialService;
 import com.microcore.center.service.SdkService;
 import com.microcore.center.util.CommonUtil;
-import com.microcore.center.util.Encode;
 import com.microcore.center.vo.FaceSdkGroupVo;
 import com.microcore.center.vo.FaceSdkRecVo;
 import com.microcore.center.vo.FaceSdkUserVo;
@@ -28,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.microcore.center.util.CommonUtil.byte2Base64Str;
 import static com.microcore.center.util.CommonUtil.image2byte;
 
 /**
@@ -101,7 +101,7 @@ public class CaptureTask {
 		// 存素材元信息
 
 		if (result) {
-//			faceSdkRecVo.setImage(Encode.byte2Base64Str(jpegBuffer.array()));
+//			faceSdkRecVo.setImage(byte2Base64Str(jpegBuffer.array()));
 
 			byte[] temp = new byte[retLen.getValue()];
 			// log.info("-------- position  bw= {}", jpegBuffer.position());
@@ -109,7 +109,7 @@ public class CaptureTask {
 			// log.info("-------- position  aw= {}", jpegBuffer.position());
 			jpegBuffer.get(temp, 0, retLen.getValue());
 			// log.info("-------- position  aw2= {}", jpegBuffer.position());
-			String image = Encode.byte2Base64Str(temp);
+			String image = byte2Base64Str(temp);
 			faceSdkRecVo.setImage(image);
 
 			// 保存素材信息
@@ -136,11 +136,10 @@ public class CaptureTask {
 	@Autowired
 	private AsyncTask asyncTask;
 
-	// OK
 	@Scheduled(fixedRate = 200)
 	private void captureTaskDetect() {
-		boolean captureTaskFlag = false;
-		// boolean captureTaskFlag = true;
+		// boolean captureTaskFlag = false;
+		boolean captureTaskFlag = true;
 		if (captureTaskFlag) {
 			return;
 		}
@@ -169,13 +168,17 @@ public class CaptureTask {
 		byte[] data = image2byte("D://imga/input.jpeg");
 		log.info("data.len=" + data.length);
 
-		faceSdkRecVo.setImage(Encode.byte2Base64Str(data));
+		faceSdkRecVo.setImage(byte2Base64Str(data));
 		log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
 
 		asyncTask.detect(uuid, faceSdkRecVo);
 	}
 
 	// TODO Clean code
+
+	/**
+	 * rec
+	 */
 	// @Scheduled(fixedRate = 200)
 	private void captureTaskimgRec() {
 		//封装请求Json
@@ -192,12 +195,12 @@ public class CaptureTask {
 		byte[] data = image2byte("D://img/input.jpeg");
 		log.info("data.len=" + data.length);
 
-		faceSdkRecVo.setImage(Encode.byte2Base64Str(data));
+		faceSdkRecVo.setImage(byte2Base64Str(data));
 		String ret = httpTemplate.post("127.0.0.1", "3000", "/face/api/v1/rec", faceSdkRecVo, String.class);
 		log.info(">>>rec cost" + (System.currentTimeMillis() - ctm) + " and ret=" + ret);
 	}
 
-	public static List<PsmFace> convertFaces(String materialId, List<FaceInfo> faceInfoList) {
+	static List<PsmFace> convertFaces(String materialId, List<FaceInfo> faceInfoList) {
 		return faceInfoList.stream().map(faceInfo -> {
 			PsmFace face = new PsmFace();
 
@@ -269,7 +272,7 @@ public class CaptureTask {
 		faceSdkUserVo.setSeiralNo("uUpd-" + seiralNo);
 
 		byte[] data = image2byte("D://imgu/u9.jpg");
-		faceSdkUserVo.setImage(Encode.byte2Base64Str(data));
+		faceSdkUserVo.setImage(byte2Base64Str(data));
 
 		String ret = httpTemplate.post("192.168.254.22", "3000", "/face/api/v1/user_update", faceSdkUserVo, String.class);
 		log.info(">>>updateUser ret=" + ret);
@@ -320,7 +323,7 @@ public class CaptureTask {
 			faceSdkUserVo.setSeiralNo("uAdd-" + seiralNo);
 			log.info(">>>addUser u=" + "u" + i);
 			byte[] data = image2byte("D://imgu/u" + i + ".bmp");
-			faceSdkUserVo.setImage(Encode.byte2Base64Str(data));
+			faceSdkUserVo.setImage(byte2Base64Str(data));
 
 			String ret = httpTemplate.post("192.168.254.22", "3000", "/face/api/v1/user_add", faceSdkUserVo, String.class);
 

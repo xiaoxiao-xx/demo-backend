@@ -98,7 +98,6 @@ public class SdkServiceImpl implements SdkService {
         ndPviewInfo.byRes=new byte[216];
 
         realplay(lUserID,ndPviewInfo,null);
-
     }
 
     /**
@@ -204,7 +203,4 @@ public class SdkServiceImpl implements SdkService {
         log.error("Error: {}", error);
     }
 
-    public static String byte2Base64Str(byte[] b){
-        return Base64.encodeBase64String(b);
-    }
 }
