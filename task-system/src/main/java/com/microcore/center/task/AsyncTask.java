@@ -56,7 +56,7 @@ public class AsyncTask {
 
 		List<PsmFace> faceList = convertFaces(materialId, faces);
 		faceList.forEach(face -> {
-			face.setUserId(CommonUtil.random("1", "2", "u17", "u9", "u3", "u4", "u5", "u6", "u7", "u8"));
+			// face.setUserId(CommonUtil.random("1", "2", "u17", "u9", "u3", "u4", "u5", "u6", "u7", "u8"));
 		});
 
 		materialService.addFaceList(faceList);

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
@@ -49,10 +50,13 @@ public class CaptureTask {
 	@Value("${face.api.port}")
 	private String faceApiPort;
 
+	@Value("${capture.path}")
+	private String captureImagePath;
+
 	/**
 	 * 200ms心跳一次
 	 */
-	@Scheduled(fixedRate = 500)
+	@Scheduled(fixedRate = 300)
 	private void captureTask() {
 		// 调用SDK图片大小和质量参数
 		HCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new HCNetSDK.NET_DVR_JPEGPARA();
@@ -86,7 +90,7 @@ public class CaptureTask {
 
 		String imageName = "" + System.currentTimeMillis() + ".jpeg";
 		try {
-			OutputStream os = new FileOutputStream("D:/img/" + imageName);
+			OutputStream os = new FileOutputStream(captureImagePath + imageName);
 
 			// log.info("-------- position = {}", jpegBuffer.position());
 			os.write(jpegBuffer.array(), 0, retLen.getValue());
@@ -136,7 +140,7 @@ public class CaptureTask {
 	@Autowired
 	private AsyncTask asyncTask;
 
-	@Scheduled(fixedRate = 200)
+	// @Scheduled(fixedRate = 200)
 	private void captureTaskDetect() {
 		// boolean captureTaskFlag = false;
 		boolean captureTaskFlag = true;
@@ -192,7 +196,7 @@ public class CaptureTask {
 
 		faceSdkRecVo.setDevice_id("001");
 
-		byte[] data = image2byte("D://img/input.jpeg");
+		byte[] data = image2byte("D://imga/input.jpeg");
 		log.info("data.len=" + data.length);
 
 		faceSdkRecVo.setImage(byte2Base64Str(data));
@@ -223,8 +227,9 @@ public class CaptureTask {
 
 	@Data
 	@EqualsAndHashCode(callSuper = false)
-	public static class DetectResult {
+	static class DetectResult {
 
+		// TODO serialNumber
 		private String seiralNo;
 
 		private List<FaceInfo> faces;
@@ -233,7 +238,7 @@ public class CaptureTask {
 
 	@Data
 	@EqualsAndHashCode(callSuper = false)
-	public static class FaceInfo {
+	static class FaceInfo {
 		private Integer angle;
 		private Integer center_x;
 		private Integer center_y;
@@ -244,38 +249,48 @@ public class CaptureTask {
 		private Integer width;
 	}
 
+
 	// @Scheduled(fixedRate = 1000)
+	// @PostConstruct
 	private void addGroup() {
 		FaceSdkGroupVo faceSdkGroupVo = new FaceSdkGroupVo();
 		faceSdkGroupVo.setGroup_id("g1");
-		String ret = httpTemplate.post("192.168.254.22", "3000", "/face/api/v1/add_group", faceSdkGroupVo, String.class);
+		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/add_group", faceSdkGroupVo, String.class);
 		log.info(">>>addGroup ret=" + ret);
+
+		addUser();
 	}
 
 	// @Scheduled(fixedRate = 1000)
+	// @PostConstruct
 	private void delGroup() {
 		FaceSdkGroupVo faceSdkGroupVo = new FaceSdkGroupVo();
 		faceSdkGroupVo.setGroup_id("g1");
-		String ret = httpTemplate.post("192.168.254.22", "3000", "/face/api/v1/delete_group", faceSdkGroupVo, String.class);
+		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/delete_group", faceSdkGroupVo, String.class);
 		log.info(">>>delGroup ret=" + ret);
+
+		addGroup();
 	}
 
 	// @Scheduled(fixedRate = 10000)
+	// @PostConstruct
 	private void updateUser() {
 		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
 		faceSdkUserVo.setGroup_id("test_group");
 		faceSdkUserVo.setUser_id("u9");
 
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-		Long ctm = System.currentTimeMillis();
-		String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
-		faceSdkUserVo.setSeiralNo("uUpd-" + seiralNo);
+		for (int i = 18; i < 23; i++) {
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+			Long ctm = System.currentTimeMillis();
+			String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
+			faceSdkUserVo.setSeiralNo("uUpd-" + seiralNo);
 
-		byte[] data = image2byte("D://imgu/u9.jpg");
-		faceSdkUserVo.setImage(byte2Base64Str(data));
+			byte[] data = image2byte("D://imgu/u" + i + ".bmp");
+			faceSdkUserVo.setImage(byte2Base64Str(data));
 
-		String ret = httpTemplate.post("192.168.254.22", "3000", "/face/api/v1/user_update", faceSdkUserVo, String.class);
-		log.info(">>>updateUser ret=" + ret);
+			String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_update", faceSdkUserVo, String.class);
+			log.info(">>> updateUser ret=" + ret);
+		}
 	}
 
 	// @Scheduled(fixedRate = 1000)
@@ -315,7 +330,7 @@ public class CaptureTask {
 		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
 		faceSdkUserVo.setGroup_id("g1");
 
-		for (int i = 17; i < 18; i++) {
+		for (int i = 9; i < 23; i++) {
 			faceSdkUserVo.setUser_id("u" + i);
 			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 			Long ctm = System.currentTimeMillis();
@@ -325,7 +340,7 @@ public class CaptureTask {
 			byte[] data = image2byte("D://imgu/u" + i + ".bmp");
 			faceSdkUserVo.setImage(byte2Base64Str(data));
 
-			String ret = httpTemplate.post("192.168.254.22", "3000", "/face/api/v1/user_add", faceSdkUserVo, String.class);
+			String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_add", faceSdkUserVo, String.class);
 
 			log.info(">>>addUser ret=" + ret);
 		}

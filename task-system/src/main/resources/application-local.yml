@@ -59,4 +59,6 @@ face.api:
 
 summary:
   task:
-    interval: 60000
+    interval: 5000
+
+capture.path: D:/img/
