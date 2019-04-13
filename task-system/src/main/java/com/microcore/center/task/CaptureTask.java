@@ -17,6 +17,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -41,25 +42,23 @@ public class CaptureTask {
 	@Autowired
 	private HttpTemplate httpTemplate;
 
-//	ByteBuffer jpegBuffer = ByteBuffer.allocate(1024 * 1024);
+	@Value("${face.api.ip}")
+	private String faceApiIp;
 
-//    @Value("${face.api.ip}")
-//    private String faceApiIp;
-
-//    @Value("${face.api.port}")
-//    private String faceApiPort;
+	@Value("${face.api.port}")
+	private String faceApiPort;
 
 	/**
 	 * 200ms心跳一次
 	 */
-//	@Scheduled(fixedRate = 300)
+	@Scheduled(fixedRate = 500)
 	private void captureTask() {
 //		NativeLong channel = new NativeLong(2);
 
 		//调用SDK图片大小和质量参数
 		HCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new HCNetSDK.NET_DVR_JPEGPARA();
-		lpJpegPara.wPicSize = 3;
-		lpJpegPara.wPicQuality = 0;
+		lpJpegPara.wPicSize = 5;
+		lpJpegPara.wPicQuality = 2;
 
 		//申请内存大小
 		ByteBuffer jpegBuffer = ByteBuffer.allocate(1024 * 1024);
@@ -113,37 +112,18 @@ public class CaptureTask {
 			faceSdkRecVo.setImage(image);
 
 			log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
-			String ret = httpTemplate.post("127.0.0.1", "8080", "/face/api/v2/detect", faceSdkRecVo, String.class);
+
+			// String ret = httpTemplate.post("192.168.254.22", "8080", "/face/api/v1/detect", faceSdkRecVo, String.class);
+			String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/detect", faceSdkRecVo, String.class);
+			log.info("face.ip: {}, face.port: {}", faceApiIp, faceApiPort);
 
 			// 存图像识别结果
 
-
-//			String ret = httpTemplate.post("192.168.254.22", "8080", "/face/api/v1/detect", faceSdkRecVo, String.class);
 			log.info(">>>ret=" + ret);
 			log.info("cost time:" + (System.currentTimeMillis() - ctm));
 		} else {
 			sdkService.errMsg();
 		}
-	}
-
-	// @Scheduled(fixedRate = 200)
-	private void captureTaskimgRec() {
-		//封装请求Json
-		FaceSdkRecVo faceSdkRecVo = new FaceSdkRecVo();
-		faceSdkRecVo.setGroup_id("g1");
-		//获得seiralNo
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-		Long ctm = System.currentTimeMillis();
-		String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
-		faceSdkRecVo.setSeiralNo(seiralNo);
-		faceSdkRecVo.setDevice_id("001");
-
-		byte[] data = image2byte("D://img/input.jpeg");
-		log.info("data.len=" + data.length);
-
-		faceSdkRecVo.setImage(Encode.byte2Base64Str(data));
-		String ret = httpTemplate.post("127.0.0.1", "3000", "/face/api/v1/rec", faceSdkRecVo, String.class);
-		log.info(">>>rec cost" + (System.currentTimeMillis() - ctm) + " and ret=" + ret);
 	}
 
 	@Autowired
@@ -152,9 +132,14 @@ public class CaptureTask {
 	@Autowired
 	private AsyncTask asyncTask;
 
-	//	 OK
-	@Scheduled(fixedRate = 300)
+	// OK
+	@Scheduled(fixedRate = 200)
 	private void captureTaskimg() {
+		boolean captureTaskFlag = true;
+		if (captureTaskFlag) {
+			return;
+		}
+
 		//封装请求Json
 		FaceSdkRecVo faceSdkRecVo = new FaceSdkRecVo();
 		faceSdkRecVo.setGroup_id("g1");
@@ -183,6 +168,26 @@ public class CaptureTask {
 		log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
 
 		asyncTask.detect(uuid, faceSdkRecVo);
+	}
+
+	// @Scheduled(fixedRate = 200)
+	private void captureTaskimgRec() {
+		//封装请求Json
+		FaceSdkRecVo faceSdkRecVo = new FaceSdkRecVo();
+		faceSdkRecVo.setGroup_id("g1");
+		//获得seiralNo
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		Long ctm = System.currentTimeMillis();
+		String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
+		faceSdkRecVo.setSeiralNo(seiralNo);
+		faceSdkRecVo.setDevice_id("001");
+
+		byte[] data = image2byte("D://img/input.jpeg");
+		log.info("data.len=" + data.length);
+
+		faceSdkRecVo.setImage(Encode.byte2Base64Str(data));
+		String ret = httpTemplate.post("127.0.0.1", "3000", "/face/api/v1/rec", faceSdkRecVo, String.class);
+		log.info(">>>rec cost" + (System.currentTimeMillis() - ctm) + " and ret=" + ret);
 	}
 
 	public static List<PsmFace> convertFaces(String materialId, List<FaceInfo> faceInfoList) {
@@ -229,7 +234,7 @@ public class CaptureTask {
 		private Integer width;
 	}
 
-	//    @Scheduled(fixedRate = 1000)
+	// @Scheduled(fixedRate = 1000)
 	private void addGroup() {
 		FaceSdkGroupVo faceSdkGroupVo = new FaceSdkGroupVo();
 		faceSdkGroupVo.setGroup_id("g1");
@@ -237,7 +242,7 @@ public class CaptureTask {
 		log.info(">>>addGroup ret=" + ret);
 	}
 
-	//       @Scheduled(fixedRate = 1000)
+	// @Scheduled(fixedRate = 1000)
 	private void delGroup() {
 		FaceSdkGroupVo faceSdkGroupVo = new FaceSdkGroupVo();
 		faceSdkGroupVo.setGroup_id("g1");
@@ -245,7 +250,7 @@ public class CaptureTask {
 		log.info(">>>delGroup ret=" + ret);
 	}
 
-	//    @Scheduled(fixedRate = 10000)
+	// @Scheduled(fixedRate = 10000)
 	private void updateUser() {
 		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
 		faceSdkUserVo.setGroup_id("test_group");
@@ -263,7 +268,7 @@ public class CaptureTask {
 		log.info(">>>updateUser ret=" + ret);
 	}
 
-	//        @Scheduled(fixedRate = 1000)
+	// @Scheduled(fixedRate = 1000)
 	private void deleteUserFace() {
 		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
 		faceSdkUserVo.setGroup_id("g1");
@@ -279,7 +284,7 @@ public class CaptureTask {
 		log.info(">>>deleteUserFace ret=" + ret);
 	}
 
-	//  @Scheduled(fixedRate = 3000)
+	// @Scheduled(fixedRate = 3000)
 	private void deleteUser() {
 		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
 		faceSdkUserVo.setGroup_id("test_group");

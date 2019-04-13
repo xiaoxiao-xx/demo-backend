@@ -65,7 +65,6 @@ public class SdkServiceImpl implements SdkService {
 
         // 设置超时时间
         sdk.NET_DVR_SetConnectTime(12, 2);
-
     }
 
     @PostConstruct

@@ -144,7 +144,6 @@ public class SdkServiceImpl implements SdkService {
      * @param lUserID
      * @param lChannel
      * @param lpJpegPara
-     * @param sJpegPicBuffer
      * @param dwPicSize
      * @param lpSizeReturned
      * @return
