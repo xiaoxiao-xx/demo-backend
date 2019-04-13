@@ -8,6 +8,7 @@ import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.FaceSdkRecVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -29,15 +30,22 @@ public class AsyncTask {
 	@Autowired
 	private MaterialService materialService;
 
+	@Value("${face.api.ip}")
+	private String faceApiIp;
+
+	@Value("${face.api.port}")
+	private String faceApiPort;
+
 	/**
 	 *
 	 */
 	@Async
 	public void detect(String materialId, FaceSdkRecVo faceSdkRecVo) {
 		long ctm = System.currentTimeMillis();
-		String ret = httpTemplate.post("127.0.0.1", "8080", "/face/api/v1/detect", faceSdkRecVo, String.class);
+		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/detect", faceSdkRecVo, String.class);
+		log.info("face.ip: {}, face.port: {}", faceApiIp, faceApiPort);
 
-		// 保存识别结果
+		// 保存人脸识别结果
 		Gson gson = new Gson();
 		CaptureTask.DetectResult result = gson.fromJson(ret, CaptureTask.DetectResult.class);
 
@@ -53,9 +61,9 @@ public class AsyncTask {
 
 		materialService.addFaceList(faceList);
 
-		log.info(">>>detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
+		log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
-		log.info("thread id= {}", Thread.currentThread().getName());
+		// log.info("thread id= {}", Thread.currentThread().getName());
 	}
 
 }

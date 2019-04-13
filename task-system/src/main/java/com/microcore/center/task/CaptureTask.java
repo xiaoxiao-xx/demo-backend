@@ -21,13 +21,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.stream.FileImageInputStream;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.microcore.center.util.CommonUtil.image2byte;
 
 /**
  * 定时截图工具类
@@ -53,43 +54,43 @@ public class CaptureTask {
 	 */
 	@Scheduled(fixedRate = 500)
 	private void captureTask() {
-//		NativeLong channel = new NativeLong(2);
-
-		//调用SDK图片大小和质量参数
+		// 调用SDK图片大小和质量参数
 		HCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new HCNetSDK.NET_DVR_JPEGPARA();
 		lpJpegPara.wPicSize = 5;
 		lpJpegPara.wPicQuality = 2;
 
-		//申请内存大小
+		// 申请内存大小
 		ByteBuffer jpegBuffer = ByteBuffer.allocate(1024 * 1024);
 		IntByReference retLen = new IntByReference();
 
 		NativeLong lUserId = sdkService.getUserId();
 
-		//封装请求Json
+		// 封装请求Json
 		FaceSdkRecVo faceSdkRecVo = new FaceSdkRecVo();
 		faceSdkRecVo.setGroup_id("g1");
 
-		//需要设备ID 如摄像头
+		// 需要设备ID 如摄像头
 		faceSdkRecVo.setDevice_id("001");
 
-		//获得seiralNo
+		// 获得seiralNo
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 		long ctm = System.currentTimeMillis();
 		String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
 		faceSdkRecVo.setSeiralNo(seiralNo);
 
+		// NativeLong channel = new NativeLong(2);
 		boolean result = sdkService.captureJpegPicture(lUserId, new NativeLong(1L), lpJpegPara,
 				jpegBuffer, 1024 * 1024, retLen);
 
 		log.info("---> retLen:  {}", retLen.getValue());
 
+		String imageName = "" + System.currentTimeMillis() + ".jpeg";
 		try {
-			OutputStream os = new FileOutputStream("D:/img/" + System.currentTimeMillis() + ".jpeg");
+			OutputStream os = new FileOutputStream("D:/img/" + imageName);
 
-			log.info("-------- position = {}", jpegBuffer.position());
+			// log.info("-------- position = {}", jpegBuffer.position());
 			os.write(jpegBuffer.array(), 0, retLen.getValue());
-			log.info("-------- position = {}", jpegBuffer.position());
+			// log.info("-------- position = {}", jpegBuffer.position());
 
 			os.flush();
 			os.close();
@@ -103,24 +104,27 @@ public class CaptureTask {
 //			faceSdkRecVo.setImage(Encode.byte2Base64Str(jpegBuffer.array()));
 
 			byte[] temp = new byte[retLen.getValue()];
-			log.info("-------- position  bw= {}", jpegBuffer.position());
+			// log.info("-------- position  bw= {}", jpegBuffer.position());
 			jpegBuffer.rewind();
-			log.info("-------- position  aw= {}", jpegBuffer.position());
+			// log.info("-------- position  aw= {}", jpegBuffer.position());
 			jpegBuffer.get(temp, 0, retLen.getValue());
-			log.info("-------- position  aw2= {}", jpegBuffer.position());
+			// log.info("-------- position  aw2= {}", jpegBuffer.position());
 			String image = Encode.byte2Base64Str(temp);
 			faceSdkRecVo.setImage(image);
 
+			// 保存素材信息
+			PsmMaterial material = new PsmMaterial();
+			String uuid = CommonUtil.getUUID();
+			material.setId(uuid);
+			material.setCreateTime(CommonUtil.getCurrentTime());
+			material.setImageName(imageName);
+			material.setDeviceId(CommonUtil.random("dev1", "dev2", "dev3"));
+			material.setAreaId(CommonUtil.random("1", "2", "3", "4", "5"));
+			materialService.addMaterial(material);
+
 			log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
 
-			// String ret = httpTemplate.post("192.168.254.22", "8080", "/face/api/v1/detect", faceSdkRecVo, String.class);
-			String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/detect", faceSdkRecVo, String.class);
-			log.info("face.ip: {}, face.port: {}", faceApiIp, faceApiPort);
-
-			// 存图像识别结果
-
-			log.info(">>>ret=" + ret);
-			log.info("cost time:" + (System.currentTimeMillis() - ctm));
+			asyncTask.detect(uuid, faceSdkRecVo);
 		} else {
 			sdkService.errMsg();
 		}
@@ -134,7 +138,7 @@ public class CaptureTask {
 
 	// OK
 	@Scheduled(fixedRate = 200)
-	private void captureTaskimg() {
+	private void captureTaskDetect() {
 		boolean captureTaskFlag = false;
 		// boolean captureTaskFlag = true;
 		if (captureTaskFlag) {
@@ -171,6 +175,7 @@ public class CaptureTask {
 		asyncTask.detect(uuid, faceSdkRecVo);
 	}
 
+	// TODO Clean code
 	// @Scheduled(fixedRate = 200)
 	private void captureTaskimgRec() {
 		//封装请求Json
@@ -181,6 +186,7 @@ public class CaptureTask {
 		Long ctm = System.currentTimeMillis();
 		String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
 		faceSdkRecVo.setSeiralNo(seiralNo);
+
 		faceSdkRecVo.setDevice_id("001");
 
 		byte[] data = image2byte("D://img/input.jpeg");
@@ -301,7 +307,7 @@ public class CaptureTask {
 		}
 	}
 
-	//    @Scheduled(fixedRate = 5000)
+	// @Scheduled(fixedRate = 5000)
 	private void addUser() {
 		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
 		faceSdkUserVo.setGroup_id("g1");
@@ -320,29 +326,6 @@ public class CaptureTask {
 
 			log.info(">>>addUser ret=" + ret);
 		}
-	}
-
-	//图片转byte数组
-	public static byte[] image2byte(String path) {
-		byte[] data = null;
-		FileImageInputStream input = null;
-		try {
-			input = new FileImageInputStream(new File(path));
-			ByteArrayOutputStream output = new ByteArrayOutputStream();
-			byte[] buf = new byte[1024];
-			int numBytesRead = 0;
-			while ((numBytesRead = input.read(buf)) != -1) {
-				output.write(buf, 0, numBytesRead);
-			}
-			data = output.toByteArray();
-			output.close();
-			input.close();
-		} catch (FileNotFoundException ex1) {
-			ex1.printStackTrace();
-		} catch (IOException ex1) {
-			ex1.printStackTrace();
-		}
-		return data;
 	}
 
 }

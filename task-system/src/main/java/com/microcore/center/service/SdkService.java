@@ -33,7 +33,7 @@ public interface SdkService {
      * @param lUserID
      * @param lChannel
      * @param lpJpegPara
-     * @param sJpegPicBuffer
+     * @param jpegBuffer
      * @param dwPicSize
      * @param lpSizeReturned
      * @return
@@ -50,7 +50,6 @@ public interface SdkService {
      * @param lpClientInfo
      * @param fRealDataCallBack_V30
      * @param pUser
-     * @param bBlocked
      * @return
      */
     NativeLong realplay2sdk(NativeLong lUserID, HCNetSDK.NET_DVR_PREVIEWINFO lpClientInfo,
