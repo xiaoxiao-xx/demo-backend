@@ -28,10 +28,13 @@ public class AlarmStrategyServiceImpl implements AlarmStrategyService {
 
 	@Autowired
 	private PsmAlarmStrategyMapper psmAlarmStrategyMapper;
+
 	@Autowired
 	private ParaDefineService paraDefineService;
+
 	@Autowired
-	private AlarmModeService alarmModeService ;
+	private AlarmModeService alarmModeService;
+
 	@Override
 	public ResultVo add(PsmAlarmStrategyVo alarmStrategyVo) {
 		PsmAlarmStrategy p = CommonUtil.po2VO(alarmStrategyVo, PsmAlarmStrategy.class);

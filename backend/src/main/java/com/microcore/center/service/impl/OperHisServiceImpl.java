@@ -14,21 +14,23 @@ import com.microcore.center.service.ParaDefineService;
 import com.microcore.center.service.UserService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.PsmOperHisVo;
+
 @Service
 @Transactional
 public class OperHisServiceImpl implements OperHisService {
-	
+
 	@Autowired
-	private PsmOperHisMapper psmOperHisMapper ;
-	
+	private PsmOperHisMapper psmOperHisMapper;
+
 	@Autowired
 	private ParaDefineService paraDefineService;
+
 	@Autowired
-	private UserService userService ;
-	
+	private UserService userService;
+
 	@Override
 	public void add(String operTarget, String operType) {
-		PsmOperHis operHis = new PsmOperHis() ;
+		PsmOperHis operHis = new PsmOperHis();
 		operHis.setId(CommonUtil.getUUID());
 		operHis.setOperator(CommonUtil.getCurrentUserId());
 		operHis.setOperTarget(operTarget);
@@ -44,8 +46,8 @@ public class OperHisServiceImpl implements OperHisService {
 
 	@Override
 	public List<PsmOperHisVo> getPsmOperHis(String operTarget) {
-		PsmOperHisExample example = new PsmOperHisExample() ;
-		PsmOperHisExample.Criteria criteria = example.createCriteria() ;
+		PsmOperHisExample example = new PsmOperHisExample();
+		PsmOperHisExample.Criteria criteria = example.createCriteria();
 		criteria.andOperTargetEqualTo(operTarget);
 		List<PsmOperHisVo> listVo = CommonUtil.listPo2VO(psmOperHisMapper.selectByExample(example), PsmOperHisVo.class);
 		for (PsmOperHisVo psmOperHisVo : listVo) {

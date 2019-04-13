@@ -81,7 +81,7 @@ public class PersonServiceImpl implements PersonService {
 			String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
 			faceSdkUserVo.setSeiralNo("uAdd-" + seiralNo);
 			log.info(">>>addUser u=" + "u" + i);
-			faceSdkUserVo.setImage(Encode.byte2Base64Str(image));
+			faceSdkUserVo.setImage(CommonUtil.byte2Base64Str(image));
 
 			String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_add", faceSdkUserVo, String.class);
 
@@ -148,7 +148,7 @@ public class PersonServiceImpl implements PersonService {
 		String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
 		faceSdkUserVo.setSeiralNo("uDel-" + seiralNo);
 
-		String ret = httpTemplate.post("192.168.254.22", "3000", "/face/api/v1/user_delete", faceSdkUserVo, String.class);
+		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_delete", faceSdkUserVo, String.class);
 		log.info(">>>userDel ret=" + ret);
 	}
 
@@ -209,6 +209,5 @@ public class PersonServiceImpl implements PersonService {
 		}
 		return null;
 	}
-
 
 }

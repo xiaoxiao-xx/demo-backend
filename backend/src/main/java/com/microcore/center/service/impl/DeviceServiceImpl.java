@@ -99,11 +99,11 @@ public class DeviceServiceImpl implements DeviceService {
     private List<Area> areaList = new ArrayList<>(3);
 
     {
-        areaList.add(new Area("办公楼", new Point(31, 41), new Point(107, 118)));
-        areaList.add(new Area("教师宿舍", new Point(560, 89), new Point(628, 143)));
-        areaList.add(new Area("生物园地", new Point(634, 149), new Point(762, 197)));
-        areaList.add(new Area("篮球场", new Point(279, 82), new Point(451, 168)));
-        areaList.add(new Area("少年宫", new Point(31, 129), new Point(107, 200)));
+        areaList.add(new Area("工作区", new Point(31, 41), new Point(107, 118)));
+        areaList.add(new Area("会议室", new Point(560, 89), new Point(628, 143)));
+        areaList.add(new Area("卫生间", new Point(634, 149), new Point(762, 197)));
+        areaList.add(new Area("办公室入口", new Point(279, 82), new Point(451, 168)));
+        areaList.add(new Area("总经理室", new Point(31, 129), new Point(107, 200)));
     }
 
     private List<Area> indexPageAreaList = new ArrayList<>(3);

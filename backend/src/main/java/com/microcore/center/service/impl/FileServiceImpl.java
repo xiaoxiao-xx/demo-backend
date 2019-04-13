@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import com.microcore.center.mapper.PsmFileMapper;
 import com.microcore.center.model.PsmFile;
 import com.microcore.center.service.FileService;
+
 @Service
 @Transactional
 public class FileServiceImpl implements FileService {
-	
+
 	@Autowired
-	private PsmFileMapper psmFileMapper ;
+	private PsmFileMapper psmFileMapper;
+
 	@Override
 	public void add(PsmFile psmFile) {
 		psmFileMapper.insert(psmFile);

@@ -22,6 +22,7 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.imageio.stream.FileImageInputStream;
 
@@ -425,6 +426,10 @@ public class CommonUtil {
 			ex1.printStackTrace();
 		}
 		return data;
+	}
+
+	public static String byte2Base64Str(byte[] b) {
+		return Base64.encodeBase64String(b);
 	}
 
 }

@@ -143,7 +143,7 @@ public class SdkServiceImpl implements SdkService {
      * @param lUserID
      * @param lChannel
      * @param lpJpegPara
-     * @param sJpegPicBuffer
+     * @param jpegBuffer
      * @param dwPicSize
      * @param lpSizeReturned
      * @return
@@ -204,7 +204,4 @@ public class SdkServiceImpl implements SdkService {
         log.error("Error: {}", error);
     }
 
-    public static String byte2Base64Str(byte[] b){
-        return Base64.encodeBase64String(b);
-    }
 }

@@ -50,8 +50,4 @@ public class Encode {
 		return Base64.getEncoder().encodeToString(SHAEncode(data.getBytes()));
 	}
 
-	public static String byte2Base64Str(byte[] b) {
-		return Base64.getEncoder().encodeToString(b);
-	}
-
 }

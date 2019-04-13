@@ -37,7 +37,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Override
 	public ResultVo delete(String id) {
-		
+
 		String[] ids = id.split(",");
 		for (String i : ids) {
 			psmDeptInfoMapper.deleteByPrimaryKey(i);
@@ -72,8 +72,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Override
 	public List<DepartmentVo> getDeptTree() {
-		PsmDeptInfoExample example = new PsmDeptInfoExample() ;
-		PsmDeptInfoExample.Criteria criteria =  example.createCriteria();
+		PsmDeptInfoExample example = new PsmDeptInfoExample();
+		PsmDeptInfoExample.Criteria criteria = example.createCriteria();
 		criteria.andDeptLevEqualTo(1);
 		List<PsmDeptInfo> list = psmDeptInfoMapper.selectByExample(example);
 		List<DepartmentVo> listVo = CommonUtil.listPo2VO(list, DepartmentVo.class);
@@ -82,13 +82,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 		}
 		return listVo;
 	}
-	public List<DepartmentVo> getChildrenDept (String deptId){
-		PsmDeptInfoExample example = new PsmDeptInfoExample() ;
-		PsmDeptInfoExample.Criteria criteria =  example.createCriteria();
+
+	public List<DepartmentVo> getChildrenDept(String deptId) {
+		PsmDeptInfoExample example = new PsmDeptInfoExample();
+		PsmDeptInfoExample.Criteria criteria = example.createCriteria();
 		criteria.andParentDeptidEqualTo(deptId);
 		List<PsmDeptInfo> list = psmDeptInfoMapper.selectByExample(example);
-		return CommonUtil.listPo2VO(list, DepartmentVo.class) ;
+		return CommonUtil.listPo2VO(list, DepartmentVo.class);
 	}
-	
-	
+
 }

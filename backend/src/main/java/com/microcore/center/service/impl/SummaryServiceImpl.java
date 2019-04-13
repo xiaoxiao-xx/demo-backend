@@ -24,12 +24,12 @@ public class SummaryServiceImpl implements SummaryService {
 	@Override
 	public List getSummary() {
 		String sql = "SELECT\n" +
-				"\tarea_id,\n" +
-				"\tcount( 1 ) count \n" +
-				"FROM\n" +
-				"\t( SELECT * FROM psm_detail WHERE psm_detail.time > DATE_SUB( NOW( ), INTERVAL #{intervalTime} SECOND )  GROUP BY area_id, user_id ) a \n" +
-				"GROUP BY\n" +
-				"\tarea_id";
+				" area_id,\n" +
+				" count( 1 ) count \n" +
+				" FROM\n" +
+				" (SELECT * FROM psm_detail WHERE psm_detail.time > DATE_SUB( NOW( ), INTERVAL #{intervalTime} SECOND ) GROUP BY area_id, user_id ) a \n" +
+				" GROUP BY\n" +
+				" area_id";
 		Map<String, Object> params = new HashMap<>(3);
 		params.put("sql", sql);
 		params.put("intervalTime", summaryTaskInterval / 1000);
@@ -42,12 +42,11 @@ public class SummaryServiceImpl implements SummaryService {
 	 */
 	@Override
 	public List<DetailVo> getDetailList(String areaId, Integer pageIndex, Integer pageSize) {
-		String sql = "SELECT * \n" +
-				"FROM\n" +
-				"\tpsm_detail \n" +
-				"WHERE psm_detail.time > DATE_SUB( NOW( ), INTERVAL #{intervalTime} SECOND ) \n" +
-				"\tAND area_id = #{areaId} \n" +
-				"\tgroup by user_id";
+		String sql = "SELECT * FROM\n" +
+				" psm_detail \n" +
+				" WHERE psm_detail.time > DATE_SUB( NOW( ), INTERVAL #{intervalTime} SECOND ) \n" +
+				" AND area_id = #{areaId} \n" +
+				" group by user_id";
 
 		Map<String, Object> params = new HashMap<>(3);
 		params.put("sql", sql);
