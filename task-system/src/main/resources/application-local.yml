@@ -61,4 +61,6 @@ summary:
   task:
     interval: 5000
 
+device.number: 1
+
 capture.path: D:/img/

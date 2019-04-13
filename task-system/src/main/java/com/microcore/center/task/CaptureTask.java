@@ -53,6 +53,9 @@ public class CaptureTask {
 	@Value("${capture.path}")
 	private String captureImagePath;
 
+	@Value("${device.number}")
+	private String deviceNumber;
+
 	/**
 	 * 200ms心跳一次
 	 */
@@ -122,8 +125,10 @@ public class CaptureTask {
 			material.setId(uuid);
 			material.setCreateTime(CommonUtil.getCurrentTime());
 			material.setImageName(imageName);
-			material.setDeviceId(CommonUtil.random("dev1", "dev2", "dev3"));
-			material.setAreaId(CommonUtil.random("1", "2", "3", "4", "5"));
+
+			material.setDeviceId(deviceNumber);
+			material.setAreaId(deviceNumber);
+
 			materialService.addMaterial(material);
 
 			log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
