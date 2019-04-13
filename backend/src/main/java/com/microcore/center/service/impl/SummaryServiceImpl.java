@@ -4,7 +4,6 @@ import com.microcore.center.service.CommonService;
 import com.microcore.center.service.SummaryService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.DetailVo;
-import com.microcore.center.vo.SummaryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +22,24 @@ public class SummaryServiceImpl implements SummaryService {
 	private CommonService commonService;
 
 	@Override
-	public List<SummaryVo> getSummary(Integer pageIndex, Integer pageSize) {
+	public List<DetailVo> getSummary() {
+		String sql = "SELECT * \n" +
+				"FROM\n" +
+				"\tpsm_detail \n" +
+				"WHERE\n" +
+				"\t1 = 1 \n" +
+				"\tAND psm_detail.time > DATE_SUB( NOW( ), INTERVAL #{intervalTime} SECOND ) \n" +
+				"GROUP BY\n" +
+				"\tarea_id,\n" +
+				"\tuser_id\n";
 
+		Map<String, Object> params = new HashMap<>(3);
+		params.put("sql", sql);
+		params.put("intervalTime", summaryTaskInterval / 1000);
+		List<Map<String, Object>> list = commonService.executeSelectSQL(params);
 
-		return null;
+		return CommonUtil.map2PO(list, DetailVo.class);
 	}
-
 
 	/**
 	 * 返回一个区域的人的列表
