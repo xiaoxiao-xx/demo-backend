@@ -229,7 +229,6 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
         return c.getTime();
     }
 
-
     private Date addOneDay(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);

@@ -28,6 +28,7 @@ public class RealAlarmServiceImpl implements RealAlarmService {
 
     @Autowired
     private PsmRealAlarmMapper psmRealAlarmMapper;
+
     @Autowired
     private ParaDefineService paraDefineService;
 

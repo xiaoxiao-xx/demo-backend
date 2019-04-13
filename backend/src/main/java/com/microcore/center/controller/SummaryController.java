@@ -25,7 +25,7 @@ public class SummaryController {
 
 	@ApiOperation(value = "", notes = "")
 	@GetMapping("getSummary")
-	public ResultVo getSummary(@RequestParam Integer pageIndex, @RequestParam Integer pageSize) {
+	public ResultVo getSummary() {
 		return ResultVo.ok(summaryService.getSummary());
 	}
 

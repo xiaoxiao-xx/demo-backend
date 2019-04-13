@@ -11,12 +11,14 @@ import com.microcore.center.model.PsmSrcRecord;
 import com.microcore.center.model.PsmSrcRecordExample;
 import com.microcore.center.service.SrcRecordService;
 import com.microcore.center.util.CommonUtil;
+
 @Service
 @Transactional
 public class SrcRecordServiceImpl implements SrcRecordService {
+
 	@Autowired
-	private PsmSrcRecordMapper psmSrcRecordMapper ;
-	
+	private PsmSrcRecordMapper psmSrcRecordMapper;
+
 	@Override
 	public void add(PsmSrcRecord srcRecord) {
 		srcRecord.setId(CommonUtil.getUUID());
@@ -26,8 +28,8 @@ public class SrcRecordServiceImpl implements SrcRecordService {
 
 	@Override
 	public List<PsmSrcRecord> getPsmSrcRecord(String srcState) {
-		PsmSrcRecordExample example = new PsmSrcRecordExample() ;
-		PsmSrcRecordExample.Criteria criteria = example.createCriteria() ;
+		PsmSrcRecordExample example = new PsmSrcRecordExample();
+		PsmSrcRecordExample.Criteria criteria = example.createCriteria();
 		criteria.andSrcStateEqualTo(srcState);
 		return psmSrcRecordMapper.selectByExample(example);
 	}

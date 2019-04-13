@@ -10,6 +10,7 @@ import com.microcore.center.vo.FaceSdkUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,13 +42,21 @@ public class PersonServiceImpl implements PersonService {
 
 	@Autowired
 	private DepartmentService departmentService;
+
 	@Autowired
 	private OperHisService operHisService;
+
 	@Autowired
 	private CommonService commonService;
 
 	@Autowired
 	private HttpTemplate httpTemplate;
+
+	@Value("${face.api.ip}")
+	private String faceApiIp;
+
+	@Value("${face.api.port}")
+	private String faceApiPort;
 
 	@Override
 	public ResultVo add(PersonInfoVo personInfoVo) {
@@ -74,7 +83,7 @@ public class PersonServiceImpl implements PersonService {
 			log.info(">>>addUser u=" + "u" + i);
 			faceSdkUserVo.setImage(Encode.byte2Base64Str(image));
 
-			String ret = httpTemplate.post("192.168.254.22", "3000", "/face/api/v1/user_add", faceSdkUserVo, String.class);
+			String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_add", faceSdkUserVo, String.class);
 
 			log.info(">>>addUser ret=" + ret);
 		}
@@ -180,7 +189,6 @@ public class PersonServiceImpl implements PersonService {
 		return ResultVo.ok();
 	}
 
-
 	@Override
 	public ResultVo list() {
 		PsmPersonInfoExample example = new PsmPersonInfoExample();
@@ -188,12 +196,10 @@ public class PersonServiceImpl implements PersonService {
 		return ResultVo.ok(psmPersonInfoMapper.selectByExample(example));
 	}
 
-
 	@Override
 	public PsmPersonInfo getPsmPersonInfo(String id) {
 		return psmPersonInfoMapper.selectByPrimaryKey(id);
 	}
-
 
 	@Override
 	public String getPsmPersonInfoName(String id) {

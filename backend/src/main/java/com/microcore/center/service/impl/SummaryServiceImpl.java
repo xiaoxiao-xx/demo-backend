@@ -23,16 +23,13 @@ public class SummaryServiceImpl implements SummaryService {
 
 	@Override
 	public List<DetailVo> getSummary() {
-		String sql = "SELECT * \n" +
-				"FROM\n" +
-				"\tpsm_detail \n" +
-				"WHERE\n" +
-				"\t1 = 1 \n" +
-				"\tAND psm_detail.time > DATE_SUB( NOW( ), INTERVAL #{intervalTime} SECOND ) \n" +
-				"GROUP BY\n" +
+		String sql = "SELECT\n" +
 				"\tarea_id,\n" +
-				"\tuser_id\n";
-
+				"\tcount( 1 ) count \n" +
+				"FROM\n" +
+				"\t( SELECT * FROM psm_detail WHERE psm_detail.time > DATE_SUB( NOW( ), INTERVAL #{intervalTime} SECOND )  GROUP BY area_id, user_id ) a \n" +
+				"GROUP BY\n" +
+				"\tarea_id";
 		Map<String, Object> params = new HashMap<>(3);
 		params.put("sql", sql);
 		params.put("intervalTime", summaryTaskInterval / 1000);
