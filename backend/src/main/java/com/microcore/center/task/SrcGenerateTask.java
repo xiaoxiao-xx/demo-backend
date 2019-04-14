@@ -112,7 +112,8 @@ public class SrcGenerateTask {
 			vo.setValidState(random("是", "否"));
 			dealResultDetailService.add(vo);
 
-			rabbitMQUtil.sendMsg(gson.toJson(vo));
+			// TODO 不再发送假消息
+			// rabbitMQUtil.sendMsg(gson.toJson(vo));
 
 			PsmRealAlarmVo alarmVo = new PsmRealAlarmVo();
 

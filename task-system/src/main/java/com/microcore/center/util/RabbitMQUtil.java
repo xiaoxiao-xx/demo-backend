@@ -34,7 +34,6 @@ public class RabbitMQUtil {
     @PostConstruct
     public void init() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
-        // ip of RabbitMQ server
         factory.setHost(MQ_SERVER_IP);
         factory.setPort(MQ_SERVER_PORT);
         factory.setUsername(MQ_USERNAME);

@@ -1,17 +1,8 @@
-import com.microcore.center.cllient.HttpTemplate;
 import com.microcore.center.hcnetsdk.HCNetSDK;
-import com.microcore.center.service.impl.SdkServiceImpl;
-import com.microcore.center.util.Encode;
 import com.microcore.center.vo.FaceSdkRequestVo;
-import com.sun.jna.Memory;
 import com.sun.jna.NativeLong;
-import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 //  import org.junit.jupiter.api.Test;
 
 import java.io.*;
