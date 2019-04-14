@@ -111,7 +111,8 @@ public class PersonServiceImpl implements PersonService {
 		return data;
 	}
 
-	public PsmPersonInfo getRadomPerson() {
+	@Override
+	public PsmPersonInfo getRandomPerson() {
 		Map<String, Object> params = new HashMap<>();
 		params.put("sql", "SELECT * FROM psm_person_info_t ORDER BY RAND() LIMIT 1");
 		Map<String, Object> record = commonService.findOne(params);

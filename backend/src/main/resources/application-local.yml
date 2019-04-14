@@ -57,3 +57,7 @@ login:
 face.api:
   ip: 127.0.0.1
   port: 8889
+
+summary:
+  task:
+    interval: 60000

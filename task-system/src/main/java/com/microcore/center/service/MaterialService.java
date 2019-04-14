@@ -15,4 +15,6 @@ public interface MaterialService {
 
 	void addFaceList(List<PsmFace> faceList);
 
+	PsmMaterial getMaterial(String id);
+
 }

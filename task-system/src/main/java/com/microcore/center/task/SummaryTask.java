@@ -36,13 +36,15 @@ public class SummaryTask {
 	 * 定期汇总时间间隔，单位为milisecond
 	 */
 	@Value("${summary.task.interval}")
-	private final int summaryTaskInterval = 60000;
+	private final int summaryTaskInterval = 5000;
 
 	/**
 	 *
 	 */
 	@Scheduled(fixedRate = summaryTaskInterval)
 	public void generateSummary() {
+		Date now = new Date();
+
 		String sql = "SELECT f.*, m.create_time AS capture_time, m.area_id area_id \n" +
 				"FROM psm_face f \n" +
 				"LEFT JOIN psm_material m ON f.material_id = m.id \n" +
@@ -55,8 +57,6 @@ public class SummaryTask {
 		List<Map<String, Object>> list = commonService.executeSelectSQL(params);
 
 		List<FaceSummaryVo> faceSummaryVoList = CommonUtil.map2PO(list, FaceSummaryVo.class);
-
-		Date now = new Date();
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(now);

@@ -46,4 +46,9 @@ public class MaterialServiceImpl implements MaterialService {
 		faceList.forEach(faceMapper::insert);
 	}
 
+	@Override
+	public PsmMaterial getMaterial(String id) {
+		return materialMapper.selectByPrimaryKey(id);
+	}
+
 }
