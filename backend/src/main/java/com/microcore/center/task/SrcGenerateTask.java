@@ -93,7 +93,7 @@ public class SrcGenerateTask {
 			vo.setAddress(random("食堂", "教学楼", "教师宿舍", "仓库", "生物园地", "门卫室", "乒乓球台", "篮球场", "少年宫", "办公楼"));
 			vo.setAlarmState(random("是", "否"));
 			vo.setAlarmType(random("警告弹出框", "警报声音"));
-			PsmPersonInfo psmPersonInfo = personService.getRadomPerson();
+			PsmPersonInfo psmPersonInfo = personService.getRandomPerson();
 			vo.setPsmPersonInfo(psmPersonInfo);
 			vo.setCharacterInfo(psmPersonInfo.getPersonId());
 
@@ -111,6 +111,7 @@ public class SrcGenerateTask {
 			vo.setTime(CommonUtil.getCurrentTime());
 			vo.setValidState(random("是", "否"));
 			dealResultDetailService.add(vo);
+
 			rabbitMQUtil.sendMsg(gson.toJson(vo));
 
 			PsmRealAlarmVo alarmVo = new PsmRealAlarmVo();
