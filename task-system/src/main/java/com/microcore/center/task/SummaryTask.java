@@ -7,6 +7,7 @@ import com.microcore.center.service.CommonService;
 import com.microcore.center.service.SummaryService;
 import com.microcore.center.service.UserService;
 import com.microcore.center.util.CommonUtil;
+import com.microcore.center.util.JedisPoolUtil;
 import com.microcore.center.vo.FaceSummaryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -38,10 +41,15 @@ public class SummaryTask {
 	@Value("${summary.task.interval}")
 	private final int summaryTaskInterval = 5000;
 
+	@Autowired
+	private JedisPoolUtil redisUtil;
+
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+
 	/**
 	 *
 	 */
-	@Scheduled(fixedRate = summaryTaskInterval)
+	// @Scheduled(fixedRate = summaryTaskInterval)
 	public void generateSummary() {
 		Date now = new Date();
 
@@ -91,6 +99,36 @@ public class SummaryTask {
 
 			summaryService.addDetail(detail);
 		});
+	}
+
+
+	/**
+	 * Remove expired value of the set
+	 */
+	private final long EXPIRE_TIME = 300000L;
+
+	@Scheduled(fixedRate = EXPIRE_TIME)
+	public void cleanExpiredSetValue() {
+		String keyPrefix = "u";
+		Set<String> keys = redisUtil.keys(keyPrefix + "*");
+		for (String key : keys) {
+			List<String> result = redisUtil.hmget(key, "captureTime", "areaId");
+			String timeString = result.get(0);
+			String areaId = result.get(1);
+
+			Date captureTime = new Date();
+			try {
+				captureTime = dateFormat.parse(timeString);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			Date now = new Date();
+			if (now.getTime() - captureTime.getTime() > EXPIRE_TIME) {
+				redisUtil.srem("area:" + areaId, key);
+				log.info("Removed expired set value: {}", key);
+			}
+		}
 	}
 
 }

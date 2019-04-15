@@ -1,132 +1,178 @@
 package com.microcore.center.service.impl;
 
 import com.microcore.center.mapper.PsmScheduleDetailMapper;
-import com.microcore.center.model.PsmDeptInfo;
 import com.microcore.center.model.PsmScheduleDetail;
 import com.microcore.center.model.PsmScheduleDetailExample;
-import com.microcore.center.service.DepartmentService;
+import com.microcore.center.service.CommonService;
 import com.microcore.center.service.ScheduleDetailService;
 import com.microcore.center.util.CommonUtil;
+import com.microcore.center.util.JedisPoolUtil;
 import com.microcore.center.vo.PsmScheduleDetailVo;
 import com.microcore.center.vo.ResultVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
+@Slf4j
 public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
-    @Autowired
-    private PsmScheduleDetailMapper psmScheduleDetailMapper;
+	@Autowired
+	private PsmScheduleDetailMapper psmScheduleDetailMapper;
 
-    @Autowired
-    private DepartmentService departmentService;
+	@Autowired
+	private CommonService commonService;
 
-    @Override
-    public ResultVo add(PsmScheduleDetailVo vo) {
-        addDetail(vo);
-        return ResultVo.ok();
-    }
+	@Autowired
+	private JedisPoolUtil redisUtil;
 
-    @Override
-    public void addDetail(PsmScheduleDetail detail) {
-        detail.setId(CommonUtil.getUUID());
-        psmScheduleDetailMapper.insertSelective(detail);
-    }
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
-    @Override
-    public ResultVo update(PsmScheduleDetailVo vo) {
-        psmScheduleDetailMapper.updateByPrimaryKeySelective(vo);
-        return ResultVo.ok();
-    }
+	@Override
+	public ResultVo add(PsmScheduleDetailVo vo) {
+		addDetail(vo);
+		return ResultVo.ok();
+	}
 
-    @Override
-    public ResultVo delete(String id) {
-        psmScheduleDetailMapper.deleteByPrimaryKey(id);
-        return ResultVo.ok();
-    }
+	@Override
+	public void addDetail(PsmScheduleDetail detail) {
+		detail.setId(CommonUtil.getUUID());
+		psmScheduleDetailMapper.insertSelective(detail);
+	}
 
-    @Override
-    public ResultVo getScheduleDetailList(String objectType) {
-        PsmScheduleDetailExample example = new PsmScheduleDetailExample();
-        example.setOrderByClause("start_time asc");
-        PsmScheduleDetailExample.Criteria criteria = example.createCriteria();
-        criteria.andObjectTypeLike("%" + objectType.trim() + "%");
-        List<PsmScheduleDetail> psmScheduleDetails = psmScheduleDetailMapper.selectByExample(example);
-        return ResultVo.ok(psmScheduleDetails);
-    }
+	@Override
+	public ResultVo update(PsmScheduleDetailVo vo) {
+		psmScheduleDetailMapper.updateByPrimaryKeySelective(vo);
+		return ResultVo.ok();
+	}
 
-    @Data
-    @EqualsAndHashCode(callSuper = false)
-    public static class Duty {
-        Duty() {
+	@Override
+	public ResultVo delete(String id) {
+		psmScheduleDetailMapper.deleteByPrimaryKey(id);
+		return ResultVo.ok();
+	}
 
-        }
+	@Override
+	public ResultVo getScheduleDetailList(String objectType) {
+		PsmScheduleDetailExample example = new PsmScheduleDetailExample();
+		example.setOrderByClause("start_time asc");
+		PsmScheduleDetailExample.Criteria criteria = example.createCriteria();
+		criteria.andObjectTypeLike("%" + objectType.trim() + "%");
+		List<PsmScheduleDetail> psmScheduleDetails = psmScheduleDetailMapper.selectByExample(example);
+		return ResultVo.ok(psmScheduleDetails);
+	}
 
-        Duty(String leaderName, String onDutyPerson, List<TeamStat> statList) {
-            setLeaderName(leaderName);
-            setOnDutyPerson(onDutyPerson);
-            setStatList(statList);
-        }
+	@Override
+	public ResultVo getOnDutyData() {
+		String sql = "SELECT p.dept_id team_id, COUNT( 1 ) total_count, d.dept_name team_name\n" +
+				" FROM psm_person_info_t p\n" +
+				" LEFT JOIN psm_dept_info_t d ON p.dept_id = d.dept_id \n" +
+				" GROUP BY p.dept_id HAVING p.dept_id <> '0'";
 
-        private String leaderName;
+		Map<String, Object> params = new HashMap<>(3);
+		params.put("sql", sql);
+		List<Map<String, Object>> list = commonService.executeSelectSQL(params);
 
-        private String onDutyPerson;
+		List<TeamStat> statList = CommonUtil.map2PO(list, TeamStat.class);
 
-        private List<TeamStat> statList;
+		Integer onDutyCount = 0;
+		Map<String, Integer> onDutyMap = new HashMap<>();
+		Set<String> keys = redisUtil.keys("u*");
+		for (String key : keys) {
+			List<String> map = redisUtil.hmget(key, "teamId", "captureTime");
+			String teamId = map.get(0);
+			String captureTime = map.get(1);
 
-    }
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.HOUR_OF_DAY, 9);
+			try {
+				if (dateFormat.parse(captureTime).getTime() > calendar.getTime().getTime()) {
+					addOne(onDutyMap, teamId);
+					onDutyCount += 1;
+					log.info("on duty: {}", key);
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
 
-    @Data
-    @EqualsAndHashCode(callSuper = false)
-    private static class TeamStat {
-        TeamStat() {
+		Integer totalCount = 0;
+		for (TeamStat teamStat : statList) {
+			String teamId = teamStat.getTeamId();
+			Integer number = onDutyMap.get(teamId);
+			teamStat.setOnDutyCount(number == null ? 0 : number);
 
-        }
+			totalCount += teamStat.getTotalCount();
+		}
 
-        TeamStat(String teamName, Integer totalCount, Integer onDutyCount) {
-            setTeamName(teamName);
-            setTotalCount(totalCount);
-            setOnDutyCount(onDutyCount);
-        }
+		Duty duty = new Duty("王志", "程开甲", statList);
+		duty.setTotalCount(totalCount);
+		duty.setOnDutyCount(onDutyCount);
+		duty.setNotOnDutyCount(totalCount - onDutyCount);
+		return ResultVo.ok(duty);
+	}
 
-        /**
-         * 团队名
-         */
-        private String teamName;
+	private void addOne(Map<String, Integer> map, String key) {
+		map.merge(key, 1, (a, b) -> a + b);
+	}
 
-        /**
-         * 总人数
-         */
-        private Integer totalCount;
+	@Data
+	@EqualsAndHashCode(callSuper = false)
+	public static class Duty {
+		private String leaderName;
+		private String onDutyPerson;
+		/**
+		 *
+		 */
+		private Integer totalCount;
 
-        /**
-         * 在位人数
-         */
-        private Integer onDutyCount;
-    }
+		private Integer onDutyCount;
 
-    @Override
-    public ResultVo getOnDutyData() {
-        List<TeamStat> statList = new ArrayList<>(3);
-        PsmDeptInfo departmentC = departmentService.getDepartment("0");
-        PsmDeptInfo departmentA = departmentService.getDepartment("1");
-        PsmDeptInfo departmentB = departmentService.getDepartment("2");
-        PsmDeptInfo departmentD = departmentService.getDepartment("3");
+		private Integer notOnDutyCount;
 
-        statList.add(new TeamStat(departmentA.getDeptName(), 23, 23));
-        statList.add(new TeamStat(departmentB.getDeptName(), 17, 14));
-        statList.add(new TeamStat(departmentC.getDeptName(), 127, 126));
-        statList.add(new TeamStat(departmentD.getDeptName(), 234, 229));
-        Duty duty = new Duty("王志", "程开甲", statList);
-        return ResultVo.ok(duty);
-    }
+		private List<TeamStat> statList;
+
+		public Duty() {
+
+		}
+
+		public Duty(String leaderName, String onDutyPerson, List<TeamStat> statList) {
+			setLeaderName(leaderName);
+			setOnDutyPerson(onDutyPerson);
+			setStatList(statList);
+		}
+	}
+
+	@Data
+	@EqualsAndHashCode(callSuper = false)
+	public static class TeamStat {
+		/**
+		 *
+		 */
+		private String teamId;
+
+		/**
+		 * 团队名
+		 */
+		private String teamName;
+		/**
+		 * 总人数
+		 */
+		private Integer totalCount;
+		/**
+		 * 在位人数
+		 */
+		private Integer onDutyCount;
+
+	}
 
 }
 

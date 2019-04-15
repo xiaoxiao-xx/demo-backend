@@ -61,3 +61,10 @@ face.api:
 summary:
   task:
     interval: 60000
+
+redis:
+  server: 127.0.0.1
+  port: 6379
+
+#logging.level: debug
+

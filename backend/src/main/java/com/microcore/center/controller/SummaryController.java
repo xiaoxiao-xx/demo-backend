@@ -26,13 +26,15 @@ public class SummaryController {
 	@ApiOperation(value = "", notes = "")
 	@GetMapping("getSummary")
 	public ResultVo getSummary() {
-		return ResultVo.ok(summaryService.getSummary());
+		// return ResultVo.ok(summaryService.getSummary());
+		return ResultVo.ok(summaryService.getSummaryRedis());
 	}
 
 	@ApiOperation(value = "", notes = "")
 	@GetMapping("getDetailList")
 	public ResultVo getDetailList(@RequestParam String areaId) {
-		return ResultVo.ok(summaryService.getDetailList(areaId, null, null));
+		// return ResultVo.ok(summaryService.getDetailList(areaId));
+		return ResultVo.ok(summaryService.getDetailListRedis(areaId));
 	}
 
 }

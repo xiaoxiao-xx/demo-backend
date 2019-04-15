@@ -1,6 +1,7 @@
 package com.microcore.center.task;
 
 import com.microcore.center.cllient.HttpTemplate;
+import com.microcore.center.constant.Constants;
 import com.microcore.center.hcnetsdk.HCNetSDK;
 import com.microcore.center.model.PsmFace;
 import com.microcore.center.model.PsmMaterial;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
@@ -43,6 +45,12 @@ public class CaptureTask {
 	@Autowired
 	private HttpTemplate httpTemplate;
 
+	@Autowired
+	private MaterialService materialService;
+
+	@Autowired
+	private AsyncTask asyncTask;
+
 	@Value("${face.api.ip}")
 	private String faceApiIp;
 
@@ -54,6 +62,32 @@ public class CaptureTask {
 
 	@Value("${device.number}")
 	private String deviceNumber;
+
+	@Value("${generate.image.file}")
+	private String generateImageFile;
+
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss SSS");
+
+	static List<PsmFace> convertFaces(String materialId, List<FaceInfo> faceInfoList) {
+		return faceInfoList.stream().map(faceInfo -> {
+			PsmFace face = new PsmFace();
+
+			face.setId(CommonUtil.getUUID());
+			face.setMaterialId(materialId);
+			face.setCreateTime(CommonUtil.getCurrentTime());
+
+			face.setAngle(faceInfo.angle);
+			face.setCenterX(faceInfo.getCenter_x());
+			face.setCenterY(faceInfo.getCenter_y());
+			face.setGroupId(faceInfo.getGroup_id());
+			face.setUserId(faceInfo.getUser_id());
+			face.setHeight(faceInfo.getHeight());
+			face.setWidth(faceInfo.getWidth());
+			face.setScore(faceInfo.getScore());
+
+			return face;
+		}).collect(Collectors.toList());
+	}
 
 	/**
 	 * 200ms心跳一次
@@ -88,26 +122,16 @@ public class CaptureTask {
 		boolean result = sdkService.captureJpegPicture(lUserId, new NativeLong(1L), lpJpegPara,
 				jpegBuffer, 1024 * 1024, retLen);
 
-		log.info("---> retLen:  {}", retLen.getValue());
+		// log.info("---> retLen:  {}", retLen.getValue());
 
-		String imageName = "" + System.currentTimeMillis() + ".jpeg";
-		try {
-			OutputStream os = new FileOutputStream(captureImagePath + imageName);
-
-			// log.info("-------- position = {}", jpegBuffer.position());
-			os.write(jpegBuffer.array(), 0, retLen.getValue());
-			// log.info("-------- position = {}", jpegBuffer.position());
-
-			os.flush();
-			os.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		String now = dateFormat.format(new Date());
+		String imageName = "" + now + ".jpeg";
+		if (Constants.YES.toLowerCase().equals(generateImageFile)) {
+			saveIamge(imageName, jpegBuffer, retLen);
 		}
 
-		// 存素材元信息
-
 		if (result) {
-//			faceSdkRecVo.setImage(byte2Base64Str(jpegBuffer.array()));
+			// faceSdkRecVo.setImage(byte2Base64Str(jpegBuffer.array()));
 
 			byte[] temp = new byte[retLen.getValue()];
 			// log.info("-------- position  bw= {}", jpegBuffer.position());
@@ -124,13 +148,11 @@ public class CaptureTask {
 			material.setId(uuid);
 			material.setCreateTime(CommonUtil.getCurrentTime());
 			material.setImageName(imageName);
-
 			material.setDeviceId(deviceNumber);
 			material.setAreaId(deviceNumber);
-
 			materialService.addMaterial(material);
 
-			log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
+			// log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
 
 			asyncTask.detect(uuid, faceSdkRecVo);
 		} else {
@@ -138,11 +160,22 @@ public class CaptureTask {
 		}
 	}
 
-	@Autowired
-	private MaterialService materialService;
+	private void saveIamge(String imageName, ByteBuffer jpegBuffer, IntByReference retLen) {
+		try {
+			OutputStream os = new FileOutputStream(captureImagePath + "/" + deviceNumber + "/" + imageName);
 
-	@Autowired
-	private AsyncTask asyncTask;
+			// log.info("-------- position = {}", jpegBuffer.position());
+			os.write(jpegBuffer.array(), 0, retLen.getValue());
+			// log.info("-------- position = {}", jpegBuffer.position());
+
+			os.flush();
+			os.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// TODO Clean code
 
 	// @Scheduled(fixedRate = 200)
 	private void captureTaskDetect() {
@@ -182,8 +215,6 @@ public class CaptureTask {
 		asyncTask.detect(uuid, faceSdkRecVo);
 	}
 
-	// TODO Clean code
-
 	/**
 	 * rec
 	 */
@@ -207,52 +238,6 @@ public class CaptureTask {
 		String ret = httpTemplate.post("127.0.0.1", "3000", "/face/api/v1/rec", faceSdkRecVo, String.class);
 		log.info(">>>rec cost" + (System.currentTimeMillis() - ctm) + " and ret=" + ret);
 	}
-
-	static List<PsmFace> convertFaces(String materialId, List<FaceInfo> faceInfoList) {
-		return faceInfoList.stream().map(faceInfo -> {
-			PsmFace face = new PsmFace();
-
-			face.setId(CommonUtil.getUUID());
-			face.setMaterialId(materialId);
-			face.setCreateTime(CommonUtil.getCurrentTime());
-
-			face.setAngle(faceInfo.angle);
-			face.setCenterX(faceInfo.getCenter_x());
-			face.setCenterY(faceInfo.getCenter_y());
-			face.setGroupId(faceInfo.getGroup_id());
-			face.setUserId(faceInfo.getUser_id());
-			face.setHeight(faceInfo.getHeight());
-			face.setWidth(faceInfo.getWidth());
-			face.setScore(faceInfo.getScore());
-
-			return face;
-		}).collect(Collectors.toList());
-	}
-
-	@Data
-	@EqualsAndHashCode(callSuper = false)
-	static class DetectResult {
-
-		// TODO serialNumber
-		private String seiralNo;
-
-		private List<FaceInfo> faces;
-
-	}
-
-	@Data
-	@EqualsAndHashCode(callSuper = false)
-	static class FaceInfo {
-		private Integer angle;
-		private Integer center_x;
-		private Integer center_y;
-		private String group_id;
-		private Integer height;
-		private String score;
-		private String user_id;
-		private Integer width;
-	}
-
 
 	// @Scheduled(fixedRate = 1000)
 	// @PostConstruct
@@ -330,11 +315,12 @@ public class CaptureTask {
 	}
 
 	// @Scheduled(fixedRate = 5000)
+	// @PostConstruct
 	private void addUser() {
 		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
 		faceSdkUserVo.setGroup_id("g1");
 
-		for (int i = 9; i < 23; i++) {
+		for (int i = 23; i < 24; i++) {
 			faceSdkUserVo.setUser_id("u" + i);
 			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 			Long ctm = System.currentTimeMillis();
@@ -348,6 +334,31 @@ public class CaptureTask {
 
 			log.info(">>>addUser ret=" + ret);
 		}
+	}
+
+	@Data
+	@EqualsAndHashCode(callSuper = false)
+	static class DetectResult {
+
+		private String seiralNo;
+
+		private String errno;
+
+		private List<FaceInfo> faces;
+
+	}
+
+	@Data
+	@EqualsAndHashCode(callSuper = false)
+	static class FaceInfo {
+		private Integer angle;
+		private Integer center_x;
+		private Integer center_y;
+		private String group_id;
+		private Integer height;
+		private String score;
+		private String user_id;
+		private Integer width;
 	}
 
 }

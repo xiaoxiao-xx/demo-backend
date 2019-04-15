@@ -64,3 +64,10 @@ summary:
 device.number: 1
 
 capture.path: D:/img/
+
+redis:
+  server: 127.0.0.1
+  port: 6379
+
+# yes, no
+generate.image.file: no

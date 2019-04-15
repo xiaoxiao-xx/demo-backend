@@ -182,7 +182,8 @@ public class PersonServiceImpl implements PersonService {
 		if (psmPersonInfo != null) {
 			return psmPersonInfo.getName();
 		}
-		return null;
+
+		return "";
 	}
 
 }

@@ -1,8 +1,11 @@
 package com.microcore.center.service.impl;
 
+import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.service.CommonService;
+import com.microcore.center.service.PersonService;
 import com.microcore.center.service.SummaryService;
 import com.microcore.center.util.CommonUtil;
+import com.microcore.center.util.JedisPoolUtil;
 import com.microcore.center.vo.DetailVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,9 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -25,15 +26,20 @@ public class SummaryServiceImpl implements SummaryService {
 	@Autowired
 	private CommonService commonService;
 
+	@Autowired
+	private PersonService personService;
+
+	@Autowired
+	private JedisPoolUtil redisUtil;
+
 	@Override
 	public List getSummary() {
-		String sql = "SELECT\n" +
-				" area_id,\n" +
-				" count( 1 ) count \n" +
+		String sql = "SELECT area_id, count(1) count \n" +
 				" FROM\n" +
-				" (SELECT * FROM psm_detail WHERE psm_detail.time > DATE_SUB(NOW(), INTERVAL #{intervalTime} SECOND ) GROUP BY area_id, user_id ) a \n" +
-				" GROUP BY\n" +
-				" area_id";
+				" (SELECT * FROM psm_detail " +
+				"      WHERE psm_detail.time > DATE_SUB(NOW(), INTERVAL #{intervalTime} SECOND) " +
+				"      GROUP BY area_id, user_id) a \n" +
+				" GROUP BY area_id";
 		Map<String, Object> params = new HashMap<>(3);
 		params.put("sql", sql);
 		params.put("intervalTime", summaryTaskInterval / 1000);
@@ -53,6 +59,21 @@ public class SummaryServiceImpl implements SummaryService {
 		return counts;
 	}
 
+	@Override
+	public List<AreaCount> getSummaryRedis() {
+		List<AreaCount> counts = new ArrayList<>();
+
+		for (int i = 1; i < 6; i++) {
+			String areaKey = "area:" + i;
+			Long userCount = redisUtil.scard(areaKey);
+
+			AreaCount count = new AreaCount("" + i, userCount);
+			counts.add(count);
+		}
+
+		return counts;
+	}
+
 	private boolean check(String areaId, List<AreaCount> counts) {
 		for (AreaCount count : counts) {
 			if (count.getAreaId().equals(areaId)) {
@@ -63,24 +84,13 @@ public class SummaryServiceImpl implements SummaryService {
 		return false;
 	}
 
-	@Data
-	@EqualsAndHashCode(callSuper = false)
-	public static class AreaCount {
-
-		private String areaId;
-
-		private Long count;
-
-	}
-
 	/**
 	 * 返回一个区域的人的列表
 	 */
 	@Override
-	public List<DetailVo> getDetailList(String areaId, Integer pageIndex, Integer pageSize) {
-		String sql = "SELECT * FROM\n" +
-				" psm_detail \n" +
-				" WHERE psm_detail.time > DATE_SUB( NOW( ), INTERVAL #{intervalTime} SECOND ) \n" +
+	public List<DetailVo> getDetailList(String areaId) {
+		String sql = "SELECT * FROM psm_detail \n" +
+				" WHERE psm_detail.time > DATE_SUB(NOW( ), INTERVAL #{intervalTime} SECOND) \n" +
 				" AND area_id = #{areaId} \n" +
 				" group by user_id";
 
@@ -91,6 +101,48 @@ public class SummaryServiceImpl implements SummaryService {
 		List<Map<String, Object>> list = commonService.executeSelectSQL(params);
 
 		return CommonUtil.map2PO(list, DetailVo.class);
+	}
+
+	@Override
+	public List<DetailVo> getDetailListRedis(String areaId) {
+		List<DetailVo> voList = new ArrayList<>();
+
+		String areaKey = "area:" + areaId;
+		Set<String> userIdSet = redisUtil.smemebers(areaKey);
+		for (String userId : userIdSet) {
+			PsmPersonInfo psmPersonInfo = personService.getPsmPersonInfo(userId);
+
+			DetailVo vo = new DetailVo();
+			vo.setId("");
+			vo.setSummaryId("");
+			vo.setAreaId(areaId);
+			vo.setUserId(userId);
+			vo.setUserName(psmPersonInfo.getName());
+			vo.setTime(new Date());
+
+			voList.add(vo);
+		}
+
+		return voList;
+	}
+
+	@Data
+	@EqualsAndHashCode(callSuper = false)
+	public static class AreaCount {
+
+		private String areaId;
+
+		private Long count;
+
+		public AreaCount() {
+
+		}
+
+		public AreaCount(String areaId, Long count) {
+			setAreaId(areaId);
+			setCount(count);
+		}
+
 	}
 
 }

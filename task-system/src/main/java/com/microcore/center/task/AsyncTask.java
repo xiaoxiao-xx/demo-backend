@@ -8,6 +8,7 @@ import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.service.MaterialService;
 import com.microcore.center.service.PersonService;
 import com.microcore.center.util.CommonUtil;
+import com.microcore.center.util.JedisPoolUtil;
 import com.microcore.center.util.RabbitMQUtil;
 import com.microcore.center.vo.FaceSdkRecVo;
 import com.microcore.center.vo.PsmDealResDetailVo;
@@ -36,42 +37,24 @@ public class AsyncTask {
 	@Autowired
 	private MaterialService materialService;
 
+	@Autowired
+	private JedisPoolUtil redisUtil;
+
+	@Autowired
+	private PersonService personService;
+
+	@Autowired
+	private RabbitMQUtil rabbitMQUtil;
+
+	private Gson gson = new Gson();
+
 	@Value("${face.api.ip}")
 	private String faceApiIp;
 
 	@Value("${face.api.port}")
 	private String faceApiPort;
 
-	/**
-	 *
-	 */
-	@Async
-	public void detect(String materialId, FaceSdkRecVo faceSdkRecVo) {
-		long ctm = System.currentTimeMillis();
-		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/detect", faceSdkRecVo, String.class);
-		log.info("face.ip: {}, face.port: {}", faceApiIp, faceApiPort);
-
-		// 保存人脸识别结果
-		Gson gson = new Gson();
-		CaptureTask.DetectResult result = gson.fromJson(ret, CaptureTask.DetectResult.class);
-
-		List<CaptureTask.FaceInfo> faces = result.getFaces();
-		if (faces == null) {
-			faces = new ArrayList<>();
-		}
-
-		List<PsmFace> faceList = convertFaces(materialId, faces);
-		faceList.forEach(face -> {
-			// face.setUserId(CommonUtil.random("1", "2", "u17", "u9", "u3", "u4", "u5", "u6", "u7", "u8"));
-			sendEvent(face);
-		});
-
-		materialService.addFaceList(faceList);
-
-		log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
-
-		// log.info("thread id= {}", Thread.currentThread().getName());
-	}
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
 	private Map<String, String> addressList = new HashMap<>();
 
@@ -83,13 +66,71 @@ public class AsyncTask {
 		addressList.put("5", "总经理室");
 	}
 
-	@Autowired
-	private PersonService personService;
+	/**
+	 *
+	 */
+	@Async
+	public void detect(String materialId, FaceSdkRecVo faceSdkRecVo) {
+		long ctm = System.currentTimeMillis();
+		String ret = "";
+		try {
+			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/detect", faceSdkRecVo, String.class);
+		} catch (Exception e) {
+			log.error("Face detection error: {}", e);
+		}
 
-	@Autowired
-	private RabbitMQUtil rabbitMQUtil;
+		// log.info("face.ip: {}, face.port: {}", faceApiIp, faceApiPort);
 
-	private Gson gson = new Gson();
+		// 保存人脸识别结果
+		Gson gson = new Gson();
+		CaptureTask.DetectResult result = gson.fromJson(ret, CaptureTask.DetectResult.class);
+
+		List<CaptureTask.FaceInfo> faces = result.getFaces();
+		if (faces == null) {
+			faces = new ArrayList<>();
+		}
+
+		List<PsmFace> faceList = convertFaces(materialId, faces);
+		for (PsmFace face : faceList) {// Drop the faces which scores under 60
+			try {
+				if (Double.parseDouble(face.getScore()) < 60.00D) {
+					continue;
+				}
+			} catch (Exception e) {
+				log.error("{}", e);
+			}
+
+			sendEvent(face);
+
+			PsmMaterial material = materialService.getMaterial(materialId);
+			String areaId = material.getAreaId();
+			String userId = face.getUserId();
+			log.info(">>> detected face: {}, score: {}", personService.getPsmPersonInfoName(userId), face.getScore());
+			log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
+
+			// k-v  k: user_id,   v: area_id & capture_time
+			Map<String, String> map = new HashMap<>();
+			map.put("userName", personService.getPsmPersonInfoName(userId));
+			map.put("areaId", areaId);
+			map.put("captureTime", dateFormat.format(material.getCreateTime()));
+			map.put("teamId", personService.getPsmPersonInfo(userId).getDeptId());
+			redisUtil.hmset(userId, map);
+
+			// k-v  k: area_id,   v: user_id set
+			String areaKey = "area:" + areaId;
+			// Remove the user from other areas
+			for (int i = 1; i < 6; i++) {
+				redisUtil.srem("area:" + i, userId);
+			}
+			// Add the user to the current area
+			redisUtil.sadd(areaKey, userId);
+		}
+
+		materialService.addFaceList(faceList);
+
+
+		// log.info("thread id= {}", Thread.currentThread().getName());
+	}
 
 	private void sendEvent(PsmFace face) {
 		PsmDealResDetailVo vo = new PsmDealResDetailVo();
@@ -124,11 +165,11 @@ public class AsyncTask {
 		vo.setValidState(random("是", "否"));
 
 		try {
-			if (Double.parseDouble(face.getScore()) > 60.00D) {
+			if (Double.parseDouble(face.getScore()) >= 60.00D) {
 				rabbitMQUtil.sendMsg(gson.toJson(vo));
 			}
 		} catch (Exception e) {
-			log.error("{}" ,e );
+			log.error("{}", e);
 		}
 	}
 
