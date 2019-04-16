@@ -32,8 +32,12 @@ public class RealAlarmServiceImpl implements RealAlarmService {
     @Autowired
     private ParaDefineService paraDefineService;
 
+	@Autowired
+	private CommonService commonService;
+
     @Override
-    public PageInfo<PsmRealAlarmVo> getRealAlarmList(String alarmType, String operator, String state, Integer pageIndex, Integer pageSize) {
+    public PageInfo<PsmRealAlarmVo> getRealAlarmList(String alarmType, String operator, String state,
+                                                     Integer pageIndex, Integer pageSize) {
         PsmRealAlarmExample example = new PsmRealAlarmExample();
         example.setOrderByClause("trigger_time desc");
         PsmRealAlarmExample.Criteria criteria = example.createCriteria();
@@ -97,9 +101,6 @@ public class RealAlarmServiceImpl implements RealAlarmService {
         psmRealAlarmMapper.updateByPrimaryKey(psmRealAlarm);
         return ResultVo.ok();
     }
-
-    @Autowired
-    private CommonService commonService;
 
     @Override
     public ResultVo getAlarmCount() {

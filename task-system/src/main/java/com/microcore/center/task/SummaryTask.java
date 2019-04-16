@@ -40,7 +40,6 @@ public class SummaryTask {
 
 	private final JedisPoolUtil redisUtil;
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
 	@Autowired
 	public SummaryTask(SummaryService summaryService, CommonService commonService,
@@ -106,6 +105,9 @@ public class SummaryTask {
 		});
 	}
 
+	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
+
 	/**
 	 * Remove expired value of the set
 	 */
@@ -122,7 +124,7 @@ public class SummaryTask {
 
 			Date captureTime = new Date();
 			try {
-				captureTime = dateFormat.parse(timeString);
+				captureTime = dateFormat.get().parse(timeString);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}

@@ -20,6 +20,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import static com.microcore.center.util.CommonUtil.random;
+
 /**
  * 素材记录产生任务
  *
@@ -142,7 +144,4 @@ public class SrcGenerateTask {
 		return Math.random() * 100 > 60;
 	}
 
-	private String random(String... type) {
-		return type[(int) (Math.random() * type.length)];
-	}
 }

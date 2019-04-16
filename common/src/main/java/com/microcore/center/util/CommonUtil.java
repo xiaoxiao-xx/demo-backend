@@ -399,7 +399,11 @@ public class CommonUtil {
 		return pageIndex == null || pageSize == null;
 	}
 
-	public static String random(String... type) {
+//	public static String random(String... type) {
+//		return type[(int) (Math.random() * type.length)];
+//	}
+
+	public static <T> T random(T... type) {
 		return type[(int) (Math.random() * type.length)];
 	}
 

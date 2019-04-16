@@ -35,7 +35,8 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
 	private final PersonService personService;
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
 
 	@Autowired
 	public ScheduleDetailServiceImpl(PsmScheduleDetailMapper psmScheduleDetailMapper, CommonService commonService,
@@ -106,7 +107,7 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 			// log.info("{}", captureTime);
 
 			try {
-				if (dateFormat.parse(captureTime).getTime() > nineClock.getTime().getTime()) {
+				if (dateFormat.get().parse(captureTime).getTime() > nineClock.getTime().getTime()) {
 					addOne(onDutyMap, teamId);
 					onDutyCount += 1;
 					// log.info("on duty: {}", key);

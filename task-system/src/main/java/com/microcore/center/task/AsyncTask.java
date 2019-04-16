@@ -49,7 +49,8 @@ public class AsyncTask {
 	@Value("${face.api.port}")
 	private String faceApiPort;
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
 
 	private Map<String, String> addressList = new HashMap<>();
 
@@ -117,7 +118,7 @@ public class AsyncTask {
 			Map<String, String> map = new HashMap<>();
 			map.put("userName", personService.getPsmPersonInfoName(userId));
 			map.put("areaId", areaId);
-			map.put("captureTime", dateFormat.format(material.getCreateTime()));
+			map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
 			map.put("teamId", personService.getPsmPersonInfo(userId).getDeptId());
 			redisUtil.hmset(userId, map);
 

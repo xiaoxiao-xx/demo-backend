@@ -61,7 +61,8 @@ public class CaptureTask {
 	@Value("${generate.image.file}")
 	private String generateImageFile;
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss SSS");
+	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyy-MM-dd HH-mm-ss SSS"));
 
 	@Autowired
 	public CaptureTask(SdkService sdkService, HttpTemplate httpTemplate, MaterialService materialService, AsyncTask asyncTask) {
@@ -127,7 +128,7 @@ public class CaptureTask {
 
 		// log.info("---> retLen:  {}", retLen.getValue());
 
-		String now = dateFormat.format(new Date());
+		String now = dateFormat.get().format(new Date());
 		String imageName = "" + now + ".jpeg";
 		if (Constants.YES.toLowerCase().equals(generateImageFile)) {
 			saveImage(imageName, jpegBuffer, retLen);

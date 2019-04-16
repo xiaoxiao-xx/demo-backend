@@ -55,7 +55,7 @@ public class SessionManage {
 				keys.add(k);
 			}
 		});
-		keys.forEach((k) -> logout(k));
+		keys.forEach(SessionManage::logout);
 	}
 
 }

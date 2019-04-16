@@ -1,6 +1,5 @@
 package com.microcore.center.service.impl;
 
-import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -24,8 +23,6 @@ import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.PersonInfoVo;
 import com.microcore.center.vo.ResultVo;
-
-import static com.microcore.center.util.CommonUtil.image2byte;
 
 @Service
 @Transactional
@@ -81,10 +78,12 @@ public class PersonServiceImpl implements PersonService {
 		return ResultVo.ok();
 	}
 
+	private final ThreadLocal<SimpleDateFormat> df = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyyMMddHHmmss"));
+
 	private String getSerialNumber() {
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 		long ctm = System.currentTimeMillis();
-		return df.format(new Date(ctm)) + "-" + ctm % 1000;
+		return df.get().format(new Date(ctm)) + "-" + ctm % 1000;
 	}
 
 	private void addUserFace(byte[] image) {
