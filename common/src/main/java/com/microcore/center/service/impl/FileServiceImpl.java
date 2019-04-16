@@ -9,7 +9,7 @@ import com.microcore.center.model.PsmFile;
 import com.microcore.center.service.FileService;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class FileServiceImpl implements FileService {
 
 	@Autowired

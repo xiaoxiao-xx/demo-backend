@@ -28,6 +28,7 @@ public class FileController {
 	private FileService fileService ;
 
 	@PostMapping("fileUpload")
+	// TODO
 	@ResponseBody
 	public ResultVo fileUpload(@RequestParam("fileName") MultipartFile file) {
 		if (file.isEmpty()) {
@@ -66,4 +67,5 @@ public class FileController {
 		String[] names = fileName.split("\\.");
 		return names[names.length - 1];
 	}
+
 }

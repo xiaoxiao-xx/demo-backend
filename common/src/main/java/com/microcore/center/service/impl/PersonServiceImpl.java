@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.microcore.center.cllient.HttpTemplate;
+import com.microcore.center.service.*;
 import com.microcore.center.vo.FaceSdkUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -19,10 +20,6 @@ import com.microcore.center.constant.Constants;
 import com.microcore.center.mapper.PsmPersonInfoMapper;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.model.PsmPersonInfoExample;
-import com.microcore.center.service.CommonService;
-import com.microcore.center.service.DepartmentService;
-import com.microcore.center.service.OperHisService;
-import com.microcore.center.service.PersonService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.PersonInfoVo;
@@ -50,6 +47,9 @@ public class PersonServiceImpl implements PersonService {
 	@Autowired
 	private HttpTemplate httpTemplate;
 
+	@Autowired
+	private FaceApiService faceApiService;
+
 	@Value("${face.api.ip}")
 	private String faceApiIp;
 
@@ -58,14 +58,33 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	public ResultVo add(PersonInfoVo personInfoVo) {
-		personInfoVo.setPersonId(CommonUtil.getUUID());
+		String userId = CommonUtil.getUUID();
+
+		personInfoVo.setPersonId(userId);
 		psmPersonInfoMapper.insertSelective(personInfoVo);
 		operHisService.add(personInfoVo.getPersonId(), Constants.OPER_HIS_ADD);
 
-		byte[] image = image2byte(personInfoVo.getPersonalPhoto1());
-		addUserFace(image);
+		// TODO
+		// byte[] image = image2byte(personInfoVo.getPersonalPhoto1());
+		// String imageString = CommonUtil.byte2Base64Str(image);
+
+		// addUserFace(image);
+
+		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
+		faceSdkUserVo.setGroup_id("g1");
+		faceSdkUserVo.setUser_id(userId);
+		faceSdkUserVo.setSeiralNo("uAdd-" + getSerialNumber());
+		// TODO
+		// faceSdkUserVo.setImage(imageString);
+		// faceApiService.addUser(faceSdkUserVo);
 
 		return ResultVo.ok();
+	}
+
+	private String getSerialNumber() {
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		long ctm = System.currentTimeMillis();
+		return df.format(new Date(ctm)) + "-" + ctm % 1000;
 	}
 
 	private void addUserFace(byte[] image) {
@@ -74,11 +93,11 @@ public class PersonServiceImpl implements PersonService {
 
 		for (int i = 17; i < 18; i++) {
 			faceSdkUserVo.setUser_id("u" + i);
-			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-			Long ctm = System.currentTimeMillis();
-			String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
-			faceSdkUserVo.setSeiralNo("uAdd-" + seiralNo);
-			i = (int) (Math.random() * 10);
+
+			String serialNumber = getSerialNumber();
+			faceSdkUserVo.setSeiralNo("uAdd-" + serialNumber);
+
+			// i = (int) (Math.random() * 10);
 			log.info(">>>addUser u=" + "u" + i);
 			faceSdkUserVo.setImage(CommonUtil.byte2Base64Str(image));
 
