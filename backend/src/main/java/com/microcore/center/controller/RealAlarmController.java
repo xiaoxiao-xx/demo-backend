@@ -22,7 +22,7 @@ public class RealAlarmController {
                                                     @RequestParam(name = "state", required = false) String state,
                                                     @RequestParam(name = "pageIndex") Integer pageIndex,
                                                     @RequestParam(name = "pageSize") Integer pageSize) {
-        return ResultVo.ok(realAlarmService.getRealAlarmList(alarmType, operator,state, pageIndex, pageSize));
+        return ResultVo.ok(realAlarmService.getRealAlarmList2(alarmType, operator,state, pageIndex, pageSize));
     }
 
     @ApiOperation(value = "告警信息修改", notes = "告警信息修改")

@@ -7,11 +7,13 @@ import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.service.MaterialService;
 import com.microcore.center.service.PersonService;
+import com.microcore.center.service.RealAlarmService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.JedisPoolUtil;
 import com.microcore.center.util.RabbitMQUtil;
 import com.microcore.center.vo.FaceSdkRecVo;
 import com.microcore.center.vo.PsmDealResDetailVo;
+import com.microcore.center.vo.PsmRealAlarmVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +43,8 @@ public class AsyncTask {
 
 	private final RabbitMQUtil rabbitMQUtil;
 
+	private final RealAlarmService realAlarmService;
+
 	private Gson gson = new Gson();
 
 	@Value("${face.api.ip}")
@@ -64,12 +68,13 @@ public class AsyncTask {
 
 	@Autowired
 	public AsyncTask(HttpTemplate httpTemplate, MaterialService materialService,
-	                 JedisPoolUtil redisUtil, PersonService personService, RabbitMQUtil rabbitMQUtil) {
+	                 JedisPoolUtil redisUtil, PersonService personService, RabbitMQUtil rabbitMQUtil, RealAlarmService realAlarmService) {
 		this.httpTemplate = httpTemplate;
 		this.materialService = materialService;
 		this.redisUtil = redisUtil;
 		this.personService = personService;
 		this.rabbitMQUtil = rabbitMQUtil;
+		this.realAlarmService = realAlarmService;
 	}
 
 	/**
@@ -159,9 +164,10 @@ public class AsyncTask {
 
 		Date d = face.getCreateTime();
 		// 某人离开或者进入区域也要推送消息
-		vo.setEventInfo("人员：" + psmPersonInfo.getName()
+		String personName = psmPersonInfo.getName();
+		vo.setEventInfo("人员：" + personName
 				+ "，时间：" + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(d)
-				+ "，进入" + addressList.get(areaId) + ""
+				+ "，进入" + getAreaName(areaId) + ""
 		);
 
 		vo.setResId(CommonUtil.getUUID());
@@ -172,10 +178,42 @@ public class AsyncTask {
 		try {
 			if (Double.parseDouble(face.getScore()) >= 60.00D) {
 				rabbitMQUtil.sendMsg(gson.toJson(vo));
+
+				String alarmAreaId = "5";
+				if ("1".equals(psmPersonInfo.getDeptId()) && alarmAreaId.equals(areaId)) {
+					generateAlarmMessage(face, personName);
+				}
 			}
 		} catch (Exception e) {
 			log.error("{}", e);
 		}
+	}
+
+	private String getAreaName(String areaId) {
+		return addressList.get(areaId);
+	}
+
+	private void generateAlarmMessage(PsmFace face, String personName) {
+		PsmMaterial material = materialService.getMaterial(face.getMaterialId());
+		String areaId = material.getAreaId();
+		Date captureTime = material.getCreateTime();
+
+		String reason = "人员：" + personName
+				+ "，时间：" + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(captureTime)
+				+ "，进入" + getAreaName(areaId);
+
+		PsmRealAlarmVo alarm = new PsmRealAlarmVo();
+		String uuid = CommonUtil.getUUID();
+		alarm.setId(uuid);
+		alarm.setOperator("");
+		alarm.setRemark("");
+		alarm.setState("0");
+		alarm.setTriggerTime(CommonUtil.getCurrentTime());
+		alarm.setObjectId(face.getUserId());
+		alarm.setObjectType(random("1", "2"));
+		alarm.setAlarmType(random("1", "2"));
+		alarm.setAlarmReason(reason);
+		realAlarmService.add(alarm);
 	}
 
 }

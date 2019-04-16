@@ -32,8 +32,8 @@ public class RealAlarmServiceImpl implements RealAlarmService {
     @Autowired
     private ParaDefineService paraDefineService;
 
-	@Autowired
-	private CommonService commonService;
+    @Autowired
+    private CommonService commonService;
 
     @Override
     public PageInfo<PsmRealAlarmVo> getRealAlarmList(String alarmType, String operator, String state,
@@ -50,6 +50,7 @@ public class RealAlarmServiceImpl implements RealAlarmService {
         if (StringUtils.isNotEmpty(state)) {
             criteria.andStateEqualTo(state);
         }
+
         PageInfo<PsmRealAlarm> realAlarmPageInfo = PageHelper.startPage(pageIndex, pageSize)
                 .doSelectPageInfo(() -> psmRealAlarmMapper.selectByExample(example));
 
@@ -62,6 +63,36 @@ public class RealAlarmServiceImpl implements RealAlarmService {
 
         pageInfo.setList(list);
         pageInfo.setTotal(realAlarmPageInfo.getTotal());
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<PsmRealAlarmVo> getRealAlarmList2(String alarmType, String operator, String state,
+                                                      Integer pageIndex, Integer pageSize) {
+
+        String sql = "SELECT\n" +
+                "\t*, \n" +
+                "\tDATE_FORMAT( psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i' ) group_string \n" +
+                " FROM\n" +
+                "\tpsm_real_alarm_t \n" +
+                "GROUP BY\n" +
+                "\tDATE_FORMAT( psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i' ) \n" +
+                "ORDER BY \n" +
+                "\ttrigger_time DESC limit 5";
+        Map<String, Object> params = new HashMap<>(3);
+        params.put("sql", sql);
+
+        List<Map<String, Object>> maps = commonService.executeSelectSQL(params);
+
+        List<PsmRealAlarmVo> list = CommonUtil.map2PO(maps, PsmRealAlarmVo.class);
+        for (PsmRealAlarmVo psmRealAlarmVo : list) {
+            psmRealAlarmVo.setStateName(paraDefineService.getValueByTypeAnd("REAL_ALARM_STATE", psmRealAlarmVo.getState()));
+            psmRealAlarmVo.setAlarmTypeName(paraDefineService.getValueByTypeAnd("ALARM_MODE", psmRealAlarmVo.getAlarmType()));
+        }
+        PageInfo<PsmRealAlarmVo> pageInfo = new PageInfo<>();
+
+        pageInfo.setList(list);
+        pageInfo.setTotal(list.size());
         return pageInfo;
     }
 

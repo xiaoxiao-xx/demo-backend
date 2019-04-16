@@ -9,4 +9,7 @@ import lombok.EqualsAndHashCode;
 public class PsmRealAlarmVo extends PsmRealAlarm {
 	private String stateName ; 
 	private String alarmTypeName ;
+
+	private String groupString;
+
 }

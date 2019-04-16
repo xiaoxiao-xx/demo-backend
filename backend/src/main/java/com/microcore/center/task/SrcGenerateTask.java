@@ -64,7 +64,7 @@ public class SrcGenerateTask {
 	 * 5秒心跳一次
 	 * 创建素材
 	 */
-	@Scheduled(fixedRate = 5000)
+	// @Scheduled(fixedRate = 5000)
 	public void gnerate() {
 		PsmSrcRecord srcRecord = new PsmSrcRecord();
 		srcRecord.setCreateType(random("自动采集", "主动采集"));
@@ -81,7 +81,7 @@ public class SrcGenerateTask {
 	/**
 	 * 1秒心跳一次
 	 */
-	@Scheduled(fixedRate = 1000)
+	// @Scheduled(fixedRate = 1000)
 	public void analysis() {
 		try {
 			PsmSrcRecord psmSrcRecord = QUEUE_SRC.poll(1, TimeUnit.SECONDS);
