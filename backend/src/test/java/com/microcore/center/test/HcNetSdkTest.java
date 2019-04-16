@@ -1,3 +1,5 @@
+package com.microcore.center.test;
+
 import com.microcore.center.hcnetsdk.HCNetSDK;
 import com.microcore.center.vo.FaceSdkRequestVo;
 import com.sun.jna.NativeLong;

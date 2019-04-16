@@ -1,9 +1,11 @@
 package com.microcore.center.service.impl;
 
 import com.microcore.center.mapper.PsmScheduleDetailMapper;
+import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.model.PsmScheduleDetail;
 import com.microcore.center.model.PsmScheduleDetailExample;
 import com.microcore.center.service.CommonService;
+import com.microcore.center.service.PersonService;
 import com.microcore.center.service.ScheduleDetailService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.JedisPoolUtil;
@@ -33,6 +35,9 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
 	@Autowired
 	private JedisPoolUtil redisUtil;
+
+	@Autowired
+	private PersonService personService;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
@@ -83,6 +88,7 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
 		List<TeamStat> statList = CommonUtil.map2PO(list, TeamStat.class);
 
+		Calendar nineClock = getNineClock();
 		Integer onDutyCount = 0;
 		Map<String, Integer> onDutyMap = new HashMap<>();
 		Set<String> keys = redisUtil.keys("u*");
@@ -91,13 +97,15 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 			String teamId = map.get(0);
 			String captureTime = map.get(1);
 
-			Calendar calendar = Calendar.getInstance();
-			calendar.set(Calendar.HOUR_OF_DAY, 9);
+			// log.info("{}-{}", nineClock.getTime().toString(), nineClock.getTime().getTime());
+			// log.info("{}", captureTime);
+
 			try {
-				if (dateFormat.parse(captureTime).getTime() > calendar.getTime().getTime()) {
+
+				if (dateFormat.parse(captureTime).getTime() > nineClock.getTime().getTime()) {
 					addOne(onDutyMap, teamId);
 					onDutyCount += 1;
-					log.info("on duty: {}", key);
+					// log.info("on duty: {}", key);
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -113,11 +121,62 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 			totalCount += teamStat.getTotalCount();
 		}
 
-		Duty duty = new Duty("王志", "程开甲", statList);
+		Duty duty = new Duty();
+		int dayOfWeek = getDayOfWeek();
+		PsmPersonInfo leader = getLeader(dayOfWeek);
+		duty.setLeaderName(leader.getName());
+		PsmPersonInfo onDutyPerson = getOnDutyPerson(dayOfWeek);
+		duty.setOnDutyPerson(onDutyPerson.getName());
+		duty.setStatList(statList);
 		duty.setTotalCount(totalCount);
 		duty.setOnDutyCount(onDutyCount);
 		duty.setNotOnDutyCount(totalCount - onDutyCount);
 		return ResultVo.ok(duty);
+	}
+
+	private int getDayOfWeek() {
+		Calendar current = Calendar.getInstance();
+		return current.get(Calendar.DAY_OF_WEEK);
+	}
+
+	private Calendar getNineClock() {
+		Calendar nineClock = Calendar.getInstance();
+		nineClock.set(Calendar.HOUR_OF_DAY, 9);
+		nineClock.set(Calendar.MINUTE, 0);
+		nineClock.set(Calendar.SECOND, 0);
+		nineClock.set(Calendar.MILLISECOND, 0);
+
+		return nineClock;
+	}
+
+	private List<String> leaderList = new ArrayList();
+
+	{
+		leaderList.add("u22");
+		leaderList.add("u9");
+	}
+
+	private PsmPersonInfo getLeader(int dayOfWeek) {
+		int index = (dayOfWeek - 1) % leaderList.size();
+		String userId = leaderList.get(index);
+		return personService.getPsmPersonInfo(userId);
+	}
+
+	private List<String> onDutyPersonList = new ArrayList();
+
+	{
+		onDutyPersonList.add("u17");
+		onDutyPersonList.add("u18");
+		onDutyPersonList.add("u19");
+		onDutyPersonList.add("u20");
+		onDutyPersonList.add("u21");
+		onDutyPersonList.add("u23");
+	}
+
+	private PsmPersonInfo getOnDutyPerson(int dayOfWeek) {
+		int index = (dayOfWeek - 1) % onDutyPersonList.size();
+		String userId = onDutyPersonList.get(index);
+		return personService.getPsmPersonInfo(userId);
 	}
 
 	private void addOne(Map<String, Integer> map, String key) {
@@ -127,7 +186,9 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 	@Data
 	@EqualsAndHashCode(callSuper = false)
 	public static class Duty {
+
 		private String leaderName;
+
 		private String onDutyPerson;
 		/**
 		 *
