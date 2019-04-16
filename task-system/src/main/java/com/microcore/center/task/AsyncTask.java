@@ -25,25 +25,21 @@ import static com.microcore.center.task.CaptureTask.convertFaces;
 import static com.microcore.center.util.CommonUtil.random;
 
 /**
+ *
  */
 @Component
 @Slf4j
 public class AsyncTask {
 
-	@Autowired
-	private HttpTemplate httpTemplate;
+	private final HttpTemplate httpTemplate;
 
-	@Autowired
-	private MaterialService materialService;
+	private final MaterialService materialService;
 
-	@Autowired
-	private JedisPoolUtil redisUtil;
+	private final JedisPoolUtil redisUtil;
 
-	@Autowired
-	private PersonService personService;
+	private final PersonService personService;
 
-	@Autowired
-	private RabbitMQUtil rabbitMQUtil;
+	private final RabbitMQUtil rabbitMQUtil;
 
 	private Gson gson = new Gson();
 
@@ -63,6 +59,16 @@ public class AsyncTask {
 		addressList.put("3", "工作区");
 		addressList.put("4", "会议室");
 		addressList.put("5", "总经理室");
+	}
+
+	@Autowired
+	public AsyncTask(HttpTemplate httpTemplate, MaterialService materialService,
+	                 JedisPoolUtil redisUtil, PersonService personService, RabbitMQUtil rabbitMQUtil) {
+		this.httpTemplate = httpTemplate;
+		this.materialService = materialService;
+		this.redisUtil = redisUtil;
+		this.personService = personService;
+		this.rabbitMQUtil = rabbitMQUtil;
 	}
 
 	/**

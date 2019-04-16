@@ -48,10 +48,11 @@ public class AlarmDealResultController {
     public ResultVo delete(@RequestBody String id) {
         return dealResultService.delete(id);
     }
-    
+
     @ApiOperation(value = "素材处理结果处理", notes = "素材处理结果处理")
     @PostMapping("deal")
     public ResultVo deal(@RequestBody PsmDealResVo dealResVo) {
         return dealResultService.deal(dealResVo);
     }
+
 }

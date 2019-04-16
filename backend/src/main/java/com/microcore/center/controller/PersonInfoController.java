@@ -12,8 +12,12 @@ public class PersonInfoController {
     
 	// TODO 操作记录
 
+	private final PersonService personService;
+
 	@Autowired
-	private PersonService personService;
+	public PersonInfoController(PersonService personService) {
+		this.personService = personService;
+	}
 
 	@PostMapping("add")
 	public ResultVo add(@RequestBody PersonInfoVo personInfoVo) {

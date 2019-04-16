@@ -26,14 +26,11 @@ import java.util.*;
 @Slf4j
 public class SummaryTask {
 
-	@Autowired
-	private SummaryService summaryService;
+	private final SummaryService summaryService;
 
-	@Autowired
-	private CommonService commonService;
+	private final CommonService commonService;
 
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 
 	/**
 	 * 定期汇总时间间隔，单位为milisecond
@@ -41,10 +38,18 @@ public class SummaryTask {
 	@Value("${summary.task.interval}")
 	private final int summaryTaskInterval = 5000;
 
-	@Autowired
-	private JedisPoolUtil redisUtil;
+	private final JedisPoolUtil redisUtil;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+
+	@Autowired
+	public SummaryTask(SummaryService summaryService, CommonService commonService,
+	                   UserService userService, JedisPoolUtil redisUtil) {
+		this.summaryService = summaryService;
+		this.commonService = commonService;
+		this.userService = userService;
+		this.redisUtil = redisUtil;
+	}
 
 	/**
 	 *

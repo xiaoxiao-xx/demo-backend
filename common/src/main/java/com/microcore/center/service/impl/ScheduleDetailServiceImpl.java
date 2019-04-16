@@ -27,19 +27,24 @@ import java.util.*;
 @Slf4j
 public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
-	@Autowired
-	private PsmScheduleDetailMapper psmScheduleDetailMapper;
+	private final PsmScheduleDetailMapper psmScheduleDetailMapper;
 
-	@Autowired
-	private CommonService commonService;
+	private final CommonService commonService;
 
-	@Autowired
-	private JedisPoolUtil redisUtil;
+	private final JedisPoolUtil redisUtil;
 
-	@Autowired
-	private PersonService personService;
+	private final PersonService personService;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+
+	@Autowired
+	public ScheduleDetailServiceImpl(PsmScheduleDetailMapper psmScheduleDetailMapper, CommonService commonService,
+	                                 JedisPoolUtil redisUtil, PersonService personService) {
+		this.psmScheduleDetailMapper = psmScheduleDetailMapper;
+		this.commonService = commonService;
+		this.redisUtil = redisUtil;
+		this.personService = personService;
+	}
 
 	@Override
 	public ResultVo add(PsmScheduleDetailVo vo) {
@@ -148,7 +153,7 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 		return nineClock;
 	}
 
-	private List<String> leaderList = new ArrayList();
+	private List<String> leaderList = new ArrayList<>();
 
 	{
 		leaderList.add("u22");
@@ -161,7 +166,7 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 		return personService.getPsmPersonInfo(userId);
 	}
 
-	private List<String> onDutyPersonList = new ArrayList();
+	private List<String> onDutyPersonList = new ArrayList<>();
 
 	{
 		onDutyPersonList.add("u17");

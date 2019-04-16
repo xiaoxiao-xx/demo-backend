@@ -24,13 +24,14 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("rollCall")
 public class RollCallController {
+
 	@Autowired
 	private PsmRollCallService psmRollCallService ;
-	
+
 	@ApiOperation(value = "电子点名查询", notes = "电子点名查询")
 	@GetMapping("query")
-	public ResultVo<PageInfo<PsmRollCallVo>> query(@RequestParam(name = "team", required = false) String team, 
-												 @RequestParam(name = "callTime", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date callTime, 
+	public ResultVo<PageInfo<PsmRollCallVo>> query(@RequestParam(name = "team", required = false) String team,
+												 @RequestParam(name = "callTime", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date callTime,
 												 @RequestParam(name = "pageIndex") Integer pageIndex,
 												 @RequestParam(name = "pageSize") Integer pageSize) {
 		return ResultVo.ok(psmRollCallService.query(team, callTime, pageIndex, pageSize));

@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
@@ -127,7 +126,7 @@ public class CaptureTask {
 		String now = dateFormat.format(new Date());
 		String imageName = "" + now + ".jpeg";
 		if (Constants.YES.toLowerCase().equals(generateImageFile)) {
-			saveIamge(imageName, jpegBuffer, retLen);
+			saveImage(imageName, jpegBuffer, retLen);
 		}
 
 		if (result) {
@@ -160,7 +159,7 @@ public class CaptureTask {
 		}
 	}
 
-	private void saveIamge(String imageName, ByteBuffer jpegBuffer, IntByReference retLen) {
+	private void saveImage(String imageName, ByteBuffer jpegBuffer, IntByReference retLen) {
 		try {
 			OutputStream os = new FileOutputStream(captureImagePath + "/" + deviceNumber + "/" + imageName);
 
