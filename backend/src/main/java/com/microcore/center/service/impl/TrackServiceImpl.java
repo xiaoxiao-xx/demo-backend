@@ -32,7 +32,7 @@ public class TrackServiceImpl implements TrackService {
 	 */
 	@Override
 	public ResultVo getTrackInfo(String userId) {
-		String sql = "SELECT f.*, m.area_id, m.create_time capture_time FROM psm_face f \n" +
+		String sql = "SELECT DATE_FORMAT( m.create_time, '%H:%i' ) time, m.area_id, m.create_time FROM psm_face f \n" +
 				"LEFT JOIN psm_material m ON f.material_id = m.id \n" +
 				"GROUP BY m.area_id, f.user_id, DATE_FORMAT(m.create_time, '%Y-%m-%d %H-%i') \n" +
 				"HAVING user_id = #{userId} AND DATE_FORMAT(NOW( ), '%Y-%m-%d') = DATE_FORMAT(m.create_time, '%Y-%m-%d') \n" +

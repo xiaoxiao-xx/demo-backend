@@ -28,6 +28,8 @@ import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.PersonInfoVo;
 import com.microcore.center.vo.ResultVo;
 
+import static com.microcore.center.util.CommonUtil.image2byte;
+
 @Service
 @Transactional
 @Slf4j
@@ -60,7 +62,7 @@ public class PersonServiceImpl implements PersonService {
 		psmPersonInfoMapper.insertSelective(personInfoVo);
 		operHisService.add(personInfoVo.getPersonId(), Constants.OPER_HIS_ADD);
 
-		byte[] image = CommonUtil.image2byte(personInfoVo.getPersonalPhoto1());
+		byte[] image = image2byte(personInfoVo.getPersonalPhoto1());
 		addUserFace(image);
 
 		return ResultVo.ok();

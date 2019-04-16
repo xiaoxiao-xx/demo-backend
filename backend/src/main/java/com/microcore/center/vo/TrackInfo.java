@@ -1,18 +1,13 @@
 package com.microcore.center.vo;
 
-import com.microcore.center.model.PsmFace;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import java.util.Date;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class TrackInfo extends PsmFace {
+public class TrackInfo {
+
+	private String time;
 
 	private String areaId;
-
-	private Date captureTime;
 
 }
 
