@@ -1,5 +1,6 @@
 package com.microcore.center.service.impl;
 
+import com.microcore.center.constant.ErrorMessage;
 import com.microcore.center.hcnetsdk.HCNetSDK;
 import com.microcore.center.service.SdkService;
 import com.sun.jna.NativeLong;
@@ -198,8 +199,18 @@ public class SdkServiceImpl implements SdkService {
     @Override
     public void errMsg() {
         // 获取最后的错误码
-        int error = sdk.NET_DVR_GetLastError();
-        log.error("Error: {}", error);
+        int errorNo = sdk.NET_DVR_GetLastError();
+        String errorMessage = getErrorMessage(errorNo);
+        String errorType = getErrorType(errorNo);
+        log.error("Error: {}({})-{}", errorType, errorNo, errorMessage);
+    }
+
+    private String getErrorMessage(int errorNo) {
+        return ErrorMessage.getErrorMsgByErrorNo(errorNo);
+    }
+
+    private String getErrorType(int errorNo) {
+        return ErrorMessage.getErrorTypeByErrorNo(errorNo);
     }
 
 }

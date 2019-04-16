@@ -25,7 +25,6 @@ import static com.microcore.center.task.CaptureTask.convertFaces;
 import static com.microcore.center.util.CommonUtil.random;
 
 /**
- * @author
  */
 @Component
 @Slf4j
@@ -108,7 +107,7 @@ public class AsyncTask {
 			log.info(">>> detected face: {}, score: {}", personService.getPsmPersonInfoName(userId), face.getScore());
 			log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
-			// k-v  k: user_id,   v: area_id & capture_time
+			// k-v  k: user_id, v: area_id & capture_time
 			Map<String, String> map = new HashMap<>();
 			map.put("userName", personService.getPsmPersonInfoName(userId));
 			map.put("areaId", areaId);
@@ -116,7 +115,7 @@ public class AsyncTask {
 			map.put("teamId", personService.getPsmPersonInfo(userId).getDeptId());
 			redisUtil.hmset(userId, map);
 
-			// k-v  k: area_id,   v: user_id set
+			// k-v  k: area_id, v: user_id set
 			String areaKey = "area:" + areaId;
 			// Remove the user from other areas
 			for (int i = 1; i < 6; i++) {
@@ -127,7 +126,6 @@ public class AsyncTask {
 		}
 
 		materialService.addFaceList(faceList);
-
 
 		// log.info("thread id= {}", Thread.currentThread().getName());
 	}

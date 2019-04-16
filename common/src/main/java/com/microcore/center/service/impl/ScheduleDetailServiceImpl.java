@@ -101,7 +101,6 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 			// log.info("{}", captureTime);
 
 			try {
-
 				if (dateFormat.parse(captureTime).getTime() > nineClock.getTime().getTime()) {
 					addOne(onDutyMap, teamId);
 					onDutyCount += 1;

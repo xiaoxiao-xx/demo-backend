@@ -101,7 +101,6 @@ public class SummaryTask {
 		});
 	}
 
-
 	/**
 	 * Remove expired value of the set
 	 */
