@@ -4,5 +4,7 @@ import lombok.Data;
 
 @Data
 public class FaceSdkGroupVo {
-    private String group_id;
+
+	private String group_id;
+
 }

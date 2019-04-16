@@ -38,17 +38,13 @@ import static com.microcore.center.util.CommonUtil.image2byte;
 @Component
 public class CaptureTask {
 
-	@Autowired
-	private SdkService sdkService;
+	private final SdkService sdkService;
 
-	@Autowired
-	private HttpTemplate httpTemplate;
+	private final HttpTemplate httpTemplate;
 
-	@Autowired
-	private MaterialService materialService;
+	private final MaterialService materialService;
 
-	@Autowired
-	private AsyncTask asyncTask;
+	private final AsyncTask asyncTask;
 
 	@Value("${face.api.ip}")
 	private String faceApiIp;
@@ -66,6 +62,14 @@ public class CaptureTask {
 	private String generateImageFile;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss SSS");
+
+	@Autowired
+	public CaptureTask(SdkService sdkService, HttpTemplate httpTemplate, MaterialService materialService, AsyncTask asyncTask) {
+		this.sdkService = sdkService;
+		this.httpTemplate = httpTemplate;
+		this.materialService = materialService;
+		this.asyncTask = asyncTask;
+	}
 
 	static List<PsmFace> convertFaces(String materialId, List<FaceInfo> faceInfoList) {
 		return faceInfoList.stream().map(faceInfo -> {
@@ -152,7 +156,6 @@ public class CaptureTask {
 			materialService.addMaterial(material);
 
 			// log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
-
 			asyncTask.detect(uuid, faceSdkRecVo);
 		} else {
 			sdkService.errMsg();
@@ -272,6 +275,9 @@ public class CaptureTask {
 			Long ctm = System.currentTimeMillis();
 			String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
 			faceSdkUserVo.setSeiralNo("uUpd-" + seiralNo);
+
+			// byte[] data = image2byte(userFaceImageDirectory + userId + ".bmp");
+			// faceSdkUserVo.setImage(byte2Base64Str(data));
 
 			byte[] data = image2byte("D://imgu/u" + i + ".bmp");
 			faceSdkUserVo.setImage(byte2Base64Str(data));

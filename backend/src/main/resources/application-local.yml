@@ -66,5 +66,7 @@ redis:
   server: 127.0.0.1
   port: 6379
 
+user.face.image.directory: D:/imgu/
+
 #logging.level: debug
 
