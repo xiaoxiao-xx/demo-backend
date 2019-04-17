@@ -7,97 +7,57 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.nio.ByteBuffer;
 
 @Service
 @Slf4j
 public class SdkServiceImpl implements SdkService {
 
-    /**
-     * 设备IP
-     */
-    @Value("${nvr.device.ip}")
-    private String deviceIp;
-
-    /**
-     * 设备Port
-     */
-    @Value("${nvr.device.port}")
-    private Short devicePort;
-
-    /**
-     * 用户登录名
-     */
-    @Value("${login.username}")
-    private String username;
-
-    /**
-     * 用户登录密码
-     */
-    @Value("${login.password}")
-    private String password;
+    private HCNetSDK sdk;
 
     private NativeLong lUserID;
 
-    private void setUserId(NativeLong userId) {
-        this.lUserID = userId;
-    }
-
     @Override
-    public NativeLong getUserId() {
-        return this.lUserID;
+    public void setSdk(HCNetSDK sdk) {
+    	this.sdk = sdk;
     }
 
-    private HCNetSDK sdk = HCNetSDK.INSTANCE;
+	@Override
+	public NativeLong getUserId() {
+		return this.lUserID;
+	}
 
-    {
-        // 初始化SDK
-        boolean initSuc = sdk.NET_DVR_Init();
-        if (!initSuc) {
-            log.error("SDK初始化失败");
-        } else {
-            log.info("SDK初始化成功");
-        }
-
-        // 设置超时时间
-        sdk.NET_DVR_SetConnectTime(12, 2);
-
-    }
-
-    @PostConstruct
-    private void startlogin() {
-        HCNetSDK.NET_DVR_DEVICEINFO_V30 netDvrDeviceinfoV30 = new HCNetSDK.NET_DVR_DEVICEINFO_V30();
-        // TODO NET_DVR_DEVICEINFO_V30的具体参数待设置
+	@Override
+    public void startLogin(String deviceIp, Short devicePort, String username, String password) {
+        HCNetSDK.NET_DVR_DEVICEINFO_V30 netDvrDeviceInfo = new HCNetSDK.NET_DVR_DEVICEINFO_V30();
+        // TODO NET_DVR_DEVICEINFO_V30 的具体参数待设置
         lUserID = loginDevice(deviceIp,
                 devicePort,
                 username,
                 password,
-                netDvrDeviceinfoV30);
+                netDvrDeviceInfo);
         log.info("lUserID:"+lUserID.intValue());
         if (lUserID.intValue() < 0) {
             log.error("Login error");
             errMsg();
         }
-        //调用视频预览
-        HCNetSDK.NET_DVR_PREVIEWINFO ndPviewInfo= new HCNetSDK.NET_DVR_PREVIEWINFO();
-        ndPviewInfo.lChannel=new NativeLong(2);
-        ndPviewInfo.dwStreamType=0;
-        ndPviewInfo.dwLinkMode=0;
-        ndPviewInfo.hPlayWnd=null;
-        ndPviewInfo.bBlocked=false;
-        ndPviewInfo.bPassbackRecord=false;
-        ndPviewInfo.byPreviewMode=0;
-        ndPviewInfo.byStreamID=0;
-        ndPviewInfo.byProtoType=0;
-        ndPviewInfo.byVideoCodingType=0;
-        ndPviewInfo.dwDisplayBufNum=0;
-        ndPviewInfo.byRes=new byte[216];
 
-        realplay(lUserID,ndPviewInfo,null);
+        //调用视频预览
+//        HCNetSDK.NET_DVR_PREVIEWINFO ndPviewInfo = new HCNetSDK.NET_DVR_PREVIEWINFO();
+//        ndPviewInfo.lChannel = new NativeLong(2);
+//        ndPviewInfo.dwStreamType = 0;
+//        ndPviewInfo.dwLinkMode = 0;
+//        ndPviewInfo.hPlayWnd = null;
+//        ndPviewInfo.bBlocked = false;
+//        ndPviewInfo.bPassbackRecord = false;
+//        ndPviewInfo.byPreviewMode = 0;
+//        ndPviewInfo.byStreamID = 0;
+//        ndPviewInfo.byProtoType = 0;
+//        ndPviewInfo.byVideoCodingType = 0;
+//        ndPviewInfo.dwDisplayBufNum = 0;
+//        ndPviewInfo.byRes = new byte[216];
     }
 
     /**

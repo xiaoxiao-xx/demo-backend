@@ -14,6 +14,10 @@ public interface SdkService {
 
     NativeLong getUserId();
 
+    void setSdk(HCNetSDK sdk);
+
+    void startLogin(String deviceIp, Short devicePort, String username, String password);
+
     /**
      * 向海康威视的服务器注册设备
      *
