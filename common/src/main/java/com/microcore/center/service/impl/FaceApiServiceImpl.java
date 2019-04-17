@@ -62,7 +62,7 @@ public class FaceApiServiceImpl implements FaceApiService {
 		log.info("updateUser userId={}", userId);
 
 		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_update", faceSdkUserVo, String.class);
-		log.info(" updateUser ret={}", ret);
+		log.info("updateUser ret={}", ret);
 	}
 
 	@Override

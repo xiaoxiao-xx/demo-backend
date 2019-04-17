@@ -74,8 +74,6 @@ public class FaceApiController {
 		faceSdkGroupVo.setGroup_id("g1");
 		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/add_group", faceSdkGroupVo, String.class);
 		log.info(">>>addGroup ret=" + ret);
-
-		addUser();
 	}
 
 	// @Scheduled(fixedRate = 1000)

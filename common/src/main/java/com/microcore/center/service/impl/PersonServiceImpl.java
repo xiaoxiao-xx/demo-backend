@@ -24,6 +24,8 @@ import com.microcore.center.util.StringUtil;
 import com.microcore.center.vo.PersonInfoVo;
 import com.microcore.center.vo.ResultVo;
 
+import static com.microcore.center.util.CommonUtil.image2byte;
+
 @Service
 @Transactional
 @Slf4j
@@ -53,27 +55,27 @@ public class PersonServiceImpl implements PersonService {
 	@Value("${face.api.port}")
 	private String faceApiPort;
 
+	@Value("${sls.FILE_PATH}")
+	private String filePath;
+
 	@Override
 	public ResultVo add(PersonInfoVo personInfoVo) {
 		String userId = CommonUtil.getUUID();
 
 		personInfoVo.setPersonId(userId);
 		psmPersonInfoMapper.insertSelective(personInfoVo);
+
 		operHisService.add(personInfoVo.getPersonId(), Constants.OPER_HIS_ADD);
 
-		// TODO
-		// byte[] image = image2byte(personInfoVo.getPersonalPhoto1());
-		// String imageString = CommonUtil.byte2Base64Str(image);
-
-		// addUserFace(image);
+		byte[] image = image2byte(filePath + "/" + personInfoVo.getPersonalPhoto1().replace("/static/", ""));
+		String imageString = CommonUtil.byte2Base64Str(image);
 
 		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
 		faceSdkUserVo.setGroup_id("g1");
 		faceSdkUserVo.setUser_id(userId);
 		faceSdkUserVo.setSeiralNo("uAdd-" + getSerialNumber());
-		// TODO
-		// faceSdkUserVo.setImage(imageString);
-		// faceApiService.addUser(faceSdkUserVo);
+		faceSdkUserVo.setImage(imageString);
+		faceApiService.addUser(faceSdkUserVo);
 
 		return ResultVo.ok();
 	}
@@ -84,26 +86,6 @@ public class PersonServiceImpl implements PersonService {
 	private String getSerialNumber() {
 		long ctm = System.currentTimeMillis();
 		return df.get().format(new Date(ctm)) + "-" + ctm % 1000;
-	}
-
-	private void addUserFace(byte[] image) {
-		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
-		faceSdkUserVo.setGroup_id("g1");
-
-		for (int i = 17; i < 18; i++) {
-			faceSdkUserVo.setUser_id("u" + i);
-
-			String serialNumber = getSerialNumber();
-			faceSdkUserVo.setSeiralNo("uAdd-" + serialNumber);
-
-			// i = (int) (Math.random() * 10);
-			log.info(">>>addUser u=" + "u" + i);
-			faceSdkUserVo.setImage(CommonUtil.byte2Base64Str(image));
-
-			String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_add", faceSdkUserVo, String.class);
-
-			log.info(">>>addUser ret=" + ret);
-		}
 	}
 
 	@Override
@@ -117,7 +99,20 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public ResultVo update(PersonInfoVo personInfoVo) {
 		psmPersonInfoMapper.updateByPrimaryKeySelective(personInfoVo);
+
+		byte[] image = image2byte(filePath + "/" + personInfoVo.getPersonalPhoto1().replace("/static/", ""));
+		String imageString = CommonUtil.byte2Base64Str(image);
+
+		String userId = personInfoVo.getPersonId();
+		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
+		faceSdkUserVo.setGroup_id("g1");
+		faceSdkUserVo.setUser_id(userId);
+		faceSdkUserVo.setSeiralNo("uUpd-" + getSerialNumber());
+		faceSdkUserVo.setImage(imageString);
+		faceApiService.updateUser(faceSdkUserVo);
+
 		operHisService.add(personInfoVo.getPersonId(), Constants.OPER_HIS_UPD);
+
 		return ResultVo.ok();
 	}
 
@@ -126,25 +121,17 @@ public class PersonServiceImpl implements PersonService {
 		String[] ids = id.split(",");
 		for (String i : ids) {
 			psmPersonInfoMapper.deleteByPrimaryKey(i);
-			deleteUserFace(i);
+
+			FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
+			faceSdkUserVo.setGroup_id("g1");
+			faceSdkUserVo.setUser_id(i);
+			faceSdkUserVo.setSeiralNo("uDel-" + getSerialNumber());
+			faceApiService.deleteUser(faceSdkUserVo);
 
 			operHisService.add(i, Constants.OPER_HIS_DEL);
 		}
 
 		return ResultVo.ok();
-	}
-
-	private void deleteUserFace(String id) {
-		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
-		faceSdkUserVo.setGroup_id("test_group");
-		faceSdkUserVo.setUser_id(id);
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-		Long ctm = System.currentTimeMillis();
-		String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
-		faceSdkUserVo.setSeiralNo("uDel-" + seiralNo);
-
-		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_delete", faceSdkUserVo, String.class);
-		log.info(">>>userDel ret=" + ret);
 	}
 
 	@Override
