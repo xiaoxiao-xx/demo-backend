@@ -1,9 +1,6 @@
 package com.microcore.center.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -434,6 +431,17 @@ public class CommonUtil {
 
 	public static String byte2Base64Str(byte[] b) {
 		return Base64.encodeBase64String(b);
+	}
+
+	public static void saveFile(String path, byte[] buffer, int length) {
+		try {
+			OutputStream os = new FileOutputStream(path);
+			os.write(buffer, 0, length);
+			os.flush();
+			os.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

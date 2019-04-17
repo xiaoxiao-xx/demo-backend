@@ -3,45 +3,41 @@ package com.microcore.center.task;
 import com.microcore.center.cllient.HttpTemplate;
 import com.microcore.center.constant.Constants;
 import com.microcore.center.hcnetsdk.HCNetSDK;
-import com.microcore.center.model.PsmFace;
 import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.service.MaterialService;
 import com.microcore.center.service.SdkService;
 import com.microcore.center.util.CommonUtil;
+import com.microcore.center.util.ImageUtil;
 import com.microcore.center.vo.FaceSdkRecVo;
 import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.IntByReference;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.microcore.center.util.CommonUtil.*;
+import static com.microcore.center.util.CommonUtil.byte2Base64Str;
+import static com.microcore.center.util.CommonUtil.saveFile;
 
 /**
  * 定时截图工具类
  */
 @Slf4j
 @Component
-public class CaptureTask {
+public class CaptureTask2 {
 
 	private final SdkService sdkService;
 
-	private final HttpTemplate httpTemplate;
-
 	private final MaterialService materialService;
 
-	private final AsyncTask asyncTask;
+	private final AsyncTask2 asyncTask;
 
 	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
 			-> new SimpleDateFormat("yyyy-MM-dd HH-mm-ss SSS"));
@@ -65,39 +61,16 @@ public class CaptureTask {
 	private String generateImageFile;
 
 	@Autowired
-	public CaptureTask(SdkService sdkService, HttpTemplate httpTemplate,
-	                   MaterialService materialService, AsyncTask asyncTask) {
+	public CaptureTask2(SdkService sdkService, MaterialService materialService, AsyncTask2 asyncTask) {
 		this.sdkService = sdkService;
-		this.httpTemplate = httpTemplate;
 		this.materialService = materialService;
 		this.asyncTask = asyncTask;
-	}
-
-	static List<PsmFace> convertFaces(String materialId, List<FaceInfo> faceInfoList) {
-		return faceInfoList.stream().map(faceInfo -> {
-			PsmFace face = new PsmFace();
-
-			face.setId(CommonUtil.getUUID());
-			face.setMaterialId(materialId);
-			face.setCreateTime(CommonUtil.getCurrentTime());
-
-			face.setAngle(faceInfo.angle);
-			face.setCenterX(faceInfo.getCenter_x());
-			face.setCenterY(faceInfo.getCenter_y());
-			face.setGroupId(faceInfo.getGroup_id());
-			face.setUserId(faceInfo.getUser_id());
-			face.setHeight(faceInfo.getHeight());
-			face.setWidth(faceInfo.getWidth());
-			face.setScore(faceInfo.getScore());
-
-			return face;
-		}).collect(Collectors.toList());
 	}
 
 	/**
 	 * 200ms心跳一次
 	 */
-	@Scheduled(fixedRate = 300)
+	// @Scheduled(fixedRate = 300)
 	private void captureTask() {
 		// 调用SDK图片大小和质量参数
 		HCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new HCNetSDK.NET_DVR_JPEGPARA();
@@ -128,6 +101,7 @@ public class CaptureTask {
 		// log.info("---> retLen:  {}", retLen.getValue());
 
 		if (result) {
+			// Save image
 			String now = dateFormat.get().format(new Date());
 			String imageName = "" + now + ".jpeg";
 			if (Constants.YES.toLowerCase().equals(generateImageFile)) {
@@ -135,11 +109,7 @@ public class CaptureTask {
 			}
 
 			byte[] temp = new byte[retLen.getValue()];
-			// log.info("-------- position  bw= {}", jpegBuffer.position());
-			// jpegBuffer.rewind();
-			// log.info("-------- position  aw= {}", jpegBuffer.position());
 			jpegBuffer.get(temp, 0, retLen.getValue());
-			// log.info("-------- position  aw2= {}", jpegBuffer.position());
 			String image = byte2Base64Str(temp);
 			faceSdkRecVo.setImage(image);
 
@@ -154,7 +124,7 @@ public class CaptureTask {
 			materialService.addMaterial(material);
 
 			// log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
-			asyncTask.detect(uuid, faceSdkRecVo);
+			asyncTask.detect(temp, uuid, faceSdkRecVo);
 		} else {
 			sdkService.errMsg();
 		}
@@ -169,71 +139,7 @@ public class CaptureTask {
 		saveFile(captureImagePath + "/" + deviceNumber + "/" + imageName, jpegBuffer.array(), retLen.getValue());
 	}
 
-	// TODO Clean code
-	// @Scheduled(fixedRate = 200)
-	private void captureTaskDetect() {
-		// boolean captureTaskFlag = false;
-		boolean captureTaskFlag = true;
-		if (captureTaskFlag) {
-			return;
-		}
-
-		//封装请求Json
-		FaceSdkRecVo faceSdkRecVo = new FaceSdkRecVo();
-		faceSdkRecVo.setGroup_id("g1");
-		//获得seiralNo
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-		long ctm = System.currentTimeMillis();
-		String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
-		faceSdkRecVo.setSeiralNo(seiralNo);
-
-		// 保存素材信息
-		String uuid = CommonUtil.getUUID();
-		String imageName = "input.jpeg";
-
-		PsmMaterial material = new PsmMaterial();
-		material.setId(uuid);
-		material.setCreateTime(CommonUtil.getCurrentTime());
-		material.setImageName(imageName);
-		material.setDeviceId(CommonUtil.random("dev1", "dev2", "dev3"));
-		material.setAreaId(CommonUtil.random("1", "2", "3", "4", "5"));
-		materialService.addMaterial(material);
-
-		byte[] data = image2byte("D://imga/input.jpeg");
-		log.info("data.len=" + data.length);
-
-		faceSdkRecVo.setImage(byte2Base64Str(data));
-		log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
-
-		asyncTask.detect(uuid, faceSdkRecVo);
-	}
-
-	/**
-	 * rec
-	 */
-	// @Scheduled(fixedRate = 200)
-	private void captureTaskimgRec() {
-		//封装请求Json
-		FaceSdkRecVo faceSdkRecVo = new FaceSdkRecVo();
-		faceSdkRecVo.setGroup_id("g1");
-		//获得seiralNo
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-		Long ctm = System.currentTimeMillis();
-		String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
-		faceSdkRecVo.setSeiralNo(seiralNo);
-
-		faceSdkRecVo.setDevice_id("001");
-
-		byte[] data = image2byte("D://imga/input.jpeg");
-		log.info("data.len=" + data.length);
-
-		faceSdkRecVo.setImage(byte2Base64Str(data));
-		String ret = httpTemplate.post("127.0.0.1", "3000", "/face/api/v1/rec", faceSdkRecVo, String.class);
-		log.info(">>>rec cost" + (System.currentTimeMillis() - ctm) + " and ret=" + ret);
-	}
-
 	@Data
-	@EqualsAndHashCode(callSuper = false)
 	static class DetectResult {
 
 		private String seiralNo;
@@ -245,7 +151,6 @@ public class CaptureTask {
 	}
 
 	@Data
-	@EqualsAndHashCode(callSuper = false)
 	static class FaceInfo {
 		private Integer angle;
 		private Integer center_x;
@@ -255,6 +160,8 @@ public class CaptureTask {
 		private String score;
 		private String user_id;
 		private Integer width;
+		private String base64;
 	}
 
 }
+

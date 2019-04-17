@@ -18,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @MapperScan(basePackages = {"com.microcore.center.mapper"})
 @EnableAsync
-@EnableCaching
 // @ComponentScan(basePackages = { "com.microcore.center" })
 public class BackendApplication {
 
