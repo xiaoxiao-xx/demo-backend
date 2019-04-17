@@ -37,7 +37,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Override
 	public ResultVo delete(String id) {
-
 		String[] ids = id.split(",");
 		for (String i : ids) {
 			psmDeptInfoMapper.deleteByPrimaryKey(i);

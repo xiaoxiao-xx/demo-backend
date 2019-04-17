@@ -32,6 +32,9 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
     @Autowired
     private DeviceService deviceService;
 
+    @Autowired
+    private CommonService commonService;
+
     @Override
     public ResultVo add(DeviceVersionVo deviceVersionVo) {
         deviceVersionVo.setDevversionId(getUUID());
@@ -87,9 +90,6 @@ public class DeviceVersionServiceImpl implements DeviceVersionService {
     public PsmDeviceVersion getDeviceVersionById(String id) {
         return deviceVersionMapper.selectByPrimaryKey(id);
     }
-
-    @Autowired
-    private CommonService commonService;
 
     @Override
     public ResultVo getVersion(String devTypeCode) {

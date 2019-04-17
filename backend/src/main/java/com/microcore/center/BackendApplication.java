@@ -3,6 +3,7 @@ package com.microcore.center;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 // import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @MapperScan(basePackages = {"com.microcore.center.mapper"})
 @EnableAsync
+@EnableCaching
 // @ComponentScan(basePackages = { "com.microcore.center" })
 public class BackendApplication {
 

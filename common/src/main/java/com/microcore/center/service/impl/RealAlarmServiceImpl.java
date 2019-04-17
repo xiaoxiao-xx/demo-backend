@@ -70,15 +70,12 @@ public class RealAlarmServiceImpl implements RealAlarmService {
     @Override
     public PageInfo<PsmRealAlarmVo> getRealAlarmList2(String alarmType, String operator, String state,
                                                       Integer pageIndex, Integer pageSize) {
-        String sql = "SELECT \n" +
-                "*, \n" +
+        String sql = "SELECT *, \n" +
                 "DATE_FORMAT( psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i' ) group_string \n" +
-                "FROM \n" +
-                "psm_real_alarm_t \n" +
-                "GROUP BY \n" +
-                "DATE_FORMAT(psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i') \n" +
-                "ORDER BY \n" +
-                "trigger_time DESC limit 5";
+                "FROM psm_real_alarm_t \n" +
+                "GROUP BY DATE_FORMAT(psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i') \n" +
+                "ORDER BY trigger_time DESC \n" +
+		        "LIMIT 5";
         Map<String, Object> params = new HashMap<>(3);
         params.put("sql", sql);
 

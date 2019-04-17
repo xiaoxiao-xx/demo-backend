@@ -73,12 +73,11 @@ public class DealResultServiceImpl implements DealResultService {
 	@Override
 	public ResultVo deal(PsmDealResVo dealResVo) {
 		PsmDealRes psmDealRes = psmDealResMapper.selectByPrimaryKey(dealResVo.getId());
-		if(psmDealRes==null) {
+		if (psmDealRes == null) {
 			return ResultVo.fail("非法数据！");
 		}
 		
-		/*psmDealRes.setDealState(dealState);
-		psmDealRes.set*/
+		// psmDealRes.setDealState(dealState);
 
 		return ResultVo.ok();
 	}

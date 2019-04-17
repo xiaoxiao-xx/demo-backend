@@ -38,6 +38,24 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
 			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
 
+	private List<String> leaderList = new ArrayList<>();
+
+	private List<String> onDutyPersonList = new ArrayList<>();
+
+	{
+		leaderList.add("u22");
+		leaderList.add("u9");
+	}
+
+	{
+		onDutyPersonList.add("u17");
+		onDutyPersonList.add("u18");
+		onDutyPersonList.add("u19");
+		onDutyPersonList.add("u20");
+		onDutyPersonList.add("u21");
+		onDutyPersonList.add("u23");
+	}
+
 	@Autowired
 	public ScheduleDetailServiceImpl(PsmScheduleDetailMapper psmScheduleDetailMapper, CommonService commonService,
 	                                 JedisPoolUtil redisUtil, PersonService personService) {
@@ -83,10 +101,10 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
 	@Override
 	public ResultVo getOnDutyData() {
-		String sql = "SELECT p.dept_id team_id, COUNT( 1 ) total_count, d.dept_name team_name\n" +
-				" FROM psm_person_info_t p\n" +
-				" LEFT JOIN psm_dept_info_t d ON p.dept_id = d.dept_id \n" +
-				" GROUP BY p.dept_id HAVING p.dept_id <> '0'";
+		String sql = "SELECT p.dept_id team_id, COUNT( 1 ) total_count, d.dept_name team_name \n" +
+				"FROM psm_person_info_t p \n" +
+				"LEFT JOIN psm_dept_info_t d ON p.dept_id = d.dept_id \n" +
+				"GROUP BY p.dept_id HAVING p.dept_id <> '0'";
 
 		Map<String, Object> params = new HashMap<>(3);
 		params.put("sql", sql);
@@ -154,28 +172,10 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 		return nineClock;
 	}
 
-	private List<String> leaderList = new ArrayList<>();
-
-	{
-		leaderList.add("u22");
-		leaderList.add("u9");
-	}
-
 	private PsmPersonInfo getLeader(int dayOfWeek) {
 		int index = (dayOfWeek - 1) % leaderList.size();
 		String userId = leaderList.get(index);
 		return personService.getPsmPersonInfo(userId);
-	}
-
-	private List<String> onDutyPersonList = new ArrayList<>();
-
-	{
-		onDutyPersonList.add("u17");
-		onDutyPersonList.add("u18");
-		onDutyPersonList.add("u19");
-		onDutyPersonList.add("u20");
-		onDutyPersonList.add("u21");
-		onDutyPersonList.add("u23");
 	}
 
 	private PsmPersonInfo getOnDutyPerson(int dayOfWeek) {
