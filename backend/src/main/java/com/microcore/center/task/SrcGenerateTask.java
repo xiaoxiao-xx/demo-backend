@@ -118,7 +118,6 @@ public class SrcGenerateTask {
 			// rabbitMQUtil.sendMsg(gson.toJson(vo));
 
 			PsmRealAlarmVo alarmVo = new PsmRealAlarmVo();
-
 			vo.setEventInfo("人员：" + psmPersonInfo.getName()
 							+ "，时间：" + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(CommonUtil.getCurrentTime())
 							+ random(

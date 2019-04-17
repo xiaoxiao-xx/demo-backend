@@ -17,6 +17,7 @@ import com.microcore.center.vo.ResultVo;
 @RestController
 @RequestMapping("system")
 public class SystemController {
+
 	@Autowired
 	private UserService userService;
 
@@ -28,8 +29,8 @@ public class SystemController {
 		if (psmUser == null) {
 			return ResultVo.fail("账号或密码错误！");
 		}
-		
-		if(!Encode.SHAEncode(userName+password).equals(psmUser.getPassword())) {
+
+		if (!Encode.SHAEncode(userName + password).equals(psmUser.getPassword())) {
 			return ResultVo.fail("账号或密码错误！");
 		}
 		SessionManage.login(psmUser);

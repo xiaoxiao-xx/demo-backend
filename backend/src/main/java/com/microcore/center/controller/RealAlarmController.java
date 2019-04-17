@@ -49,4 +49,9 @@ public class RealAlarmController {
         return realAlarmService.getAlarmCount();
     }
 
+    @GetMapping("getAlarmStateInfo")
+    public ResultVo<?> getAlarmStateInfo() {
+        return realAlarmService.getAlarmStateInfo();
+    }
+
 }

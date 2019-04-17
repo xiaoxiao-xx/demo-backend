@@ -20,11 +20,16 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class DealResultServiceImpl implements DealResultService {
 
-    @Autowired
-    private PsmDealResMapper psmDealResMapper;
+    private final PsmDealResMapper psmDealResMapper;
 
-    @Override
-    public PageInfo<PsmDealResVo> getDealResultList(String alarmType,String dealState, Integer pageIndex, Integer pageSize) {
+	@Autowired
+	public DealResultServiceImpl(PsmDealResMapper psmDealResMapper) {
+		this.psmDealResMapper = psmDealResMapper;
+	}
+
+	@Override
+    public PageInfo<PsmDealResVo> getDealResultList(String alarmType, String dealState,
+                                                    Integer pageIndex, Integer pageSize) {
         PsmDealResExample example = new PsmDealResExample();
         PsmDealResExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotEmpty(alarmType)) {
@@ -44,12 +49,11 @@ public class DealResultServiceImpl implements DealResultService {
 
     @Override
     public ResultVo delete(String id) {
-        
         String[] ids = id.split(",");
 		for (String i : ids) {
 			psmDealResMapper.deleteByPrimaryKey(i);
 		}
-        
+
         return ResultVo.ok();
     }
 
@@ -68,7 +72,6 @@ public class DealResultServiceImpl implements DealResultService {
 
 	@Override
 	public ResultVo deal(PsmDealResVo dealResVo) {
-		
 		PsmDealRes psmDealRes = psmDealResMapper.selectByPrimaryKey(dealResVo.getId());
 		if(psmDealRes==null) {
 			return ResultVo.fail("非法数据！");
@@ -76,7 +79,7 @@ public class DealResultServiceImpl implements DealResultService {
 		
 		/*psmDealRes.setDealState(dealState);
 		psmDealRes.set*/
-		
+
 		return ResultVo.ok();
 	}
 

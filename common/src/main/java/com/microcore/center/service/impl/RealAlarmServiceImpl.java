@@ -11,6 +11,7 @@ import com.microcore.center.service.RealAlarmService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.PsmRealAlarmVo;
 import com.microcore.center.vo.ResultVo;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,16 +70,15 @@ public class RealAlarmServiceImpl implements RealAlarmService {
     @Override
     public PageInfo<PsmRealAlarmVo> getRealAlarmList2(String alarmType, String operator, String state,
                                                       Integer pageIndex, Integer pageSize) {
-
-        String sql = "SELECT\n" +
-                "\t*, \n" +
-                "\tDATE_FORMAT( psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i' ) group_string \n" +
-                " FROM\n" +
-                "\tpsm_real_alarm_t \n" +
-                "GROUP BY\n" +
-                "\tDATE_FORMAT( psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i' ) \n" +
+        String sql = "SELECT \n" +
+                "*, \n" +
+                "DATE_FORMAT( psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i' ) group_string \n" +
+                "FROM \n" +
+                "psm_real_alarm_t \n" +
+                "GROUP BY \n" +
+                "DATE_FORMAT(psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i') \n" +
                 "ORDER BY \n" +
-                "\ttrigger_time DESC limit 5";
+                "trigger_time DESC limit 5";
         Map<String, Object> params = new HashMap<>(3);
         params.put("sql", sql);
 
@@ -135,14 +135,54 @@ public class RealAlarmServiceImpl implements RealAlarmService {
 
     @Override
     public ResultVo getAlarmCount() {
-        Map<String, Object> prams = new HashMap<>();
         String sql = "SELECT alarm_type, count( * ) count, p.para_value " +
                 "FROM psm_real_alarm_t " +
                 "LEFT JOIN psm_para_define_t p ON alarm_type = p.para_code AND p.para_type = 'ALARM_MODE' " +
                 "GROUP BY alarm_type;";
+        Map<String, Object> prams = new HashMap<>();
         prams.put("sql", sql);
         List<Map<String, Object>> list = commonService.executeSelectSQL(prams);
         return ResultVo.ok(list);
+    }
+
+	@Override
+
+	public ResultVo getAlarmStateInfo() {
+        String sql = "select state, count(id) count from psm_real_alarm_t GROUP BY state";
+
+		Map<String, Object> prams = new HashMap<>();
+		prams.put("sql", sql);
+		List<Map<String, Object>> list = commonService.executeSelectSQL(prams);
+		List<AlarmState> alarmStates = CommonUtil.map2PO(list, AlarmState.class);
+
+		Long totalCount = 0L;
+		Long unprocessed = 0L;
+		Map<String, Long> resultMap = new HashMap<>();
+		for (AlarmState alarmState : alarmStates) {
+			totalCount += alarmState.getCount();
+
+			if (alarmState.getState().equals("0")) {
+				resultMap.put("unprocessed", alarmState.getCount());
+				unprocessed = alarmState.getCount();
+			}
+		}
+
+		resultMap.put("totalCount", totalCount);
+		resultMap.put("precessed", totalCount - unprocessed);
+
+		return ResultVo.ok(resultMap);
+	}
+
+	/**
+	 * Notice: the modifier of the class must be public
+	 */
+	@Data
+	public static class AlarmState {
+
+    	private String state;
+
+    	private Long count;
+
     }
 
 }

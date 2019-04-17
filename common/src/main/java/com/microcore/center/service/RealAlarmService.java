@@ -25,4 +25,6 @@ public interface RealAlarmService {
 
     ResultVo getAlarmCount();
 
+    ResultVo getAlarmStateInfo();
+
 }

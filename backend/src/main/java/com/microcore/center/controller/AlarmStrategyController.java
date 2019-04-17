@@ -55,6 +55,5 @@ public class AlarmStrategyController {
 	public ResultVo startStop(@RequestBody AlarmStrategyOpt alarmStrategyOpt) {
 		return alarmStrategyService.startStop(alarmStrategyOpt);
 	}
-	
-	
+
 }
