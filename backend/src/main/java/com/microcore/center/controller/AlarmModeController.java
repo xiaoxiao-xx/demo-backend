@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("alarmModeController")
 public class AlarmModeController {
+
 	@Autowired
 	private AlarmModeService alarmModeService;
 

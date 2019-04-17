@@ -14,13 +14,14 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("paraDefineController")
 public class ParaDefineController {
+
 	@Autowired
-	private ParaDefineService paraDefineService ;
-	
+	private ParaDefineService paraDefineService;
+
 	@ApiOperation(value = "参数列表查询", notes = "参数列表查询")
 	@GetMapping("query")
-	public ResultVo query(@RequestParam(name = "type") String type){
+	public ResultVo query(@RequestParam(name = "type") String type) {
 		return ResultVo.ok(paraDefineService.getPsmParaDefineByType(type));
 	}
-	
+
 }

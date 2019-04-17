@@ -8,9 +8,7 @@ import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.service.MaterialService;
 import com.microcore.center.service.SdkService;
 import com.microcore.center.util.CommonUtil;
-import com.microcore.center.vo.FaceSdkGroupVo;
 import com.microcore.center.vo.FaceSdkRecVo;
-import com.microcore.center.vo.FaceSdkUserVo;
 import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.IntByReference;
 import lombok.Data;
@@ -46,6 +44,9 @@ public class CaptureTask {
 
 	private final AsyncTask asyncTask;
 
+	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyy-MM-dd HH-mm-ss SSS"));
+
 	@Value("${face.api.ip}")
 	private String faceApiIp;
 
@@ -61,11 +62,9 @@ public class CaptureTask {
 	@Value("${generate.image.file}")
 	private String generateImageFile;
 
-	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
-			-> new SimpleDateFormat("yyyy-MM-dd HH-mm-ss SSS"));
-
 	@Autowired
-	public CaptureTask(SdkService sdkService, HttpTemplate httpTemplate, MaterialService materialService, AsyncTask asyncTask) {
+	public CaptureTask(SdkService sdkService, HttpTemplate httpTemplate,
+	                   MaterialService materialService, AsyncTask asyncTask) {
 		this.sdkService = sdkService;
 		this.httpTemplate = httpTemplate;
 		this.materialService = materialService;
@@ -179,7 +178,6 @@ public class CaptureTask {
 	}
 
 	// TODO Clean code
-
 	// @Scheduled(fixedRate = 200)
 	private void captureTaskDetect() {
 		// boolean captureTaskFlag = false;
@@ -240,106 +238,6 @@ public class CaptureTask {
 		faceSdkRecVo.setImage(byte2Base64Str(data));
 		String ret = httpTemplate.post("127.0.0.1", "3000", "/face/api/v1/rec", faceSdkRecVo, String.class);
 		log.info(">>>rec cost" + (System.currentTimeMillis() - ctm) + " and ret=" + ret);
-	}
-
-	// @Scheduled(fixedRate = 1000)
-	// @PostConstruct
-	private void addGroup() {
-		FaceSdkGroupVo faceSdkGroupVo = new FaceSdkGroupVo();
-		faceSdkGroupVo.setGroup_id("g1");
-		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/add_group", faceSdkGroupVo, String.class);
-		log.info(">>>addGroup ret=" + ret);
-
-		addUser();
-	}
-
-	// @Scheduled(fixedRate = 1000)
-	// @PostConstruct
-	private void delGroup() {
-		FaceSdkGroupVo faceSdkGroupVo = new FaceSdkGroupVo();
-		faceSdkGroupVo.setGroup_id("g1");
-		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/delete_group", faceSdkGroupVo, String.class);
-		log.info(">>>delGroup ret=" + ret);
-
-		addGroup();
-	}
-
-	// @Scheduled(fixedRate = 10000)
-	// @PostConstruct
-	private void updateUser() {
-		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
-		faceSdkUserVo.setGroup_id("test_group");
-		faceSdkUserVo.setUser_id("u9");
-
-		for (int i = 18; i < 23; i++) {
-			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-			Long ctm = System.currentTimeMillis();
-			String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
-			faceSdkUserVo.setSeiralNo("uUpd-" + seiralNo);
-
-			// byte[] data = image2byte(userFaceImageDirectory + userId + ".bmp");
-			// faceSdkUserVo.setImage(byte2Base64Str(data));
-
-			byte[] data = image2byte("D://imgu/u" + i + ".bmp");
-			faceSdkUserVo.setImage(byte2Base64Str(data));
-
-			String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_update", faceSdkUserVo, String.class);
-			log.info(">>> updateUser ret=" + ret);
-		}
-	}
-
-	// @Scheduled(fixedRate = 1000)
-	private void deleteUserFace() {
-		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
-		faceSdkUserVo.setGroup_id("g1");
-		faceSdkUserVo.setUser_id("u1");
-		faceSdkUserVo.setFace_token("a2a35f443b232d4d3dcce9a306ffd086");
-
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-		Long ctm = System.currentTimeMillis();
-		String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
-		faceSdkUserVo.setSeiralNo("fDel-" + seiralNo);
-
-		String ret = httpTemplate.post("192.168.254.22", "3000", "/face/api/v1/user_face_delete", faceSdkUserVo, String.class);
-		log.info(">>>deleteUserFace ret=" + ret);
-	}
-
-	// @Scheduled(fixedRate = 3000)
-	private void deleteUser() {
-		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
-		faceSdkUserVo.setGroup_id("test_group");
-		for (int i = 0; i < 17; i++) {
-			faceSdkUserVo.setUser_id("u" + i);
-			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-			Long ctm = System.currentTimeMillis();
-			String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
-			faceSdkUserVo.setSeiralNo("uDel-" + seiralNo);
-
-			String ret = httpTemplate.post("192.168.254.22", "3000", "/face/api/v1/user_delete", faceSdkUserVo, String.class);
-			log.info(">>>userDel ret=" + ret);
-		}
-	}
-
-	// @Scheduled(fixedRate = 5000)
-	// @PostConstruct
-	private void addUser() {
-		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
-		faceSdkUserVo.setGroup_id("g1");
-
-		for (int i = 23; i < 24; i++) {
-			faceSdkUserVo.setUser_id("u" + i);
-			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-			Long ctm = System.currentTimeMillis();
-			String seiralNo = df.format(new Date(ctm)) + "-" + ctm % 1000;
-			faceSdkUserVo.setSeiralNo("uAdd-" + seiralNo);
-			log.info(">>>addUser u=" + "u" + i);
-			byte[] data = image2byte("D://imgu/u" + i + ".bmp");
-			faceSdkUserVo.setImage(byte2Base64Str(data));
-
-			String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_add", faceSdkUserVo, String.class);
-
-			log.info(">>>addUser ret=" + ret);
-		}
 	}
 
 	@Data
