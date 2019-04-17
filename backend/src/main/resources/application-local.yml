@@ -37,7 +37,8 @@ spring:
       max-file-size: 52428800
       max-request-size: 52428800
 
-sls.FILE_PATH: D:/imgu
+# user.face.image.directory: D:/FaceImages
+sls.FILE_PATH: D:/FaceImages
 
 rabbit:
   # server.ip: 192.168.1.140
@@ -65,8 +66,6 @@ summary:
 redis:
   server: 127.0.0.1
   port: 6379
-
-user.face.image.directory: D:/imgu/
 
 #logging.level: debug
 

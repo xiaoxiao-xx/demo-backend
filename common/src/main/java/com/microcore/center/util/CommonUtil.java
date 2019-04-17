@@ -433,6 +433,10 @@ public class CommonUtil {
 		return Base64.encodeBase64String(b);
 	}
 
+	public static void saveFile(String path, byte[] buffer) {
+		saveFile(path, buffer, buffer.length);
+	}
+
 	public static void saveFile(String path, byte[] buffer, int length) {
 		try {
 			OutputStream os = new FileOutputStream(path);

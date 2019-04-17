@@ -37,7 +37,7 @@ spring:
       max-file-size: 52428800
       max-request-size: 52428800
 
-sls.FILE_PATH: D:/share
+sls.FILE_PATH: D:/FaceImages
 
 rabbit:
   server.ip: 127.0.0.1

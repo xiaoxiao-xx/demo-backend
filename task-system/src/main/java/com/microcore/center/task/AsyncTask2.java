@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -88,7 +89,7 @@ public class AsyncTask2 {
 		String ret = "";
 		try {
 			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/detect", faceSdkRecVo, String.class);
-			log.info("{}", ret);
+			// log.info("{}", ret);
 		} catch (Exception e) {
 			log.error("Face detection error: {}", e);
 		}
@@ -106,8 +107,7 @@ public class AsyncTask2 {
 
 		List<PsmFaceVo> faceList = convertFaces(materialId, faces);
 		if (faceList.size() > 0) {
-			log.info(">1");
-
+			// log.info(">1");
 			for (PsmFace face : faceList) {
 			}
 		}
@@ -139,14 +139,16 @@ public class AsyncTask2 {
 			faceSdkRec.setImage(face.getBase64());
 
 			String a = face.getBase64();
-			byte[] bytes = Base64.getDecoder().decode(a);
-			CommonUtil.saveFile("D:\\" + System.currentTimeMillis() + ".jpg", bytes, bytes.length);
+			byte[] bytes = Base64.getDecoder().decode(a.getBytes(Charset.forName("UTF-8")));
+			CommonUtil.saveFile("D:/temp/" + System.currentTimeMillis() + ".bmp", bytes);
 
 			String ret2 = "";
 
 			try {
+				long t1 = System.currentTimeMillis();
 				ret2 = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/rec", faceSdkRec, String.class);
-				log.error("{}", ret2);
+				long time = System.currentTimeMillis() - t1;
+				log.info("{} ms - {}", time, ret2);
 			} catch (Exception e) {
 				log.error("Face detection error: {}", e);
 			}

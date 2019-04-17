@@ -87,7 +87,7 @@ public class AsyncTask {
 		try {
 			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/detect", faceSdkRecVo, String.class);
 		} catch (Exception e) {
-			log.error("Face detection error: {}", e);
+			log.error("Face detection error", e);
 		}
 
 		// log.info("face.ip: {}, face.port: {}", faceApiIp, faceApiPort);

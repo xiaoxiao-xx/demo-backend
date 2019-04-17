@@ -100,6 +100,12 @@ public class SummaryServiceImpl implements SummaryService {
 		params.put("intervalTime", summaryTaskInterval / 1000);
 		List<Map<String, Object>> list = commonService.executeSelectSQL(params);
 
+		List<DetailVo> detailVos = CommonUtil.map2PO(list, DetailVo.class);
+		detailVos.forEach(detailVo -> {
+			PsmPersonInfo info = personService.getPsmPersonInfo(detailVo.getUserId());
+			detailVo.setUserId(info.getPersonalPhoto1());
+		});
+
 		return CommonUtil.map2PO(list, DetailVo.class);
 	}
 
@@ -114,7 +120,7 @@ public class SummaryServiceImpl implements SummaryService {
 
 			DetailVo vo = new DetailVo();
 			vo.setId("");
-			vo.setSummaryId("");
+			vo.setSummaryId(psmPersonInfo.getPersonalPhoto1());
 			vo.setAreaId(areaId);
 			vo.setUserId(userId);
 			vo.setUserName(psmPersonInfo.getName());
