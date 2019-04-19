@@ -1,13 +1,11 @@
 package com.microcore.center.task;
 
-import com.microcore.center.cllient.HttpTemplate;
 import com.microcore.center.constant.Constants;
 import com.microcore.center.hcnetsdk.HCNetSDK;
 import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.service.MaterialService;
 import com.microcore.center.service.SdkService;
 import com.microcore.center.util.CommonUtil;
-import com.microcore.center.util.ImageUtil;
 import com.microcore.center.vo.FaceSdkRecVo;
 import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.IntByReference;
@@ -37,7 +35,7 @@ public class CaptureTask2 {
 
 	private final MaterialService materialService;
 
-	private final AsyncTask2 asyncTask;
+	private final AsyncTask2 asyncTask2;
 
 	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
 			-> new SimpleDateFormat("yyyy-MM-dd HH-mm-ss SSS"));
@@ -64,13 +62,13 @@ public class CaptureTask2 {
 	public CaptureTask2(SdkService sdkService, MaterialService materialService, AsyncTask2 asyncTask) {
 		this.sdkService = sdkService;
 		this.materialService = materialService;
-		this.asyncTask = asyncTask;
+		this.asyncTask2 = asyncTask;
 	}
 
 	/**
 	 * 200ms心跳一次
 	 */
-	// @Scheduled(fixedRate = 300)
+	 @Scheduled(fixedRate = 10000)
 	private void captureTask() {
 		// 调用SDK图片大小和质量参数
 		HCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new HCNetSDK.NET_DVR_JPEGPARA();
@@ -100,6 +98,7 @@ public class CaptureTask2 {
 
 		// log.info("---> retLen:  {}", retLen.getValue());
 
+		// result = true;
 		if (result) {
 			// Save image
 			String now = dateFormat.get().format(new Date());
@@ -110,6 +109,10 @@ public class CaptureTask2 {
 
 			byte[] temp = new byte[retLen.getValue()];
 			jpegBuffer.get(temp, 0, retLen.getValue());
+
+			// TODO for testing
+//			temp = CommonUtil.image2byte("D:/imga/input4.jpg");
+
 			String image = byte2Base64Str(temp);
 			faceSdkRecVo.setImage(image);
 
@@ -124,7 +127,63 @@ public class CaptureTask2 {
 			materialService.addMaterial(material);
 
 			// log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
-			asyncTask.detect(temp, uuid, faceSdkRecVo);
+			asyncTask2.detect(uuid, faceSdkRecVo);
+		} else {
+			sdkService.errMsg();
+		}
+	}
+
+	// @Scheduled(fixedRate = 15000)
+	private void captureTaskss() {
+		// 封装请求Json
+		FaceSdkRecVo faceSdkRecVo = new FaceSdkRecVo();
+		faceSdkRecVo.setGroup_id("g1");
+
+		// 需要设备ID 如摄像头
+		faceSdkRecVo.setDevice_id("001");
+
+		// 获得seiralNo
+		String seiralNo = getSerialNumber();
+		faceSdkRecVo.setSeiralNo(seiralNo);
+
+		boolean result = true;
+		if (result) {
+			// TODO for testing
+			log.info("-1--------------------------------");
+			byte[] tem = CommonUtil.image2byte("D:/imga/input4.jpg");
+			String image = byte2Base64Str(tem);
+
+			String now = dateFormat.get().format(new Date());
+			String imageName = "" + now + ".jpeg";
+
+			faceSdkRecVo.setImage(image);
+
+			// 保存素材信息
+			PsmMaterial material = new PsmMaterial();
+			String uuid = CommonUtil.getUUID();
+			material.setId(uuid);
+			material.setCreateTime(CommonUtil.getCurrentTime());
+			material.setImageName(imageName);
+			material.setDeviceId(deviceNumber);
+			material.setAreaId(deviceNumber);
+			materialService.addMaterial(material);
+
+			// log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
+			asyncTask2.detect(uuid, faceSdkRecVo);
+
+
+			log.info("----------------------------------");
+			tem = CommonUtil.image2byte("D:/imga/input5.jpg");
+			image = byte2Base64Str(tem);
+			now = dateFormat.get().format(new Date());
+			imageName = "" + now + ".jpeg";
+			faceSdkRecVo.setImage(image);
+			seiralNo = getSerialNumber();
+			faceSdkRecVo.setSeiralNo(seiralNo);
+
+			// log.info("-------- size = {}", faceSdkRecVo.getImage().getBytes().length);
+			asyncTask2.detect(uuid, faceSdkRecVo);
+			log.info("-2--------------------------------");
 		} else {
 			sdkService.errMsg();
 		}
@@ -140,7 +199,31 @@ public class CaptureTask2 {
 	}
 
 	@Data
-	static class DetectResult {
+	static class DetectResult2 {
+
+		private String errno;
+
+		private String msg;
+
+		private ResData data;
+
+	}
+
+	@Data
+	static class ResData {
+
+		private String face_token;
+
+		private String log_id;
+
+		private Integer result_num;
+
+		private List<FaceInfo> result;
+
+	}
+
+	@Data
+	public static class DetectResult {
 
 		private String seiralNo;
 
@@ -151,7 +234,7 @@ public class CaptureTask2 {
 	}
 
 	@Data
-	static class FaceInfo {
+	public static class FaceInfo {
 		private Integer angle;
 		private Integer center_x;
 		private Integer center_y;

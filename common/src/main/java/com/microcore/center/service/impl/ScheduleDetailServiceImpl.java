@@ -49,7 +49,6 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
 	{
 		onDutyPersonList.add("u17");
-		onDutyPersonList.add("u18");
 		onDutyPersonList.add("u19");
 		onDutyPersonList.add("u20");
 		onDutyPersonList.add("u21");

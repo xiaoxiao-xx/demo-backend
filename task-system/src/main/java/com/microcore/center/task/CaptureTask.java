@@ -97,7 +97,7 @@ public class CaptureTask {
 	/**
 	 * 200ms心跳一次
 	 */
-	@Scheduled(fixedRate = 300)
+	// @Scheduled(fixedRate = 300)
 	private void captureTask() {
 		// 调用SDK图片大小和质量参数
 		HCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new HCNetSDK.NET_DVR_JPEGPARA();
@@ -127,6 +127,7 @@ public class CaptureTask {
 
 		// log.info("---> retLen:  {}", retLen.getValue());
 
+		// result = true;
 		if (result) {
 			String now = dateFormat.get().format(new Date());
 			String imageName = "" + now + ".jpeg";
@@ -140,6 +141,10 @@ public class CaptureTask {
 			// log.info("-------- position  aw= {}", jpegBuffer.position());
 			jpegBuffer.get(temp, 0, retLen.getValue());
 			// log.info("-------- position  aw2= {}", jpegBuffer.position());
+
+			// TODO
+			// temp = CommonUtil.image2byte("D:/imga/input5.jpg");
+
 			String image = byte2Base64Str(temp);
 			faceSdkRecVo.setImage(image);
 

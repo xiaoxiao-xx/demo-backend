@@ -1,5 +1,6 @@
-package com.microcore.center.cllient;
+package com.microcore.http.cllient;
 
+import com.microcore.center.cllient.HttpTemplate;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
