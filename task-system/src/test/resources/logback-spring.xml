@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="10 seconds">
     <include resource="org/springframework/boot/logging/logback/base.xml" />
  	<!--<springProperty name="logPath" source="logger.path"/>-->
-    <property name="LOG_PATH" value="${LOG_PATH:-logs/demo-backend}"/>
+    <property name="LOG_PATH" value="${LOG_PATH:-logs/task-system}"/>
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     	 <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
