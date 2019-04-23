@@ -27,8 +27,8 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("sls-center 项目 RESTful APIs")
-                .description("sls-center 项目 RESTful APIs")
+                .title("项目 RESTful APIs")
+                .description("项目 RESTful APIs")
                 .termsOfServiceUrl("http://www.microcorecn.com/")
                 .contact(new Contact("MicroCore", "http://www.microcorecn.com", "adm@microcorecn.com"))
                 .version("0.0.1")
