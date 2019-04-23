@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.imageio.stream.FileImageInputStream;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author lmh
@@ -446,6 +447,28 @@ public class CommonUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 获取当前用户的机构ID
+	 *
+	 * @return 当前用户的机构ID
+	 */
+	public static String getOrgId() {
+		return UserUtil.getOrgId();
+	}
+
+	/**
+	 * 获取当前用户ID
+	 *
+	 * @return 用户ID
+	 */
+	public static String getUserId() {
+		return UserUtil.getUserId();
+	}
+
+	public static boolean exceptionMessageIs(RuntimeException e, @NotNull String message) {
+		return message.equals(e.getMessage());
 	}
 
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "backend")
 public interface SysApi {
 
-
 	@GetMapping("sysUser/getApprover")
 	String getApprover(@RequestParam(name = "orgId") String orgId);
 

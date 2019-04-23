@@ -127,6 +127,10 @@ public class ResultVo<T> implements Serializable {
 		return build(500, msg);
 	}
 
+	public static <T> ResultVo<T> fail(int status, Throwable t) {
+		return build(status, t.getMessage());
+	}
+
 	public static <T> ResultVo<T> sessionOut() {
 		return build(250, "session  out");
 	}

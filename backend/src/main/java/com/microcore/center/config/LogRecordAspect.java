@@ -28,7 +28,7 @@ public class LogRecordAspect {
 			return WebLogUtil.aspectWebLog(pjp);
 		} catch (Throwable throwable) {
 			log.error("系统异常请联系管理员！", throwable);
-			throw new RuntimeException("系统异常请联系管理员！");
+			throw new RuntimeException("系统异常, 请联系管理员: " + throwable.getMessage());
 		}
 	}
 }

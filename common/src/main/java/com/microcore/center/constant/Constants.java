@@ -24,12 +24,12 @@ public class Constants {
 	/**
 	 * 删除状态: 已删除
 	 */
-	public static final String DEL_STATUS_DEL = "YES";
+	public static final String DELETE_STATUS_YES = "YES";
 
 	/**
 	 * 删除状态: 未删除
 	 */
-	public static final String DEL_STATUS_NOR = "NO";
+	public static final String DELETE_STATUS_NO = "NO";
 
 	public static final String DEVICE_STATE_ENABLE = "E";
 

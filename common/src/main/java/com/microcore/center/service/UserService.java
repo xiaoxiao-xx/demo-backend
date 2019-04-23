@@ -1,29 +1,30 @@
 package com.microcore.center.service;
 
-import com.microcore.center.model.PsmUser;
+import com.github.pagehelper.PageInfo;
 import com.microcore.center.model.User;
 import com.microcore.center.vo.UserInfo;
+import com.microcore.center.vo.UserVo;
 
 import java.util.List;
 
 public interface UserService {
 
-	PsmUser getPsmUser(String userName);
+	void addUser(User user);
 
-	String getPsmUserRealName(String userName);
+	void deleteUserById(String userName);
 
-	PsmUser getPsmUserById(String id);
+//	void changePassword(String password);
 
-	void add(PsmUser psmUser);
+	void batchDelete(List<String> idList);
 
-	void delete(String userName);
+	void updateUser(User user);
 
-	void deleteById(String id);
-
-	void update(PsmUser psmUser);
-
-	List<PsmUser> getUserListByOrgId(String orgId);
+	List<User> getUserListByOrgId(String orgId);
 
 	UserInfo getUserByUsername(String username);
+
+	List<User> getUserInfoByUsername(String username);
+
+	PageInfo<UserVo> getUserList(String orgId, Integer pageIndex, Integer pageSize);
 
 }
