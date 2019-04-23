@@ -1,0 +1,19 @@
+spring.profiles.active: local
+
+spring:
+  application:
+    name: server
+
+logging:
+  path: logs/${spring.application.name}
+
+# 关闭自我保护
+#eureka.server.enable-self-preservation: false
+
+# 清理时间间隔
+eureka.server.eviction-interval-timer-in-ms: 10000
+# 5s未收到心跳，剔除instance 要比心跳时间大
+eureka.instance.lease-expiration-duration-in-seconds: 5
+# 心跳时间3s
+eureka.instance.lease-renewal-interval-in-seconds: 3
+

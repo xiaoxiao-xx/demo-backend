@@ -1,0 +1,48 @@
+spring.profiles.active: local
+
+spring.application.name: gateway
+
+spring.http.encoding.force: true
+spring.http.encoding.charset: UTF-8
+spring.http.encoding.enabled: true
+server.tomcat.uri-encoding: UTF-8
+
+# routes to serviceId
+zuul.routes.db-datatrans.path: /**
+zuul.routes.db-datatrans.serviceId: backend
+
+zuul.routes.auth.path: /auth/**
+zuul.routes.auth.serviceId: auth-server
+
+#zuul.routes.db-webservice.path: /sls-sys/**
+#zuul.routes.db-webservice.serviceId: sls-sys
+
+#zuul.routes.keymanager.path: /keymanager/**
+#zuul.routes.keymanager.serviceId: keymanager
+
+#zuul.routes.policy.path: /sls-policy/**
+#zuul.routes.policy.serviceId: sls-policy
+
+zuul.host.socket-timeout-millis: 5000
+zuul.host.connect-timeout-millis: 5000
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 5000
+
+logging:
+  path: logs/${spring.application.name}
+
+security.user.name: root
+security.user.password: root
+security.basic.enabled: false
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000
+
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1

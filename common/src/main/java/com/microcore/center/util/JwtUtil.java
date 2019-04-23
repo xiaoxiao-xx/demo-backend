@@ -14,7 +14,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
  *
- * @author whater
  */
 public class JwtUtil {
 
@@ -88,4 +87,5 @@ public class JwtUtil {
 		System.out.println(JwtUtil.parseJwtToken(token).getBody().get("jti"));
 		System.out.println(Encode.SHAEncode("super_admin123456"));;
 	}
+
 }

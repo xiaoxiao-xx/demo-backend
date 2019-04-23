@@ -6,6 +6,7 @@
 	<artifactId>psm-system</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>PsmSystem</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -52,9 +53,13 @@
 	</dependencies>
 
 	<modules>
+		<module>common</module>
+		<module>server</module>
+		<module>api</module>
+		<module>gateway</module>
 		<module>backend</module>
 		<module>task-system</module>
-		<module>common</module>
+		<module>auth</module>
 	</modules>
 
 	<build>

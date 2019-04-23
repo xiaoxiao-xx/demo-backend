@@ -7,8 +7,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.microcore.center.interceptor.AuthenticationInterceptor;
 
-@Configuration("authMvcInterceptor")
-@Primary
+//@Configuration("authMvcInterceptor")
+//@Primary
 public class AuthInterceptorConfig extends WebMvcConfigurerAdapter {
 
 	@Override
