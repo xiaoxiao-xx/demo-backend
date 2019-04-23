@@ -11,7 +11,7 @@ import com.microcore.center.model.PsmOperHis;
 import com.microcore.center.model.PsmOperHisExample;
 import com.microcore.center.service.OperHisService;
 import com.microcore.center.service.ParaDefineService;
-import com.microcore.center.service.UserService;
+import com.microcore.center.service.PsmUserService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.PsmOperHisVo;
 
@@ -26,7 +26,7 @@ public class OperHisServiceImpl implements OperHisService {
 	private ParaDefineService paraDefineService;
 
 	@Autowired
-	private UserService userService;
+	private PsmUserService psmUserService;
 
 	@Override
 	public void add(String operTarget, String operType) {
@@ -52,7 +52,7 @@ public class OperHisServiceImpl implements OperHisService {
 		List<PsmOperHisVo> listVo = CommonUtil.listPo2VO(psmOperHisMapper.selectByExample(example), PsmOperHisVo.class);
 		for (PsmOperHisVo psmOperHisVo : listVo) {
 			psmOperHisVo.setOperTypeName(paraDefineService.getValueByTypeAnd("OPER_TYPE", psmOperHisVo.getOperType()));
-			psmOperHisVo.setOperatorName(userService.getPsmUserRealName(psmOperHisVo.getOperator()));
+			psmOperHisVo.setOperatorName(psmUserService.getPsmUserRealName(psmOperHisVo.getOperator()));
 		}
 		return listVo;
 	}

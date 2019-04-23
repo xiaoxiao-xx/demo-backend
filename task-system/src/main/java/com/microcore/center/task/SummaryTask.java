@@ -5,7 +5,7 @@ import com.microcore.center.model.PsmSummary;
 import com.microcore.center.model.PsmUser;
 import com.microcore.center.service.CommonService;
 import com.microcore.center.service.SummaryService;
-import com.microcore.center.service.UserService;
+import com.microcore.center.service.PsmUserService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.JedisPoolUtil;
 import com.microcore.center.vo.FaceSummaryVo;
@@ -30,7 +30,7 @@ public class SummaryTask {
 
 	private final CommonService commonService;
 
-	private final UserService userService;
+	private final PsmUserService psmUserService;
 
 	/**
 	 * 定期汇总时间间隔，单位为milisecond
@@ -43,10 +43,10 @@ public class SummaryTask {
 
 	@Autowired
 	public SummaryTask(SummaryService summaryService, CommonService commonService,
-	                   UserService userService, JedisPoolUtil redisUtil) {
+	                   PsmUserService psmUserService, JedisPoolUtil redisUtil) {
 		this.summaryService = summaryService;
 		this.commonService = commonService;
-		this.userService = userService;
+		this.psmUserService = psmUserService;
 		this.redisUtil = redisUtil;
 	}
 
@@ -94,7 +94,7 @@ public class SummaryTask {
 			detail.setTime(faceSummaryVo.getCaptureTime());
 			detail.setUserId(faceSummaryVo.getUserId());
 
-			PsmUser user = userService.getPsmUserById(faceSummaryVo.getUserId());
+			PsmUser user = psmUserService.getPsmUserById(faceSummaryVo.getUserId());
 			String username = "";
 			if (user != null) {
 				username = user.getUsername();

@@ -9,7 +9,7 @@ import com.microcore.center.model.PsmUser;
 import com.microcore.center.service.ParaDefineService;
 import com.microcore.center.service.ScheduleConfigService;
 import com.microcore.center.service.ScheduleDetailService;
-import com.microcore.center.service.UserService;
+import com.microcore.center.service.PsmUserService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.PsmScheduleConfigVo;
 import com.microcore.center.vo.ResultVo;
@@ -37,7 +37,7 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
     private ScheduleDetailService scheduleDetailService;
 
     @Autowired
-    private UserService userService;
+    private PsmUserService psmUserService;
 
     @Autowired
     private ParaDefineService paraDefineService;
@@ -70,7 +70,7 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
             List<PsmScheduleDetail> psmScheduleDetails = generateScheduleDetail(detail, config.getRepeatType());
             resultList.addAll(psmScheduleDetails);
         } else {
-            List<PsmUser> userList = userService.getUserListByOrgId(config.getTeamId());
+            List<PsmUser> userList = psmUserService.getUserListByOrgId(config.getTeamId());
             if (userList != null && userList.size() > 0) {
                 userList.forEach(user -> {
                     config.setObjectId(user.getId());

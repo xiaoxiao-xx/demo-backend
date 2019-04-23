@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.microcore.center.config.SessionManage;
 import com.microcore.center.model.PsmUser;
-import com.microcore.center.service.UserService;
+import com.microcore.center.service.PsmUserService;
 import com.microcore.center.util.Encode;
 import com.microcore.center.util.JwtUtil;
 import com.microcore.center.vo.LoginUserVo;
@@ -19,13 +19,13 @@ import com.microcore.center.vo.ResultVo;
 public class SystemController {
 
 	@Autowired
-	private UserService userService;
+	private PsmUserService psmUserService;
 
 	@PostMapping("login")
 	public ResultVo login(@RequestBody LoginUserVo loginUserVo) throws Exception {
 		String userName = loginUserVo.getUserName();
 		String password = loginUserVo.getPassword();
-		PsmUser psmUser = userService.getPsmUser(userName);
+		PsmUser psmUser = psmUserService.getPsmUser(userName);
 		if (psmUser == null) {
 			return ResultVo.fail("账号或密码错误！");
 		}

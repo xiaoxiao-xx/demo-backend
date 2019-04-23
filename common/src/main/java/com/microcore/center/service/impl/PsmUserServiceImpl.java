@@ -4,7 +4,7 @@ import com.microcore.center.exception.CommonException;
 import com.microcore.center.mapper.PsmUserMapper;
 import com.microcore.center.model.PsmUser;
 import com.microcore.center.model.PsmUserExample;
-import com.microcore.center.service.UserService;
+import com.microcore.center.service.PsmUserService;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class PsmUserServiceImpl implements PsmUserService {
 
 	@Autowired
 	private PsmUserMapper psmUserMapper;

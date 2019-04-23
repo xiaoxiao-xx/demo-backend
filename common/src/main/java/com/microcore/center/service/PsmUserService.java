@@ -4,7 +4,7 @@ import com.microcore.center.model.PsmUser;
 
 import java.util.List;
 
-public interface UserService {
+public interface PsmUserService {
 	
 	PsmUser getPsmUser(String userName);
 
