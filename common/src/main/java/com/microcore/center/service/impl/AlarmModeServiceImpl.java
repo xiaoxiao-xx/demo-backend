@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.microcore.center.mapper.PsmAlarmModeMapper;
-import com.microcore.center.model.PsmAlarmMode;
-import com.microcore.center.model.PsmAlarmModeExample;
+import com.microcore.center.mapper.AlarmModeMapper;
+import com.microcore.center.model.AlarmMode;
+import com.microcore.center.model.AlarmModeExample;
 import com.microcore.center.service.AlarmModeService;
 
 @Service
@@ -16,18 +16,18 @@ import com.microcore.center.service.AlarmModeService;
 public class AlarmModeServiceImpl implements AlarmModeService {
 
 	@Autowired
-	private PsmAlarmModeMapper psmAlarmModeMapper;
+	private AlarmModeMapper psmAlarmModeMapper;
 
 	@Override
-	public List<PsmAlarmMode> getAlarmMode() {
-		PsmAlarmModeExample example = new PsmAlarmModeExample();
-		PsmAlarmModeExample.Criteria criteria = example.createCriteria();
+	public List<AlarmMode> getAlarmMode() {
+		AlarmModeExample example = new AlarmModeExample();
+		AlarmModeExample.Criteria criteria = example.createCriteria();
 		return psmAlarmModeMapper.selectByExample(example);
 	}
 
 	@Override
 	public String getAlarmMode(String id) {
-		PsmAlarmMode mode = psmAlarmModeMapper.selectByPrimaryKey(id);
+		AlarmMode mode = psmAlarmModeMapper.selectByPrimaryKey(id);
 		if (mode != null) {
 			return mode.getAlarmMode();
 		}
@@ -35,7 +35,7 @@ public class AlarmModeServiceImpl implements AlarmModeService {
 	}
 
 	@Override
-	public PsmAlarmMode getPsmAlarmMode(String id) {
+	public AlarmMode getAlarmModeById(String id) {
 		return psmAlarmModeMapper.selectByPrimaryKey(id);
 	}
 

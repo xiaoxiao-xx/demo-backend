@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.AlarmResultMapper" >
+  <resultMap id="BaseResultMap" type="com.microcore.center.model.AlarmResult" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="alarm_mode_type" property="alarmModeType" jdbcType="VARCHAR" />
+    <result column="object_type" property="objectType" jdbcType="VARCHAR" />
+    <result column="object_id" property="objectId" jdbcType="VARCHAR" />
+    <result column="alarm_reason" property="alarmReason" jdbcType="VARCHAR" />
+    <result column="trigger_time" property="triggerTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="alarm_policy_id" property="alarmPolicyId" jdbcType="VARCHAR" />
+    <result column="rec_id" property="recId" jdbcType="VARCHAR" />
+    <result column="alarm_level" property="alarmLevel" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, alarm_mode_type, object_type, object_id, alarm_reason, trigger_time, state, operator, 
+    remark, alarm_policy_id, rec_id, alarm_level
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.AlarmResultExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from alarm_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from alarm_result
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alarm_result
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.microcore.center.model.AlarmResultExample" >
+    delete from alarm_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.microcore.center.model.AlarmResult" >
+    insert into alarm_result (id, alarm_mode_type, object_type, 
+      object_id, alarm_reason, trigger_time, 
+      state, operator, remark, 
+      alarm_policy_id, rec_id, alarm_level
+      )
+    values (#{id,jdbcType=VARCHAR}, #{alarmModeType,jdbcType=VARCHAR}, #{objectType,jdbcType=VARCHAR}, 
+      #{objectId,jdbcType=VARCHAR}, #{alarmReason,jdbcType=VARCHAR}, #{triggerTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{alarmPolicyId,jdbcType=VARCHAR}, #{recId,jdbcType=VARCHAR}, #{alarmLevel,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.microcore.center.model.AlarmResult" >
+    insert into alarm_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="alarmModeType != null" >
+        alarm_mode_type,
+      </if>
+      <if test="objectType != null" >
+        object_type,
+      </if>
+      <if test="objectId != null" >
+        object_id,
+      </if>
+      <if test="alarmReason != null" >
+        alarm_reason,
+      </if>
+      <if test="triggerTime != null" >
+        trigger_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="alarmPolicyId != null" >
+        alarm_policy_id,
+      </if>
+      <if test="recId != null" >
+        rec_id,
+      </if>
+      <if test="alarmLevel != null" >
+        alarm_level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmModeType != null" >
+        #{alarmModeType,jdbcType=VARCHAR},
+      </if>
+      <if test="objectType != null" >
+        #{objectType,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        #{objectId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmReason != null" >
+        #{alarmReason,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerTime != null" >
+        #{triggerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPolicyId != null" >
+        #{alarmPolicyId,jdbcType=VARCHAR},
+      </if>
+      <if test="recId != null" >
+        #{recId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmLevel != null" >
+        #{alarmLevel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.microcore.center.model.AlarmResultExample" resultType="java.lang.Integer" >
+    select count(*) from alarm_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update alarm_result
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alarmModeType != null" >
+        alarm_mode_type = #{record.alarmModeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.objectType != null" >
+        object_type = #{record.objectType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.objectId != null" >
+        object_id = #{record.objectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alarmReason != null" >
+        alarm_reason = #{record.alarmReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.triggerTime != null" >
+        trigger_time = #{record.triggerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alarmPolicyId != null" >
+        alarm_policy_id = #{record.alarmPolicyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recId != null" >
+        rec_id = #{record.recId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alarmLevel != null" >
+        alarm_level = #{record.alarmLevel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update alarm_result
+    set id = #{record.id,jdbcType=VARCHAR},
+      alarm_mode_type = #{record.alarmModeType,jdbcType=VARCHAR},
+      object_type = #{record.objectType,jdbcType=VARCHAR},
+      object_id = #{record.objectId,jdbcType=VARCHAR},
+      alarm_reason = #{record.alarmReason,jdbcType=VARCHAR},
+      trigger_time = #{record.triggerTime,jdbcType=TIMESTAMP},
+      state = #{record.state,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      alarm_policy_id = #{record.alarmPolicyId,jdbcType=VARCHAR},
+      rec_id = #{record.recId,jdbcType=VARCHAR},
+      alarm_level = #{record.alarmLevel,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.AlarmResult" >
+    update alarm_result
+    <set >
+      <if test="alarmModeType != null" >
+        alarm_mode_type = #{alarmModeType,jdbcType=VARCHAR},
+      </if>
+      <if test="objectType != null" >
+        object_type = #{objectType,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        object_id = #{objectId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmReason != null" >
+        alarm_reason = #{alarmReason,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerTime != null" >
+        trigger_time = #{triggerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPolicyId != null" >
+        alarm_policy_id = #{alarmPolicyId,jdbcType=VARCHAR},
+      </if>
+      <if test="recId != null" >
+        rec_id = #{recId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmLevel != null" >
+        alarm_level = #{alarmLevel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.AlarmResult" >
+    update alarm_result
+    set alarm_mode_type = #{alarmModeType,jdbcType=VARCHAR},
+      object_type = #{objectType,jdbcType=VARCHAR},
+      object_id = #{objectId,jdbcType=VARCHAR},
+      alarm_reason = #{alarmReason,jdbcType=VARCHAR},
+      trigger_time = #{triggerTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      alarm_policy_id = #{alarmPolicyId,jdbcType=VARCHAR},
+      rec_id = #{recId,jdbcType=VARCHAR},
+      alarm_level = #{alarmLevel,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

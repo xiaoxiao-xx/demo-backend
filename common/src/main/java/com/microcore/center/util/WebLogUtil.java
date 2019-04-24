@@ -1,18 +1,24 @@
 package com.microcore.center.util;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import com.google.gson.Gson;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class WebLogUtil {
 
 	private static final String RESPONSE_PREFIX = "response|uri:{},{}";
+
+	private static final Gson GSON = new Gson();
 
 	public static Object aspectWebLog(ProceedingJoinPoint pjp) throws Throwable {
 		RequestAttributes ra = RequestContextHolder.getRequestAttributes();
@@ -26,7 +32,7 @@ public class WebLogUtil {
 		String uri = request.getRequestURI();
 		String queryString = request.getQueryString();
 		Map<String, String[]> map = request.getParameterMap();
-		String postString = JSONUtils.toJSONObject(map).toString();
+		String postString = GSON.toJson(map).toString();
 		log.info("request|url:{}, method:{}, uri:{}, getParams:{},postParams:{} ", url, method, uri, queryString,
 				postString);
 		Object result;
@@ -41,8 +47,9 @@ public class WebLogUtil {
 		} else if (result.getClass() == String.class) {
 			log.info(RESPONSE_PREFIX, uri, result);
 		} else {
-			log.info(RESPONSE_PREFIX, uri, JSONUtils.toJSONString(result));
+			log.info(RESPONSE_PREFIX, uri, GSON.toJson(result));
 		}
 		return result;
 	}
+
 }

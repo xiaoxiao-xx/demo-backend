@@ -1,9 +1,9 @@
 package com.microcore.face.rec;
 
 import com.google.gson.Gson;
-import com.microcore.center.SlsTaskSystemApplication;
+import com.rainyhon.task.SlsTaskSystemApplication;
 import com.microcore.center.cllient.HttpTemplate;
-import com.microcore.center.task.rec.v2.DataStructure;
+import com.rainyhon.task.job.v2.DataStructure;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.FaceSdkRecVo;
 import lombok.extern.slf4j.Slf4j;
