@@ -3,7 +3,7 @@ package com.microcore.face.rec;
 import com.google.gson.Gson;
 import com.microcore.center.SlsTaskSystemApplication;
 import com.microcore.center.cllient.HttpTemplate;
-import com.microcore.center.task.CaptureTask2;
+import com.microcore.center.task.rec.v2.DataStructure;
 import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.FaceSdkRecVo;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class LoadTest {
 	@Value("${face.api.port}")
 	private String faceApiPort;
 
-	private List<CaptureTask2.FaceInfo> prepare() {
+	private List<DataStructure.FaceInfo> prepare() {
 		FaceSdkRecVo faceSdkRecVo = new FaceSdkRecVo();
 		faceSdkRecVo.setGroup_id("g1");
 		faceSdkRecVo.setDevice_id("001");
@@ -51,12 +51,12 @@ public class LoadTest {
 
 		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/detect", faceSdkRecVo, String.class);
 		Gson gson = new Gson();
-		CaptureTask2.DetectResult result = gson.fromJson(ret, CaptureTask2.DetectResult.class);
+		DataStructure.DetectResult result = gson.fromJson(ret, DataStructure.DetectResult.class);
 		if (result == null) {
 			return new ArrayList<>();
 		}
 
-		List<CaptureTask2.FaceInfo> faces = result.getFaces();
+		List<DataStructure.FaceInfo> faces = result.getFaces();
 		if (faces == null) {
 			faces = new ArrayList<>();
 		}
@@ -68,7 +68,7 @@ public class LoadTest {
 	 * 并发测试
 	 */
 	private void latchTest() throws InterruptedException {
-		List<CaptureTask2.FaceInfo> list = prepare();
+		List<DataStructure.FaceInfo> list = prepare();
 
 		final CountDownLatch start = new CountDownLatch(1);
 		final CountDownLatch end = new CountDownLatch(poolSize);
@@ -98,7 +98,7 @@ public class LoadTest {
 		executorService.shutdown();
 	}
 
-	private void testLoad(List<CaptureTask2.FaceInfo> faces) {
+	private void testLoad(List<DataStructure.FaceInfo> faces) {
 		for (int i = 0; i < 1; i++) {
 			faces.forEach(faceInfo -> {
 				FaceSdkRecVo faceSdkRec = new FaceSdkRecVo();

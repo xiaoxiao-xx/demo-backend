@@ -12,7 +12,7 @@
 4. JSON工具类位于 JSONUtils 位于 com.microcore.center.util 包中
 
 5. 定时任务（如定时截图）代码位于 com.microcore.center.util 包中
-   com.microcore.center.task.CaptureTask   定时截图任务
+   com.microcore.center.task.rec.v1.CaptureTask   定时截图任务
    
 6. com.microcore.center.HCNetSDK  是海康威视SDK的接口定义
 

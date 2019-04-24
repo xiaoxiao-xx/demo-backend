@@ -1,4 +1,4 @@
-package com.microcore.center.task;
+package com.microcore.center.task.rec.v1;
 
 import com.microcore.center.cllient.HttpTemplate;
 import com.microcore.center.constant.Constants;
@@ -16,10 +16,8 @@ import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,7 +71,7 @@ public class CaptureTask {
 		this.asyncTask = asyncTask;
 	}
 
-	static List<PsmFace> convertFaces(String materialId, List<FaceInfo> faceInfoList) {
+	static List<PsmFace> convertFaces(String materialId, List<DataStructure.FaceInfo> faceInfoList) {
 		return faceInfoList.stream().map(faceInfo -> {
 			PsmFace face = new PsmFace();
 
@@ -81,7 +79,7 @@ public class CaptureTask {
 			face.setMaterialId(materialId);
 			face.setCreateTime(CommonUtil.getCurrentTime());
 
-			face.setAngle(faceInfo.angle);
+			face.setAngle(faceInfo.getAngle());
 			face.setCenterX(faceInfo.getCenter_x());
 			face.setCenterY(faceInfo.getCenter_y());
 			face.setGroupId(faceInfo.getGroup_id());
@@ -235,31 +233,6 @@ public class CaptureTask {
 		faceSdkRecVo.setImage(byte2Base64Str(data));
 		String ret = httpTemplate.post("127.0.0.1", "3000", "/face/api/v1/rec", faceSdkRecVo, String.class);
 		log.info(">>>rec cost" + (System.currentTimeMillis() - ctm) + " and ret=" + ret);
-	}
-
-	@Data
-	@EqualsAndHashCode(callSuper = false)
-	static class DetectResult {
-
-		private String seiralNo;
-
-		private String errno;
-
-		private List<FaceInfo> faces;
-
-	}
-
-	@Data
-	@EqualsAndHashCode(callSuper = false)
-	static class FaceInfo {
-		private Integer angle;
-		private Integer center_x;
-		private Integer center_y;
-		private String group_id;
-		private Integer height;
-		private String score;
-		private String user_id;
-		private Integer width;
 	}
 
 }

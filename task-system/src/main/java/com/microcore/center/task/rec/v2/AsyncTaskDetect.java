@@ -1,4 +1,4 @@
-package com.microcore.center.task;
+package com.microcore.center.task.rec.v2;
 
 import com.google.gson.Gson;
 import com.microcore.center.cllient.HttpTemplate;
@@ -22,12 +22,15 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
-public class AsyncTask2 {
+public class AsyncTaskDetect {
 
 	private final HttpTemplate httpTemplate;
 
+	private final ThreadLocal<SimpleDateFormat> df = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyyMMddHHmmss"));
+
 	@Autowired
-	private AsyncTask3 asyncTask3;
+	private AsyncTaskRec asyncTaskRec;
 
 	@Value("${face.api.ip}")
 	private String faceApiIp;
@@ -36,7 +39,7 @@ public class AsyncTask2 {
 	private String faceApiPort;
 
 	@Autowired
-	public AsyncTask2(HttpTemplate httpTemplate) {
+	public AsyncTaskDetect(HttpTemplate httpTemplate) {
 		this.httpTemplate = httpTemplate;
 	}
 
@@ -60,12 +63,12 @@ public class AsyncTask2 {
 
 		// 保存人脸识别结果
 		Gson gson = new Gson();
-		CaptureTask2.DetectResult result = gson.fromJson(ret, CaptureTask2.DetectResult.class);
+		DataStructure.DetectResult result = gson.fromJson(ret, DataStructure.DetectResult.class);
 		if (result == null) {
 			return;
 		}
 
-		List<CaptureTask2.FaceInfo> faces = result.getFaces();
+		List<DataStructure.FaceInfo> faces = result.getFaces();
 		if (faces == null) {
 			faces = new ArrayList<>();
 		}
@@ -110,11 +113,11 @@ public class AsyncTask2 {
 			byte[] bytes = Base64.getDecoder().decode(a.getBytes(Charset.forName("UTF-8")));
 			CommonUtil.saveFile("D:/temp/" + System.currentTimeMillis() + ".bmp", bytes);
 
-			asyncTask3.rec(materialId, faceSdkRec);
+			asyncTaskRec.rec(materialId, faceSdkRec);
 		}
 	}
 
-	static List<PsmFaceVo> convertFaces(String materialId, List<CaptureTask2.FaceInfo> faceInfoList) {
+	private List<PsmFaceVo> convertFaces(String materialId, List<DataStructure.FaceInfo> faceInfoList) {
 		return faceInfoList.stream().map(faceInfo -> {
 			PsmFaceVo face = new PsmFaceVo();
 
@@ -135,9 +138,6 @@ public class AsyncTask2 {
 			return face;
 		}).collect(Collectors.toList());
 	}
-
-	private final ThreadLocal<SimpleDateFormat> df = ThreadLocal.withInitial(()
-			-> new SimpleDateFormat("yyyyMMddHHmmss"));
 
 	private String getSerialNumber() {
 		long ctm = System.currentTimeMillis();

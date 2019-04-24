@@ -1,4 +1,4 @@
-package com.microcore.center.task;
+package com.microcore.center.task.summary;
 
 import com.microcore.center.model.PsmDetail;
 import com.microcore.center.model.PsmSummary;

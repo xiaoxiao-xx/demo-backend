@@ -1,4 +1,4 @@
-package com.microcore.center.task;
+package com.microcore.center.task.rec.v1;
 
 import com.google.gson.Gson;
 import com.microcore.center.cllient.HttpTemplate;
@@ -13,7 +13,6 @@ import com.microcore.center.util.JedisPoolUtil;
 import com.microcore.center.util.RabbitMQUtil;
 import com.microcore.center.vo.FaceSdkRecVo;
 import com.microcore.center.vo.PsmDealResDetailVo;
-import com.microcore.center.vo.PsmFaceVo;
 import com.microcore.center.vo.PsmRealAlarmVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,8 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
+import static com.microcore.center.task.rec.v1.CaptureTask.convertFaces;
 import static com.microcore.center.util.CommonUtil.random;
 
 /**
@@ -32,7 +31,7 @@ import static com.microcore.center.util.CommonUtil.random;
  */
 @Component
 @Slf4j
-public class AsyncTask3 {
+public class AsyncTask {
 
 	private final HttpTemplate httpTemplate;
 
@@ -68,9 +67,8 @@ public class AsyncTask3 {
 	}
 
 	@Autowired
-	public AsyncTask3(HttpTemplate httpTemplate, MaterialService materialService,
-	                  JedisPoolUtil redisUtil, PersonService personService,
-	                  RabbitMQUtil rabbitMQUtil, RealAlarmService realAlarmService) {
+	public AsyncTask(HttpTemplate httpTemplate, MaterialService materialService,
+	                 JedisPoolUtil redisUtil, PersonService personService, RabbitMQUtil rabbitMQUtil, RealAlarmService realAlarmService) {
 		this.httpTemplate = httpTemplate;
 		this.materialService = materialService;
 		this.redisUtil = redisUtil;
@@ -83,48 +81,43 @@ public class AsyncTask3 {
 	 *
 	 */
 	@Async
-	public void rec(String materialId, FaceSdkRecVo faceSdkRec) {
-		String ret2 = "";
-
+	public void detect(String materialId, FaceSdkRecVo faceSdkRecVo) {
+		long ctm = System.currentTimeMillis();
+		String ret = "";
 		try {
-			long t1 = System.currentTimeMillis();
-			ret2 = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/rec", faceSdkRec, String.class);
-			long time = System.currentTimeMillis() - t1;
-			log.info("rec: {} ms", time);
+			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/detect", faceSdkRecVo, String.class);
 		} catch (Exception e) {
 			log.error("Face detection error", e);
 		}
 
+		// log.info("face.ip: {}, face.port: {}", faceApiIp, faceApiPort);
+
 		// 保存人脸识别结果
-		CaptureTask2.DetectResult2 result2 = gson.fromJson(ret2, CaptureTask2.DetectResult2.class);
+		Gson gson = new Gson();
+		DataStructure.DetectResult result = gson.fromJson(ret, DataStructure.DetectResult.class);
 
-		List<CaptureTask2.FaceInfo> faces2 = result2.getData().getResult();
-		if (faces2 == null) {
-			faces2 = new ArrayList<>();
+		List<DataStructure.FaceInfo> faces = result.getFaces();
+		if (faces == null) {
+			faces = new ArrayList<>();
 		}
 
-		List<PsmFaceVo> faceList2 = convertFaces(materialId, faces2);
-		if (faceList2.size() > 0) {
-			// log.info("faceList2 size: {}", faceList2.size());
-		}
-
-		for (PsmFace face2 : faceList2) {// Drop the faces which scores under 60
+		List<PsmFace> faceList = convertFaces(materialId, faces);
+		for (PsmFace face : faceList) {// Drop the faces which scores under 60
 			try {
-				if (Double.parseDouble(face2.getScore()) < 60.00D) {
+				if (Double.parseDouble(face.getScore()) < 60.00D) {
 					continue;
 				}
 			} catch (Exception e) {
 				log.error("{}", e);
 			}
 
-			// log.info("name: {}", face2.getUserId());
-			sendEvent(face2);
+			sendEvent(face);
 
 			PsmMaterial material = materialService.getMaterial(materialId);
 			String areaId = material.getAreaId();
-			String userId = face2.getUserId();
-			// log.info(">>> detected face: {}, score: {}", personService.getPsmPersonInfoName(userId), face2.getScore());
-			// log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
+			String userId = face.getUserId();
+			log.info(">>> detected face: {}, score: {}", personService.getPsmPersonInfoName(userId), face.getScore());
+			log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
 			// k-v  k: user_id, v: area_id & capture_time
 			Map<String, String> map = new HashMap<>();
@@ -144,35 +137,10 @@ public class AsyncTask3 {
 			redisUtil.sadd(areaKey, userId);
 		}
 
-		List<PsmFace> facest = CommonUtil.listPo2VO(faceList2, PsmFace.class);
-		materialService.addFaceList(facest);
+		materialService.addFaceList(faceList);
+
 		// log.info("thread id= {}", Thread.currentThread().getName());
 	}
-
-	static List<PsmFaceVo> convertFaces(String materialId, List<CaptureTask2.FaceInfo> faceInfoList) {
-		return faceInfoList.stream().map(faceInfo -> {
-			PsmFaceVo face = new PsmFaceVo();
-
-			face.setId(CommonUtil.getUUID());
-			face.setMaterialId(materialId);
-			face.setCreateTime(CommonUtil.getCurrentTime());
-
-			face.setAngle(faceInfo.getAngle());
-			face.setCenterX(faceInfo.getCenter_x());
-			face.setCenterY(faceInfo.getCenter_y());
-			face.setGroupId(faceInfo.getGroup_id());
-			face.setUserId(faceInfo.getUser_id());
-			face.setHeight(faceInfo.getHeight());
-			face.setWidth(faceInfo.getWidth());
-			face.setScore(faceInfo.getScore());
-			face.setBase64(faceInfo.getBase64());
-
-			return face;
-		}).collect(Collectors.toList());
-	}
-
-	private final ThreadLocal<SimpleDateFormat> df = ThreadLocal.withInitial(()
-			-> new SimpleDateFormat("yyyyMMddHHmmss"));
 
 	private void sendEvent(PsmFace face) {
 		PsmDealResDetailVo vo = new PsmDealResDetailVo();
