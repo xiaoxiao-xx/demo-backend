@@ -2,7 +2,10 @@ package com.microcore.center.task.rec.v2;
 
 import com.google.gson.Gson;
 import com.microcore.center.cllient.HttpTemplate;
+import com.microcore.center.constant.Constants;
+import com.microcore.center.mapper.InOutRecordMapper;
 import com.microcore.center.model.Face;
+import com.microcore.center.model.InOutRecord;
 import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.service.MaterialService;
@@ -46,6 +49,9 @@ public class AsyncTaskRec {
 
 	private final RealAlarmService realAlarmService;
 
+	@Autowired
+	private InOutRecordMapper inOutRecordMapper;
+
 	private Gson gson = new Gson();
 
 	@Value("${face.api.ip}")
@@ -80,15 +86,15 @@ public class AsyncTaskRec {
 	}
 
 	/**
-	 *
+	 * sfdsdf
 	 */
 	@Async
 	public void rec(String materialId, String detectResultId, FaceSdkRecVo faceSdkRec) {
-		String ret2 = "";
+		String ret = "";
 
 		try {
 			long t1 = System.currentTimeMillis();
-			ret2 = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/rec", faceSdkRec, String.class);
+			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/rec", faceSdkRec, String.class);
 			long time = System.currentTimeMillis() - t1;
 			log.info("rec: {} ms", time);
 		} catch (Exception e) {
@@ -96,21 +102,22 @@ public class AsyncTaskRec {
 		}
 
 		// 保存人脸识别结果
-		DataStructure.DetectResult2 result2 = gson.fromJson(ret2, DataStructure.DetectResult2.class);
+		DataStructure.DetectResult2 result = gson.fromJson(ret, DataStructure.DetectResult2.class);
 
-		List<DataStructure.FaceInfo> faces2 = result2.getData().getResult();
-		if (faces2 == null) {
-			faces2 = new ArrayList<>();
+		List<DataStructure.FaceInfo> faces = result.getData().getResult();
+		if (faces == null) {
+			faces = new ArrayList<>();
 		}
 
-		List<PsmFaceVo> faceList2 = convertFaces(materialId, detectResultId, faces2);
-		if (faceList2.size() > 0) {
+		List<PsmFaceVo> faceList = convertFaces(materialId, detectResultId, faces);
+		if (faceList.size() > 0) {
 			// log.info("faceList2 size: {}", faceList2.size());
 		}
 
-		for (Face face2 : faceList2) {// Drop the faces which scores under 60
+		for (Face face : faceList) {
 			try {
-				if (Double.parseDouble(face2.getScore()) < 60.00D) {
+				// Drop the faces which scores under 60
+				if (Double.parseDouble(face.getScore()) < 60.00D) {
 					continue;
 				}
 			} catch (Exception e) {
@@ -118,11 +125,14 @@ public class AsyncTaskRec {
 			}
 
 			// log.info("name: {}", face2.getUserId());
-			sendEvent(face2);
 
 			PsmMaterial material = materialService.getMaterial(materialId);
 			String areaId = material.getAreaId();
-			String userId = face2.getUserId();
+			String userId = face.getUserId();
+
+			sendEvent(face);
+			generateInOutRecord(face, areaId);
+
 			// log.info(">>> detected face: {}, score: {}", personService.getPsmPersonInfoName(userId), face2.getScore());
 			// log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
@@ -132,7 +142,7 @@ public class AsyncTaskRec {
 			map.put("areaId", areaId);
 			map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
 			map.put("teamId", personService.getPsmPersonInfo(userId).getDeptId());
-			redisUtil.hmset(userId, map);
+			redisUtil.hmset("user:" + userId, map);
 
 			// k-v  k: area_id, v: user_id set
 			String areaKey = "area:" + areaId;
@@ -144,7 +154,7 @@ public class AsyncTaskRec {
 			redisUtil.sadd(areaKey, userId);
 		}
 
-		List<Face> facest = CommonUtil.listPo2VO(faceList2, Face.class);
+		List<Face> facest = CommonUtil.listPo2VO(faceList, Face.class);
 		materialService.addFaceList(facest);
 		// log.info("thread id= {}", Thread.currentThread().getName());
 	}
@@ -172,6 +182,39 @@ public class AsyncTaskRec {
 		}).collect(Collectors.toList());
 	}
 
+	private void generateInOutRecord(Face face, String newAreaId) {
+		String key = "user:" + face.getUserId();
+		List<String> result = redisUtil.hmget(key, "areaId");
+		String areaId = result.get(0);
+
+		if (newAreaId.equals(areaId)) {
+			return;
+		}
+
+		// out record
+		InOutRecord outRecord = new InOutRecord();
+		outRecord.setId(CommonUtil.getUUID());
+		outRecord.setId(Constants.IN_OUT_TYPE_OUT);
+		outRecord.setAreaId(areaId);
+		outRecord.setTime(CommonUtil.getCurrentTime());
+		outRecord.setRecId(face.getId());
+		outRecord.setUserId(face.getUserId());
+		inOutRecordMapper.insert(outRecord);
+
+		// in record
+		InOutRecord inRecord = new InOutRecord();
+		inRecord.setId(CommonUtil.getUUID());
+		inRecord.setId(Constants.IN_OUT_TYPE_IN);
+		inRecord.setAreaId(newAreaId);
+		inRecord.setTime(CommonUtil.getCurrentTime());
+		inRecord.setRecId(face.getId());
+		inRecord.setUserId(face.getUserId());
+		inOutRecordMapper.insert(inRecord);
+	}
+
+	/**
+	 * 推送消息
+	 */
 	private void sendEvent(Face face) {
 		PsmDealResDetailVo vo = new PsmDealResDetailVo();
 		String materialId = face.getMaterialId();

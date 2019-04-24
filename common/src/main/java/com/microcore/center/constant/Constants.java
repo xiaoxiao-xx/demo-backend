@@ -47,5 +47,9 @@ public class Constants {
 
 	public static final String OPER_HIS_DISABLE = "DISABLE";
 
+	public static final String IN_OUT_TYPE_IN = "IN";
+
+	public static final String IN_OUT_TYPE_OUT = "OUT";
+
 }
 

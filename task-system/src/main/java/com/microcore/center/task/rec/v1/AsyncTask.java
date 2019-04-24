@@ -125,7 +125,7 @@ public class AsyncTask {
 			map.put("areaId", areaId);
 			map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
 			map.put("teamId", personService.getPsmPersonInfo(userId).getDeptId());
-			redisUtil.hmset(userId, map);
+			redisUtil.hmset("user:" + userId, map);
 
 			// k-v  k: area_id, v: user_id set
 			String areaKey = "area:" + areaId;

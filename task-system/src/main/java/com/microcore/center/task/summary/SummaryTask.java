@@ -115,7 +115,7 @@ public class SummaryTask {
 
 	@Scheduled(fixedRate = EXPIRE_TIME)
 	public void cleanExpiredSetValue() {
-		String keyPrefix = "u";
+		String keyPrefix = "user:";
 		Set<String> keys = redisUtil.keys(keyPrefix + "*");
 		for (String key : keys) {
 			List<String> result = redisUtil.hmget(key, "captureTime", "areaId");
