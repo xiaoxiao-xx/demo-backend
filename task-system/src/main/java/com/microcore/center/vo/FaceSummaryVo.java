@@ -1,6 +1,6 @@
 package com.microcore.center.vo;
 
-import com.microcore.center.model.PsmFace;
+import com.microcore.center.model.Face;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class FaceSummaryVo extends PsmFace {
+public class FaceSummaryVo extends Face {
 
 	/**
 	 * 素材抓取时间

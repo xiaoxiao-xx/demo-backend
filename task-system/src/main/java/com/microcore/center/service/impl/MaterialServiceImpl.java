@@ -1,8 +1,8 @@
 package com.microcore.center.service.impl;
 
-import com.microcore.center.mapper.PsmFaceMapper;
+import com.microcore.center.mapper.FaceMapper;
 import com.microcore.center.mapper.PsmMaterialMapper;
-import com.microcore.center.model.PsmFace;
+import com.microcore.center.model.Face;
 import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.service.MaterialService;
 import com.microcore.center.util.CommonUtil;
@@ -20,7 +20,7 @@ public class MaterialServiceImpl implements MaterialService {
 	private PsmMaterialMapper materialMapper;
 
 	@Autowired
-	private PsmFaceMapper faceMapper;
+	private FaceMapper faceMapper;
 
 	@Override
 	public void addMaterial(String id, String imageName) {
@@ -37,12 +37,12 @@ public class MaterialServiceImpl implements MaterialService {
 	}
 
 	@Override
-	public void addFace(PsmFace face) {
+	public void addFace(Face face) {
 		faceMapper.insert(face);
 	}
 
 	@Override
-	public void addFaceList(List<PsmFace> faceList) {
+	public void addFaceList(List<Face> faceList) {
 		faceList.forEach(faceMapper::insert);
 	}
 

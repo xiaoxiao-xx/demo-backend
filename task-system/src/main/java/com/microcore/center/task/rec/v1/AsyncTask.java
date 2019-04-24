@@ -2,7 +2,7 @@ package com.microcore.center.task.rec.v1;
 
 import com.google.gson.Gson;
 import com.microcore.center.cllient.HttpTemplate;
-import com.microcore.center.model.PsmFace;
+import com.microcore.center.model.Face;
 import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.service.MaterialService;
@@ -101,8 +101,8 @@ public class AsyncTask {
 			faces = new ArrayList<>();
 		}
 
-		List<PsmFace> faceList = convertFaces(materialId, faces);
-		for (PsmFace face : faceList) {// Drop the faces which scores under 60
+		List<Face> faceList = convertFaces(materialId, faces);
+		for (Face face : faceList) {// Drop the faces which scores under 60
 			try {
 				if (Double.parseDouble(face.getScore()) < 60.00D) {
 					continue;
@@ -142,7 +142,7 @@ public class AsyncTask {
 		// log.info("thread id= {}", Thread.currentThread().getName());
 	}
 
-	private void sendEvent(PsmFace face) {
+	private void sendEvent(Face face) {
 		PsmDealResDetailVo vo = new PsmDealResDetailVo();
 		String materialId = face.getMaterialId();
 		PsmMaterial material = materialService.getMaterial(materialId);
@@ -193,7 +193,7 @@ public class AsyncTask {
 		return addressList.get(areaId);
 	}
 
-	private void generateAlarmMessage(PsmFace face, String personName) {
+	private void generateAlarmMessage(Face face, String personName) {
 		PsmMaterial material = materialService.getMaterial(face.getMaterialId());
 		String areaId = material.getAreaId();
 		Date captureTime = material.getCreateTime();

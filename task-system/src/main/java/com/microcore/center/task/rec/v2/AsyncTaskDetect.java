@@ -2,7 +2,8 @@ package com.microcore.center.task.rec.v2;
 
 import com.google.gson.Gson;
 import com.microcore.center.cllient.HttpTemplate;
-import com.microcore.center.model.PsmFace;
+import com.microcore.center.mapper.DetectResultMapper;
+import com.microcore.center.model.DetectResult;
 import com.microcore.center.util.*;
 import com.microcore.center.vo.FaceSdkRecVo;
 import com.microcore.center.vo.PsmFaceVo;
@@ -31,6 +32,9 @@ public class AsyncTaskDetect {
 
 	@Autowired
 	private AsyncTaskRec asyncTaskRec;
+
+	@Autowired
+	private DetectResultMapper detectResultMapper;
 
 	@Value("${face.api.ip}")
 	private String faceApiIp;
@@ -76,7 +80,23 @@ public class AsyncTaskDetect {
 		List<PsmFaceVo> faceList = convertFaces(materialId, faces);
 		if (faceList.size() > 0) {
 			log.info("faceList size: {}", faceList.size());
-			for (PsmFace face : faceList) {
+			for (PsmFaceVo face : faceList) {
+				String detectResultId = CommonUtil.getUUID();
+
+				DetectResult detectResult = new DetectResult();
+				detectResult.setId(detectResultId);
+				detectResult.setMaterialId(materialId);
+				detectResult.setAngle(face.getAngle());
+				detectResult.setCenterX(face.getCenterX());
+				detectResult.setCenterY(face.getCenterY());
+				detectResult.setGroupId(face.getGroupId());
+				detectResult.setHeight(face.getHeight());
+				detectResult.setWidth(face.getWidth());
+				detectResult.setBase64(face.getBase64());
+				detectResult.setCreateTime(CommonUtil.getCurrentTime());
+				detectResultMapper.insert(detectResult);
+
+				face.setDetectResultId(detectResultId);
 			}
 		}
 
@@ -84,19 +104,7 @@ public class AsyncTaskDetect {
 		// faceList = new ArrayList<>();
 
 		for (PsmFaceVo face : faceList) {// Drop the faces which scores under 60
-//			Integer centerX = face.getCenterX();
-//			Integer centerY = face.getCenterY();
-//			Integer width = face.getWidth();
-//			Integer height = face.getHeight();
-
-//			int x = centerX - width / 2;
-//			int y = centerY - height / 2;
-
-//			byte[] bytes = ImageUtil.cut(image, x, y, width, height);
-			// CommonUtil.saveFile("D:\\" + System.currentTimeMillis() + ".jpg", bytes, bytes.length);
-
-
-			// 封装请求Json
+			// 封装请求JSON
 			FaceSdkRecVo faceSdkRec = new FaceSdkRecVo();
 			faceSdkRec.setGroup_id("g1");
 
@@ -113,7 +121,8 @@ public class AsyncTaskDetect {
 			byte[] bytes = Base64.getDecoder().decode(a.getBytes(Charset.forName("UTF-8")));
 			CommonUtil.saveFile("D:/temp/" + System.currentTimeMillis() + ".bmp", bytes);
 
-			asyncTaskRec.rec(materialId, faceSdkRec);
+			String detectResultId = face.getDetectResultId();
+			asyncTaskRec.rec(materialId, detectResultId, faceSdkRec);
 		}
 	}
 

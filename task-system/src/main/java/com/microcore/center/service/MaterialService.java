@@ -1,6 +1,6 @@
 package com.microcore.center.service;
 
-import com.microcore.center.model.PsmFace;
+import com.microcore.center.model.Face;
 import com.microcore.center.model.PsmMaterial;
 
 import java.util.List;
@@ -11,9 +11,9 @@ public interface MaterialService {
 
 	void addMaterial(PsmMaterial material);
 
-	void addFace(PsmFace face);
+	void addFace(Face face);
 
-	void addFaceList(List<PsmFace> faceList);
+	void addFaceList(List<Face> faceList);
 
 	PsmMaterial getMaterial(String id);
 

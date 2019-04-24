@@ -2,7 +2,7 @@ package com.microcore.center.task.rec.v2;
 
 import com.google.gson.Gson;
 import com.microcore.center.cllient.HttpTemplate;
-import com.microcore.center.model.PsmFace;
+import com.microcore.center.model.Face;
 import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.service.MaterialService;
@@ -83,7 +83,7 @@ public class AsyncTaskRec {
 	 *
 	 */
 	@Async
-	public void rec(String materialId, FaceSdkRecVo faceSdkRec) {
+	public void rec(String materialId, String detectResultId, FaceSdkRecVo faceSdkRec) {
 		String ret2 = "";
 
 		try {
@@ -103,12 +103,12 @@ public class AsyncTaskRec {
 			faces2 = new ArrayList<>();
 		}
 
-		List<PsmFaceVo> faceList2 = convertFaces(materialId, faces2);
+		List<PsmFaceVo> faceList2 = convertFaces(materialId, detectResultId, faces2);
 		if (faceList2.size() > 0) {
 			// log.info("faceList2 size: {}", faceList2.size());
 		}
 
-		for (PsmFace face2 : faceList2) {// Drop the faces which scores under 60
+		for (Face face2 : faceList2) {// Drop the faces which scores under 60
 			try {
 				if (Double.parseDouble(face2.getScore()) < 60.00D) {
 					continue;
@@ -144,12 +144,12 @@ public class AsyncTaskRec {
 			redisUtil.sadd(areaKey, userId);
 		}
 
-		List<PsmFace> facest = CommonUtil.listPo2VO(faceList2, PsmFace.class);
+		List<Face> facest = CommonUtil.listPo2VO(faceList2, Face.class);
 		materialService.addFaceList(facest);
 		// log.info("thread id= {}", Thread.currentThread().getName());
 	}
 
-	private List<PsmFaceVo> convertFaces(String materialId, List<DataStructure.FaceInfo> faceInfoList) {
+	private List<PsmFaceVo> convertFaces(String materialId, String detectResultId, List<DataStructure.FaceInfo> faceInfoList) {
 		return faceInfoList.stream().map(faceInfo -> {
 			PsmFaceVo face = new PsmFaceVo();
 
@@ -166,12 +166,13 @@ public class AsyncTaskRec {
 			face.setWidth(faceInfo.getWidth());
 			face.setScore(faceInfo.getScore());
 			face.setBase64(faceInfo.getBase64());
+			face.setDetectResultId(detectResultId);
 
 			return face;
 		}).collect(Collectors.toList());
 	}
 
-	private void sendEvent(PsmFace face) {
+	private void sendEvent(Face face) {
 		PsmDealResDetailVo vo = new PsmDealResDetailVo();
 		String materialId = face.getMaterialId();
 		PsmMaterial material = materialService.getMaterial(materialId);
@@ -222,7 +223,7 @@ public class AsyncTaskRec {
 		return addressList.get(areaId);
 	}
 
-	private void generateAlarmMessage(PsmFace face, String personName) {
+	private void generateAlarmMessage(Face face, String personName) {
 		PsmMaterial material = materialService.getMaterial(face.getMaterialId());
 		String areaId = material.getAreaId();
 		Date captureTime = material.getCreateTime();

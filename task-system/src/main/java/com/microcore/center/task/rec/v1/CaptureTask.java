@@ -3,7 +3,7 @@ package com.microcore.center.task.rec.v1;
 import com.microcore.center.cllient.HttpTemplate;
 import com.microcore.center.constant.Constants;
 import com.microcore.center.hcnetsdk.HCNetSDK;
-import com.microcore.center.model.PsmFace;
+import com.microcore.center.model.Face;
 import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.service.MaterialService;
 import com.microcore.center.service.SdkService;
@@ -11,8 +11,6 @@ import com.microcore.center.util.CommonUtil;
 import com.microcore.center.vo.FaceSdkRecVo;
 import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.IntByReference;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,9 +69,9 @@ public class CaptureTask {
 		this.asyncTask = asyncTask;
 	}
 
-	static List<PsmFace> convertFaces(String materialId, List<DataStructure.FaceInfo> faceInfoList) {
+	static List<Face> convertFaces(String materialId, List<DataStructure.FaceInfo> faceInfoList) {
 		return faceInfoList.stream().map(faceInfo -> {
-			PsmFace face = new PsmFace();
+			Face face = new Face();
 
 			face.setId(CommonUtil.getUUID());
 			face.setMaterialId(materialId);
