@@ -1,12 +1,12 @@
 package com.rainyhon.task.job.v2;
 
 import com.google.gson.Gson;
-import com.microcore.center.cllient.HttpTemplate;
+import com.rainyhon.common.cllient.HttpTemplate;
 import com.microcore.center.mapper.DetectResultMapper;
 import com.microcore.center.model.DetectResult;
-import com.microcore.center.util.*;
-import com.microcore.center.vo.FaceSdkRecVo;
-import com.microcore.center.vo.PsmFaceVo;
+import com.rainyhon.common.util.*;
+import com.rainyhon.common.vo.FaceSdkRecVo;
+import com.rainyhon.common.vo.PsmFaceVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

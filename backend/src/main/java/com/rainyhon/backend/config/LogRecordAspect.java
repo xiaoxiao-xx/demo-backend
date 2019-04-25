@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.microcore.center.util.WebLogUtil;
+import com.rainyhon.common.util.WebLogUtil;
 
 import lombok.extern.slf4j.Slf4j;
 

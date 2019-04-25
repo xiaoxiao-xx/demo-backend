@@ -1,6 +1,6 @@
 package com.rainyhon.backend.controller;
 
-import com.microcore.center.service.AlarmPolicyService;
+import com.rainyhon.common.service.AlarmPolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.vo.AlarmPolicyOpt;
-import com.microcore.center.vo.AlarmPolicyVo;
-import com.microcore.center.vo.ResultVo;
+import com.rainyhon.common.vo.AlarmPolicyOpt;
+import com.rainyhon.common.vo.AlarmPolicyVo;
+import com.rainyhon.common.vo.ResultVo;
 
 import io.swagger.annotations.ApiOperation;
 

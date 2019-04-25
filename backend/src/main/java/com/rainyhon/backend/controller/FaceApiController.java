@@ -1,10 +1,10 @@
 package com.rainyhon.backend.controller;
 
-import com.microcore.center.cllient.HttpTemplate;
-import com.microcore.center.service.FaceApiService;
-import com.microcore.center.vo.FaceSdkGroupVo;
-import com.microcore.center.vo.FaceSdkUserVo;
-import com.microcore.center.vo.ResultVo;
+import com.rainyhon.common.cllient.HttpTemplate;
+import com.rainyhon.common.service.FaceApiService;
+import com.rainyhon.common.vo.FaceSdkGroupVo;
+import com.rainyhon.common.vo.FaceSdkUserVo;
+import com.rainyhon.common.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.microcore.center.util.CommonUtil.byte2Base64Str;
-import static com.microcore.center.util.CommonUtil.image2byte;
+import static com.rainyhon.common.util.CommonUtil.byte2Base64Str;
+import static com.rainyhon.common.util.CommonUtil.image2byte;
 
 @RestController
 @RequestMapping("faceApi")

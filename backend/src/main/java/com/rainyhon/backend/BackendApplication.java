@@ -18,9 +18,9 @@ import org.springframework.web.client.RestTemplate;
 @EnableScheduling
 @EnableDiscoveryClient
 @SpringBootApplication
-@MapperScan(basePackages = {"com.microcore.center.mapper"})
 @EnableAsync
-@ComponentScan(basePackages = {"com.microcore.center", "com.microcore.auth"})
+@MapperScan(basePackages = { "com.microcore.center.mapper" })
+@ComponentScan(basePackages = { "com.rainyhon.backend", "com.microcore.center", "com.rainyhon.auth", "com.rainyhon.common" })
 public class BackendApplication {
 
 	public static void main(String[] args) {

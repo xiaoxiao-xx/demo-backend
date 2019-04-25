@@ -2,12 +2,15 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.yuhang</groupId>
+		<groupId>com.rainyhon</groupId>
 		<artifactId>psm-system</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>auth</artifactId>
 	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Auth</name>
+	<description>Auth</description>
 
 	<modules>
 		<module>auth-client</module>

@@ -3,14 +3,14 @@ package com.rainyhon.backend.task;
 import com.google.gson.Gson;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.model.PsmSrcRecord;
-import com.microcore.center.service.DealResultDetailService;
-import com.microcore.center.service.PersonService;
-import com.microcore.center.service.AlarmResultService;
-import com.microcore.center.service.SrcRecordService;
-import com.microcore.center.util.CommonUtil;
-import com.microcore.center.util.RabbitMQUtil;
-import com.microcore.center.vo.PsmDealResDetailVo;
-import com.microcore.center.vo.AlarmResultVo;
+import com.rainyhon.common.service.DealResultDetailService;
+import com.rainyhon.common.service.PersonService;
+import com.rainyhon.common.service.AlarmResultService;
+import com.rainyhon.common.service.SrcRecordService;
+import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.mq.rabbit.RabbitMQUtil;
+import com.rainyhon.common.vo.PsmDealResDetailVo;
+import com.rainyhon.common.vo.AlarmResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import static com.microcore.center.util.CommonUtil.random;
+import static com.rainyhon.common.util.CommonUtil.random;
 
 /**
  * 素材记录产生任务

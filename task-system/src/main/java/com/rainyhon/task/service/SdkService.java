@@ -1,6 +1,6 @@
 package com.rainyhon.task.service;
 
-import com.microcore.center.hcnetsdk.HCNetSDK;
+import com.rainyhon.common.hcnetsdk.HCNetSDK;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;

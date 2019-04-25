@@ -1,14 +1,14 @@
 package com.rainyhon.task.job.v1;
 
-import com.microcore.center.cllient.HttpTemplate;
-import com.microcore.center.constant.Constants;
-import com.microcore.center.hcnetsdk.HCNetSDK;
+import com.rainyhon.common.cllient.HttpTemplate;
+import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.hcnetsdk.HCNetSDK;
 import com.microcore.center.model.Face;
 import com.microcore.center.model.PsmMaterial;
-import com.rainyhon.task.service.MaterialService;
+import com.rainyhon.common.service.MaterialService;
 import com.rainyhon.task.service.SdkService;
-import com.microcore.center.util.CommonUtil;
-import com.microcore.center.vo.FaceSdkRecVo;
+import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.vo.FaceSdkRecVo;
 import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.IntByReference;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.microcore.center.util.CommonUtil.*;
+import static com.rainyhon.common.util.CommonUtil.*;
 
 /**
  * 定时截图工具类

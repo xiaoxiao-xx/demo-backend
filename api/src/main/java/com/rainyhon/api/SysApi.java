@@ -1,7 +1,7 @@
 package com.rainyhon.api;
 
-import com.microcore.center.vo.ResultVo;
-import com.microcore.center.vo.UserInfo;
+import com.rainyhon.common.vo.ResultVo;
+import com.rainyhon.common.vo.UserInfo;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

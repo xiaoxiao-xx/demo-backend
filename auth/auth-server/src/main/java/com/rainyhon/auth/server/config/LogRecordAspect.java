@@ -1,6 +1,6 @@
 package com.rainyhon.auth.server.config;
 
-import com.microcore.center.util.WebLogUtil;
+import com.rainyhon.common.util.WebLogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

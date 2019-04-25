@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.microcore.center.model.PsmFile;
-import com.microcore.center.service.FileService;
-import com.microcore.center.util.CommonUtil;
-import com.microcore.center.vo.ResultVo;
+import com.rainyhon.common.service.FileService;
+import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.vo.ResultVo;
 
 @RestController
 @RequestMapping("file")

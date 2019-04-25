@@ -1,8 +1,8 @@
 package com.rainyhon.backend.controller;
 
-import com.microcore.center.service.DeviceVersionService;
-import com.microcore.center.vo.DeviceVersionVo;
-import com.microcore.center.vo.ResultVo;
+import com.rainyhon.common.service.DeviceVersionService;
+import com.rainyhon.common.vo.DeviceVersionVo;
+import com.rainyhon.common.vo.ResultVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

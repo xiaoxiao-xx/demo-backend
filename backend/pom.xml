@@ -8,19 +8,19 @@
     <description>后台</description>
 
     <parent>
-        <groupId>com.yuhang</groupId>
+        <groupId>com.rainyhon</groupId>
         <artifactId>psm-system</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <dependency>
-            <groupId>com.yuhang</groupId>
+            <groupId>com.rainyhon</groupId>
             <artifactId>common</artifactId>
-            <version>0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.yuhang</groupId>
+            <groupId>com.rainyhon</groupId>
             <artifactId>auth-client</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

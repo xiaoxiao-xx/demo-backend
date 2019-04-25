@@ -29,8 +29,8 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder()
 				.title("后台管理系统 RESTful APIs")
 				.description("后台管理系统 RESTful APIs")
-				.termsOfServiceUrl("http://www.yuhang.com/")
-				.contact(new Contact("Yuhang", "http://www.yuhang.com", "adm@yuhang.com"))
+				.termsOfServiceUrl("http://www.rainyhon.com/")
+				.contact(new Contact("Rainyhon", "http://www.rainyhon.com", "adm@rainyhon.com"))
 				.version("0.0.1")
 				.build();
 	}

@@ -1,6 +1,6 @@
 package com.rainyhon.task.config;
 
-import com.microcore.center.hcnetsdk.HCNetSDK;
+import com.rainyhon.common.hcnetsdk.HCNetSDK;
 import com.rainyhon.task.service.SdkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +44,12 @@ public class SdkConfig {
 	private SdkService sdkService;
 
 	// SDK instance
-	private HCNetSDK sdk = HCNetSDK.INSTANCE;
+	private HCNetSDK sdkInstance = HCNetSDK.INSTANCE;
 
 	@PostConstruct
 	private void initSdkService() {
 		// 初始化SDK
-		boolean initSuc = sdk.NET_DVR_Init();
+		boolean initSuc = sdkInstance.NET_DVR_Init();
 		if (!initSuc) {
 			log.error("SDK初始化失败");
 		} else {
@@ -57,9 +57,9 @@ public class SdkConfig {
 		}
 
 		// 设置超时时间
-		sdk.NET_DVR_SetConnectTime(12, 2);
+		sdkInstance.NET_DVR_SetConnectTime(12, 2);
 
-		sdkService.setSdk(sdk);
+		sdkService.setSdk(sdkInstance);
 		sdkService.startLogin(deviceIp, devicePort, username, password);
 		log.info("Log in device finished");
 	}

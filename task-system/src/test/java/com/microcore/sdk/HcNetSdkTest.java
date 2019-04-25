@@ -1,7 +1,7 @@
 package com.microcore.sdk;
 
-import com.microcore.center.hcnetsdk.HCNetSDK;
-import com.microcore.center.vo.FaceSdkRequestVo;
+import com.rainyhon.common.hcnetsdk.HCNetSDK;
+import com.rainyhon.common.vo.FaceSdkRequestVo;
 import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.IntByReference;
 import org.junit.Test;

@@ -1,9 +1,9 @@
 package com.rainyhon.backend.controller;
 
-import com.microcore.center.constant.Constants;
-import com.microcore.center.service.DeviceService;
-import com.microcore.center.vo.PsmDeviceVo;
-import com.microcore.center.vo.ResultVo;
+import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.service.DeviceService;
+import com.rainyhon.common.vo.PsmDeviceVo;
+import com.rainyhon.common.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

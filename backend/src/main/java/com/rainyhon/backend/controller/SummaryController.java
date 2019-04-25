@@ -1,7 +1,7 @@
 package com.rainyhon.backend.controller;
 
-import com.microcore.center.service.SummaryService;
-import com.microcore.center.vo.ResultVo;
+import com.rainyhon.common.service.SummaryService;
+import com.rainyhon.common.vo.ResultVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

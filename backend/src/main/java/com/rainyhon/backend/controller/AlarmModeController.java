@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.microcore.center.service.AlarmModeService;
-import com.microcore.center.vo.ResultVo;
+import com.rainyhon.common.service.AlarmModeService;
+import com.rainyhon.common.vo.ResultVo;
 
 import io.swagger.annotations.ApiOperation;
 

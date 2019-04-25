@@ -1,8 +1,8 @@
 package com.rainyhon.auth.server.realm;
 
 import com.rainyhon.api.SysApi;
-import com.microcore.center.util.JedisPoolUtil;
-import com.microcore.center.vo.UserInfo;
+import com.rainyhon.common.util.JedisPoolUtil;
+import com.rainyhon.common.vo.UserInfo;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

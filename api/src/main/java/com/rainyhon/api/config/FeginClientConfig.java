@@ -1,8 +1,7 @@
 package com.rainyhon.api.config;
 
-import com.microcore.center.util.UserUtil;
-import com.microcore.center.vo.UserInfo;
-import feign.RequestTemplate;
+import com.rainyhon.common.util.UserUtil;
+import com.rainyhon.common.vo.UserInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 

@@ -1,12 +1,12 @@
 package com.rainyhon.task.job.v2;
 
-import com.microcore.center.constant.Constants;
-import com.microcore.center.hcnetsdk.HCNetSDK;
+import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.hcnetsdk.HCNetSDK;
 import com.microcore.center.model.PsmMaterial;
-import com.rainyhon.task.service.MaterialService;
+import com.rainyhon.common.service.MaterialService;
 import com.rainyhon.task.service.SdkService;
-import com.microcore.center.util.CommonUtil;
-import com.microcore.center.vo.FaceSdkRecVo;
+import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.vo.FaceSdkRecVo;
 import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.IntByReference;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +19,14 @@ import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.microcore.center.util.CommonUtil.byte2Base64Str;
-import static com.microcore.center.util.CommonUtil.saveFile;
+import static com.rainyhon.common.util.CommonUtil.byte2Base64Str;
+import static com.rainyhon.common.util.CommonUtil.saveFile;
 
 /**
  * 定时截图工具类
  */
 @Slf4j
-@Component
+@Component(value = "captureTaskV2")
 public class CaptureTask {
 
 	private final SdkService sdkService;

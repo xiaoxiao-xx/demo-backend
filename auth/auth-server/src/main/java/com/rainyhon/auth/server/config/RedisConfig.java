@@ -1,6 +1,6 @@
 package com.rainyhon.auth.server.config;
 
-import com.microcore.center.util.JedisPoolUtil;
+import com.rainyhon.common.util.JedisPoolUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -7,7 +7,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.rainyhon.backend.config.SessionManage;
-import com.microcore.center.util.StringUtil;
+import com.rainyhon.common.util.StringUtil;
 
 import lombok.extern.slf4j.Slf4j;
 

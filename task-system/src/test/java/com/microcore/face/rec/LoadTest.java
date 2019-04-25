@@ -1,11 +1,11 @@
 package com.microcore.face.rec;
 
 import com.google.gson.Gson;
-import com.rainyhon.task.SlsTaskSystemApplication;
-import com.microcore.center.cllient.HttpTemplate;
+import com.rainyhon.task.TaskSystemApplication;
+import com.rainyhon.common.cllient.HttpTemplate;
 import com.rainyhon.task.job.v2.DataStructure;
-import com.microcore.center.util.CommonUtil;
-import com.microcore.center.vo.FaceSdkRecVo;
+import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.vo.FaceSdkRecVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +20,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.microcore.center.util.CommonUtil.byte2Base64Str;
+import static com.rainyhon.common.util.CommonUtil.byte2Base64Str;
 
 @Slf4j
-@SpringBootTest(classes = SlsTaskSystemApplication.class)
+@SpringBootTest(classes = TaskSystemApplication.class)
 @RunWith(SpringRunner.class)
 public class LoadTest {
 

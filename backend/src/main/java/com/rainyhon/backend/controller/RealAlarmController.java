@@ -1,9 +1,9 @@
 package com.rainyhon.backend.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.service.AlarmResultService;
-import com.microcore.center.vo.AlarmResultVo;
-import com.microcore.center.vo.ResultVo;
+import com.rainyhon.common.service.AlarmResultService;
+import com.rainyhon.common.vo.AlarmResultVo;
+import com.rainyhon.common.vo.ResultVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

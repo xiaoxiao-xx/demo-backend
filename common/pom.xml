@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.yuhang</groupId>
+        <groupId>com.rainyhon</groupId>
         <artifactId>psm-system</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>common</artifactId>
-    <version>0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>Common</name>
     <description>公共模块</description>
 
@@ -81,10 +81,10 @@
             <version>2.7.0</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.projectlombok</groupId>-->
-            <!--<artifactId>lombok</artifactId>-->
-            <!--<version>1.18.6</version>-->
-            <!--<scope>provided</scope>-->
+        <!--<groupId>org.projectlombok</groupId>-->
+        <!--<artifactId>lombok</artifactId>-->
+        <!--<version>1.18.6</version>-->
+        <!--<scope>provided</scope>-->
         <!--</dependency>-->
         <dependency>
             <groupId>javax.validation</groupId>
@@ -132,9 +132,9 @@
             <version>(5.5.0,)</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-simple</artifactId>-->
-            <!--<version>1.7.25</version>-->
+        <!--<groupId>org.slf4j</groupId>-->
+        <!--<artifactId>slf4j-simple</artifactId>-->
+        <!--<version>1.7.25</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>net.sf.json-lib</groupId>

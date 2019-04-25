@@ -1,6 +1,6 @@
 package com.rainyhon.api.interceptor;
 
-import com.microcore.center.context.AuthContextHandler;
+import com.rainyhon.common.context.AuthContextHandler;
 import org.springframework.context.annotation.Configuration;
 
 import feign.RequestInterceptor;

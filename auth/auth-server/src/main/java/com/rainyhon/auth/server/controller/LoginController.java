@@ -1,10 +1,10 @@
 package com.rainyhon.auth.server.controller;
 
 import com.rainyhon.auth.server.realm.MyUsernamePasswordToken;
-import com.microcore.center.util.*;
-import com.microcore.center.vo.LoginVo;
-import com.microcore.center.vo.ResultVo;
-import com.microcore.center.vo.UserInfo;
+import com.rainyhon.common.util.*;
+import com.rainyhon.common.vo.LoginVo;
+import com.rainyhon.common.vo.ResultVo;
+import com.rainyhon.common.vo.UserInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;

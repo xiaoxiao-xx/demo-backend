@@ -1,22 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>task-system</artifactId>
-    <version>0.1</version>
-    <name>TaskSystem</name>
-    <description>Demo后台</description>
 
     <parent>
-        <groupId>com.yuhang</groupId>
+        <groupId>com.rainyhon</groupId>
         <artifactId>psm-system</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+    <artifactId>task-system</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>TaskSystem</name>
+    <description>Demo后台</description>
 
     <dependencies>
         <dependency>
-            <groupId>com.yuhang</groupId>
+            <groupId>com.rainyhon</groupId>
             <artifactId>common</artifactId>
-            <version>0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rainyhon</groupId>
+            <artifactId>auth-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -78,10 +83,10 @@
             <version>2.7.0</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.projectlombok</groupId>-->
-            <!--<artifactId>lombok</artifactId>-->
-            <!--<version>1.18.6</version>-->
-            <!--<scope>provided</scope>-->
+        <!--<groupId>org.projectlombok</groupId>-->
+        <!--<artifactId>lombok</artifactId>-->
+        <!--<version>1.18.6</version>-->
+        <!--<scope>provided</scope>-->
         <!--</dependency>-->
         <dependency>
             <groupId>javax.validation</groupId>
@@ -129,9 +134,9 @@
             <version>(5.5.0,)</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-simple</artifactId>-->
-            <!--<version>1.7.25</version>-->
+        <!--<groupId>org.slf4j</groupId>-->
+        <!--<artifactId>slf4j-simple</artifactId>-->
+        <!--<version>1.7.25</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>net.sf.json-lib</groupId>
@@ -206,7 +211,7 @@
                 <configuration>
                     <fork>true</fork>
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.rainyhon.task.SlsTaskSystemApplication</mainClass>
+                    <mainClass>com.rainyhon.task.TaskSystemApplication</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>

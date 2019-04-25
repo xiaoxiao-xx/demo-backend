@@ -3,17 +3,20 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.yuhang</groupId>
+		<groupId>com.rainyhon</groupId>
 		<artifactId>psm-system</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>api</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Api</name>
+	<description>Api</description>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.yuhang</groupId>
+			<groupId>com.rainyhon</groupId>
 			<artifactId>common</artifactId>
-			<version>0.1</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

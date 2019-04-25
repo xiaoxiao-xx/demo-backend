@@ -1,7 +1,7 @@
 package com.rainyhon.task.service.impl;
 
-import com.microcore.center.constant.ErrorMessage;
-import com.microcore.center.hcnetsdk.HCNetSDK;
+import com.rainyhon.common.constant.ErrorMessage;
+import com.rainyhon.common.hcnetsdk.HCNetSDK;
 import com.rainyhon.task.service.SdkService;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
