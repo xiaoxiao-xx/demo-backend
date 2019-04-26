@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.microcore.center.model.PsmUser;
 
-import com.microcore.center.model.User;
+import com.rainyhon.common.model.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,6 +23,8 @@ public class UserInfo extends User implements Serializable {
 	private PsmUser psmUser;
 
 	private Date visitTime;
+
+	private String orgId;
 
 //	private DbOrg dbOrg;
 

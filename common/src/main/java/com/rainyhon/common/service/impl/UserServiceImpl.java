@@ -5,9 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.constant.ExceptionType;
 import com.rainyhon.common.exception.CommonException;
-import com.microcore.center.mapper.UserMapper;
-import com.microcore.center.model.User;
-import com.microcore.center.model.UserExample;
+import com.rainyhon.common.mapper.UserMapper;
+import com.rainyhon.common.model.User;
+import com.rainyhon.common.model.UserExample;
 import com.rainyhon.common.service.UserService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
 		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
 
 		if (StringUtils.isNotBlank(orgId)) {
-			criteria.andOrgIdEqualTo(orgId.trim());
+			// criteria.andOrgIdEqualTo(orgId.trim());
 		}
 
 		PageInfo<User> pageInfo = PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(()

@@ -29,4 +29,5 @@ public class LogRecordAspect {
 			throw new RuntimeException("系统异常请联系管理员！");
 		}
 	}
+
 }

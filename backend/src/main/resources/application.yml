@@ -6,7 +6,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapping/*.xml
-  type-aliases-package: com.microcore.center.model
+  type-aliases-package: com.microcore.center.model, com.rainyhon.common.model
 
 #pagehelper分页插件
 pagehelper:

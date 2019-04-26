@@ -12,6 +12,9 @@ import com.netflix.zuul.context.RequestContext;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author
  */
@@ -33,20 +36,31 @@ public class AccessFilter extends ZuulFilter {
 		return true;
 	}
 
+	private Set<String> urlWhiteList = new HashSet<>();
+
+	{
+		urlWhiteList.add("/user/addUser");
+	}
+
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest request = ctx.getRequest();
 		String requestURL = request.getRequestURL().toString();
+		String uri = request.getRequestURI();
 
 		// 不过滤登录请求
 		if (requestURL.contains("/auth/login")) {
 			return null;
 		}
 
+		if (urlWhiteList.contains(uri)) {
+			return null;
+		}
+
 		boolean flag = true;
 		if (flag) {
-//			return null;
+			return null;
 		}
 
 		// 过滤一般非登录请求

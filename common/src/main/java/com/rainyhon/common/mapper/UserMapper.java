@@ -1,7 +1,7 @@
-package com.microcore.center.mapper;
+package com.rainyhon.common.mapper;
 
-import com.microcore.center.model.User;
-import com.microcore.center.model.UserExample;
+import com.rainyhon.common.model.User;
+import com.rainyhon.common.model.UserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

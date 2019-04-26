@@ -6,11 +6,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * ApplicationContextProvider 
  * 设置spring上下文以获取多例的线程
- *
- * @author lijie
- * @date 2018/3/29
  */
 @Component
 public class ApplicationContextProvider implements ApplicationContextAware {
@@ -20,8 +16,7 @@ public class ApplicationContextProvider implements ApplicationContextAware {
 	/**
 	 * 复写方法，获得spring的上下文 提供注入bean的功能
 	 *
-	 * @param applicationContext
-	 *            spring上下文
+	 * @param applicationContext spring上下文
 	 * @throws BeansException
 	 */
 	@Override
@@ -36,10 +31,8 @@ public class ApplicationContextProvider implements ApplicationContextAware {
 	/**
 	 * 注入bean
 	 *
-	 * @param name
-	 *            bean名称
-	 * @param tclass
-	 *            class文件
+	 * @param name   bean名称
+	 * @param tclass class文件
 	 * @param <T>
 	 * @return
 	 */

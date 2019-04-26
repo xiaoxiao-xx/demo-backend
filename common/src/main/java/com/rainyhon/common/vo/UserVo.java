@@ -1,6 +1,6 @@
 package com.rainyhon.common.vo;
 
-import com.microcore.center.model.User;
+import com.rainyhon.common.model.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

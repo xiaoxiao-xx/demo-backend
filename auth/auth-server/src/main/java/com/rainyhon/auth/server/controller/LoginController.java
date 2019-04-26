@@ -27,7 +27,7 @@ public class LoginController {
 	/**
 	 * 默认超时时长，单位为秒
 	 */
-	private static final int DEFAULT_SESSION_EXPIRE_TIME = 20000;
+	private static final int DEFAULT_SESSION_EXPIRE_TIME = 7 * 24 * 60 * 60;
 
 	private final JedisPoolUtil jedisPoolUtil;
 
@@ -43,34 +43,41 @@ public class LoginController {
 			log.info("用户名不能为空！");
 			return ResultVo.fail("用户名不能为空！");
 		}
-		if (StringUtil.isEmpty(loginVo.getUsername())) {
+
+		if (StringUtil.isEmpty(loginVo.getPassword())) {
 			log.info("密码不能为空！");
 			return ResultVo.fail("密码不能为空！");
 		}
+
 		String username = loginVo.getUsername().trim();
 		String password = loginVo.getPassword().trim();
-		log.info("UserName: " + username + ", Password: " + password);
+		// log.info("UserName: " + username + ", Password: " + password);
 
-		// 默认存在姓名-uuid键值对就算是登录
-		// TODO 如果登录后再次调用本接口，下面几行代码使得即使密码错误也会返回Token。删除下面几行才好
-		// 每次登录都要重新验证
-		if (jedisPoolUtil.exists(username)) {
-			// log.info("已经登录: {}-{}", username, jedisPoolUtil.get(username));
-			// response.setHeader("access-token", userToken.get(username));
-			return ResultVo.ok(jedisPoolUtil.get(username));
-		}
-
-		// 尚未登录，开始登录流程
+		// 每次登录都要验证
+		// 开始登录流程
 		MyUsernamePasswordToken token = new MyUsernamePasswordToken(username, password);
 		Subject subject = SecurityUtils.getSubject();
 		try {
-			// token和MyShiroRealm.doGetAuthenticationInfo()返回的对象对比，相同则通过
+			// token 和 MyShiroRealm.doGetAuthenticationInfo()返回的对象对比，相同则通过
 			subject.login(token);
 		} catch (AuthenticationException e) {
-			log.info("账号或者密码错误",e);
+			log.info("账号或者密码错误", e);
 			return ResultVo.fail(e.getMessage());
 		}
+
 		UserInfo userInfo = (UserInfo) subject.getPrincipal();
+
+		// already logged in
+		if (jedisPoolUtil.existsBinary("login:" + userInfo.getId())) {
+			// log.info("已经登录: {}-{}", username, jedisPoolUtil.get(username));
+			// response.setHeader("access-token", userToken.get(username));
+
+			UserInfo userInfoLogged = jedisPoolUtil.getBinary("login:" + userInfo.getId());
+			return ResultVo.ok(userInfoLogged.getToken());
+		}
+
+		// first logged in
+		// 存在id-UserInfo键值对就是登录
 		String uuidToken = null;
 		try {
 			uuidToken = JwtUtil.createJwtToken(userInfo.getId(), null);
@@ -78,8 +85,7 @@ public class LoginController {
 			e.printStackTrace();
 		}
 		userInfo.setToken(uuidToken);
-//		jedisPoolUtil.setex(username, DEFAULT_SESSION_EXPIRE_TIME, userInfo.getId());
-		jedisPoolUtil.setBinary(userInfo.getId(), DEFAULT_SESSION_EXPIRE_TIME, userInfo);
+		jedisPoolUtil.setBinary("login:" + userInfo.getId(), DEFAULT_SESSION_EXPIRE_TIME, userInfo);
 		response.setHeader("access-token", uuidToken);
 		return ResultVo.ok(uuidToken);
 	}
@@ -92,20 +98,15 @@ public class LoginController {
 
 	@ApiOperation(value = "用户注销登录", notes = "注销登录")
 	@PostMapping("logout")
-	public ResultVo logOut() {
+	public ResultVo logOut() throws Exception {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
 		String token = request.getHeader("access-token");
-		Boolean exist = jedisPoolUtil.exists(token);
-		String username = jedisPoolUtil.hmget(token, "username").get(0);
 
-		if (exist) {
-			jedisPoolUtil.del(token);
-		}
+		String userId = (String) JwtUtil.parseJwtToken(token).getBody().get("jti");
 
-		if (username != null) {
-			jedisPoolUtil.del(username);
-		}
+		String key = "login:" + userId;
+		jedisPoolUtil.del(Object2Byte.getBytesFromObject(key));
 
 		// log.info("已经注销");
 		return ResultVo.ok("已经注销");
@@ -114,10 +115,11 @@ public class LoginController {
 	@ApiIgnore
 	@PostMapping("isLogged")
 	public UserInfo isLogged(@RequestBody String token) throws Exception {
-		String userID = (String) JwtUtil.parseJwtToken(token).getBody().get("jti");
+		String userId = (String) JwtUtil.parseJwtToken(token).getBody().get("jti");
 		// token-map存在并且没有超时为登录
-		if (jedisPoolUtil.existsBinary(userID)) {
-			UserInfo userInfo = refresh(userID);
+		String key = "login:" + userId;
+		if (jedisPoolUtil.existsBinary(key)) {
+			UserInfo userInfo = refresh(key);
 			if (userInfo == null) {
 				UserInfo dbUserDto = new UserInfo();
 				dbUserDto.setIsLogged(false);

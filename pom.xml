@@ -86,7 +86,7 @@
 				</configuration>
 				<dependencies>
 					<dependency>
-						<groupId>com.microcore</groupId>
+						<groupId>com.rainyhon</groupId>
 						<artifactId>mybatis-comment-generator</artifactId>
 						<version>0.0.1</version>
 					</dependency>

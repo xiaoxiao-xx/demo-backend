@@ -1,7 +1,7 @@
 package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.model.User;
+import com.rainyhon.common.model.User;
 import com.rainyhon.common.vo.UserInfo;
 import com.rainyhon.common.vo.UserVo;
 

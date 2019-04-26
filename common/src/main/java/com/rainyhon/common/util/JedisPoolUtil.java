@@ -51,6 +51,12 @@ public class JedisPoolUtil {
 		}
 	}
 
+	public boolean exists(byte[] key) {
+		try (Jedis jedis = this.getJedis()) {
+			return jedis.exists(key);
+		}
+	}
+
 	public String get(String key) {
 		try (Jedis jedis = this.getJedis()) {
 			return jedis.get(key);
@@ -106,6 +112,12 @@ public class JedisPoolUtil {
 	}
 
 	public void del(String key) {
+		try (Jedis jedis = this.getJedis()) {
+			jedis.del(key);
+		}
+	}
+
+	public void del(byte[] key) {
 		try (Jedis jedis = this.getJedis()) {
 			jedis.del(key);
 		}

@@ -1,4 +1,4 @@
-package com.microcore.center.model;
+package com.rainyhon.common.model;
 
 import java.util.Date;
 
@@ -19,9 +19,9 @@ public class User {
     private String password;
 
     /**
-     * 机构ID
+     * 真实人员信息ID
      */
-    private String orgId;
+    private String realPersonId;
 
     /**
      * 邮箱
@@ -137,19 +137,19 @@ public class User {
     }
 
     /**
-     * 机构ID
-     * @return org_id 机构ID
+     * 真实人员信息ID
+     * @return real_person_id 真实人员信息ID
      */
-    public String getOrgId() {
-        return orgId;
+    public String getRealPersonId() {
+        return realPersonId;
     }
 
     /**
-     * 机构ID
-     * @param orgId 机构ID
+     * 真实人员信息ID
+     * @param realPersonId 真实人员信息ID
      */
-    public void setOrgId(String orgId) {
-        this.orgId = orgId == null ? null : orgId.trim();
+    public void setRealPersonId(String realPersonId) {
+        this.realPersonId = realPersonId == null ? null : realPersonId.trim();
     }
 
     /**

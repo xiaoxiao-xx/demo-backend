@@ -71,9 +71,9 @@ public class AlarmResultServiceImpl implements AlarmResultService {
     public PageInfo<AlarmResultVo> getRealAlarmList2(String alarmType, String operator, String state,
                                                      Integer pageIndex, Integer pageSize) {
         String sql = "SELECT *, \n" +
-                "DATE_FORMAT( psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i' ) group_string \n" +
-                "FROM psm_real_alarm_t \n" +
-                "GROUP BY DATE_FORMAT(psm_real_alarm_t.trigger_time, '%Y-%m-%d %H-%i') \n" +
+                "DATE_FORMAT(alarm_result.trigger_time, '%Y-%m-%d %H-%i' ) group_string \n" +
+                "FROM alarm_result \n" +
+                "GROUP BY DATE_FORMAT(alarm_result.trigger_time, '%Y-%m-%d %H-%i') \n" +
                 "ORDER BY trigger_time DESC \n" +
 		        "LIMIT 5";
         Map<String, Object> params = new HashMap<>(3);
@@ -133,8 +133,8 @@ public class AlarmResultServiceImpl implements AlarmResultService {
     @Override
     public ResultVo getAlarmCount() {
         String sql = "SELECT alarm_type, count( * ) count, p.para_value " +
-                "FROM psm_real_alarm_t " +
-                "LEFT JOIN psm_para_define_t p ON alarm_type = p.para_code AND p.para_type = 'ALARM_MODE' " +
+                "FROM alarm_result " +
+                "LEFT JOIN psm_para_define_t p ON alarm_type = p.para_code AND p.para_type = 'ALARM_MODE_TYPE' " +
                 "GROUP BY alarm_type;";
         Map<String, Object> prams = new HashMap<>();
         prams.put("sql", sql);
@@ -145,7 +145,7 @@ public class AlarmResultServiceImpl implements AlarmResultService {
 	@Override
 
 	public ResultVo getAlarmStateInfo() {
-        String sql = "select state, count(id) count from psm_real_alarm_t GROUP BY state";
+        String sql = "select state, count(id) count from alarm_result GROUP BY state";
 
 		Map<String, Object> prams = new HashMap<>();
 		prams.put("sql", sql);

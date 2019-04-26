@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.microcore.center.mapper.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.microcore.center.model.User" >
+<mapper namespace="com.rainyhon.common.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.User" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="org_id" property="orgId" jdbcType="VARCHAR" />
+    <result column="real_person_id" property="realPersonId" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
     <result column="login_error_count" property="loginErrorCount" jdbcType="INTEGER" />
@@ -79,11 +79,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, username, password, org_id, email, phone_number, login_error_count, locked, last_login_time, 
-    total_login_count, del_status, upd_user_id, upd_org_id, upd_tm, crt_user_id, crt_org_id, 
-    crt_tm
+    id, username, password, real_person_id, email, phone_number, login_error_count, locked, 
+    last_login_time, total_login_count, del_status, upd_user_id, upd_org_id, upd_tm, 
+    crt_user_id, crt_org_id, crt_tm
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.UserExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.UserExample" >
     select
     <if test="distinct" >
       distinct
@@ -108,27 +108,27 @@
     delete from user
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.microcore.center.model.UserExample" >
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.UserExample" >
     delete from user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.microcore.center.model.User" >
+  <insert id="insert" parameterType="com.rainyhon.common.model.User" >
     insert into user (id, username, password, 
-      org_id, email, phone_number, 
+      real_person_id, email, phone_number, 
       login_error_count, locked, last_login_time, 
       total_login_count, del_status, upd_user_id, 
       upd_org_id, upd_tm, crt_user_id, 
       crt_org_id, crt_tm)
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{orgId,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, 
+      #{realPersonId,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, 
       #{loginErrorCount,jdbcType=INTEGER}, #{locked,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
       #{totalLoginCount,jdbcType=INTEGER}, #{delStatus,jdbcType=VARCHAR}, #{updUserId,jdbcType=VARCHAR}, 
       #{updOrgId,jdbcType=VARCHAR}, #{updTm,jdbcType=TIMESTAMP}, #{crtUserId,jdbcType=VARCHAR}, 
       #{crtOrgId,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.microcore.center.model.User" >
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.User" >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -140,8 +140,8 @@
       <if test="password != null" >
         password,
       </if>
-      <if test="orgId != null" >
-        org_id,
+      <if test="realPersonId != null" >
+        real_person_id,
       </if>
       <if test="email != null" >
         email,
@@ -193,8 +193,8 @@
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="orgId != null" >
-        #{orgId,jdbcType=VARCHAR},
+      <if test="realPersonId != null" >
+        #{realPersonId,jdbcType=VARCHAR},
       </if>
       <if test="email != null" >
         #{email,jdbcType=VARCHAR},
@@ -237,7 +237,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.microcore.center.model.UserExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.rainyhon.common.model.UserExample" resultType="java.lang.Integer" >
     select count(*) from user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -255,8 +255,8 @@
       <if test="record.password != null" >
         password = #{record.password,jdbcType=VARCHAR},
       </if>
-      <if test="record.orgId != null" >
-        org_id = #{record.orgId,jdbcType=VARCHAR},
+      <if test="record.realPersonId != null" >
+        real_person_id = #{record.realPersonId,jdbcType=VARCHAR},
       </if>
       <if test="record.email != null" >
         email = #{record.email,jdbcType=VARCHAR},
@@ -307,7 +307,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       username = #{record.username,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
-      org_id = #{record.orgId,jdbcType=VARCHAR},
+      real_person_id = #{record.realPersonId,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR},
       phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
       login_error_count = #{record.loginErrorCount,jdbcType=INTEGER},
@@ -325,7 +325,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.User" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.User" >
     update user
     <set >
       <if test="username != null" >
@@ -334,8 +334,8 @@
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="orgId != null" >
-        org_id = #{orgId,jdbcType=VARCHAR},
+      <if test="realPersonId != null" >
+        real_person_id = #{realPersonId,jdbcType=VARCHAR},
       </if>
       <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
@@ -379,11 +379,11 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.User" >
+  <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.User" >
     update user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      org_id = #{orgId,jdbcType=VARCHAR},
+      real_person_id = #{realPersonId,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       phone_number = #{phoneNumber,jdbcType=VARCHAR},
       login_error_count = #{loginErrorCount,jdbcType=INTEGER},

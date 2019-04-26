@@ -1,4 +1,4 @@
-package com.microcore.center.model;
+package com.rainyhon.common.model;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -371,73 +371,73 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdIsNull() {
-            addCriterion("org_id is null");
+        public Criteria andRealPersonIdIsNull() {
+            addCriterion("real_person_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdIsNotNull() {
-            addCriterion("org_id is not null");
+        public Criteria andRealPersonIdIsNotNull() {
+            addCriterion("real_person_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdEqualTo(String value) {
-            addCriterion("org_id =", value, "orgId");
+        public Criteria andRealPersonIdEqualTo(String value) {
+            addCriterion("real_person_id =", value, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdNotEqualTo(String value) {
-            addCriterion("org_id <>", value, "orgId");
+        public Criteria andRealPersonIdNotEqualTo(String value) {
+            addCriterion("real_person_id <>", value, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdGreaterThan(String value) {
-            addCriterion("org_id >", value, "orgId");
+        public Criteria andRealPersonIdGreaterThan(String value) {
+            addCriterion("real_person_id >", value, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdGreaterThanOrEqualTo(String value) {
-            addCriterion("org_id >=", value, "orgId");
+        public Criteria andRealPersonIdGreaterThanOrEqualTo(String value) {
+            addCriterion("real_person_id >=", value, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdLessThan(String value) {
-            addCriterion("org_id <", value, "orgId");
+        public Criteria andRealPersonIdLessThan(String value) {
+            addCriterion("real_person_id <", value, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdLessThanOrEqualTo(String value) {
-            addCriterion("org_id <=", value, "orgId");
+        public Criteria andRealPersonIdLessThanOrEqualTo(String value) {
+            addCriterion("real_person_id <=", value, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdLike(String value) {
-            addCriterion("org_id like", value, "orgId");
+        public Criteria andRealPersonIdLike(String value) {
+            addCriterion("real_person_id like", value, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdNotLike(String value) {
-            addCriterion("org_id not like", value, "orgId");
+        public Criteria andRealPersonIdNotLike(String value) {
+            addCriterion("real_person_id not like", value, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdIn(List<String> values) {
-            addCriterion("org_id in", values, "orgId");
+        public Criteria andRealPersonIdIn(List<String> values) {
+            addCriterion("real_person_id in", values, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdNotIn(List<String> values) {
-            addCriterion("org_id not in", values, "orgId");
+        public Criteria andRealPersonIdNotIn(List<String> values) {
+            addCriterion("real_person_id not in", values, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdBetween(String value1, String value2) {
-            addCriterion("org_id between", value1, value2, "orgId");
+        public Criteria andRealPersonIdBetween(String value1, String value2) {
+            addCriterion("real_person_id between", value1, value2, "realPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andOrgIdNotBetween(String value1, String value2) {
-            addCriterion("org_id not between", value1, value2, "orgId");
+        public Criteria andRealPersonIdNotBetween(String value1, String value2) {
+            addCriterion("real_person_id not between", value1, value2, "realPersonId");
             return (Criteria) this;
         }
 
