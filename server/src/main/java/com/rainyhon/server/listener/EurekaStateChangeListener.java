@@ -25,11 +25,11 @@ public class EurekaStateChangeListener {
 
 	// @Value("${iptable.platform}")
 	private String platform = "sls/";
-    
-    // @Autowired
-    // private RedisTemplate<String, String> redisTemplate;
 
-	private Map<String, String> opsForSet = new HashMap<String, String>();
+	// @Autowired
+	// private RedisTemplate<String, String> redisTemplate;
+
+	private Map<String, String> opsForSet = new HashMap<>();
 
 	private static final String COLON = ":";
 
@@ -42,7 +42,7 @@ public class EurekaStateChangeListener {
 
 		// SetOperations<String, String> opsForSet = redisTemplate.opsForSet();
 		opsForSet.remove((platform + appName).toLowerCase());
-		log.info(">>>>>>> 失效服务:{},已被剔除!", serverId);
+		log.info("失效服务:{},已被剔除!", serverId);
 	}
 
 	@EventListener//(condition = "#event.replication==false")
@@ -55,26 +55,26 @@ public class EurekaStateChangeListener {
 		// SetOperations<String, String> opsForSet = redisTemplate.opsForSet();
 		opsForSet.put((platform + appName).toLowerCase(), instanceInfo.getIPAddr() + COLON + instanceInfo.getPort());
 
-		log.info(">>>>>>> 服务名:{},端口号:{},已缓存至redis", appName, instanceInfo.getPort());
+		log.info("服务名:{},端口号:{},已缓存至redis", appName, instanceInfo.getPort());
 	}
 
 	@EventListener//(condition = "#event.replication==false")
 	public void listen(EurekaInstanceRenewedEvent event) {
 		// 服务续约
-		log.info(">>>>>>>>>>>Server续约:" + event.getServerId());
-		System.out.println(opsForSet);
+		log.info("Server续约:" + event.getServerId());
+		// System.out.println(opsForSet);
 	}
 
 	@EventListener
 	public void listen(EurekaRegistryAvailableEvent event) {
 		// 注册中心启动
-		log.info(">>>>>>>>>>Server注册中心:" + event);
+		log.info("Server注册中心:" + event);
 	}
 
 	@EventListener
 	public void listen(EurekaServerStartedEvent event) {
 		// Server启动
-		log.info(">>>>>>>>>>Server启动:" + event);
+		log.info("Server启动:" + event);
 	}
 
 }

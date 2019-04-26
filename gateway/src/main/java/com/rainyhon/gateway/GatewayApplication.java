@@ -18,10 +18,10 @@ import com.rainyhon.gateway.filter.AccessFilter;
 @EnableFeignClients(basePackages = { "com.rainyhon.api" })
 //@MapperScan(basePackages = {"com.rainyhon.center.mapper"})
 @ComponentScan(basePackages = { "com.rainyhon.api", "com.rainyhon.gateway" })
-public class SlsGatewayApplication {
+public class GatewayApplication {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(SlsGatewayApplication.class).web(true).run(args);
+		new SpringApplicationBuilder(GatewayApplication.class).web(true).run(args);
 	}
 
 	@Bean

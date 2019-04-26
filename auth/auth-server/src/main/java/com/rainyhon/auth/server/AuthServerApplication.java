@@ -25,10 +25,10 @@ import org.springframework.web.client.RestTemplate;
 				@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.rainyhon.common.service.*"),
 				@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.rainyhon.common.mq.*")
 		})
-public class SlsAuthServerApplication {
+public class AuthServerApplication {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(SlsAuthServerApplication.class).web(true).run(args);
+		new SpringApplicationBuilder(AuthServerApplication.class).web(true).run(args);
 	}
 
 	@Bean
