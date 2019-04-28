@@ -1,21 +1,28 @@
 package com.rainyhon.common.service;
 
-import com.microcore.center.model.PsmScheduleDetail;
-import com.rainyhon.common.vo.PsmScheduleDetailVo;
+import com.rainyhon.common.model.ScheduleDetail;
+import com.rainyhon.common.vo.ScheduleDetailVo;
 import com.rainyhon.common.vo.ResultVo;
+
+import java.util.Date;
+import java.util.List;
 
 public interface ScheduleDetailService {
 
-    ResultVo add(PsmScheduleDetailVo vo);
+	ResultVo add(ScheduleDetailVo vo);
 
-    void addDetail(PsmScheduleDetail detail);
+	void addDetail(ScheduleDetail detail);
 
-    ResultVo update(PsmScheduleDetailVo vo);
+	ResultVo update(ScheduleDetailVo vo);
 
-    ResultVo delete(String id);
+	void update(ScheduleDetail detail);
 
-    ResultVo getScheduleDetailList(String objectType);
+	ResultVo delete(String id);
 
-    ResultVo getOnDutyData();
+	ResultVo getScheduleDetailList(String objectType);
+
+	ResultVo getOnDutyData();
+
+	List<ScheduleDetail> getScheduleDetailByTimeAndArea(String userId, Date time, String areaId);
 
 }

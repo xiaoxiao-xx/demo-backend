@@ -1,11 +1,11 @@
 package com.rainyhon.common.vo;
 
-import com.microcore.center.model.PsmScheduleConfig;
+import com.rainyhon.common.model.ScheduleDetail;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class PsmScheduleConfigVo extends PsmScheduleConfig {
+public class ScheduleDetailVo extends ScheduleDetail {
 
 }

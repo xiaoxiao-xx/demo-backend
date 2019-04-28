@@ -4,6 +4,8 @@ import com.microcore.center.model.PsmPersonInfo;
 import com.rainyhon.common.vo.PersonInfoVo;
 import com.rainyhon.common.vo.ResultVo;
 
+import java.util.List;
+
 public interface PersonService {
 
 	ResultVo add(PersonInfoVo personInfoVo);
@@ -26,7 +28,9 @@ public interface PersonService {
 	 * @return
 	 */
 	PsmPersonInfo getRandomPerson();
-	
+
+	List<PsmPersonInfo> getPersonInfoList(String orgId);
+
 	PsmPersonInfo getPsmPersonInfo(String id);
 	
 	String getPsmPersonInfoName(String id);

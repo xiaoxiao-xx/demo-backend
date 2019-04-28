@@ -175,7 +175,19 @@ public class PersonServiceImpl implements PersonService {
 	public ResultVo list() {
 		PsmPersonInfoExample example = new PsmPersonInfoExample();
 		PsmPersonInfoExample.Criteria criteria = example.createCriteria();
+		// TODO 没有del_status字段
 		return ResultVo.ok(psmPersonInfoMapper.selectByExample(example));
+	}
+
+	@Override
+	public List<PsmPersonInfo> getPersonInfoList(String orgId) {
+		PsmPersonInfoExample example = new PsmPersonInfoExample();
+		PsmPersonInfoExample.Criteria criteria = example.createCriteria();
+		if (StringUtils.isNotBlank(orgId)) {
+			criteria.andDeptIdEqualTo(orgId);
+		}
+		// TODO 没有del_status字段
+		return psmPersonInfoMapper.selectByExample(example);
 	}
 
 	@Override

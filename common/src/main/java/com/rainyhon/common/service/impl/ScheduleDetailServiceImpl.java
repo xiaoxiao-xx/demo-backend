@@ -1,15 +1,16 @@
 package com.rainyhon.common.service.impl;
 
-import com.microcore.center.mapper.PsmScheduleDetailMapper;
 import com.microcore.center.model.PsmPersonInfo;
-import com.microcore.center.model.PsmScheduleDetail;
-import com.microcore.center.model.PsmScheduleDetailExample;
+import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.mapper.ScheduleDetailMapper;
+import com.rainyhon.common.model.ScheduleDetail;
+import com.rainyhon.common.model.ScheduleDetailExample;
 import com.rainyhon.common.service.CommonService;
 import com.rainyhon.common.service.PersonService;
 import com.rainyhon.common.service.ScheduleDetailService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.JedisPoolUtil;
-import com.rainyhon.common.vo.PsmScheduleDetailVo;
+import com.rainyhon.common.vo.ScheduleDetailVo;
 import com.rainyhon.common.vo.ResultVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,7 +28,7 @@ import java.util.*;
 @Slf4j
 public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
-	private final PsmScheduleDetailMapper psmScheduleDetailMapper;
+	private final ScheduleDetailMapper scheduleDetailMapper;
 
 	private final CommonService commonService;
 
@@ -56,45 +57,50 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 	}
 
 	@Autowired
-	public ScheduleDetailServiceImpl(PsmScheduleDetailMapper psmScheduleDetailMapper, CommonService commonService,
+	public ScheduleDetailServiceImpl(ScheduleDetailMapper psmScheduleDetailMapper, CommonService commonService,
 	                                 JedisPoolUtil redisUtil, PersonService personService) {
-		this.psmScheduleDetailMapper = psmScheduleDetailMapper;
+		this.scheduleDetailMapper = psmScheduleDetailMapper;
 		this.commonService = commonService;
 		this.redisUtil = redisUtil;
 		this.personService = personService;
 	}
 
 	@Override
-	public ResultVo add(PsmScheduleDetailVo vo) {
+	public ResultVo add(ScheduleDetailVo vo) {
 		addDetail(vo);
 		return ResultVo.ok();
 	}
 
 	@Override
-	public void addDetail(PsmScheduleDetail detail) {
+	public void addDetail(ScheduleDetail detail) {
 		detail.setId(CommonUtil.getUUID());
-		psmScheduleDetailMapper.insertSelective(detail);
+		scheduleDetailMapper.insertSelective(detail);
 	}
 
 	@Override
-	public ResultVo update(PsmScheduleDetailVo vo) {
-		psmScheduleDetailMapper.updateByPrimaryKeySelective(vo);
+	public ResultVo update(ScheduleDetailVo vo) {
+		scheduleDetailMapper.updateByPrimaryKeySelective(vo);
 		return ResultVo.ok();
 	}
 
 	@Override
+	public void update(ScheduleDetail detail) {
+		scheduleDetailMapper.updateByPrimaryKeySelective(detail);
+	}
+
+	@Override
 	public ResultVo delete(String id) {
-		psmScheduleDetailMapper.deleteByPrimaryKey(id);
+		scheduleDetailMapper.deleteByPrimaryKey(id);
 		return ResultVo.ok();
 	}
 
 	@Override
 	public ResultVo getScheduleDetailList(String objectType) {
-		PsmScheduleDetailExample example = new PsmScheduleDetailExample();
+		ScheduleDetailExample example = new ScheduleDetailExample();
 		example.setOrderByClause("start_time asc");
-		PsmScheduleDetailExample.Criteria criteria = example.createCriteria();
+		ScheduleDetailExample.Criteria criteria = example.createCriteria();
 		criteria.andObjectTypeLike("%" + objectType.trim() + "%");
-		List<PsmScheduleDetail> psmScheduleDetails = psmScheduleDetailMapper.selectByExample(example);
+		List<ScheduleDetail> psmScheduleDetails = scheduleDetailMapper.selectByExample(example);
 		return ResultVo.ok(psmScheduleDetails);
 	}
 
@@ -154,6 +160,21 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 		duty.setOnDutyCount(onDutyCount);
 		duty.setNotOnDutyCount(totalCount - onDutyCount);
 		return ResultVo.ok(duty);
+	}
+
+	@Override
+	public List<ScheduleDetail> getScheduleDetailByTimeAndArea(String userId, Date time, String areaId) {
+		Date timeAdd10Minute = new Date(time.getTime() + 10 * 60 * 1000);
+		Date timeSub10Minute = new Date(time.getTime() - 10 * 60 * 1000);
+
+		ScheduleDetailExample example = new ScheduleDetailExample();
+		ScheduleDetailExample.Criteria criteria = example.createCriteria();
+		criteria.andObjectIdEqualTo(userId);
+		criteria.andStartTimeLessThanOrEqualTo(timeAdd10Minute);
+		criteria.andEndTimeGreaterThanOrEqualTo(timeSub10Minute);
+		criteria.andAddressEqualTo(areaId);
+		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
+		return scheduleDetailMapper.selectByExample(example);
 	}
 
 	private int getDayOfWeek() {

@@ -1,17 +1,17 @@
 package com.rainyhon.common.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.mapper.PsmScheduleConfigMapper;
-import com.microcore.center.model.PsmScheduleConfig;
-import com.microcore.center.model.PsmScheduleConfigExample;
-import com.microcore.center.model.PsmScheduleDetail;
 import com.microcore.center.model.PsmUser;
+import com.rainyhon.common.mapper.ScheduleConfigMapper;
+import com.rainyhon.common.model.ScheduleConfig;
+import com.rainyhon.common.model.ScheduleConfigExample;
+import com.rainyhon.common.model.ScheduleDetail;
 import com.rainyhon.common.service.ParaDefineService;
 import com.rainyhon.common.service.ScheduleConfigService;
 import com.rainyhon.common.service.ScheduleDetailService;
 import com.rainyhon.common.service.PsmUserService;
 import com.rainyhon.common.util.CommonUtil;
-import com.rainyhon.common.vo.PsmScheduleConfigVo;
+import com.rainyhon.common.vo.ScheduleConfigVo;
 import com.rainyhon.common.vo.ResultVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import static com.rainyhon.common.util.CommonUtil.*;
 public class ScheduleConfigServiceImpl implements ScheduleConfigService {
 
     @Autowired
-    private PsmScheduleConfigMapper psmScheduleConfigMapper;
+    private ScheduleConfigMapper scheduleConfigMapper;
 
     @Autowired
     private ScheduleDetailService scheduleDetailService;
@@ -43,31 +43,32 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
     private ParaDefineService paraDefineService;
 
     @Override
-    public ResultVo add(PsmScheduleConfigVo vo) {
+    public ResultVo add(ScheduleConfigVo vo) {
         vo.setId(getUUID());
-        psmScheduleConfigMapper.insert(vo);
+        scheduleConfigMapper.insert(vo);
 
-        insertScheduleDetailList(vo);
+        // TODO
+        // insertScheduleDetailList(vo);
 
         return ResultVo.ok();
     }
 
-    private void insertScheduleDetailList(PsmScheduleConfig config) {
-        List<PsmScheduleDetail> detailList = buildDetailList(config);
+    private void insertScheduleDetailList(ScheduleConfig config) {
+        List<ScheduleDetail> detailList = buildDetailList(config);
         if (detailList != null && detailList.size() > 0) {
             detailList.forEach(detail -> scheduleDetailService.addDetail(detail));
         }
     }
 
-    private List<PsmScheduleDetail> buildDetailList(PsmScheduleConfig config) {
-        List<PsmScheduleDetail> resultList = new ArrayList<>();
+    private List<ScheduleDetail> buildDetailList(ScheduleConfig config) {
+        List<ScheduleDetail> resultList = new ArrayList<>();
 
         if ("Y".equals(config.getSelectFlag())) {
-            PsmScheduleDetail detail = buildDetail(config);
+            ScheduleDetail detail = buildDetail(config);
             resultList.add(detail);
 
             // 按重复周期生成后续日程
-            List<PsmScheduleDetail> psmScheduleDetails = generateScheduleDetail(detail, config.getRepeatType());
+            List<ScheduleDetail> psmScheduleDetails = generateScheduleDetail(detail, config.getRepeatType());
             resultList.addAll(psmScheduleDetails);
         } else {
             List<PsmUser> userList = psmUserService.getUserListByOrgId(config.getTeamId());
@@ -75,11 +76,11 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
                 userList.forEach(user -> {
                     config.setObjectId(user.getId());
                     config.setRepeatType(user.getUsername());
-                    PsmScheduleDetail detail = buildDetail(config);
+                    ScheduleDetail detail = buildDetail(config);
                     resultList.add(detail);
 
                     // 按重复周期生成后续日程
-                    List<PsmScheduleDetail> psmScheduleDetails = generateScheduleDetail(detail, config.getRepeatType());
+                    List<ScheduleDetail> psmScheduleDetails = generateScheduleDetail(detail, config.getRepeatType());
                     resultList.addAll(psmScheduleDetails);
                 });
             }
@@ -88,8 +89,8 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
         return resultList;
     }
 
-    private PsmScheduleDetail buildDetail(PsmScheduleConfig config) {
-        PsmScheduleDetail detail = new PsmScheduleDetail();
+    private ScheduleDetail buildDetail(ScheduleConfig config) {
+        ScheduleDetail detail = new ScheduleDetail();
 
         detail.setObjectType(config.getObjectType());
         detail.setObjectId(config.getObjectId());
@@ -99,38 +100,39 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
         detail.setStartTime(config.getStartTime());
         detail.setEndTime(config.getEndTime());
         detail.setAddress(config.getAddress());
-        detail.setEvent(config.getEvent());
+        detail.setTitle(config.getTitle());
+        detail.setContent(config.getContent());
         detail.setTeacher(config.getTeacher());
 
         return detail;
     }
 
     @Override
-    public ResultVo update(PsmScheduleConfigVo vo) {
-        psmScheduleConfigMapper.updateByPrimaryKeySelective(vo);
+    public ResultVo update(ScheduleConfigVo vo) {
+        scheduleConfigMapper.updateByPrimaryKeySelective(vo);
         return ResultVo.ok();
     }
 
     @Override
     public ResultVo delete(String id) {
-        psmScheduleConfigMapper.deleteByPrimaryKey(id);
+        scheduleConfigMapper.deleteByPrimaryKey(id);
         return ResultVo.ok();
     }
 
     @Override
     public ResultVo getScheduleConfigList(String team, Integer pageIndex, Integer pageSize) {
-        PsmScheduleConfigExample example = new PsmScheduleConfigExample();
-        PsmScheduleConfigExample.Criteria criteria = example.createCriteria();
+        ScheduleConfigExample example = new ScheduleConfigExample();
+        ScheduleConfigExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotEmpty(team)) {
             criteria.andTeamIdEqualTo(team);
         }
-        PageInfo<PsmScheduleConfig> scheduleConfigPageInfo = startPage(pageIndex, pageSize)
-                .doSelectPageInfo(() -> psmScheduleConfigMapper.selectByExample(example));
+        PageInfo<ScheduleConfig> scheduleConfigPageInfo = startPage(pageIndex, pageSize)
+                .doSelectPageInfo(() -> scheduleConfigMapper.selectByExample(example));
 
-        List<PsmScheduleConfig> configList = scheduleConfigPageInfo.getList();
+        List<ScheduleConfig> configList = scheduleConfigPageInfo.getList();
 
 
-        List<PsmScheduleConfigVo> configVos = listPo2VO(configList, PsmScheduleConfigVo.class);
+        List<ScheduleConfigVo> configVos = listPo2VO(configList, ScheduleConfigVo.class);
         if (CommonUtil.isNotEmpty(configVos)) {
             configVos.forEach(vo -> {
                 vo.setCheckFlag("Y".equals(vo.getCheckFlag()) ? "是" : "否");
@@ -138,10 +140,18 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
             });
         }
 
-        PageInfo<PsmScheduleConfigVo> scheduleConfigVoPageInfo = po2VO(scheduleConfigPageInfo, PageInfo.class);
+        PageInfo<ScheduleConfigVo> scheduleConfigVoPageInfo = po2VO(scheduleConfigPageInfo, PageInfo.class);
         scheduleConfigVoPageInfo.setList(configVos);
 
         return ResultVo.ok(scheduleConfigVoPageInfo);
+    }
+
+    @Override
+    public List<ScheduleConfig> getScheduleConfigList() {
+        ScheduleConfigExample example = new ScheduleConfigExample();
+        ScheduleConfigExample.Criteria criteria = example.createCriteria();
+	    List<ScheduleConfig> configList = scheduleConfigMapper.selectByExample(example);
+        return configList;
     }
 
     @Override
@@ -157,8 +167,8 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
         }
     }
 
-    private List<PsmScheduleDetail> generateScheduleDetail(PsmScheduleDetail detail, String repeatType) {
-        List<PsmScheduleDetail> resultList = new ArrayList<>();
+    private List<ScheduleDetail> generateScheduleDetail(ScheduleDetail detail, String repeatType) {
+        List<ScheduleDetail> resultList = new ArrayList<>();
 
         if ("D".equals(repeatType)) {
             for (int i = 0; i < 10; i++) {
@@ -197,13 +207,14 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
 
     @Override
     public ResultVo setRepeatType(String id, String repeatType) {
-        PsmScheduleConfig config = new PsmScheduleConfig();
+        ScheduleConfig config = new ScheduleConfig();
         config.setId(id);
         config.setRepeatType(repeatType);
-        psmScheduleConfigMapper.updateByPrimaryKeySelective(config);
+        scheduleConfigMapper.updateByPrimaryKeySelective(config);
 
-        PsmScheduleConfig scheduleConfig = getScheduleConfigById(id);
-        insertScheduleDetailList(scheduleConfig);
+        ScheduleConfig scheduleConfig = getScheduleConfigById(id);
+        // TODO
+        // insertScheduleDetailList(scheduleConfig);
 
         return ResultVo.ok();
     }
@@ -236,8 +247,8 @@ public class ScheduleConfigServiceImpl implements ScheduleConfigService {
         return c.getTime();
     }
 
-    private PsmScheduleConfig getScheduleConfigById(String id) {
-        return psmScheduleConfigMapper.selectByPrimaryKey(id);
+    private ScheduleConfig getScheduleConfigById(String id) {
+        return scheduleConfigMapper.selectByPrimaryKey(id);
     }
 
 }

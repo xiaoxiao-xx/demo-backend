@@ -8,10 +8,12 @@ import com.microcore.center.model.Face;
 import com.microcore.center.model.InOutRecord;
 import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.model.PsmPersonInfo;
-import com.rainyhon.common.service.MaterialService;
-import com.rainyhon.common.service.PersonService;
-import com.rainyhon.common.service.AlarmResultService;
+import com.rainyhon.common.model.ScheduleDetail;
+import com.rainyhon.common.model.WorkAttendance;
+import com.rainyhon.common.model.WorkCheckTime;
+import com.rainyhon.common.service.*;
 import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.util.JedisPoolUtil;
 import com.rainyhon.common.mq.rabbit.RabbitMQUtil;
 import com.rainyhon.common.vo.FaceSdkRecVo;
@@ -64,6 +66,9 @@ public class AsyncTaskRec {
 			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
 
 	private Map<String, String> addressList = new HashMap<>();
+
+	@Autowired
+	private WorkService workService;
 
 	{
 		addressList.put("1", "入口");
@@ -131,7 +136,15 @@ public class AsyncTaskRec {
 			String userId = face.getUserId();
 
 			sendEvent(face);
+			// TODO Test
+			// 生成进出记录
 			generateInOutRecord(face, areaId);
+
+			// 更新考勤记录
+			updateWorkAttendanceRecord(face.getUserId());
+
+			// 更新日程记录
+			updateScheduleDetailRecord(face, material);
 
 			// log.info(">>> detected face: {}, score: {}", personService.getPsmPersonInfoName(userId), face2.getScore());
 			// log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
@@ -157,6 +170,81 @@ public class AsyncTaskRec {
 		List<Face> facest = CommonUtil.listPo2VO(faceList, Face.class);
 		materialService.addFaceList(facest);
 		// log.info("thread id= {}", Thread.currentThread().getName());
+	}
+
+	@Autowired
+	private ScheduleDetailService scheduleDetailService;
+
+	private void updateScheduleDetailRecord(Face face, PsmMaterial material) {
+		// 时间，地点，人物
+		String userId = face.getUserId();
+		String areaId = material.getAreaId();
+		Date time = material.getCreateTime();
+
+		List<ScheduleDetail> detailList = scheduleDetailService.getScheduleDetailByTimeAndArea(userId, time, areaId);
+		if (CommonUtil.isNotEmpty(detailList)) {
+			detailList.forEach(scheduleDetail -> {
+				if (scheduleDetail.getRealStartTime() == null) {
+					scheduleDetail.setRealStartTime(time);
+				}
+
+				scheduleDetail.setRealEndTime(time);
+				scheduleDetail.setResult(Constants.ATTENDANCE_RESULT_OK);
+				scheduleDetailService.update(scheduleDetail);
+			});
+		}
+	}
+
+	/**
+	 * 更新考勤记录
+	 *
+	 * @param personId
+	 */
+	private void updateWorkAttendanceRecord(String personId) {
+		Date checkDate = new Date();
+		WorkAttendance attendance = workService.getWorkAttendanceByPersonIdAndCheckDate(personId, checkDate);
+		if (attendance == null) {
+			WorkAttendance workAttendance = new WorkAttendance();
+			workAttendance.setId(CommonUtil.getUUID());
+			workAttendance.setPersonId(personId);
+			workAttendance.setCheckDate(new Date());
+			EntityUtils.setCreateAndUpdateInfo(workAttendance);
+			workService.addWorkAttendance(workAttendance);
+			attendance = workAttendance;
+		}
+
+		if (attendance.getOnWorkTime() == null) {
+			attendance.setOnWorkTime(new Date());
+		}
+
+		attendance.setQuitTime(new Date());
+
+		WorkCheckTime workCheckTime = workService.getWorkCheckTime();
+		Date inTime = workCheckTime.getInTime();
+		Date outTime = workCheckTime.getOutTime();
+
+		Date realInTime = attendance.getOnWorkTime();
+		Date realOutTime = attendance.getQuitTime();
+
+		String result = "";
+		if (realInTime.getTime() < inTime.getTime() && realOutTime.getTime() > outTime.getTime()) {
+			// 正常
+			result = result + Constants.ATTENDANCE_RESULT_OK;
+		} else {
+			// 迟到
+			if (realInTime.getTime() > inTime.getTime()) {
+				result = result + Constants.ATTENDANCE_RESULT_LATE;
+			}
+
+			// 早退
+			if (realOutTime.getTime() < outTime.getTime()) {
+				result = result + Constants.ATTENDANCE_RESULT_LEAVE_EARLY;
+			}
+		}
+
+		attendance.setResult(result);
+
+		workService.updateWorkAttendance(attendance);
 	}
 
 	private List<PsmFaceVo> convertFaces(String materialId, String detectResultId, List<DataStructure.FaceInfo> faceInfoList) {

@@ -2,7 +2,7 @@ package com.rainyhon.backend.controller;
 
 import com.rainyhon.common.service.ScheduleConfigService;
 import com.rainyhon.common.service.ScheduleDetailService;
-import com.rainyhon.common.vo.PsmScheduleConfigVo;
+import com.rainyhon.common.vo.ScheduleConfigVo;
 import com.rainyhon.common.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +18,12 @@ public class ScheduleController {
     private ScheduleDetailService scheduleDetailService;
 
     @PostMapping("addConfig")
-    public ResultVo addConfig(@RequestBody PsmScheduleConfigVo vo) {
+    public ResultVo addConfig(@RequestBody ScheduleConfigVo vo) {
         return scheduleConfigService.add(vo);
     }
 
     @PostMapping("updateConfig")
-    public ResultVo updateConfig(@RequestBody PsmScheduleConfigVo vo) {
+    public ResultVo updateConfig(@RequestBody ScheduleConfigVo vo) {
         return scheduleConfigService.update(vo);
     }
 

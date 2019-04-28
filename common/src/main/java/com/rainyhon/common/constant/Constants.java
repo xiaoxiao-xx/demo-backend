@@ -51,5 +51,37 @@ public class Constants {
 
 	public static final String IN_OUT_TYPE_OUT = "OUT";
 
+	public static final String REPEAT_TYPE_DAY = "D";
+
+	public static final String REPEAT_TYPE_WEEK = "W";
+
+	public static final String REPEAT_TYPE_MONTH = "M";
+
+	public static final String REPEAT_TYPE_NO = "N";
+
+	public static final String SCHEDULE_CONFIG_OBJECT_TYPE_ORG = "O";
+
+	public static final String SCHEDULE_CONFIG_OBJECT_TYPE_PERSON = "P";
+
+	/**
+	 * 缺勤
+	 */
+	public static final String ATTENDANCE_RESULT_ABSENTEEISM = "0";
+
+	/**
+	 * 迟到
+	 */
+	public static final String ATTENDANCE_RESULT_LATE = "1";
+
+	/**
+	 * 早退
+	 */
+	public static final String ATTENDANCE_RESULT_LEAVE_EARLY = "2";
+
+	/**
+	 * 正常
+	 */
+	public static final String ATTENDANCE_RESULT_OK = "3";
+
 }
 
