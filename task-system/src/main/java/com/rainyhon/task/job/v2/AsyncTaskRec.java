@@ -8,6 +8,7 @@ import com.microcore.center.model.Face;
 import com.microcore.center.model.InOutRecord;
 import com.microcore.center.model.PsmMaterial;
 import com.microcore.center.model.PsmPersonInfo;
+import com.rainyhon.common.model.RollCallResult;
 import com.rainyhon.common.model.ScheduleDetail;
 import com.rainyhon.common.model.WorkAttendance;
 import com.rainyhon.common.model.WorkCheckTime;
@@ -53,6 +54,12 @@ public class AsyncTaskRec {
 
 	@Autowired
 	private InOutRecordMapper inOutRecordMapper;
+
+	@Autowired
+	private ScheduleDetailService scheduleDetailService;
+
+	@Autowired
+	private RollCallService rollCallService;
 
 	private Gson gson = new Gson();
 
@@ -146,6 +153,9 @@ public class AsyncTaskRec {
 			// 更新日程记录
 			updateScheduleDetailRecord(face, material);
 
+			// 更新电子点名记录
+			updateRollCallResultRecord(face, material);
+
 			// log.info(">>> detected face: {}, score: {}", personService.getPsmPersonInfoName(userId), face2.getScore());
 			// log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
@@ -172,9 +182,39 @@ public class AsyncTaskRec {
 		// log.info("thread id= {}", Thread.currentThread().getName());
 	}
 
-	@Autowired
-	private ScheduleDetailService scheduleDetailService;
+	private void updateRollCallResultRecord(Face face, PsmMaterial material) {
+		String userId = face.getUserId();
+		String orgId = personService.getPsmPersonInfo(userId).getDeptId();
+		String areaId = material.getAreaId();
+		Date time = material.getCreateTime();
 
+		List<ScheduleDetail> detailList = scheduleDetailService.getScheduleDetailByTimeForRollCall(orgId, time, areaId);
+		if (CommonUtil.isNotEmpty(detailList)) {
+			detailList.forEach(scheduleDetail -> {
+//				if (scheduleDetail.getRealStartTime() == null) {
+//					scheduleDetail.setRealStartTime(time);
+//				}
+//
+//				scheduleDetail.setRealEndTime(time);
+//				scheduleDetail.setResult(Constants.ATTENDANCE_RESULT_OK);
+//				scheduleDetailService.update(scheduleDetail);
+
+				List<RollCallResult> callResultList = rollCallService.getRollCallResultList(scheduleDetail.getId(), face.getUserId());
+				if (CommonUtil.isNotEmpty(callResultList)) {
+					RollCallResult result = callResultList.get(0);
+					result.setResult(Constants.ATTENDANCE_RESULT_OK);
+					rollCallService.updateRollCall(result);
+				}
+			});
+		}
+	}
+
+	/**
+	 * 更新日程记录
+	 *
+	 * @param face
+	 * @param material
+	 */
 	private void updateScheduleDetailRecord(Face face, PsmMaterial material) {
 		// 时间，地点，人物
 		String userId = face.getUserId();

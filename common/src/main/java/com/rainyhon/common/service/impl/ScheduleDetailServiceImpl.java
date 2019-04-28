@@ -3,12 +3,14 @@ package com.rainyhon.common.service.impl;
 import com.microcore.center.model.PsmPersonInfo;
 import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.mapper.ScheduleDetailMapper;
+import com.rainyhon.common.model.RollCallResult;
 import com.rainyhon.common.model.ScheduleDetail;
 import com.rainyhon.common.model.ScheduleDetailExample;
 import com.rainyhon.common.service.CommonService;
 import com.rainyhon.common.service.PersonService;
 import com.rainyhon.common.service.ScheduleDetailService;
 import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.util.JedisPoolUtil;
 import com.rainyhon.common.vo.ScheduleDetailVo;
 import com.rainyhon.common.vo.ResultVo;
@@ -22,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.rainyhon.common.constant.Constants.SCHEDULE_DETAIL_TYPE_ROLL_CALL;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -73,7 +77,25 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
 	@Override
 	public void addDetail(ScheduleDetail detail) {
-		detail.setId(CommonUtil.getUUID());
+		String detailId = CommonUtil.getUUID();
+		detail.setId(detailId);
+
+		// 为电子点名生成结果表
+		if (SCHEDULE_DETAIL_TYPE_ROLL_CALL.equals(detail.getType())) {
+			List<PsmPersonInfo> personInfoList = personService.getPersonInfoList(detail.getObjectId());
+			if (CommonUtil.isNotEmpty(personInfoList)) {
+				personInfoList.forEach(personInfo -> {
+					RollCallResult result = new RollCallResult();
+					result.setId(CommonUtil.getUUID());
+					result.setOrgId(personInfo.getDeptId());
+					result.setPersonId(personInfo.getPersonId());
+					result.setDetailId(detailId);
+					result.setResult(Constants.ATTENDANCE_RESULT_ABSENTEEISM);
+					EntityUtils.setCreateAndUpdateInfo(result);
+				});
+			}
+		}
+
 		scheduleDetailMapper.insertSelective(detail);
 	}
 
@@ -170,6 +192,25 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 		ScheduleDetailExample example = new ScheduleDetailExample();
 		ScheduleDetailExample.Criteria criteria = example.createCriteria();
 		criteria.andObjectIdEqualTo(userId);
+		// 非电子点名
+		criteria.andTypeNotEqualTo(SCHEDULE_DETAIL_TYPE_ROLL_CALL);
+		criteria.andStartTimeLessThanOrEqualTo(timeAdd10Minute);
+		criteria.andEndTimeGreaterThanOrEqualTo(timeSub10Minute);
+		criteria.andAddressEqualTo(areaId);
+		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
+		return scheduleDetailMapper.selectByExample(example);
+	}
+
+	@Override
+	public List<ScheduleDetail> getScheduleDetailByTimeForRollCall(String orgId, Date time, String areaId) {
+		Date timeAdd10Minute = new Date(time.getTime() + 30 * 1000);
+		Date timeSub10Minute = new Date(time.getTime() - 30 * 1000);
+
+		ScheduleDetailExample example = new ScheduleDetailExample();
+		ScheduleDetailExample.Criteria criteria = example.createCriteria();
+		criteria.andObjectIdEqualTo(orgId);
+		// 电子点名
+		criteria.andTypeEqualTo(SCHEDULE_DETAIL_TYPE_ROLL_CALL);
 		criteria.andStartTimeLessThanOrEqualTo(timeAdd10Minute);
 		criteria.andEndTimeGreaterThanOrEqualTo(timeSub10Minute);
 		criteria.andAddressEqualTo(areaId);

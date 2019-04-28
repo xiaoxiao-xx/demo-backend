@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.rainyhon.common.model.ScheduleDetail" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="config_id" property="configId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="object_type" property="objectType" jdbcType="VARCHAR" />
     <result column="object_id" property="objectId" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="INTEGER" />
@@ -85,9 +86,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, config_id, object_type, object_id, number, some_date, start_time, end_time, real_start_time, 
-    real_end_time, title, content, teacher, address, update_reason, result, del_status, 
-    upd_user_id, upd_org_id, upd_tm, crt_user_id, crt_org_id, crt_tm
+    id, config_id, type, object_type, object_id, number, some_date, start_time, end_time,
+    real_start_time, real_end_time, title, content, teacher, address, update_reason, 
+    result, del_status, upd_user_id, upd_org_id, upd_tm, crt_user_id, crt_org_id, crt_tm
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.ScheduleDetailExample" >
     select
@@ -121,22 +122,24 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.rainyhon.common.model.ScheduleDetail" >
-    insert into schedule_detail (id, config_id, object_type, 
-      object_id, number, some_date, 
-      start_time, end_time, real_start_time, 
-      real_end_time, title, content, 
-      teacher, address, update_reason, 
-      result, del_status, upd_user_id, 
-      upd_org_id, upd_tm, crt_user_id, 
-      crt_org_id, crt_tm)
-    values (#{id,jdbcType=VARCHAR}, #{configId,jdbcType=VARCHAR}, #{objectType,jdbcType=VARCHAR}, 
-      #{objectId,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{someDate,jdbcType=DATE}, 
-      #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, #{realStartTime,jdbcType=TIMESTAMP}, 
-      #{realEndTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{teacher,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{updateReason,jdbcType=VARCHAR}, 
-      #{result,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, #{updUserId,jdbcType=VARCHAR}, 
-      #{updOrgId,jdbcType=VARCHAR}, #{updTm,jdbcType=TIMESTAMP}, #{crtUserId,jdbcType=VARCHAR}, 
-      #{crtOrgId,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP})
+    insert into schedule_detail (id, config_id, type,
+      object_type, object_id, number, 
+      some_date, start_time, end_time, 
+      real_start_time, real_end_time, title, 
+      content, teacher, address, 
+      update_reason, result, del_status, 
+      upd_user_id, upd_org_id, upd_tm, 
+      crt_user_id, crt_org_id, crt_tm
+      )
+    values (#{id,jdbcType=VARCHAR}, #{configId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{objectType,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
+      #{someDate,jdbcType=DATE}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, 
+      #{realStartTime,jdbcType=TIMESTAMP}, #{realEndTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{teacher,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{updateReason,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, 
+      #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, #{updTm,jdbcType=TIMESTAMP}, 
+      #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.rainyhon.common.model.ScheduleDetail" >
     insert into schedule_detail
@@ -146,6 +149,9 @@
       </if>
       <if test="configId != null" >
         config_id,
+      </if>
+      <if test="type != null" >
+        type,
       </if>
       <if test="objectType != null" >
         object_type,
@@ -217,6 +223,9 @@
       </if>
       <if test="configId != null" >
         #{configId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="objectType != null" >
         #{objectType,jdbcType=VARCHAR},
@@ -298,6 +307,9 @@
       <if test="record.configId != null" >
         config_id = #{record.configId,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
       <if test="record.objectType != null" >
         object_type = #{record.objectType,jdbcType=VARCHAR},
       </if>
@@ -370,6 +382,7 @@
     update schedule_detail
     set id = #{record.id,jdbcType=VARCHAR},
       config_id = #{record.configId,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
       object_type = #{record.objectType,jdbcType=VARCHAR},
       object_id = #{record.objectId,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=INTEGER},
@@ -400,6 +413,9 @@
     <set >
       <if test="configId != null" >
         config_id = #{configId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="objectType != null" >
         object_type = #{objectType,jdbcType=VARCHAR},
@@ -470,6 +486,7 @@
   <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.ScheduleDetail" >
     update schedule_detail
     set config_id = #{configId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
       object_type = #{objectType,jdbcType=VARCHAR},
       object_id = #{objectId,jdbcType=VARCHAR},
       number = #{number,jdbcType=INTEGER},

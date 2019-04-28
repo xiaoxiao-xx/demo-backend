@@ -83,5 +83,20 @@ public class Constants {
 	 */
 	public static final String ATTENDANCE_RESULT_OK = "3";
 
+	/**
+	 * 日程类型-电子点名
+	 */
+	public static final String SCHEDULE_DETAIL_TYPE_ROLL_CALL = "ROLL_CALL";
+
+	/**
+	 * 日程类型-电子点名
+	 */
+	public static final String SCHEDULE_DETAIL_TYPE_ON_DUTY = "ON_DUTY";
+
+	/**
+	 * 日程类型-电子点名
+	 */
+	public static final String SCHEDULE_DETAIL_TYPE_PATROL = "PATROL";
+
 }
 

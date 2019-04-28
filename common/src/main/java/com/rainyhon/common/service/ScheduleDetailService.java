@@ -25,4 +25,6 @@ public interface ScheduleDetailService {
 
 	List<ScheduleDetail> getScheduleDetailByTimeAndArea(String userId, Date time, String areaId);
 
+	List<ScheduleDetail> getScheduleDetailByTimeForRollCall(String orgId, Date time, String areaId);
+
 }
