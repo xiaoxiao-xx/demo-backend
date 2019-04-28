@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rainyhon.common.mapper.DynamicQueryColumnMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.DynamicQueryColumn" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="column" property="column" jdbcType="VARCHAR" />
+    <result column="column_display_name" property="columnDisplayName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="dictionary_id" property="dictionaryId" jdbcType="VARCHAR" />
+    <result column="view_id" property="viewId" jdbcType="VARCHAR" />
+    <result column="hidden" property="hidden" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, column, column_display_name, type, dictionary_id, view_id, hidden
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.DynamicQueryColumnExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dynamic_query_column
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from dynamic_query_column
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dynamic_query_column
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.DynamicQueryColumnExample" >
+    delete from dynamic_query_column
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.rainyhon.common.model.DynamicQueryColumn" >
+    insert into dynamic_query_column (id, column, column_display_name, 
+      type, dictionary_id, view_id, 
+      hidden)
+    values (#{id,jdbcType=VARCHAR}, #{column,jdbcType=VARCHAR}, #{columnDisplayName,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{dictionaryId,jdbcType=VARCHAR}, #{viewId,jdbcType=VARCHAR}, 
+      #{hidden,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.DynamicQueryColumn" >
+    insert into dynamic_query_column
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="column != null" >
+        column,
+      </if>
+      <if test="columnDisplayName != null" >
+        column_display_name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="dictionaryId != null" >
+        dictionary_id,
+      </if>
+      <if test="viewId != null" >
+        view_id,
+      </if>
+      <if test="hidden != null" >
+        hidden,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="column != null" >
+        #{column,jdbcType=VARCHAR},
+      </if>
+      <if test="columnDisplayName != null" >
+        #{columnDisplayName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="dictionaryId != null" >
+        #{dictionaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="viewId != null" >
+        #{viewId,jdbcType=VARCHAR},
+      </if>
+      <if test="hidden != null" >
+        #{hidden,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.rainyhon.common.model.DynamicQueryColumnExample" resultType="java.lang.Integer" >
+    select count(*) from dynamic_query_column
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update dynamic_query_column
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.column != null" >
+        column = #{record.column,jdbcType=VARCHAR},
+      </if>
+      <if test="record.columnDisplayName != null" >
+        column_display_name = #{record.columnDisplayName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dictionaryId != null" >
+        dictionary_id = #{record.dictionaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.viewId != null" >
+        view_id = #{record.viewId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hidden != null" >
+        hidden = #{record.hidden,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update dynamic_query_column
+    set id = #{record.id,jdbcType=VARCHAR},
+      column = #{record.column,jdbcType=VARCHAR},
+      column_display_name = #{record.columnDisplayName,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      dictionary_id = #{record.dictionaryId,jdbcType=VARCHAR},
+      view_id = #{record.viewId,jdbcType=VARCHAR},
+      hidden = #{record.hidden,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.DynamicQueryColumn" >
+    update dynamic_query_column
+    <set >
+      <if test="column != null" >
+        column = #{column,jdbcType=VARCHAR},
+      </if>
+      <if test="columnDisplayName != null" >
+        column_display_name = #{columnDisplayName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="dictionaryId != null" >
+        dictionary_id = #{dictionaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="viewId != null" >
+        view_id = #{viewId,jdbcType=VARCHAR},
+      </if>
+      <if test="hidden != null" >
+        hidden = #{hidden,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.DynamicQueryColumn" >
+    update dynamic_query_column
+    set column = #{column,jdbcType=VARCHAR},
+      column_display_name = #{columnDisplayName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      dictionary_id = #{dictionaryId,jdbcType=VARCHAR},
+      view_id = #{viewId,jdbcType=VARCHAR},
+      hidden = #{hidden,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

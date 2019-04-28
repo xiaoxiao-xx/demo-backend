@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rainyhon.common.mapper.DynamicQueryUnaryRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.DynamicQueryUnaryRelation" >
+    <result column="unary_id" property="unaryId" jdbcType="VARCHAR" />
+    <result column="aft_unary_id" property="aftUnaryId" jdbcType="VARCHAR" />
+    <result column="relation" property="relation" jdbcType="VARCHAR" />
+    <result column="order" property="order" jdbcType="INTEGER" />
+    <result column="view_id" property="viewId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    unary_id, aft_unary_id, relation, order, view_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.DynamicQueryUnaryRelationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dynamic_query_unary_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.DynamicQueryUnaryRelationExample" >
+    delete from dynamic_query_unary_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.rainyhon.common.model.DynamicQueryUnaryRelation" >
+    insert into dynamic_query_unary_relation (unary_id, aft_unary_id, relation, 
+      order, view_id)
+    values (#{unaryId,jdbcType=VARCHAR}, #{aftUnaryId,jdbcType=VARCHAR}, #{relation,jdbcType=VARCHAR}, 
+      #{order,jdbcType=INTEGER}, #{viewId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.DynamicQueryUnaryRelation" >
+    insert into dynamic_query_unary_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="unaryId != null" >
+        unary_id,
+      </if>
+      <if test="aftUnaryId != null" >
+        aft_unary_id,
+      </if>
+      <if test="relation != null" >
+        relation,
+      </if>
+      <if test="order != null" >
+        order,
+      </if>
+      <if test="viewId != null" >
+        view_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="unaryId != null" >
+        #{unaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="aftUnaryId != null" >
+        #{aftUnaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null" >
+        #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null" >
+        #{order,jdbcType=INTEGER},
+      </if>
+      <if test="viewId != null" >
+        #{viewId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.rainyhon.common.model.DynamicQueryUnaryRelationExample" resultType="java.lang.Integer" >
+    select count(*) from dynamic_query_unary_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update dynamic_query_unary_relation
+    <set >
+      <if test="record.unaryId != null" >
+        unary_id = #{record.unaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aftUnaryId != null" >
+        aft_unary_id = #{record.aftUnaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relation != null" >
+        relation = #{record.relation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.order != null" >
+        order = #{record.order,jdbcType=INTEGER},
+      </if>
+      <if test="record.viewId != null" >
+        view_id = #{record.viewId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update dynamic_query_unary_relation
+    set unary_id = #{record.unaryId,jdbcType=VARCHAR},
+      aft_unary_id = #{record.aftUnaryId,jdbcType=VARCHAR},
+      relation = #{record.relation,jdbcType=VARCHAR},
+      order = #{record.order,jdbcType=INTEGER},
+      view_id = #{record.viewId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

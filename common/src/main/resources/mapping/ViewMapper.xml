@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.microcore.center.mapper.ViewMapper" >
+  <select id="getColumnByViewName" resultType="com.microcore.center.model.Column" parameterType="String" >
+    select COLUMN_NAME as 'name' ,COLUMN_COMMENT as 'description',DATA_TYPE as 'type' from information_schema.COLUMNS where (table_name = #{name});
+  </select>
+
+  <select id="getAllViewName" resultType="String" >
+    select distinct TABLE_NAME from information_schema.COLUMNS where (table_name like 'dynamic_%_view');
+  </select>
+
+  <select id="query" resultType="java.util.HashMap" parameterType="String" >
+    ${sql}
+  </select>
+</mapper>
