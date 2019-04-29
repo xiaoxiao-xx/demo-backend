@@ -9,7 +9,7 @@ public class DynamicQueryColumn {
     /**
      * 
      */
-    private String column;
+    private String columnName;
 
     /**
      * 
@@ -29,7 +29,7 @@ public class DynamicQueryColumn {
     /**
      * 
      */
-    private String viewId;
+    private String dqId;
 
     /**
      * 
@@ -54,18 +54,18 @@ public class DynamicQueryColumn {
 
     /**
      * 
-     * @return column 
+     * @return column_name 
      */
-    public String getColumn() {
-        return column;
+    public String getColumnName() {
+        return columnName;
     }
 
     /**
      * 
-     * @param column 
+     * @param columnName 
      */
-    public void setColumn(String column) {
-        this.column = column == null ? null : column.trim();
+    public void setColumnName(String columnName) {
+        this.columnName = columnName == null ? null : columnName.trim();
     }
 
     /**
@@ -118,18 +118,18 @@ public class DynamicQueryColumn {
 
     /**
      * 
-     * @return view_id 
+     * @return dq_id 
      */
-    public String getViewId() {
-        return viewId;
+    public String getDqId() {
+        return dqId;
     }
 
     /**
      * 
-     * @param viewId 
+     * @param dqId 
      */
-    public void setViewId(String viewId) {
-        this.viewId = viewId == null ? null : viewId.trim();
+    public void setDqId(String dqId) {
+        this.dqId = dqId == null ? null : dqId.trim();
     }
 
     /**

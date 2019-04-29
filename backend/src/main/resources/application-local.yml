@@ -13,7 +13,7 @@ spring:
     # 加上?后面的可以解决不能查询出中文的问题
     url: jdbc:mysql://127.0.0.1:3306/psm?useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: root
+    password: 123456
 
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource

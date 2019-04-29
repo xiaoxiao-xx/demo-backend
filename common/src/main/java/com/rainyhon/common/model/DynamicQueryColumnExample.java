@@ -230,73 +230,73 @@ public class DynamicQueryColumnExample {
             return (Criteria) this;
         }
 
-        public Criteria andColumnIsNull() {
-            addCriterion("column is null");
+        public Criteria andColumnNameIsNull() {
+            addCriterion("column_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIsNotNull() {
-            addCriterion("column is not null");
+        public Criteria andColumnNameIsNotNull() {
+            addCriterion("column_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andColumnEqualTo(String value) {
-            addCriterion("column =", value, "column");
+        public Criteria andColumnNameEqualTo(String value) {
+            addCriterion("column_name =", value, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnNotEqualTo(String value) {
-            addCriterion("column <>", value, "column");
+        public Criteria andColumnNameNotEqualTo(String value) {
+            addCriterion("column_name <>", value, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnGreaterThan(String value) {
-            addCriterion("column >", value, "column");
+        public Criteria andColumnNameGreaterThan(String value) {
+            addCriterion("column_name >", value, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnGreaterThanOrEqualTo(String value) {
-            addCriterion("column >=", value, "column");
+        public Criteria andColumnNameGreaterThanOrEqualTo(String value) {
+            addCriterion("column_name >=", value, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnLessThan(String value) {
-            addCriterion("column <", value, "column");
+        public Criteria andColumnNameLessThan(String value) {
+            addCriterion("column_name <", value, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnLessThanOrEqualTo(String value) {
-            addCriterion("column <=", value, "column");
+        public Criteria andColumnNameLessThanOrEqualTo(String value) {
+            addCriterion("column_name <=", value, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnLike(String value) {
-            addCriterion("column like", value, "column");
+        public Criteria andColumnNameLike(String value) {
+            addCriterion("column_name like", value, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnNotLike(String value) {
-            addCriterion("column not like", value, "column");
+        public Criteria andColumnNameNotLike(String value) {
+            addCriterion("column_name not like", value, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIn(List<String> values) {
-            addCriterion("column in", values, "column");
+        public Criteria andColumnNameIn(List<String> values) {
+            addCriterion("column_name in", values, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnNotIn(List<String> values) {
-            addCriterion("column not in", values, "column");
+        public Criteria andColumnNameNotIn(List<String> values) {
+            addCriterion("column_name not in", values, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnBetween(String value1, String value2) {
-            addCriterion("column between", value1, value2, "column");
+        public Criteria andColumnNameBetween(String value1, String value2) {
+            addCriterion("column_name between", value1, value2, "columnName");
             return (Criteria) this;
         }
 
-        public Criteria andColumnNotBetween(String value1, String value2) {
-            addCriterion("column not between", value1, value2, "column");
+        public Criteria andColumnNameNotBetween(String value1, String value2) {
+            addCriterion("column_name not between", value1, value2, "columnName");
             return (Criteria) this;
         }
 
@@ -510,73 +510,73 @@ public class DynamicQueryColumnExample {
             return (Criteria) this;
         }
 
-        public Criteria andViewIdIsNull() {
-            addCriterion("view_id is null");
+        public Criteria andDqIdIsNull() {
+            addCriterion("dq_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdIsNotNull() {
-            addCriterion("view_id is not null");
+        public Criteria andDqIdIsNotNull() {
+            addCriterion("dq_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdEqualTo(String value) {
-            addCriterion("view_id =", value, "viewId");
+        public Criteria andDqIdEqualTo(String value) {
+            addCriterion("dq_id =", value, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdNotEqualTo(String value) {
-            addCriterion("view_id <>", value, "viewId");
+        public Criteria andDqIdNotEqualTo(String value) {
+            addCriterion("dq_id <>", value, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdGreaterThan(String value) {
-            addCriterion("view_id >", value, "viewId");
+        public Criteria andDqIdGreaterThan(String value) {
+            addCriterion("dq_id >", value, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdGreaterThanOrEqualTo(String value) {
-            addCriterion("view_id >=", value, "viewId");
+        public Criteria andDqIdGreaterThanOrEqualTo(String value) {
+            addCriterion("dq_id >=", value, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdLessThan(String value) {
-            addCriterion("view_id <", value, "viewId");
+        public Criteria andDqIdLessThan(String value) {
+            addCriterion("dq_id <", value, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdLessThanOrEqualTo(String value) {
-            addCriterion("view_id <=", value, "viewId");
+        public Criteria andDqIdLessThanOrEqualTo(String value) {
+            addCriterion("dq_id <=", value, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdLike(String value) {
-            addCriterion("view_id like", value, "viewId");
+        public Criteria andDqIdLike(String value) {
+            addCriterion("dq_id like", value, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdNotLike(String value) {
-            addCriterion("view_id not like", value, "viewId");
+        public Criteria andDqIdNotLike(String value) {
+            addCriterion("dq_id not like", value, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdIn(List<String> values) {
-            addCriterion("view_id in", values, "viewId");
+        public Criteria andDqIdIn(List<String> values) {
+            addCriterion("dq_id in", values, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdNotIn(List<String> values) {
-            addCriterion("view_id not in", values, "viewId");
+        public Criteria andDqIdNotIn(List<String> values) {
+            addCriterion("dq_id not in", values, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdBetween(String value1, String value2) {
-            addCriterion("view_id between", value1, value2, "viewId");
+        public Criteria andDqIdBetween(String value1, String value2) {
+            addCriterion("dq_id between", value1, value2, "dqId");
             return (Criteria) this;
         }
 
-        public Criteria andViewIdNotBetween(String value1, String value2) {
-            addCriterion("view_id not between", value1, value2, "viewId");
+        public Criteria andDqIdNotBetween(String value1, String value2) {
+            addCriterion("dq_id not between", value1, value2, "dqId");
             return (Criteria) this;
         }
 

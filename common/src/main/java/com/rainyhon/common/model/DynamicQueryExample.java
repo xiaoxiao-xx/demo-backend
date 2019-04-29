@@ -231,73 +231,73 @@ public class DynamicQueryExample {
             return (Criteria) this;
         }
 
-        public Criteria andViewIsNull() {
-            addCriterion("view is null");
+        public Criteria andViewNameIsNull() {
+            addCriterion("view_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andViewIsNotNull() {
-            addCriterion("view is not null");
+        public Criteria andViewNameIsNotNull() {
+            addCriterion("view_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andViewEqualTo(String value) {
-            addCriterion("view =", value, "view");
+        public Criteria andViewNameEqualTo(String value) {
+            addCriterion("view_name =", value, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewNotEqualTo(String value) {
-            addCriterion("view <>", value, "view");
+        public Criteria andViewNameNotEqualTo(String value) {
+            addCriterion("view_name <>", value, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewGreaterThan(String value) {
-            addCriterion("view >", value, "view");
+        public Criteria andViewNameGreaterThan(String value) {
+            addCriterion("view_name >", value, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewGreaterThanOrEqualTo(String value) {
-            addCriterion("view >=", value, "view");
+        public Criteria andViewNameGreaterThanOrEqualTo(String value) {
+            addCriterion("view_name >=", value, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewLessThan(String value) {
-            addCriterion("view <", value, "view");
+        public Criteria andViewNameLessThan(String value) {
+            addCriterion("view_name <", value, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewLessThanOrEqualTo(String value) {
-            addCriterion("view <=", value, "view");
+        public Criteria andViewNameLessThanOrEqualTo(String value) {
+            addCriterion("view_name <=", value, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewLike(String value) {
-            addCriterion("view like", value, "view");
+        public Criteria andViewNameLike(String value) {
+            addCriterion("view_name like", value, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewNotLike(String value) {
-            addCriterion("view not like", value, "view");
+        public Criteria andViewNameNotLike(String value) {
+            addCriterion("view_name not like", value, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewIn(List<String> values) {
-            addCriterion("view in", values, "view");
+        public Criteria andViewNameIn(List<String> values) {
+            addCriterion("view_name in", values, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewNotIn(List<String> values) {
-            addCriterion("view not in", values, "view");
+        public Criteria andViewNameNotIn(List<String> values) {
+            addCriterion("view_name not in", values, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewBetween(String value1, String value2) {
-            addCriterion("view between", value1, value2, "view");
+        public Criteria andViewNameBetween(String value1, String value2) {
+            addCriterion("view_name between", value1, value2, "viewName");
             return (Criteria) this;
         }
 
-        public Criteria andViewNotBetween(String value1, String value2) {
-            addCriterion("view not between", value1, value2, "view");
+        public Criteria andViewNameNotBetween(String value1, String value2) {
+            addCriterion("view_name not between", value1, value2, "viewName");
             return (Criteria) this;
         }
 

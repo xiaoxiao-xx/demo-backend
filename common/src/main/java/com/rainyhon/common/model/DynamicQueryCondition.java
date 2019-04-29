@@ -7,9 +7,9 @@ public class DynamicQueryCondition {
     private String id;
 
     /**
-     * 
+     * Dynamic_Query_Column的ID
      */
-    private String columnId;
+    private String dqcId;
 
     /**
      * 
@@ -38,19 +38,19 @@ public class DynamicQueryCondition {
     }
 
     /**
-     * 
-     * @return column_id 
+     * Dynamic_Query_Column的ID
+     * @return dqc_id Dynamic_Query_Column的ID
      */
-    public String getColumnId() {
-        return columnId;
+    public String getDqcId() {
+        return dqcId;
     }
 
     /**
-     * 
-     * @param columnId 
+     * Dynamic_Query_Column的ID
+     * @param dqcId Dynamic_Query_Column的ID
      */
-    public void setColumnId(String columnId) {
-        this.columnId = columnId == null ? null : columnId.trim();
+    public void setDqcId(String dqcId) {
+        this.dqcId = dqcId == null ? null : dqcId.trim();
     }
 
     /**

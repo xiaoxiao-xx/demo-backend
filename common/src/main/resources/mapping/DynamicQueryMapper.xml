@@ -3,7 +3,7 @@
 <mapper namespace="com.rainyhon.common.mapper.DynamicQueryMapper" >
   <resultMap id="BaseResultMap" type="com.rainyhon.common.model.DynamicQuery" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="view" property="view" jdbcType="VARCHAR" />
+    <result column="view_name" property="viewName" jdbcType="VARCHAR" />
     <result column="view_display_name" property="viewDisplayName" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -67,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, view, view_display_name, description, create_time
+    id, view_name, view_display_name, description, create_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.DynamicQueryExample" >
     select
@@ -101,9 +101,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.rainyhon.common.model.DynamicQuery" >
-    insert into dynamic_query (id, view, view_display_name, 
+    insert into dynamic_query (id, view_name, view_display_name, 
       description, create_time)
-    values (#{id,jdbcType=VARCHAR}, #{view,jdbcType=VARCHAR}, #{viewDisplayName,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{viewName,jdbcType=VARCHAR}, #{viewDisplayName,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.rainyhon.common.model.DynamicQuery" >
@@ -112,8 +112,8 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="view != null" >
-        view,
+      <if test="viewName != null" >
+        view_name,
       </if>
       <if test="viewDisplayName != null" >
         view_display_name,
@@ -129,8 +129,8 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="view != null" >
-        #{view,jdbcType=VARCHAR},
+      <if test="viewName != null" >
+        #{viewName,jdbcType=VARCHAR},
       </if>
       <if test="viewDisplayName != null" >
         #{viewDisplayName,jdbcType=VARCHAR},
@@ -155,8 +155,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.view != null" >
-        view = #{record.view,jdbcType=VARCHAR},
+      <if test="record.viewName != null" >
+        view_name = #{record.viewName,jdbcType=VARCHAR},
       </if>
       <if test="record.viewDisplayName != null" >
         view_display_name = #{record.viewDisplayName,jdbcType=VARCHAR},
@@ -175,7 +175,7 @@
   <update id="updateByExample" parameterType="map" >
     update dynamic_query
     set id = #{record.id,jdbcType=VARCHAR},
-      view = #{record.view,jdbcType=VARCHAR},
+      view_name = #{record.viewName,jdbcType=VARCHAR},
       view_display_name = #{record.viewDisplayName,jdbcType=VARCHAR},
       description = #{record.description,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP}
@@ -186,8 +186,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.DynamicQuery" >
     update dynamic_query
     <set >
-      <if test="view != null" >
-        view = #{view,jdbcType=VARCHAR},
+      <if test="viewName != null" >
+        view_name = #{viewName,jdbcType=VARCHAR},
       </if>
       <if test="viewDisplayName != null" >
         view_display_name = #{viewDisplayName,jdbcType=VARCHAR},
@@ -203,7 +203,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.DynamicQuery" >
     update dynamic_query
-    set view = #{view,jdbcType=VARCHAR},
+    set view_name = #{viewName,jdbcType=VARCHAR},
       view_display_name = #{viewDisplayName,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}

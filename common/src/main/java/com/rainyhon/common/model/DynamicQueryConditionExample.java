@@ -230,73 +230,73 @@ public class DynamicQueryConditionExample {
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdIsNull() {
-            addCriterion("column_id is null");
+        public Criteria andDqcIdIsNull() {
+            addCriterion("dqc_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdIsNotNull() {
-            addCriterion("column_id is not null");
+        public Criteria andDqcIdIsNotNull() {
+            addCriterion("dqc_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdEqualTo(String value) {
-            addCriterion("column_id =", value, "columnId");
+        public Criteria andDqcIdEqualTo(String value) {
+            addCriterion("dqc_id =", value, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdNotEqualTo(String value) {
-            addCriterion("column_id <>", value, "columnId");
+        public Criteria andDqcIdNotEqualTo(String value) {
+            addCriterion("dqc_id <>", value, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdGreaterThan(String value) {
-            addCriterion("column_id >", value, "columnId");
+        public Criteria andDqcIdGreaterThan(String value) {
+            addCriterion("dqc_id >", value, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdGreaterThanOrEqualTo(String value) {
-            addCriterion("column_id >=", value, "columnId");
+        public Criteria andDqcIdGreaterThanOrEqualTo(String value) {
+            addCriterion("dqc_id >=", value, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdLessThan(String value) {
-            addCriterion("column_id <", value, "columnId");
+        public Criteria andDqcIdLessThan(String value) {
+            addCriterion("dqc_id <", value, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdLessThanOrEqualTo(String value) {
-            addCriterion("column_id <=", value, "columnId");
+        public Criteria andDqcIdLessThanOrEqualTo(String value) {
+            addCriterion("dqc_id <=", value, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdLike(String value) {
-            addCriterion("column_id like", value, "columnId");
+        public Criteria andDqcIdLike(String value) {
+            addCriterion("dqc_id like", value, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdNotLike(String value) {
-            addCriterion("column_id not like", value, "columnId");
+        public Criteria andDqcIdNotLike(String value) {
+            addCriterion("dqc_id not like", value, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdIn(List<String> values) {
-            addCriterion("column_id in", values, "columnId");
+        public Criteria andDqcIdIn(List<String> values) {
+            addCriterion("dqc_id in", values, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdNotIn(List<String> values) {
-            addCriterion("column_id not in", values, "columnId");
+        public Criteria andDqcIdNotIn(List<String> values) {
+            addCriterion("dqc_id not in", values, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdBetween(String value1, String value2) {
-            addCriterion("column_id between", value1, value2, "columnId");
+        public Criteria andDqcIdBetween(String value1, String value2) {
+            addCriterion("dqc_id between", value1, value2, "dqcId");
             return (Criteria) this;
         }
 
-        public Criteria andColumnIdNotBetween(String value1, String value2) {
-            addCriterion("column_id not between", value1, value2, "columnId");
+        public Criteria andDqcIdNotBetween(String value1, String value2) {
+            addCriterion("dqc_id not between", value1, value2, "dqcId");
             return (Criteria) this;
         }
 
