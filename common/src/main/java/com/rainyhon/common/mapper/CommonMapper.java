@@ -1,4 +1,4 @@
-package com.microcore.center.mapper;
+package com.rainyhon.common.mapper;
 
 import java.util.List;
 import java.util.Map;

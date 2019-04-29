@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.microcore.center.mapper.AlarmPolicyMapper" >
-  <resultMap id="BaseResultMap" type="com.microcore.center.model.AlarmPolicy" >
+<mapper namespace="com.rainyhon.common.mapper.AlarmPolicyMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.AlarmPolicy" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="policy_name" property="policyName" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="VARCHAR" />
-    <result column="expr" property="expr" jdbcType="VARCHAR" />
     <result column="alarm_mode_id" property="alarmModeId" jdbcType="VARCHAR" />
     <result column="alarm_type" property="alarmType" jdbcType="VARCHAR" />
     <result column="alarm_level" property="alarmLevel" jdbcType="VARCHAR" />
-    <result column="object_id" property="objectId" jdbcType="VARCHAR" />
     <result column="object_type" property="objectType" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="duration" property="duration" jdbcType="INTEGER" />
     <result column="owner" property="owner" jdbcType="VARCHAR" />
     <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
     <result column="upd_user_id" property="updUserId" jdbcType="VARCHAR" />
@@ -79,11 +81,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, policy_name, state, expr, alarm_mode_id, alarm_type, alarm_level, object_id, 
-    object_type, owner, del_status, upd_user_id, upd_org_id, upd_tm, crt_user_id, crt_org_id, 
-    crt_tm
+    id, policy_name, state, alarm_mode_id, alarm_type, alarm_level, object_type, area_id, 
+    begin_time, end_time, duration, owner, del_status, upd_user_id, upd_org_id, upd_tm, 
+    crt_user_id, crt_org_id, crt_tm
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.AlarmPolicyExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.AlarmPolicyExample" >
     select
     <if test="distinct" >
       distinct
@@ -108,27 +110,29 @@
     delete from alarm_policy
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.microcore.center.model.AlarmPolicyExample" >
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.AlarmPolicyExample" >
     delete from alarm_policy
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.microcore.center.model.AlarmPolicy" >
+  <insert id="insert" parameterType="com.rainyhon.common.model.AlarmPolicy" >
     insert into alarm_policy (id, policy_name, state, 
-      expr, alarm_mode_id, alarm_type, 
-      alarm_level, object_id, object_type, 
-      owner, del_status, upd_user_id, 
-      upd_org_id, upd_tm, crt_user_id, 
-      crt_org_id, crt_tm)
+      alarm_mode_id, alarm_type, alarm_level, 
+      object_type, area_id, begin_time, 
+      end_time, duration, owner, 
+      del_status, upd_user_id, upd_org_id, 
+      upd_tm, crt_user_id, crt_org_id, 
+      crt_tm)
     values (#{id,jdbcType=VARCHAR}, #{policyName,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
-      #{expr,jdbcType=VARCHAR}, #{alarmModeId,jdbcType=VARCHAR}, #{alarmType,jdbcType=VARCHAR}, 
-      #{alarmLevel,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}, #{objectType,jdbcType=VARCHAR}, 
-      #{owner,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, #{updUserId,jdbcType=VARCHAR}, 
-      #{updOrgId,jdbcType=VARCHAR}, #{updTm,jdbcType=TIMESTAMP}, #{crtUserId,jdbcType=VARCHAR}, 
-      #{crtOrgId,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP})
+      #{alarmModeId,jdbcType=VARCHAR}, #{alarmType,jdbcType=VARCHAR}, #{alarmLevel,jdbcType=VARCHAR}, 
+      #{objectType,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{duration,jdbcType=INTEGER}, #{owner,jdbcType=VARCHAR}, 
+      #{delStatus,jdbcType=VARCHAR}, #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, 
+      #{updTm,jdbcType=TIMESTAMP}, #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, 
+      #{crtTm,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.microcore.center.model.AlarmPolicy" >
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.AlarmPolicy" >
     insert into alarm_policy
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -140,9 +144,6 @@
       <if test="state != null" >
         state,
       </if>
-      <if test="expr != null" >
-        expr,
-      </if>
       <if test="alarmModeId != null" >
         alarm_mode_id,
       </if>
@@ -152,11 +153,20 @@
       <if test="alarmLevel != null" >
         alarm_level,
       </if>
-      <if test="objectId != null" >
-        object_id,
-      </if>
       <if test="objectType != null" >
         object_type,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="beginTime != null" >
+        begin_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="duration != null" >
+        duration,
       </if>
       <if test="owner != null" >
         owner,
@@ -193,9 +203,6 @@
       <if test="state != null" >
         #{state,jdbcType=VARCHAR},
       </if>
-      <if test="expr != null" >
-        #{expr,jdbcType=VARCHAR},
-      </if>
       <if test="alarmModeId != null" >
         #{alarmModeId,jdbcType=VARCHAR},
       </if>
@@ -205,11 +212,20 @@
       <if test="alarmLevel != null" >
         #{alarmLevel,jdbcType=VARCHAR},
       </if>
-      <if test="objectId != null" >
-        #{objectId,jdbcType=VARCHAR},
-      </if>
       <if test="objectType != null" >
         #{objectType,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="duration != null" >
+        #{duration,jdbcType=INTEGER},
       </if>
       <if test="owner != null" >
         #{owner,jdbcType=VARCHAR},
@@ -237,7 +253,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.microcore.center.model.AlarmPolicyExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.rainyhon.common.model.AlarmPolicyExample" resultType="java.lang.Integer" >
     select count(*) from alarm_policy
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -255,9 +271,6 @@
       <if test="record.state != null" >
         state = #{record.state,jdbcType=VARCHAR},
       </if>
-      <if test="record.expr != null" >
-        expr = #{record.expr,jdbcType=VARCHAR},
-      </if>
       <if test="record.alarmModeId != null" >
         alarm_mode_id = #{record.alarmModeId,jdbcType=VARCHAR},
       </if>
@@ -267,11 +280,20 @@
       <if test="record.alarmLevel != null" >
         alarm_level = #{record.alarmLevel,jdbcType=VARCHAR},
       </if>
-      <if test="record.objectId != null" >
-        object_id = #{record.objectId,jdbcType=VARCHAR},
-      </if>
       <if test="record.objectType != null" >
         object_type = #{record.objectType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaId != null" >
+        area_id = #{record.areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginTime != null" >
+        begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.duration != null" >
+        duration = #{record.duration,jdbcType=INTEGER},
       </if>
       <if test="record.owner != null" >
         owner = #{record.owner,jdbcType=VARCHAR},
@@ -307,12 +329,14 @@
     set id = #{record.id,jdbcType=VARCHAR},
       policy_name = #{record.policyName,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=VARCHAR},
-      expr = #{record.expr,jdbcType=VARCHAR},
       alarm_mode_id = #{record.alarmModeId,jdbcType=VARCHAR},
       alarm_type = #{record.alarmType,jdbcType=VARCHAR},
       alarm_level = #{record.alarmLevel,jdbcType=VARCHAR},
-      object_id = #{record.objectId,jdbcType=VARCHAR},
       object_type = #{record.objectType,jdbcType=VARCHAR},
+      area_id = #{record.areaId,jdbcType=VARCHAR},
+      begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      duration = #{record.duration,jdbcType=INTEGER},
       owner = #{record.owner,jdbcType=VARCHAR},
       del_status = #{record.delStatus,jdbcType=VARCHAR},
       upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
@@ -325,7 +349,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.AlarmPolicy" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.AlarmPolicy" >
     update alarm_policy
     <set >
       <if test="policyName != null" >
@@ -333,9 +357,6 @@
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=VARCHAR},
-      </if>
-      <if test="expr != null" >
-        expr = #{expr,jdbcType=VARCHAR},
       </if>
       <if test="alarmModeId != null" >
         alarm_mode_id = #{alarmModeId,jdbcType=VARCHAR},
@@ -346,11 +367,20 @@
       <if test="alarmLevel != null" >
         alarm_level = #{alarmLevel,jdbcType=VARCHAR},
       </if>
-      <if test="objectId != null" >
-        object_id = #{objectId,jdbcType=VARCHAR},
-      </if>
       <if test="objectType != null" >
         object_type = #{objectType,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="duration != null" >
+        duration = #{duration,jdbcType=INTEGER},
       </if>
       <if test="owner != null" >
         owner = #{owner,jdbcType=VARCHAR},
@@ -379,16 +409,18 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.AlarmPolicy" >
+  <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.AlarmPolicy" >
     update alarm_policy
     set policy_name = #{policyName,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},
-      expr = #{expr,jdbcType=VARCHAR},
       alarm_mode_id = #{alarmModeId,jdbcType=VARCHAR},
       alarm_type = #{alarmType,jdbcType=VARCHAR},
       alarm_level = #{alarmLevel,jdbcType=VARCHAR},
-      object_id = #{objectId,jdbcType=VARCHAR},
       object_type = #{objectType,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      duration = #{duration,jdbcType=INTEGER},
       owner = #{owner,jdbcType=VARCHAR},
       del_status = #{delStatus,jdbcType=VARCHAR},
       upd_user_id = #{updUserId,jdbcType=VARCHAR},

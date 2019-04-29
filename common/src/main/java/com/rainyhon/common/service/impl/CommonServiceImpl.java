@@ -3,7 +3,7 @@ package com.rainyhon.common.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import com.microcore.center.mapper.CommonMapper;
+import com.rainyhon.common.mapper.CommonMapper;
 import com.rainyhon.common.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.microcore.center.model;
+package com.rainyhon.common.model;
 
 import java.util.Date;
 
@@ -19,11 +19,6 @@ public class AlarmPolicy {
     private String state;
 
     /**
-     * 触发条件
-     */
-    private String expr;
-
-    /**
      * 告警方式
      */
     private String alarmModeId;
@@ -39,14 +34,29 @@ public class AlarmPolicy {
     private String alarmLevel;
 
     /**
-     * 告警对象ID
-     */
-    private String objectId;
-
-    /**
-     * 告警对象类型
+     * 告警对象类型（团队人员/访客/陌生人）
      */
     private String objectType;
+
+    /**
+     * 告警条件：区域ID
+     */
+    private String areaId;
+
+    /**
+     * 告警条件：时间段begin_time
+     */
+    private Date beginTime;
+
+    /**
+     * 告警条件：时间段end_time
+     */
+    private Date endTime;
+
+    /**
+     * 告警条件：驻留时长
+     */
+    private Integer duration;
 
     /**
      * 归属人
@@ -137,22 +147,6 @@ public class AlarmPolicy {
     }
 
     /**
-     * 触发条件
-     * @return expr 触发条件
-     */
-    public String getExpr() {
-        return expr;
-    }
-
-    /**
-     * 触发条件
-     * @param expr 触发条件
-     */
-    public void setExpr(String expr) {
-        this.expr = expr == null ? null : expr.trim();
-    }
-
-    /**
      * 告警方式
      * @return alarm_mode_id 告警方式
      */
@@ -201,35 +195,83 @@ public class AlarmPolicy {
     }
 
     /**
-     * 告警对象ID
-     * @return object_id 告警对象ID
-     */
-    public String getObjectId() {
-        return objectId;
-    }
-
-    /**
-     * 告警对象ID
-     * @param objectId 告警对象ID
-     */
-    public void setObjectId(String objectId) {
-        this.objectId = objectId == null ? null : objectId.trim();
-    }
-
-    /**
-     * 告警对象类型
-     * @return object_type 告警对象类型
+     * 告警对象类型（团队人员/访客/陌生人）
+     * @return object_type 告警对象类型（团队人员/访客/陌生人）
      */
     public String getObjectType() {
         return objectType;
     }
 
     /**
-     * 告警对象类型
-     * @param objectType 告警对象类型
+     * 告警对象类型（团队人员/访客/陌生人）
+     * @param objectType 告警对象类型（团队人员/访客/陌生人）
      */
     public void setObjectType(String objectType) {
         this.objectType = objectType == null ? null : objectType.trim();
+    }
+
+    /**
+     * 告警条件：区域ID
+     * @return area_id 告警条件：区域ID
+     */
+    public String getAreaId() {
+        return areaId;
+    }
+
+    /**
+     * 告警条件：区域ID
+     * @param areaId 告警条件：区域ID
+     */
+    public void setAreaId(String areaId) {
+        this.areaId = areaId == null ? null : areaId.trim();
+    }
+
+    /**
+     * 告警条件：时间段begin_time
+     * @return begin_time 告警条件：时间段begin_time
+     */
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    /**
+     * 告警条件：时间段begin_time
+     * @param beginTime 告警条件：时间段begin_time
+     */
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    /**
+     * 告警条件：时间段end_time
+     * @return end_time 告警条件：时间段end_time
+     */
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * 告警条件：时间段end_time
+     * @param endTime 告警条件：时间段end_time
+     */
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    /**
+     * 告警条件：驻留时长
+     * @return duration 告警条件：驻留时长
+     */
+    public Integer getDuration() {
+        return duration;
+    }
+
+    /**
+     * 告警条件：驻留时长
+     * @param duration 告警条件：驻留时长
+     */
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     /**

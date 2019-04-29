@@ -1,6 +1,6 @@
 package com.rainyhon.common.vo;
 
-import com.microcore.center.model.AlarmPolicy;
+import com.rainyhon.common.model.AlarmPolicy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
