@@ -1,7 +1,7 @@
-package com.microcore.center.mapper;
+package com.rainyhon.common.mapper;
 
-import com.microcore.center.model.AlarmPolicyObject;
-import com.microcore.center.model.AlarmPolicyObjectExample;
+import com.rainyhon.common.model.AlarmPolicyObject;
+import com.rainyhon.common.model.AlarmPolicyObjectExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

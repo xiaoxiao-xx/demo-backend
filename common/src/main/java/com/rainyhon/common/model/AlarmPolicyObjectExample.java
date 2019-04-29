@@ -1,4 +1,4 @@
-package com.microcore.center.model;
+package com.rainyhon.common.model;
 
 import java.util.ArrayList;
 import java.util.List;
