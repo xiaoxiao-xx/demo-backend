@@ -34,7 +34,7 @@ public class DynamicQueryColumn {
     /**
      * 
      */
-    private String hidden;
+    private Integer orderIndex;
 
     /**
      * 
@@ -134,17 +134,17 @@ public class DynamicQueryColumn {
 
     /**
      * 
-     * @return hidden 
+     * @return order_index 
      */
-    public String getHidden() {
-        return hidden;
+    public Integer getOrderIndex() {
+        return orderIndex;
     }
 
     /**
      * 
-     * @param hidden 
+     * @param orderIndex 
      */
-    public void setHidden(String hidden) {
-        this.hidden = hidden == null ? null : hidden.trim();
+    public void setOrderIndex(Integer orderIndex) {
+        this.orderIndex = orderIndex;
     }
 }
