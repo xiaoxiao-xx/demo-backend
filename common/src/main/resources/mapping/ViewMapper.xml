@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.microcore.center.mapper.ViewMapper" >
-  <select id="getColumnByViewName" resultType="com.microcore.center.model.Column" parameterType="String" >
-    select COLUMN_NAME as 'name' ,COLUMN_COMMENT as 'description',DATA_TYPE as 'type' from information_schema.COLUMNS where (table_name = #{name});
+  <select id="getColumnByViewName" resultType="com.microcore.center.model.ColumnVo" parameterType="String" >
+    select COLUMN_NAME as 'column' ,COLUMN_COMMENT as 'columnDisplayName',DATA_TYPE as 'type' from information_schema.COLUMNS where (table_name = #{name});
   </select>
 
   <select id="getAllViewName" resultType="String" >

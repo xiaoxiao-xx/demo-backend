@@ -18,4 +18,6 @@ public interface AlarmPolicyService {
 	
 	ResultVo startStop(AlarmPolicyOpt alarmPolicyOpt);
 
+	ResultVo getAllEnableAlarmPolicy();
+
 }

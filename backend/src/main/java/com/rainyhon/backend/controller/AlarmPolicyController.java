@@ -56,4 +56,10 @@ public class AlarmPolicyController {
 		return alarmPolicyService.startStop(alarmPolicyOpt);
 	}
 
+	@GetMapping("getAllEnableAlarmPolicy")
+	@ApiOperation(value = "获取全部已启用告警策略", notes = "获取全部已启用告警策略")
+	public ResultVo getAllEnableAlarmPolicy(){
+		return alarmPolicyService.getAllEnableAlarmPolicy();
+	}
+
 }

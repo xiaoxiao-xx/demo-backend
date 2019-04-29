@@ -1,6 +1,6 @@
 package com.microcore.center.mapper;
 
-import com.microcore.center.model.Column;
+import com.microcore.center.model.ColumnVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface ViewMapper {
 
-	List<Column> getColumnByViewName(String name);
+	List<ColumnVo> getColumnByViewName(String name);
 
 	List<String> getAllViewName();
 
