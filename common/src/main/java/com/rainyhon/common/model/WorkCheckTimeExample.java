@@ -2,6 +2,7 @@ package com.rainyhon.common.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class WorkCheckTimeExample {
@@ -161,6 +162,32 @@ public class WorkCheckTimeExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
+        protected void addCriterionForJDBCTime(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Time(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCTime(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Time> timeList = new ArrayList<java.sql.Time>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                timeList.add(new java.sql.Time(iter.next().getTime()));
+            }
+            addCriterion(condition, timeList, property);
+        }
+
+        protected void addCriterionForJDBCTime(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Time(value1.getTime()), new java.sql.Time(value2.getTime()), property);
+        }
+
         public Criteria andIdIsNull() {
             addCriterion("id is null");
             return (Criteria) this;
@@ -242,52 +269,52 @@ public class WorkCheckTimeExample {
         }
 
         public Criteria andInTimeEqualTo(Date value) {
-            addCriterion("in_time =", value, "inTime");
+            addCriterionForJDBCTime("in_time =", value, "inTime");
             return (Criteria) this;
         }
 
         public Criteria andInTimeNotEqualTo(Date value) {
-            addCriterion("in_time <>", value, "inTime");
+            addCriterionForJDBCTime("in_time <>", value, "inTime");
             return (Criteria) this;
         }
 
         public Criteria andInTimeGreaterThan(Date value) {
-            addCriterion("in_time >", value, "inTime");
+            addCriterionForJDBCTime("in_time >", value, "inTime");
             return (Criteria) this;
         }
 
         public Criteria andInTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("in_time >=", value, "inTime");
+            addCriterionForJDBCTime("in_time >=", value, "inTime");
             return (Criteria) this;
         }
 
         public Criteria andInTimeLessThan(Date value) {
-            addCriterion("in_time <", value, "inTime");
+            addCriterionForJDBCTime("in_time <", value, "inTime");
             return (Criteria) this;
         }
 
         public Criteria andInTimeLessThanOrEqualTo(Date value) {
-            addCriterion("in_time <=", value, "inTime");
+            addCriterionForJDBCTime("in_time <=", value, "inTime");
             return (Criteria) this;
         }
 
         public Criteria andInTimeIn(List<Date> values) {
-            addCriterion("in_time in", values, "inTime");
+            addCriterionForJDBCTime("in_time in", values, "inTime");
             return (Criteria) this;
         }
 
         public Criteria andInTimeNotIn(List<Date> values) {
-            addCriterion("in_time not in", values, "inTime");
+            addCriterionForJDBCTime("in_time not in", values, "inTime");
             return (Criteria) this;
         }
 
         public Criteria andInTimeBetween(Date value1, Date value2) {
-            addCriterion("in_time between", value1, value2, "inTime");
+            addCriterionForJDBCTime("in_time between", value1, value2, "inTime");
             return (Criteria) this;
         }
 
         public Criteria andInTimeNotBetween(Date value1, Date value2) {
-            addCriterion("in_time not between", value1, value2, "inTime");
+            addCriterionForJDBCTime("in_time not between", value1, value2, "inTime");
             return (Criteria) this;
         }
 
@@ -302,52 +329,52 @@ public class WorkCheckTimeExample {
         }
 
         public Criteria andOutTimeEqualTo(Date value) {
-            addCriterion("out_time =", value, "outTime");
+            addCriterionForJDBCTime("out_time =", value, "outTime");
             return (Criteria) this;
         }
 
         public Criteria andOutTimeNotEqualTo(Date value) {
-            addCriterion("out_time <>", value, "outTime");
+            addCriterionForJDBCTime("out_time <>", value, "outTime");
             return (Criteria) this;
         }
 
         public Criteria andOutTimeGreaterThan(Date value) {
-            addCriterion("out_time >", value, "outTime");
+            addCriterionForJDBCTime("out_time >", value, "outTime");
             return (Criteria) this;
         }
 
         public Criteria andOutTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("out_time >=", value, "outTime");
+            addCriterionForJDBCTime("out_time >=", value, "outTime");
             return (Criteria) this;
         }
 
         public Criteria andOutTimeLessThan(Date value) {
-            addCriterion("out_time <", value, "outTime");
+            addCriterionForJDBCTime("out_time <", value, "outTime");
             return (Criteria) this;
         }
 
         public Criteria andOutTimeLessThanOrEqualTo(Date value) {
-            addCriterion("out_time <=", value, "outTime");
+            addCriterionForJDBCTime("out_time <=", value, "outTime");
             return (Criteria) this;
         }
 
         public Criteria andOutTimeIn(List<Date> values) {
-            addCriterion("out_time in", values, "outTime");
+            addCriterionForJDBCTime("out_time in", values, "outTime");
             return (Criteria) this;
         }
 
         public Criteria andOutTimeNotIn(List<Date> values) {
-            addCriterion("out_time not in", values, "outTime");
+            addCriterionForJDBCTime("out_time not in", values, "outTime");
             return (Criteria) this;
         }
 
         public Criteria andOutTimeBetween(Date value1, Date value2) {
-            addCriterion("out_time between", value1, value2, "outTime");
+            addCriterionForJDBCTime("out_time between", value1, value2, "outTime");
             return (Criteria) this;
         }
 
         public Criteria andOutTimeNotBetween(Date value1, Date value2) {
-            addCriterion("out_time not between", value1, value2, "outTime");
+            addCriterionForJDBCTime("out_time not between", value1, value2, "outTime");
             return (Criteria) this;
         }
 
@@ -362,52 +389,52 @@ public class WorkCheckTimeExample {
         }
 
         public Criteria andOverTimeEqualTo(Date value) {
-            addCriterion("over_time =", value, "overTime");
+            addCriterionForJDBCTime("over_time =", value, "overTime");
             return (Criteria) this;
         }
 
         public Criteria andOverTimeNotEqualTo(Date value) {
-            addCriterion("over_time <>", value, "overTime");
+            addCriterionForJDBCTime("over_time <>", value, "overTime");
             return (Criteria) this;
         }
 
         public Criteria andOverTimeGreaterThan(Date value) {
-            addCriterion("over_time >", value, "overTime");
+            addCriterionForJDBCTime("over_time >", value, "overTime");
             return (Criteria) this;
         }
 
         public Criteria andOverTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("over_time >=", value, "overTime");
+            addCriterionForJDBCTime("over_time >=", value, "overTime");
             return (Criteria) this;
         }
 
         public Criteria andOverTimeLessThan(Date value) {
-            addCriterion("over_time <", value, "overTime");
+            addCriterionForJDBCTime("over_time <", value, "overTime");
             return (Criteria) this;
         }
 
         public Criteria andOverTimeLessThanOrEqualTo(Date value) {
-            addCriterion("over_time <=", value, "overTime");
+            addCriterionForJDBCTime("over_time <=", value, "overTime");
             return (Criteria) this;
         }
 
         public Criteria andOverTimeIn(List<Date> values) {
-            addCriterion("over_time in", values, "overTime");
+            addCriterionForJDBCTime("over_time in", values, "overTime");
             return (Criteria) this;
         }
 
         public Criteria andOverTimeNotIn(List<Date> values) {
-            addCriterion("over_time not in", values, "overTime");
+            addCriterionForJDBCTime("over_time not in", values, "overTime");
             return (Criteria) this;
         }
 
         public Criteria andOverTimeBetween(Date value1, Date value2) {
-            addCriterion("over_time between", value1, value2, "overTime");
+            addCriterionForJDBCTime("over_time between", value1, value2, "overTime");
             return (Criteria) this;
         }
 
         public Criteria andOverTimeNotBetween(Date value1, Date value2) {
-            addCriterion("over_time not between", value1, value2, "overTime");
+            addCriterionForJDBCTime("over_time not between", value1, value2, "overTime");
             return (Criteria) this;
         }
     }

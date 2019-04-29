@@ -322,7 +322,7 @@ public class AsyncTaskRec {
 		// out record
 		InOutRecord outRecord = new InOutRecord();
 		outRecord.setId(CommonUtil.getUUID());
-		outRecord.setId(Constants.IN_OUT_TYPE_OUT);
+		outRecord.setType(Constants.IN_OUT_TYPE_OUT);
 		outRecord.setAreaId(areaId);
 		// in_out_record 表 rec_id 字段是 psm_face.id， 即导致进入离开/记录产生的第一条数据的ID
 		outRecord.setTime(CommonUtil.getCurrentTime());
@@ -333,7 +333,7 @@ public class AsyncTaskRec {
 		// in record
 		InOutRecord inRecord = new InOutRecord();
 		inRecord.setId(CommonUtil.getUUID());
-		inRecord.setId(Constants.IN_OUT_TYPE_IN);
+		inRecord.setType(Constants.IN_OUT_TYPE_IN);
 		inRecord.setAreaId(newAreaId);
 		inRecord.setTime(CommonUtil.getCurrentTime());
 		inRecord.setRecId(face.getId());
