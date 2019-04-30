@@ -1,4 +1,4 @@
-package com.rainyhon.common.constant;
+package com.rainyhon.common.exception;
 
 import java.util.HashMap;
 import java.util.Map;

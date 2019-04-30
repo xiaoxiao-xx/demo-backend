@@ -3,7 +3,7 @@ package com.rainyhon.common.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.constant.Constants;
-import com.rainyhon.common.constant.ExceptionType;
+import com.rainyhon.common.exception.ExceptionType;
 import com.rainyhon.common.exception.CommonException;
 import com.rainyhon.common.mapper.UserMapper;
 import com.rainyhon.common.model.User;

@@ -98,5 +98,13 @@ public class Constants {
 	 */
 	public static final String SCHEDULE_DETAIL_TYPE_PATROL = "PATROL";
 
+	public static int ERROR_CODE = 500;
+
+	public static final String NullPointerExceptionStr = "空指针异常";
+
+	public static final String ArrayIndexOutOfBoundsStr = "数组越界异常";
+
+	public static final String ClassCastExceptionStr = "类型转换异常";
+
 }
 
