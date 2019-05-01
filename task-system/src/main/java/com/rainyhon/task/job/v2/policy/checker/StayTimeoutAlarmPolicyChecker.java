@@ -41,8 +41,8 @@ public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
         // policy
         Integer duration = policy.getDuration();
         String expiredKey = userId + ":" + areaId;
-        int expiredTime = duration * 60 * 1000;
-        // 逗留时间
+        int expiredTime = 3000;//duration * 60 * 1000;
+        // 逗留时间，已存在则延长，否则指定时间过期
         expired.set(expiredKey, captureTime, expiredTime);
         if (isSameArea(policy, areaId)
                 && isBetweenTimePeriod(policy, captureTime)
@@ -70,6 +70,7 @@ public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
             alarm.setOperator(policy.getCrtUserId());
             alarm.setAlarmReason(reason);
             result.setResult(alarm);
+            expired.remove(expiredKey);
         }
         return result;
     }
