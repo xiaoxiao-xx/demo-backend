@@ -132,6 +132,32 @@ public class SummaryServiceImpl implements SummaryService {
 		return voList;
 	}
 
+	@Override
+	public List<DetailVo> getDetailListRedis2() {
+		List<DetailVo> voList = new ArrayList<>();
+
+		Set<String> areaList = redisUtil.keys("area:*");
+		for (String areaId : areaList) {
+			Set<String> userIdSet = redisUtil.smemebers(areaId);
+			for (String userId : userIdSet) {
+				PsmPersonInfo psmPersonInfo = personService.getPsmPersonInfo(userId);
+
+				DetailVo vo = new DetailVo();
+				vo.setId("");
+				vo.setSummaryId(psmPersonInfo.getPersonalPhoto1());
+				vo.setAreaId(areaId);
+				vo.setUserId(userId);
+				vo.setUserName(psmPersonInfo.getName());
+				vo.setTime(new Date());
+
+				voList.add(vo);
+			}
+
+		}
+
+		return voList;
+	}
+
 	@Data
 	@EqualsAndHashCode(callSuper = false)
 	public static class AreaCount {

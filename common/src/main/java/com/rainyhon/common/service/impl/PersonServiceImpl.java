@@ -1,13 +1,19 @@
 package com.rainyhon.common.service.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.microcore.center.mapper.PsmPersonInfoMapper;
+import com.microcore.center.model.PsmPersonInfo;
+import com.microcore.center.model.PsmPersonInfoExample;
 import com.rainyhon.common.cllient.HttpTemplate;
+import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.service.*;
+import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.JedisPoolUtil;
+import com.rainyhon.common.util.StringUtil;
 import com.rainyhon.common.vo.FaceSdkUserVo;
+import com.rainyhon.common.vo.PersonInfoVo;
+import com.rainyhon.common.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +21,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.rainyhon.common.constant.Constants;
-import com.microcore.center.mapper.PsmPersonInfoMapper;
-import com.microcore.center.model.PsmPersonInfo;
-import com.microcore.center.model.PsmPersonInfoExample;
-import com.rainyhon.common.util.CommonUtil;
-import com.rainyhon.common.util.StringUtil;
-import com.rainyhon.common.vo.PersonInfoVo;
-import com.rainyhon.common.vo.ResultVo;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static com.rainyhon.common.util.CommonUtil.image2byte;
 
@@ -218,7 +217,7 @@ public class PersonServiceImpl implements PersonService {
 		PsmPersonInfoExample example = new PsmPersonInfoExample();
 		PsmPersonInfoExample.Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotBlank(name)) {
-			criteria.andDeptIdEqualTo(name.trim());
+			criteria.andNameEqualTo(name.trim());
 		} else {
 			return ResultVo.fail("输入不可为空");
 		}
@@ -232,6 +231,11 @@ public class PersonServiceImpl implements PersonService {
 			List<String> map = redisUtil.hmget(key, "captureTime", "areaId");
 			String captureTime = map.get(0);
 			String areaId = map.get(1);
+			if (captureTime == null || areaId == null) {
+				vo.setAreaId("");
+				vo.setOnDuty(false);
+				return ResultVo.ok(vo);
+			}
 
 			Calendar nineClock = getNineClock();
 			try {
@@ -250,6 +254,24 @@ public class PersonServiceImpl implements PersonService {
 		} else {
 			return ResultVo.fail("没有搜索到此人");
 		}
+	}
+
+	@Override
+	public int getPersonCount() {
+		Map<String, Object> params = new HashMap<>(3);
+		String sql = "from psm_person_info_t";
+		params.put("sql", sql);
+		Long count = commonService.executeGetCount(params);
+		return count.intValue();
+	}
+
+	@Override
+	public int getImportantCarePersonCount() {
+		Map<String, Object> params = new HashMap<>(3);
+		String sql = "from psm_person_info_t where impt_care_status = 'Y'";
+		params.put("sql", sql);
+		Long count = commonService.executeGetCount(params);
+		return count.intValue();
 	}
 
 	private Calendar getNineClock() {

@@ -10,23 +10,27 @@ import java.util.List;
 
 public interface DeviceService {
 
-    String getDeviceLocation(Integer x, Integer y);
+	String getDeviceLocation(Integer x, Integer y);
 
-    PageInfo<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal, String state,
-                                         Integer pageIndex, Integer pageSize);
+	PageInfo<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal, String state,
+	                                     Integer pageIndex, Integer pageSize);
 
-    void add(PsmDeviceVo vo);
+	void add(PsmDeviceVo vo);
 
-    void delete(String deviceId);
+	void delete(String deviceId);
 
-    void update(PsmDeviceVo vo);
+	void update(PsmDeviceVo vo);
 
-    void setDeviceState(String deviceId, String state);
+	void setDeviceState(String deviceId, String state);
 
-    List<PsmParaDefine> getDeviceTypes();
+	List<PsmParaDefine> getDeviceTypes();
 
-    ResultVo batchDelete(String idList);
+	ResultVo batchDelete(String idList);
 
-    String getDevtypeValByTypeCode(String devtypeCode);
+	String getDevtypeValByTypeCode(String devtypeCode);
+
+	int getEnableDeviceCount();
+
+	int getDisabledDeviceCount();
 
 }

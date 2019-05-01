@@ -46,3 +46,6 @@ ribbon:
   ConnectTimeout: 5000
   MaxAutoRetries: 0
   MaxAutoRetriesNextServer: 1
+
+# 网关会自动往header中的 Access-Control-Allow-Origin添加 , *, 导致错误
+zuul.ignored-headers: Access-Control-Allow-Origin

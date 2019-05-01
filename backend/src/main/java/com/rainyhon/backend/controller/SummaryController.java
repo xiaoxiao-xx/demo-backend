@@ -37,4 +37,10 @@ public class SummaryController {
 		return ResultVo.ok(summaryService.getDetailListRedis(areaId));
 	}
 
+	@ApiOperation(value = "", notes = "")
+	@GetMapping("getDetailList2")
+	public ResultVo getDetailList2() {
+		return ResultVo.ok(summaryService.getDetailListRedis2());
+	}
+
 }

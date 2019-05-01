@@ -37,4 +37,8 @@ public interface PersonService {
 
 	ResultVo getPersonInfoByName(String name);
 
+	int getPersonCount();
+
+	int getImportantCarePersonCount();
+
 }

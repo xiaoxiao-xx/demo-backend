@@ -9,22 +9,24 @@ import com.rainyhon.common.vo.ResultVo;
  */
 public interface AlarmResultService {
 
-    PageInfo<AlarmResultVo> getRealAlarmList(String alarmType, String operator, String state,
-                                             Integer pageIndex, Integer pageSize);
+	PageInfo<AlarmResultVo> getRealAlarmList(String alarmType, String operator, String state,
+	                                         Integer pageIndex, Integer pageSize);
 
-    PageInfo<AlarmResultVo> getRealAlarmList2(String alarmType, String operator, String state,
-                                               Integer pageIndex, Integer pageSize);
+	PageInfo<AlarmResultVo> getRealAlarmList2(String alarmType, String operator, String state,
+	                                          Integer pageIndex, Integer pageSize);
 
-    ResultVo delete(String id);
+	ResultVo delete(String id);
 
-    ResultVo update(AlarmResultVo vo);
+	ResultVo update(AlarmResultVo vo);
 
-    ResultVo add(AlarmResultVo vo);
+	ResultVo add(AlarmResultVo vo);
 
-    ResultVo dealRealAlarm(AlarmResultVo vo);
+	ResultVo dealRealAlarm(AlarmResultVo vo);
 
-    ResultVo getAlarmCount();
+	ResultVo getAlarmCount();
 
-    ResultVo getAlarmStateInfo();
+	ResultVo getAlarmStateInfo();
+
+	int getUnprocessedAlarmCount();
 
 }

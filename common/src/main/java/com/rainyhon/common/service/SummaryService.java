@@ -15,4 +15,5 @@ public interface SummaryService {
 
 	List<DetailVo> getDetailListRedis(String areaId);
 
+	List<DetailVo> getDetailListRedis2();
 }

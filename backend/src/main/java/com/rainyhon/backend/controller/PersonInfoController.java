@@ -59,8 +59,8 @@ public class PersonInfoController {
 	}
 
 	@ApiOperation(value = "首页人员搜索", notes = "首页人员搜索")
-	@GetMapping("getPersonInfoByName")
-	public ResultVo getPersonInfoByName(String name) {
+	@PostMapping("getPersonInfoByName")
+	public ResultVo getPersonInfoByName(@RequestBody String name) {
 		return personService.getPersonInfoByName(name);
 	}
 
