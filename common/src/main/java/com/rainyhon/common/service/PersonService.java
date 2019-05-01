@@ -3,6 +3,7 @@ package com.rainyhon.common.service;
 import com.microcore.center.model.PsmPersonInfo;
 import com.rainyhon.common.vo.PersonInfoVo;
 import com.rainyhon.common.vo.ResultVo;
+import com.rainyhon.common.vo.SearchVo;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public interface PersonService {
 
 	String getPsmPersonInfoName(String id);
 
-	ResultVo getPersonInfoByName(String name);
+	ResultVo getPersonInfoByName(SearchVo vo);
 
 	int getPersonCount();
 
