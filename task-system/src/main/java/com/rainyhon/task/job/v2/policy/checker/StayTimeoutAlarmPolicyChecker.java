@@ -8,11 +8,9 @@ import com.rainyhon.task.job.v2.policy.base.LocalExpiredCache;
 import com.rainyhon.task.job.v2.policy.entity.AlarmEntity;
 import com.rainyhon.task.job.v2.policy.entity.AlarmPolicyResult;
 import com.rainyhon.task.job.v2.policy.entity.Record;
-import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import static com.rainyhon.common.util.CommonUtil.getUUID;
@@ -23,7 +21,6 @@ import static com.rainyhon.common.util.CommonUtil.getUUID;
  * @author leizhenyang
  * @date 2019.04.29
  */
-@Service
 public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
 
     private LocalExpiredCache expired;

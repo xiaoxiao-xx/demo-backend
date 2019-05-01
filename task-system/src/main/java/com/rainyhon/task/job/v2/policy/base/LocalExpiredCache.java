@@ -60,18 +60,10 @@ public class LocalExpiredCache {
     }
 
     /**
-     * 拿到的数据可能是已经过期的数据，可以再次判断一下
-     * if（n.expireTime<System.currentTimeMillis()）{
-     * return null;
-     * }
-     * 也可以直接返回整个节点Node ，交给调用者去取舍
-     * <p>
-     * <p>
-     * 无法判断不存在该key,还是该key存的是一个null值，如果需要区分这两种情况
-     * 可以定义一个全局标识，标识key不存在
-     * public static final NOT_EXIST = new Object();
-     * 返回值时
-     * return n==null?NOT_EXIST:n.value;
+     * 获取元素
+     *
+     * @param key
+     * @return
      */
     public AlarmEntity get(String key) {
         AlarmEntity n = cache.get(key);
@@ -80,8 +72,10 @@ public class LocalExpiredCache {
 
     /**
      * 删出KEY，并返回该key对应的数据
+     * @param key
+     * @return
      */
-    public Object remove(String key) {
+    public AlarmEntity remove(String key) {
         lock.lock();
         try {
             AlarmEntity n = cache.remove(key);
@@ -89,7 +83,7 @@ public class LocalExpiredCache {
                 return null;
             } else {
                 expireQueue.remove(n);
-                return n.getKey();
+                return n;
             }
         } finally {
             lock.unlock();
@@ -145,7 +139,6 @@ public class LocalExpiredCache {
         cache.set("leizhenyang", date, 5 * 1000);
         Thread.sleep(4000);
         cache.set("leizhenyang", date, 10 * 1000);
-
 
 
     }

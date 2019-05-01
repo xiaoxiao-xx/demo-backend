@@ -28,11 +28,11 @@ public class AlarmPolicyManager implements CommandLineRunner {
     /**
      * 策略验证器
      */
-    private Map<String, IAlarmPolicyChecker> checker;
+    private Map<String, IAlarmPolicyChecker> checker = new HashMap<>();
 
     private List<AlarmPolicy> policies;
 
-    private Map<String, String> addressList;
+    private Map<String, String> addressList = new HashMap<>();
 
     public List<AlarmPolicy> getPolicies() {
         return policies;
