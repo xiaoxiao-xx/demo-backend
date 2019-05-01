@@ -1,8 +1,6 @@
 package com.rainyhon.backend.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.rainyhon.common.constant.ExceptionType;
-import com.rainyhon.common.exception.CommonException;
 import com.rainyhon.common.model.User;
 import com.rainyhon.common.service.PsmUserService;
 import com.rainyhon.common.service.UserService;
@@ -13,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.rainyhon.common.util.CommonUtil.exceptionMessageIs;
 
 @RestController
 @RequestMapping("user")
@@ -28,16 +24,7 @@ public class UserController {
 
 	@PostMapping("addUser")
 	public ResultVo<?> addUser(@RequestBody User user) {
-		try {
-			userService.addUser(user);
-		} catch (CommonException e) {
-			if (exceptionMessageIs(e, ExceptionType.USER_ALREADY_EXISTS)) {
-				return ResultVo.fail("User already exist");
-			}
-
-			throw e;
-		}
-
+		userService.addUser(user);
 		return ResultVo.ok();
 	}
 

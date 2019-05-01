@@ -3,12 +3,13 @@ package com.rainyhon.common.exception;
 import javax.servlet.http.HttpServletRequest;
 
 import com.rainyhon.common.vo.ResultVo;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+// import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-@ControllerAdvice
+// 不再使用
+// @ControllerAdvice
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(value = Exception.class)
@@ -23,7 +24,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(value = CommonException.class)
 	@ResponseBody
 	public ResultVo jsonErrorHandler(HttpServletRequest req, CommonException e) throws Exception {
-	    return ResultVo.fail(e.getMessage());
+		return ResultVo.fail(e.getMessage());
 	}
 
 }

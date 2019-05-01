@@ -92,7 +92,7 @@ public class AsyncTaskDetect {
 				detectResult.setGroupId(face.getGroupId());
 				detectResult.setHeight(face.getHeight());
 				detectResult.setWidth(face.getWidth());
-				detectResult.setBase64(face.getBase64());
+				// detectResult.setBase64(face.getBase64());
 				detectResult.setCreateTime(CommonUtil.getCurrentTime());
 				detectResultMapper.insert(detectResult);
 

@@ -1,5 +1,6 @@
 package com.rainyhon.backend.config;
 
+import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,12 +24,14 @@ public class LogRecordAspect {
 	}
 
 	@Around("webLog()")
-	public Object doAround(ProceedingJoinPoint pjp) {
+	public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
 		try {
 			return WebLogUtil.aspectWebLog(pjp);
 		} catch (Throwable throwable) {
 			log.error("系统异常请联系管理员！", throwable);
-			throw new RuntimeException("系统异常, 请联系管理员: " + throwable.getMessage());
+			// 各种异常都变成了RuntimeException，这样做不好
+			// throw new RuntimeException("系统异常, 请联系管理员: " + throwable.getMessage());
+			throw throwable;
 		}
 	}
 }

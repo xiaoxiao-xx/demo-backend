@@ -3,9 +3,9 @@
 <mapper namespace="com.rainyhon.common.mapper.WorkCheckTimeMapper" >
   <resultMap id="BaseResultMap" type="com.rainyhon.common.model.WorkCheckTime" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="in_time" property="inTime" jdbcType="TIMESTAMP" />
-    <result column="out_time" property="outTime" jdbcType="TIMESTAMP" />
-    <result column="over_time" property="overTime" jdbcType="TIMESTAMP" />
+    <result column="in_time" property="inTime" jdbcType="TIME" />
+    <result column="out_time" property="outTime" jdbcType="TIME" />
+    <result column="over_time" property="overTime" jdbcType="TIME" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -102,8 +102,8 @@
   <insert id="insert" parameterType="com.rainyhon.common.model.WorkCheckTime" >
     insert into work_check_time (id, in_time, out_time, 
       over_time)
-    values (#{id,jdbcType=VARCHAR}, #{inTime,jdbcType=TIMESTAMP}, #{outTime,jdbcType=TIMESTAMP}, 
-      #{overTime,jdbcType=TIMESTAMP})
+    values (#{id,jdbcType=VARCHAR}, #{inTime,jdbcType=TIME}, #{outTime,jdbcType=TIME}, 
+      #{overTime,jdbcType=TIME})
   </insert>
   <insert id="insertSelective" parameterType="com.rainyhon.common.model.WorkCheckTime" >
     insert into work_check_time
@@ -126,13 +126,13 @@
         #{id,jdbcType=VARCHAR},
       </if>
       <if test="inTime != null" >
-        #{inTime,jdbcType=TIMESTAMP},
+        #{inTime,jdbcType=TIME},
       </if>
       <if test="outTime != null" >
-        #{outTime,jdbcType=TIMESTAMP},
+        #{outTime,jdbcType=TIME},
       </if>
       <if test="overTime != null" >
-        #{overTime,jdbcType=TIMESTAMP},
+        #{overTime,jdbcType=TIME},
       </if>
     </trim>
   </insert>
@@ -149,13 +149,13 @@
         id = #{record.id,jdbcType=VARCHAR},
       </if>
       <if test="record.inTime != null" >
-        in_time = #{record.inTime,jdbcType=TIMESTAMP},
+        in_time = #{record.inTime,jdbcType=TIME},
       </if>
       <if test="record.outTime != null" >
-        out_time = #{record.outTime,jdbcType=TIMESTAMP},
+        out_time = #{record.outTime,jdbcType=TIME},
       </if>
       <if test="record.overTime != null" >
-        over_time = #{record.overTime,jdbcType=TIMESTAMP},
+        over_time = #{record.overTime,jdbcType=TIME},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -165,9 +165,9 @@
   <update id="updateByExample" parameterType="map" >
     update work_check_time
     set id = #{record.id,jdbcType=VARCHAR},
-      in_time = #{record.inTime,jdbcType=TIMESTAMP},
-      out_time = #{record.outTime,jdbcType=TIMESTAMP},
-      over_time = #{record.overTime,jdbcType=TIMESTAMP}
+      in_time = #{record.inTime,jdbcType=TIME},
+      out_time = #{record.outTime,jdbcType=TIME},
+      over_time = #{record.overTime,jdbcType=TIME}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -176,22 +176,22 @@
     update work_check_time
     <set >
       <if test="inTime != null" >
-        in_time = #{inTime,jdbcType=TIMESTAMP},
+        in_time = #{inTime,jdbcType=TIME},
       </if>
       <if test="outTime != null" >
-        out_time = #{outTime,jdbcType=TIMESTAMP},
+        out_time = #{outTime,jdbcType=TIME},
       </if>
       <if test="overTime != null" >
-        over_time = #{overTime,jdbcType=TIMESTAMP},
+        over_time = #{overTime,jdbcType=TIME},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.WorkCheckTime" >
     update work_check_time
-    set in_time = #{inTime,jdbcType=TIMESTAMP},
-      out_time = #{outTime,jdbcType=TIMESTAMP},
-      over_time = #{overTime,jdbcType=TIMESTAMP}
+    set in_time = #{inTime,jdbcType=TIME},
+      out_time = #{outTime,jdbcType=TIME},
+      over_time = #{overTime,jdbcType=TIME}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
