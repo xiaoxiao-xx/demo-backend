@@ -3,7 +3,6 @@ package com.rainyhon.common.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.constant.Constants;
-import com.rainyhon.common.exception.ExceptionType;
 import com.rainyhon.common.exception.CommonException;
 import com.rainyhon.common.mapper.UserMapper;
 import com.rainyhon.common.model.User;
@@ -21,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.rainyhon.common.exception.CommonExceptionType.USER_ALREADY_EXISTS;
+
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
 		String username = user.getUsername().trim();
 		UserInfo userInfo = getUserByUsername(username);
 		if (userInfo != null) {
-			throw new CommonException(ExceptionType.USER_ALREADY_EXISTS);
+			throw new CommonException(USER_ALREADY_EXISTS);
 		}
 
 		user.setId(CommonUtil.getUUID());
