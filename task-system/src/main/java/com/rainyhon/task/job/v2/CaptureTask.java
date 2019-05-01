@@ -66,7 +66,7 @@ public class CaptureTask {
 	/**
 	 * 200ms心跳一次
 	 */
-	@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 300)
 	private void captureTask() {
 		// 调用SDK图片大小和质量参数
 		HCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new HCNetSDK.NET_DVR_JPEGPARA();

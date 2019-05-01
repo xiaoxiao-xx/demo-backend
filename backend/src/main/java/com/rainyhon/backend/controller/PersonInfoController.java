@@ -3,6 +3,7 @@ package com.rainyhon.backend.controller;
 import com.rainyhon.common.service.PersonService;
 import com.rainyhon.common.vo.PersonInfoVo;
 import com.rainyhon.common.vo.ResultVo;
+import com.rainyhon.common.vo.SearchVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -60,8 +61,8 @@ public class PersonInfoController {
 
 	@ApiOperation(value = "首页人员搜索", notes = "首页人员搜索")
 	@PostMapping("getPersonInfoByName")
-	public ResultVo getPersonInfoByName(@RequestBody String name) {
-		return personService.getPersonInfoByName(name);
+	public ResultVo getPersonInfoByName(@RequestBody SearchVo vo) {
+		return personService.getPersonInfoByName(vo);
 	}
 
 }

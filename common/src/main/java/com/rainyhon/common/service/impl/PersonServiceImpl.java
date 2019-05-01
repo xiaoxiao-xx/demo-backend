@@ -14,6 +14,7 @@ import com.rainyhon.common.util.StringUtil;
 import com.rainyhon.common.vo.FaceSdkUserVo;
 import com.rainyhon.common.vo.PersonInfoVo;
 import com.rainyhon.common.vo.ResultVo;
+import com.rainyhon.common.vo.SearchVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,9 +214,10 @@ public class PersonServiceImpl implements PersonService {
 			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
 
 	@Override
-	public ResultVo getPersonInfoByName(String name) {
+	public ResultVo getPersonInfoByName(SearchVo searchVo) {
 		PsmPersonInfoExample example = new PsmPersonInfoExample();
 		PsmPersonInfoExample.Criteria criteria = example.createCriteria();
+		String name = searchVo.getName();
 		if (StringUtils.isNotBlank(name)) {
 			criteria.andNameEqualTo(name.trim());
 		} else {
