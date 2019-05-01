@@ -1,20 +1,13 @@
 package com.rainyhon.backend.controller;
 
-import com.rainyhon.common.service.AlarmPolicyService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.github.pagehelper.PageInfo;
+import com.rainyhon.common.service.impl.AlarmPolicyService;
 import com.rainyhon.common.vo.AlarmPolicyOpt;
 import com.rainyhon.common.vo.AlarmPolicyVo;
 import com.rainyhon.common.vo.ResultVo;
-
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("alarmStrategyController")

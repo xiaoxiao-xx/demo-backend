@@ -205,18 +205,18 @@ public class ViewService {
         return result;
     }
 
-    public Map<String, String> getAllCondtion() {
-        Map<String, String> condition = new HashMap<>();
-        condition.put(GT, "大于");
-        condition.put(LT, "小于");
-        condition.put(EQ, "等于");
-        condition.put(NEQ, "不等于");
-        condition.put(LTEQ, "小于等于");
-        condition.put(GTEQ, "大于等于");
-        condition.put(BETWEEN, "之间");
-        condition.put(IN, "包含");
-        condition.put(LIKE, "模糊");
-        return condition;
+    public ResultVo getAllCondtions() {
+        Map<String, String> conditions = new HashMap<>();
+        conditions.put(GT, "大于");
+        conditions.put(LT, "小于");
+        conditions.put(EQ, "等于");
+        conditions.put(NEQ, "不等于");
+        conditions.put(LTEQ, "小于等于");
+        conditions.put(GTEQ, "大于等于");
+        conditions.put(BETWEEN, "之间");
+        conditions.put(IN, "包含");
+        conditions.put(LIKE, "模糊");
+        return ResultVo.ok(conditions);
     }
 
     @Autowired

@@ -422,7 +422,7 @@ public class AsyncTaskRec {
         policyManager.getPolicies().forEach(policy -> {
             Record record = new Record(personName, face, material);
             AlarmPolicyResult result = checker.doCheck(policy, record);
-            if (!result.isSuccess()) {
+            if (result.isSuccess()) {
                 psmRealAlarmMapper.insertSelective(result.getResult());
             }
         });

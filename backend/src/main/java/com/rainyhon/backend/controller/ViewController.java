@@ -28,11 +28,16 @@ public class ViewController {
         return viewService.getColumnByViewName(name);
     }
 
-
     @GetMapping("getAllViewName")
     @ApiOperation("获取所有视图名称")
     public ResultVo getAllViewName() {
         return viewService.getAllViewName();
+    }
+
+    @GetMapping("getConditions")
+    @ApiOperation("获取所有条件")
+    public ResultVo getConditions() {
+        return viewService.getAllCondtions();
     }
 
     @PostMapping("query")
