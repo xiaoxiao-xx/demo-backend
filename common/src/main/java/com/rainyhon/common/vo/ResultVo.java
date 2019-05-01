@@ -246,7 +246,7 @@ public class ResultVo<T> implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ResultVo{" +
+		return "ResultVo {" +
 				"status=" + status +
 				", msg='" + msg + '\'' +
 				", index=" + index +
@@ -254,4 +254,5 @@ public class ResultVo<T> implements Serializable {
 				", data=" + data +
 				'}';
 	}
+
 }

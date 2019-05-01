@@ -11,5 +11,16 @@ public class PersonInfoVo extends PsmPersonInfo {
 	/**
 	 * 机构名称
 	 */
-	private String deptName ;
+	private String deptName;
+
+	/**
+	 * 是否在位
+	 */
+	private boolean onDuty;
+
+	/**
+	 * 人员所在区域ID
+	 */
+	private String areaId;
+
 }

@@ -24,7 +24,7 @@ public interface PersonService {
 
 	/**
 	 * 获取随机用户信息
-	 * 
+	 *
 	 * @return
 	 */
 	PsmPersonInfo getRandomPerson();
@@ -32,7 +32,9 @@ public interface PersonService {
 	List<PsmPersonInfo> getPersonInfoList(String orgId);
 
 	PsmPersonInfo getPsmPersonInfo(String id);
-	
+
 	String getPsmPersonInfoName(String id);
+
+	ResultVo getPersonInfoByName(String name);
 
 }

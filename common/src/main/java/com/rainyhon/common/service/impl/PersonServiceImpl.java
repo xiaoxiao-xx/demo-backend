@@ -1,10 +1,12 @@
 package com.rainyhon.common.service.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.rainyhon.common.cllient.HttpTemplate;
 import com.rainyhon.common.service.*;
+import com.rainyhon.common.util.JedisPoolUtil;
 import com.rainyhon.common.vo.FaceSdkUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +50,9 @@ public class PersonServiceImpl implements PersonService {
 
 	@Autowired
 	private FaceApiService faceApiService;
+
+	@Autowired
+	private JedisPoolUtil redisUtil;
 
 	@Value("${face.api.ip}")
 	private String faceApiIp;
@@ -203,6 +208,58 @@ public class PersonServiceImpl implements PersonService {
 		}
 
 		return "";
+	}
+
+	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
+
+	@Override
+	public ResultVo getPersonInfoByName(String name) {
+		PsmPersonInfoExample example = new PsmPersonInfoExample();
+		PsmPersonInfoExample.Criteria criteria = example.createCriteria();
+		if (StringUtils.isNotBlank(name)) {
+			criteria.andDeptIdEqualTo(name.trim());
+		} else {
+			return ResultVo.fail("输入不可为空");
+		}
+
+		List<PsmPersonInfo> psmPersonInfoList = psmPersonInfoMapper.selectByExample(example);
+		if (CommonUtil.isNotEmpty(psmPersonInfoList)) {
+			PsmPersonInfo info = psmPersonInfoList.get(0);
+			PersonInfoVo vo = CommonUtil.po2VO(info, PersonInfoVo.class);
+
+			String key = "user:" + info.getPersonId();
+			List<String> map = redisUtil.hmget(key, "captureTime", "areaId");
+			String captureTime = map.get(0);
+			String areaId = map.get(1);
+
+			Calendar nineClock = getNineClock();
+			try {
+				if (dateFormat.get().parse(captureTime).getTime() > nineClock.getTime().getTime()) {
+					vo.setAreaId(areaId);
+					vo.setOnDuty(true);
+				} else {
+					vo.setAreaId("");
+					vo.setOnDuty(false);
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			return ResultVo.ok(vo);
+		} else {
+			return ResultVo.fail("没有搜索到此人");
+		}
+	}
+
+	private Calendar getNineClock() {
+		Calendar nineClock = Calendar.getInstance();
+		nineClock.set(Calendar.HOUR_OF_DAY, 9);
+		nineClock.set(Calendar.MINUTE, 0);
+		nineClock.set(Calendar.SECOND, 0);
+		nineClock.set(Calendar.MILLISECOND, 0);
+
+		return nineClock;
 	}
 
 }
