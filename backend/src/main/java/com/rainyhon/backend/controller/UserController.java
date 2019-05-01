@@ -23,7 +23,7 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("addUser")
-	public ResultVo<?> addUser(@RequestBody User user) {
+	public ResultVo<?> addUser(@RequestBody UserVo user) {
 		userService.addUser(user);
 		return ResultVo.ok();
 	}

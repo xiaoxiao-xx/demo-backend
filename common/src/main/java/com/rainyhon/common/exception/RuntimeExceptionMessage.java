@@ -3,6 +3,8 @@ package com.rainyhon.common.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.rainyhon.common.constant.Constants.*;
+
 /**
  *
  */
@@ -25,9 +27,9 @@ public enum RuntimeExceptionMessage {
 	private static final Map<String, String> RUNTIME_EXCEPTION_MAP = new HashMap<>();
 
 	static {
-		RUNTIME_EXCEPTION_MAP.put(NullPointerException.class.getName(), "空指针异常");
-		RUNTIME_EXCEPTION_MAP.put(ClassCastException.class.getName(), "类型转换异常");
-		RUNTIME_EXCEPTION_MAP.put(ArrayIndexOutOfBoundsException.class.getName(), "数组越界异常");
+		RUNTIME_EXCEPTION_MAP.put(NullPointerException.class.getName(), NullPointerExceptionStr);
+		RUNTIME_EXCEPTION_MAP.put(ClassCastException.class.getName(), ClassCastExceptionStr);
+		RUNTIME_EXCEPTION_MAP.put(ArrayIndexOutOfBoundsException.class.getName(), ArrayIndexOutOfBoundsStr);
 
 		for (RuntimeExceptionMessage message : RuntimeExceptionMessage.values()) {
 			COMMON_EXCEPTION_MAP.put(message.getRealMessage(), message);

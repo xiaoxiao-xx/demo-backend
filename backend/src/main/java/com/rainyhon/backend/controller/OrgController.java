@@ -21,6 +21,11 @@ public class OrgController {
 		return ResultVo.ok(orgService.getOrgList(pageIndex, pageSize));
 	}
 
+	@GetMapping("getAllOrgs")
+	public ResultVo getOrgList() {
+		return ResultVo.ok(orgService.getAllOrgs());
+	}
+
 	@PostMapping("addOrg")
 	public ResultVo addOrg(@RequestBody Org vo) {
 		orgService.addOrg(vo);

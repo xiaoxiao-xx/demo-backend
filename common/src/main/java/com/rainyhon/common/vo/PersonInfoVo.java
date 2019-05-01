@@ -23,4 +23,9 @@ public class PersonInfoVo extends PsmPersonInfo {
 	 */
 	private String areaId;
 
+	/**
+	 * 区域
+	 */
+	private String area;
+
 }
