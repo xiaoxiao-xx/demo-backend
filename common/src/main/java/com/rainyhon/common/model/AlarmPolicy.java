@@ -64,22 +64,26 @@ public class AlarmPolicy {
     private String owner;
 
     /**
-     * 删除状态 
+     * 删除状态
+ 
      */
     private String delStatus;
 
     /**
-     * 最后修改人ID 
+     * 最后修改人ID
+ 
      */
     private String updUserId;
 
     /**
-     * 最后修改机构ID 
+     * 最后修改机构ID
+ 
      */
     private String updOrgId;
 
     /**
-     * 最后修改时间 
+     * 最后修改时间
+ 
      */
     private Date updTm;
 
@@ -97,6 +101,11 @@ public class AlarmPolicy {
      * 创建时间
      */
     private Date crtTm;
+
+    /**
+     * 前端使用
+     */
+    private String[] timePeriod;
 
     /**
      * ID
@@ -291,64 +300,80 @@ public class AlarmPolicy {
     }
 
     /**
-     * 删除状态 
-     * @return del_status 删除状态 
+     * 删除状态
+ 
+     * @return del_status 删除状态
+ 
      */
     public String getDelStatus() {
         return delStatus;
     }
 
     /**
-     * 删除状态 
-     * @param delStatus 删除状态 
+     * 删除状态
+ 
+     * @param delStatus 删除状态
+ 
      */
     public void setDelStatus(String delStatus) {
         this.delStatus = delStatus == null ? null : delStatus.trim();
     }
 
     /**
-     * 最后修改人ID 
-     * @return upd_user_id 最后修改人ID 
+     * 最后修改人ID
+ 
+     * @return upd_user_id 最后修改人ID
+ 
      */
     public String getUpdUserId() {
         return updUserId;
     }
 
     /**
-     * 最后修改人ID 
-     * @param updUserId 最后修改人ID 
+     * 最后修改人ID
+ 
+     * @param updUserId 最后修改人ID
+ 
      */
     public void setUpdUserId(String updUserId) {
         this.updUserId = updUserId == null ? null : updUserId.trim();
     }
 
     /**
-     * 最后修改机构ID 
-     * @return upd_org_id 最后修改机构ID 
+     * 最后修改机构ID
+ 
+     * @return upd_org_id 最后修改机构ID
+ 
      */
     public String getUpdOrgId() {
         return updOrgId;
     }
 
     /**
-     * 最后修改机构ID 
-     * @param updOrgId 最后修改机构ID 
+     * 最后修改机构ID
+ 
+     * @param updOrgId 最后修改机构ID
+ 
      */
     public void setUpdOrgId(String updOrgId) {
         this.updOrgId = updOrgId == null ? null : updOrgId.trim();
     }
 
     /**
-     * 最后修改时间 
-     * @return upd_tm 最后修改时间 
+     * 最后修改时间
+ 
+     * @return upd_tm 最后修改时间
+ 
      */
     public Date getUpdTm() {
         return updTm;
     }
 
     /**
-     * 最后修改时间 
-     * @param updTm 最后修改时间 
+     * 最后修改时间
+ 
+     * @param updTm 最后修改时间
+ 
      */
     public void setUpdTm(Date updTm) {
         this.updTm = updTm;
@@ -400,5 +425,13 @@ public class AlarmPolicy {
      */
     public void setCrtTm(Date crtTm) {
         this.crtTm = crtTm;
+    }
+
+    public String[] getTimePeriod() {
+        return timePeriod;
+    }
+
+    public void setTimePeriod(String[] timePeriod) {
+        this.timePeriod = timePeriod;
     }
 }

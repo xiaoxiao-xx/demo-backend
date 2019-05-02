@@ -55,7 +55,7 @@ public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
             alarm.setId(getUUID());
             alarm.setRemark("");
             // 默认初始告警
-            alarm.setState("0");
+            alarm.setState("初始");
             alarm.setTriggerTime(captureTime);
             alarm.setObjectId(userId);
             if (Double.parseDouble(record.getFace().getScore()) >= 60.00D) {
@@ -79,14 +79,19 @@ public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
         return policy.getAreaId().equals(areaId);
     }
 
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
+
     /**
      * 时间段内
      */
     private boolean isBetweenTimePeriod(AlarmPolicy policy, Date date) {
+        String format = DATE_FORMAT.format(date);
         Date bTime = policy.getBeginTime();
         Date eTime = policy.getEndTime();
+        Date cTime = new Date(format);
         // bTime < date < eTime
-        return date.after(bTime) && date.before(eTime);
+        return cTime.after(bTime) && cTime.before(eTime);
     }
 
     /**

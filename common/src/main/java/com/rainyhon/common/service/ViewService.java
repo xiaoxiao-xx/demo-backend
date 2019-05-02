@@ -1,5 +1,7 @@
 package com.rainyhon.common.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.microcore.center.mapper.ViewMapper;
 import com.microcore.center.model.*;
 import com.rainyhon.common.model.DynamicQuery;
@@ -81,8 +83,9 @@ public class ViewService {
 
     private final String DEFAULT_CONDITION = "1=1";
 
+    private final String PRESENT = "%";
+
     public ResultVo query(ViewQueryVo query) {
-        ResultVo vo = new ResultVo();
         StringBuilder sql = new StringBuilder();
         // select
         sql.append(SELECT);
@@ -106,9 +109,9 @@ public class ViewService {
         // condition;
         appendConditions(sql, query.getUnary());
         log.info(sql.toString());
-        List<Map<String, String>> result = viewMapper.query(sql.toString());
-        vo.setData(result);
-        return vo;
+        PageInfo<PsmDeviceVersion> pageInfo = PageHelper.startPage(query.getPageIndex(), query.getPageSize())
+                .doSelectPageInfo(() -> viewMapper.query(sql.toString()));
+        return new ResultVo().success(pageInfo);
     }
 
     /**
@@ -122,22 +125,22 @@ public class ViewService {
             // a = 1
             switch (unary.getCondition()) {
                 case GT:
-                    sql.append(unary.getColumn()).append(">").append(formatValue(unary.getValue(), unary.getType()));
+                    sql.append(unary.getColumn()).append(SPACE).append(">").append(SPACE).append(formatValue(unary.getValue(), unary.getType()));
                     break;
                 case GTEQ:
-                    sql.append(unary.getColumn()).append(">=").append(formatValue(unary.getValue(), unary.getType()));
+                    sql.append(unary.getColumn()).append(SPACE).append(">=").append(SPACE).append(formatValue(unary.getValue(), unary.getType()));
                     break;
                 case LT:
-                    sql.append(unary.getColumn()).append("<").append(formatValue(unary.getValue(), unary.getType()));
+                    sql.append(unary.getColumn()).append(SPACE).append("<").append(SPACE).append(formatValue(unary.getValue(), unary.getType()));
                     break;
                 case LTEQ:
-                    sql.append(unary.getColumn()).append("<=").append(formatValue(unary.getValue(), unary.getType()));
+                    sql.append(unary.getColumn()).append(SPACE).append("<=").append(SPACE).append(formatValue(unary.getValue(), unary.getType()));
                     break;
                 case EQ:
-                    sql.append(unary.getColumn()).append("=").append(formatValue(unary.getValue(), unary.getType()));
+                    sql.append(unary.getColumn()).append(SPACE).append("=").append(SPACE).append(formatValue(unary.getValue(), unary.getType()));
                     break;
                 case NEQ:
-                    sql.append(unary.getColumn()).append("!=").append(formatValue(unary.getValue(), unary.getType()));
+                    sql.append(unary.getColumn()).append(SPACE).append("!=").append(SPACE).append(formatValue(unary.getValue(), unary.getType()));
                     break;
                 case BETWEEN:
                     String[] betweenValue = unary.getValue().split(COMMA);
@@ -146,7 +149,7 @@ public class ViewService {
                     }
                     sql.append(unary.getColumn())
                             .append(SPACE).append("between").append(SPACE)
-                            .append(formatValue(betweenValue[0], unary.getType())).append("and").append(SPACE).append(formatValue(betweenValue[1], unary.getType()));
+                            .append(formatValue(betweenValue[0], unary.getType())).append(SPACE).append("and").append(SPACE).append(formatValue(betweenValue[1], unary.getType()));
                     break;
                 case IN:
                     String[] inValue = unary.getValue().split(COMMA);
@@ -161,6 +164,7 @@ public class ViewService {
                     sql.append(SUF_BRACKET);
                     break;
                 case LIKE:
+                    sql.append(unary.getColumn()).append(SPACE).append("like").append(SPACE).append(formatValue(PRESENT + unary.getValue() + PRESENT, unary.getType()));
                     break;
             }
         }

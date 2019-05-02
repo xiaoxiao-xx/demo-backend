@@ -15,6 +15,7 @@ import com.rainyhon.common.model.WorkAttendance;
 import com.rainyhon.common.model.WorkCheckTime;
 import com.rainyhon.common.mq.rabbit.RabbitMQUtil;
 import com.rainyhon.common.service.*;
+import com.rainyhon.common.service.impl.AlarmPolicyService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.util.JedisPoolUtil;
@@ -78,18 +79,11 @@ public class AsyncTaskRec {
     private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
             -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
 
-    private Map<String, String> addressList = new HashMap<>();
-
     @Autowired
     private WorkService workService;
 
-    {
-        addressList.put("1", "入口");
-        addressList.put("2", "入口");
-        addressList.put("3", "工作区");
-        addressList.put("4", "会议室");
-        addressList.put("5", "总经理室");
-    }
+    @Autowired
+    private AlarmPolicyService alarmPolicyService;
 
     @Autowired
     public AsyncTaskRec(HttpTemplate httpTemplate, MaterialService materialService,
@@ -358,7 +352,7 @@ public class AsyncTaskRec {
         String materialId = face.getMaterialId();
         PsmMaterial material = materialService.getMaterial(materialId);
         String areaId = material.getAreaId();
-        vo.setAddress(addressList.get(areaId));
+        vo.setAddress(((Map<String, String>) alarmPolicyService.getAlarmAddress().getData()).get(areaId));
 
         // TODO
         vo.setAlarmState(random("是", "否"));
@@ -401,7 +395,7 @@ public class AsyncTaskRec {
     }
 
     private String getAreaName(String areaId) {
-        return addressList.get(areaId);
+        return ((Map<String, String>) alarmPolicyService.getAlarmAddress().getData()).get(areaId);
     }
 
     @Autowired

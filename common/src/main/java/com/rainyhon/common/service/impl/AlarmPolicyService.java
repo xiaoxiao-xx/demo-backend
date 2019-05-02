@@ -17,12 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @Transactional
 public class AlarmPolicyService {
+
+    public static final String SPLIT_TIME_PERIOD = " - ";
+
+    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     @Autowired
     private AlarmPolicyMapper psmAlarmPolicyMapper;
@@ -33,10 +38,15 @@ public class AlarmPolicyService {
     @Autowired
     private AlarmModeService alarmModeService;
 
-    public ResultVo add(AlarmPolicyVo alarmPolicyVo) {
-        AlarmPolicy p = CommonUtil.po2VO(alarmPolicyVo, AlarmPolicy.class);
-        p.setId(CommonUtil.getUUID());
-        psmAlarmPolicyMapper.insertSelective(p);
+    public ResultVo add(AlarmPolicy alarmPolicy) throws ParseException {
+        alarmPolicy.setId(CommonUtil.getUUID());
+        alarmPolicy.setDelStatus(DelStatus.NotDelete);
+        // 00:00:00 - 00:00:00
+        alarmPolicy.setBeginTime(TIME_FORMAT.parse(alarmPolicy.getTimePeriod()[0]));
+        alarmPolicy.setEndTime(TIME_FORMAT.parse(alarmPolicy.getTimePeriod()[1]));
+        alarmPolicy.setCrtTm(new Date());
+        alarmPolicy.setUpdTm(new Date());
+        psmAlarmPolicyMapper.insertSelective(alarmPolicy);
         return ResultVo.ok();
     }
 
@@ -54,7 +64,7 @@ public class AlarmPolicyService {
         return ResultVo.ok();
     }
 
-    public PageInfo<AlarmPolicyVo> query(String alarmType, String strategy, Integer pageIndex, Integer pageSize) {
+    public PageInfo<AlarmPolicyVo> page(String alarmType, String strategy, Integer pageIndex, Integer pageSize) {
         AlarmPolicyExample example = new AlarmPolicyExample();
         AlarmPolicyExample.Criteria criteria = example.createCriteria();
         if (StringUtil.isNotEmpty(alarmType)) {
@@ -95,26 +105,94 @@ public class AlarmPolicyService {
         return ResultVo.ok(list);
     }
 
-    public List<String> getState() {
-        List<String> list = new ArrayList<>();
-        list.add(State.Disable);
-        list.add(State.Enabled);
-        return list;
+    /**
+     * 启用状态
+     *
+     * @return
+     */
+    public ResultVo getState() {
+        Map<String, String> map = new HashMap<>();
+        map.put(State.Disable, "禁用");
+        map.put(State.Enabled, "启用");
+        return ResultVo.ok(map);
     }
 
-    public List<String> getDelStatus() {
-        List<String> list = new ArrayList<>();
-        list.add(DelStatus.NotDelete);
-        list.add(DelStatus.Deleted);
-        return list;
+    /**
+     * 删除状态
+     *
+     * @return
+     */
+    public ResultVo getDelStatus() {
+        Map<String, String> map = new HashMap<>();
+        map.put(DelStatus.NotDelete, "未删除");
+        map.put(DelStatus.Deleted, "已删除");
+        return ResultVo.ok(map);
     }
 
-    public List<String> getObjectType() {
-        List<String> list = new ArrayList<>();
-        list.add(ObjectType.TeamMember);
-        list.add(ObjectType.Visitor);
-        list.add(ObjectType.Stranger);
-        return list;
+    /**
+     * 对象类型
+     *
+     * @return
+     */
+    public ResultVo getObjectType() {
+        Map<String, String> map = new HashMap<>();
+        map.put(ObjectType.TeamMember, "团队成员");
+        map.put(ObjectType.Visitor, "访客");
+        map.put(ObjectType.Stranger, "陌生人");
+        return ResultVo.ok(map);
+    }
+
+    /**
+     * 告警方式
+     *
+     * @return
+     */
+    public ResultVo getAlarmModel() {
+        Map<String, String> map = new HashMap<>();
+        map.put("0", "邮件告警");
+        map.put("1", "系统告警");
+        map.put("1", "声音告警");
+        return ResultVo.ok(map);
+    }
+
+    /**
+     * 告警类型
+     *
+     * @return
+     */
+    public ResultVo getAlarmType() {
+        Map<String, String> map = new HashMap<>();
+        map.put("0", "考勤");
+        map.put("1", "值班");
+        return ResultVo.ok(map);
+    }
+
+    /**
+     * 告警级别
+     *
+     * @return
+     */
+    public ResultVo getAlarmLevel() {
+        Map<String, String> map = new HashMap<>();
+        map.put("0", "一般");
+        map.put("1", "轻微");
+        map.put("2", "严重");
+        return ResultVo.ok(map);
+    }
+
+    /**
+     * 告警区域
+     *
+     * @return
+     */
+    public ResultVo getAlarmAddress() {
+        Map<String, String> map = new HashMap<>();
+        map.put("1", "A入口");
+        map.put("2", "B入口");
+        map.put("3", "工作区");
+        map.put("4", "会议室");
+        map.put("5", "总经理室");
+        return ResultVo.ok(map);
     }
 
     /**
@@ -122,8 +200,14 @@ public class AlarmPolicyService {
      */
     public static class State {
 
+        /**
+         * 禁用
+         */
         public static final String Disable = "0";
 
+        /**
+         * 启用
+         */
         public static final String Enabled = "1";
 
     }
@@ -131,7 +215,7 @@ public class AlarmPolicyService {
     /**
      * 逻辑删除
      */
-    public  static class DelStatus {
+    public static class DelStatus {
         /**
          * 已删除
          */
@@ -161,4 +245,6 @@ public class AlarmPolicyService {
          */
         public static final String Stranger = "2";
     }
+
+
 }

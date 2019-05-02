@@ -14,4 +14,7 @@ public class ViewQueryVo extends ViewBaseVo{
 	 */
 	private Unary unary;
 
+	private Integer pageIndex;
+
+	private Integer pageSize;
 }

@@ -12,8 +12,8 @@ public interface AlarmResultService {
 	PageInfo<AlarmResultVo> getRealAlarmList(String alarmType, String operator, String state,
 	                                         Integer pageIndex, Integer pageSize);
 
-	PageInfo<AlarmResultVo> getRealAlarmList2(String alarmType, String operator, String state,
-	                                          Integer pageIndex, Integer pageSize);
+	PageInfo<AlarmResultVo> page(String alarmType, String operator, String state,
+								 Integer pageIndex, Integer pageSize);
 
 	ResultVo delete(String id);
 
