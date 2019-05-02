@@ -13,7 +13,7 @@ import com.rainyhon.common.service.SrcRecordService;
 import com.rainyhon.common.util.CommonUtil;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class SrcRecordServiceImpl implements SrcRecordService {
 
 	@Autowired

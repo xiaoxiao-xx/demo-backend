@@ -6,6 +6,7 @@ import com.microcore.center.mapper.PsmPersonInfoMapper;
 import com.microcore.center.model.PsmPersonInfo;
 import com.microcore.center.model.PsmPersonInfoExample;
 import com.rainyhon.common.cllient.HttpTemplate;
+import com.rainyhon.common.constant.AreaDef;
 import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.service.*;
 import com.rainyhon.common.util.CommonUtil;
@@ -235,6 +236,7 @@ public class PersonServiceImpl implements PersonService {
 			String areaId = map.get(1);
 			if (captureTime == null || areaId == null) {
 				vo.setAreaId("");
+				vo.setArea("");
 				vo.setOnDuty(false);
 				return ResultVo.ok(vo);
 			}
@@ -243,9 +245,11 @@ public class PersonServiceImpl implements PersonService {
 			try {
 				if (dateFormat.get().parse(captureTime).getTime() > nineClock.getTime().getTime()) {
 					vo.setAreaId(areaId);
+					vo.setArea(AreaDef.getAreaNameById(areaId));
 					vo.setOnDuty(true);
 				} else {
 					vo.setAreaId("");
+					vo.setArea("");
 					vo.setOnDuty(false);
 				}
 			} catch (ParseException e) {
