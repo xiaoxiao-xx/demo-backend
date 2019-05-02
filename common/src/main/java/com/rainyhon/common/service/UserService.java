@@ -3,6 +3,7 @@ package com.rainyhon.common.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.microcore.center.mapper.UserRoleRelationMapper;
+import com.microcore.center.model.Role;
 import com.microcore.center.model.UserRoleRelation;
 import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.exception.CommonException;
@@ -11,6 +12,7 @@ import com.rainyhon.common.model.User;
 import com.rainyhon.common.model.UserExample;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
+import com.rainyhon.common.vo.RoleVo;
 import com.rainyhon.common.vo.UserInfo;
 import com.rainyhon.common.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.rainyhon.common.exception.CommonExceptionType.USER_ALREADY_EXISTS;
+import static com.rainyhon.common.util.CommonUtil.listPo2VO;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -119,10 +122,29 @@ public class UserService {
 		PageInfo<User> pageInfo = PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(()
 				-> userMapper.selectByExample(example));
 
-		List<UserVo> voList = CommonUtil.listPo2VO(pageInfo.getList(), UserVo.class);
+		List<UserVo> voList = listPo2VO(pageInfo.getList(), UserVo.class);
+		voList.forEach(vo -> {
+			List<Role> roleList = roleService.getRoleListByUserId(vo.getId());
+			List<RoleVo> roleVoList = listPo2VO(roleList, RoleVo.class);
+			vo.setRoleList(roleVoList);
+		});
 		PageInfo<UserVo> voPageInfo = CommonUtil.po2VO(pageInfo, PageInfo.class);
 		voPageInfo.setList(voList);
 		return voPageInfo;
+	}
+
+	@Autowired
+	private RoleService roleService;
+
+	public UserVo getUserDetailById(String userId) {
+		User user = getUserById(userId);
+		UserVo vo = CommonUtil.po2VO(user, UserVo.class);
+		vo.setRoleList(listPo2VO(roleService.getRoleListByUserId(userId), RoleVo.class));
+		return vo;
+	}
+
+	private User getUserById(String userId) {
+		return userMapper.selectByPrimaryKey(userId);
 	}
 
 }

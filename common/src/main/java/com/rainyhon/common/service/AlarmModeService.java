@@ -1,14 +1,38 @@
 package com.rainyhon.common.service;
 
+import com.microcore.center.mapper.AlarmModeMapper;
+import com.microcore.center.model.AlarmMode;
+import com.microcore.center.model.AlarmModeExample;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
-import com.microcore.center.model.AlarmMode;
+@Service
+@Transactional
+public class AlarmModeService {
 
-public interface AlarmModeService {
+	@Autowired
+	private AlarmModeMapper psmAlarmModeMapper;
 
-	List<AlarmMode> getAlarmMode();
+	public List<AlarmMode> getAlarmMode() {
+		AlarmModeExample example = new AlarmModeExample();
+		AlarmModeExample.Criteria criteria = example.createCriteria();
+		return psmAlarmModeMapper.selectByExample(example);
+	}
 
-	String getAlarmMode(String id);
+	public String getAlarmMode(String id) {
+		AlarmMode mode = psmAlarmModeMapper.selectByPrimaryKey(id);
+		if (mode != null) {
+			return mode.getAlarmMode();
+		}
+		return null;
+	}
 
-	AlarmMode getAlarmModeById(String id);
+	public AlarmMode getAlarmModeById(String id) {
+		return psmAlarmModeMapper.selectByPrimaryKey(id);
+	}
+
 }
+

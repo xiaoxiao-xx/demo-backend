@@ -1,34 +1,103 @@
 package com.rainyhon.common.service;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.rainyhon.common.model.WorkCheckTime;
-import com.rainyhon.common.model.WorkExemption;
-import com.rainyhon.common.model.WorkHolidayCalendar;
+import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.mapper.WorkCheckTimeMapper;
+import com.rainyhon.common.mapper.WorkExemptionMapper;
+import com.rainyhon.common.mapper.WorkHolidayCalendarMapper;
+import com.rainyhon.common.model.*;
+import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface SettingService {
+import java.util.List;
 
-	void addCheckTime(WorkCheckTime checkTime);
+@Service
+@Transactional(rollbackFor = Exception.class)
+public class SettingService {
 
-	void deleteCheckTime(String id);
+	@Autowired
+	private WorkCheckTimeMapper checkTimeMapper;
 
-	void updateCheckTime(WorkCheckTime checkTime);
+	@Autowired
+	private WorkHolidayCalendarMapper holidayCalendarMapper;
 
-	WorkCheckTime getCheckTime();
+	@Autowired
+	private WorkExemptionMapper exemptionMapper;
 
-	void addExemptionPerson(WorkExemption exemption);
+	public void addCheckTime(WorkCheckTime checkTime) {
+		checkTime.setId(CommonUtil.getUUID());
+		checkTimeMapper.insert(checkTime);
+	}
 
-	void deleteExemptionPerson(String id);
+	public void deleteCheckTime(String id) {
+		checkTimeMapper.deleteByPrimaryKey(id);
+	}
 
-	void updateExemptionPerson(WorkExemption exemption);
+	public void updateCheckTime(WorkCheckTime checkTime) {
+		EntityUtils.setUpdateInfo(checkTime);
+		checkTimeMapper.updateByPrimaryKeySelective(checkTime);
+	}
 
-	PageInfo<WorkExemption> getExemptionPersonList(Integer pageIndex, Integer pageSize);
+	public WorkCheckTime getCheckTime() {
+		WorkCheckTimeExample example = new WorkCheckTimeExample();
+		// WorkCheckTimeExample.Criteria criteria = example.createCriteria();
+		List<WorkCheckTime> workCheckTimeList = checkTimeMapper.selectByExample(example);
+		if (CommonUtil.isNotEmpty(workCheckTimeList)) {
+			return workCheckTimeList.get(0);
+		}
 
-	void addHolidayCalendar(WorkHolidayCalendar calendar);
+		return new WorkCheckTime();
+	}
 
-	void deleteHolidayCalendar(String id);
+	public void addExemptionPerson(WorkExemption exemption) {
+		exemption.setId(CommonUtil.getUUID());
+		EntityUtils.setCreateAndUpdateInfo(exemption);
+		exemptionMapper.insert(exemption);
+	}
 
-	void updateHolidayCalendar(WorkHolidayCalendar calendar);
+	public void deleteExemptionPerson(String id) {
+		WorkExemption exemption = new WorkExemption();
+		exemption.setId(id);
+		exemption.setDelStatus(Constants.DELETE_STATUS_YES);
+		exemptionMapper.updateByPrimaryKeySelective(exemption);
+	}
 
-	PageInfo<WorkHolidayCalendar> getHolidayCalendarList(Integer pageIndex, Integer pageSize);
+	public void updateExemptionPerson(WorkExemption exemption) {
+		EntityUtils.setUpdateInfo(exemption);
+		exemptionMapper.updateByPrimaryKeySelective(exemption);
+	}
+
+	public PageInfo<WorkExemption> getExemptionPersonList(Integer pageIndex, Integer pageSize) {
+		WorkExemptionExample example = new WorkExemptionExample();
+		WorkExemptionExample.Criteria criteria = example.createCriteria();
+		return PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(()
+				-> exemptionMapper.selectByExample(example));
+	}
+
+	public void addHolidayCalendar(WorkHolidayCalendar calendar) {
+		calendar.setId(CommonUtil.getUUID());
+		holidayCalendarMapper.insert(calendar);
+	}
+
+	public void deleteHolidayCalendar(String id) {
+		holidayCalendarMapper.deleteByPrimaryKey(id);
+	}
+
+	public void updateHolidayCalendar(WorkHolidayCalendar calendar) {
+		EntityUtils.setUpdateInfo(calendar);
+		holidayCalendarMapper.updateByPrimaryKeySelective(calendar);
+	}
+
+	public PageInfo<WorkHolidayCalendar> getHolidayCalendarList(Integer pageIndex, Integer pageSize) {
+		WorkHolidayCalendarExample example = new WorkHolidayCalendarExample();
+		WorkHolidayCalendarExample.Criteria criteria = example.createCriteria();
+		return PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(()
+				-> holidayCalendarMapper.selectByExample(example));
+	}
 
 }
+

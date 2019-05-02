@@ -98,7 +98,7 @@ public class AsyncTaskRec {
     }
 
     /**
-     * sfdsdf
+     * 人脸识别
      */
     @Async
     public void rec(String materialId, String detectResultId, FaceSdkRecVo faceSdkRec) {

@@ -17,8 +17,13 @@ public class ResourceController {
 
 	@GetMapping("getResourceList")
 	public ResultVo getResourceList(@RequestParam Integer pageIndex,
-	                           @RequestParam Integer pageSize) {
+	                                @RequestParam Integer pageSize) {
 		return ResultVo.ok(resourceService.getResourceList(pageIndex, pageSize));
+	}
+
+	@GetMapping("getAllResources")
+	public ResultVo getAllResources() {
+		return ResultVo.ok(resourceService.getAllResources());
 	}
 
 	@PostMapping("addResource")

@@ -27,8 +27,8 @@ public class FileController {
 	@Autowired
 	private FileService fileService ;
 
-	@PostMapping("fileUpload")
 	// TODO
+	@PostMapping("fileUpload")
 	@ResponseBody
 	public ResultVo fileUpload(@RequestParam("fileName") MultipartFile file) {
 		if (file.isEmpty()) {

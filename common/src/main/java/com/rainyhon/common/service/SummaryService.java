@@ -129,15 +129,15 @@ public class SummaryService {
 		List<DetailVo> voList = new ArrayList<>();
 
 		Set<String> areaList = redisUtil.keys("area:*");
-		for (String areaId : areaList) {
-			Set<String> userIdSet = redisUtil.smemebers(areaId);
+		for (String areaKey : areaList) {
+			Set<String> userIdSet = redisUtil.smemebers(areaKey);
 			for (String userId : userIdSet) {
 				PsmPersonInfo psmPersonInfo = personService.getPsmPersonInfo(userId);
 
 				DetailVo vo = new DetailVo();
 				vo.setId("");
 				vo.setSummaryId(psmPersonInfo.getPersonalPhoto1());
-				vo.setAreaId(areaId);
+				vo.setAreaId(areaKey.split(":")[1]);
 				vo.setUserId(userId);
 				vo.setUserName(psmPersonInfo.getName());
 				vo.setTime(new Date());

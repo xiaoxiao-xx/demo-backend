@@ -1,7 +1,7 @@
-package com.microcore.center.mapper;
+package com.rainyhon.common.mapper;
 
-import com.microcore.center.model.PermissionResourceRelation;
-import com.microcore.center.model.PermissionResourceRelationExample;
+import com.rainyhon.common.model.PermissionResourceRelation;
+import com.rainyhon.common.model.PermissionResourceRelationExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

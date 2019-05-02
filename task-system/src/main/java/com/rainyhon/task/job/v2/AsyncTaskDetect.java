@@ -48,7 +48,7 @@ public class AsyncTaskDetect {
 	}
 
 	/**
-	 *
+	 * 人脸检测
 	 */
 	@Async
 	public void detect(String materialId, FaceSdkRecVo faceSdkRecVo) {

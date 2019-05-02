@@ -44,6 +44,11 @@ public class PersonInfoController {
 		return personService.getPersonList(name, deptId, pageIndex, pageSize);
 	}
 
+	@GetMapping("getPersonListByOrgId")
+	public ResultVo getPersonListByOrgId(@RequestParam(name = "orgId", required = false) String orgId) {
+		return personService.getPersonListByOrgId(orgId);
+	}
+
 	@GetMapping("list")
 	public ResultVo list() {
 		return personService.list();

@@ -1,21 +1,21 @@
-package com.microcore.center.model;
+package com.rainyhon.common.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PermissionResourceRelationExample {
+public class RolePermissionRelationExample {
     /**
-     * permission_resource_relation
+     * role_permission_relation
      */
     protected String orderByClause;
 
     /**
-     * permission_resource_relation
+     * role_permission_relation
      */
     protected boolean distinct;
 
     /**
-     * permission_resource_relation
+     * role_permission_relation
      */
     protected List<Criteria> oredCriteria;
 
@@ -23,7 +23,7 @@ public class PermissionResourceRelationExample {
      *
      * @mbggenerated
      */
-    public PermissionResourceRelationExample() {
+    public RolePermissionRelationExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -117,7 +117,7 @@ public class PermissionResourceRelationExample {
     }
 
     /**
-     * permission_resource_relation null
+     * role_permission_relation null
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -372,7 +372,7 @@ public class PermissionResourceRelationExample {
     }
 
     /**
-     * permission_resource_relation
+     * role_permission_relation
      */
     public static class Criteria extends GeneratedCriteria {
 
@@ -382,7 +382,7 @@ public class PermissionResourceRelationExample {
     }
 
     /**
-     * permission_resource_relation null
+     * role_permission_relation null
      */
     public static class Criterion {
         private String condition;

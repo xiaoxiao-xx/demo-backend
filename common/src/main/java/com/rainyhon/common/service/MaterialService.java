@@ -1,20 +1,49 @@
 package com.rainyhon.common.service;
 
+import com.microcore.center.mapper.FaceMapper;
+import com.microcore.center.mapper.PsmMaterialMapper;
 import com.microcore.center.model.Face;
 import com.microcore.center.model.PsmMaterial;
+import com.rainyhon.common.util.CommonUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface MaterialService {
+@Service
+@Transactional(rollbackFor = Exception.class)
+public class MaterialService {
 
-	void addMaterial(String id, String imageName);
+	@Autowired
+	private PsmMaterialMapper materialMapper;
 
-	void addFace(Face face);
+	@Autowired
+	private FaceMapper faceMapper;
 
-	void addFaceList(List<Face> faceList);
+	public void addMaterial(String id, String imageName) {
+		PsmMaterial material = new PsmMaterial();
+		material.setId(id);
+		material.setCreateTime(CommonUtil.getCurrentTime());
+		material.setImageName(imageName);
+		materialMapper.insert(material);
+	}
 
-	void addMaterial(PsmMaterial material);
+	public void addMaterial(PsmMaterial material) {
+		materialMapper.insert(material);
+	}
 
-	PsmMaterial getMaterial(String id);
+	public void addFace(Face face) {
+		faceMapper.insert(face);
+	}
+
+	public void addFaceList(List<Face> faceList) {
+		faceList.forEach(faceMapper::insert);
+	}
+
+	public PsmMaterial getMaterial(String id) {
+		return materialMapper.selectByPrimaryKey(id);
+	}
 
 }
+

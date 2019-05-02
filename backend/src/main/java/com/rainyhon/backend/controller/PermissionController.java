@@ -2,6 +2,7 @@ package com.rainyhon.backend.controller;
 
 import com.microcore.center.model.Permission;
 import com.rainyhon.common.service.PermissionService;
+import com.rainyhon.common.vo.PermissionVo;
 import com.rainyhon.common.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,17 @@ public class PermissionController {
 
 	@GetMapping("getPermissionList")
 	public ResultVo getPermissionList(@RequestParam Integer pageIndex,
-	                           @RequestParam Integer pageSize) {
+	                                  @RequestParam Integer pageSize) {
 		return ResultVo.ok(permissionService.getPermissionList(pageIndex, pageSize));
 	}
 
+	@GetMapping("getAllPermissions")
+	public ResultVo getAllPermissions() {
+		return ResultVo.ok(permissionService.getAllPermissions());
+	}
+
 	@PostMapping("addPermission")
-	public ResultVo addPermission(@RequestBody Permission vo) {
+	public ResultVo addPermission(@RequestBody PermissionVo vo) {
 		permissionService.addPermission(vo);
 		return ResultVo.ok();
 	}

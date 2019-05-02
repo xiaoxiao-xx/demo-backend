@@ -53,6 +53,11 @@ public class UserController {
 		return ResultVo.ok(userService.getUserList(orgId, pageIndex, pageSize));
 	}
 
+	@GetMapping("getUserDetailByUserId")
+	public ResultVo<UserVo> getUserDetailByUserId(@RequestParam String userId) {
+		return ResultVo.ok(userService.getUserDetailById(userId));
+	}
+
 	@GetMapping("getUserByUsername")
 	public UserInfo getUserByUserName(@RequestParam(name = "username") String username) {
 		return userService.getUserByUsername(username);

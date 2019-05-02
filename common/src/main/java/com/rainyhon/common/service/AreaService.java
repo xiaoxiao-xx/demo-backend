@@ -2,8 +2,10 @@ package com.rainyhon.common.service;
 
 import com.microcore.center.model.PsmArea;
 
-public interface AreaService {
+public class AreaService {
 
-    void addArea(PsmArea area);
+	public void addArea(PsmArea area) {
+
+	}
 
 }

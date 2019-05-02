@@ -106,5 +106,9 @@ public class Constants {
 
 	public static final String ClassCastExceptionStr = "类型转换异常";
 
+	public static final String DATA_SCOPE_ALL_ORGS = "ALL_ORGS";
+
+	public static final String DATA_SCOPE_CURRENT_ORG = "CURRENT_ORG";
+
 }
 

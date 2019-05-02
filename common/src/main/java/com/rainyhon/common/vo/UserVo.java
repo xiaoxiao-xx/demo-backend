@@ -12,4 +12,6 @@ public class UserVo extends User {
 
 	private List<String> roleIdList;
 
+	private List<RoleVo> roleList;
+
 }
