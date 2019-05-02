@@ -72,7 +72,7 @@ public class TrackService {
 		List<InOutRecordVo> voList = CommonUtil.listPo2VO(recordList, InOutRecordVo.class);
 		voList.forEach(vo -> {
 			vo.setAreaName(AreaDef.getAreaNameById(vo.getAreaId()));
-			vo.setPersonName(personService.getPsmPersonInfoName(vo.getUserId()));
+			vo.setPersonName(personService.getPersonInfoName(vo.getUserId()));
 		});
 
 		return ResultVo.ok(voList);
@@ -93,7 +93,7 @@ public class TrackService {
 		List<InOutRecordVo> voList = CommonUtil.listPo2VO(list, InOutRecordVo.class);
 		voList.forEach(vo -> {
 			vo.setAreaName(AreaDef.getAreaNameById(vo.getAreaId()));
-			vo.setPersonName(personService.getPsmPersonInfoName(vo.getUserId()));
+			vo.setPersonName(personService.getPersonInfoName(vo.getUserId()));
 		});
 
 		PageInfo<InOutRecordVo> voPageInfo = CommonUtil.po2VO(pageInfo, PageInfo.class);

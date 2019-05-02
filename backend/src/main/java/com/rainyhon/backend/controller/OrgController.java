@@ -50,4 +50,9 @@ public class OrgController {
 		return ResultVo.ok();
 	}
 
+	@GetMapping("getOrgTree")
+	public ResultVo<?> getOrgTree() {
+		return orgService.getOrgTree();
+	}
+
 }

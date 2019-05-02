@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.rainyhon.common.cllient.HttpTemplate;
 import com.microcore.center.model.Face;
 import com.microcore.center.model.PsmMaterial;
-import com.microcore.center.model.PsmPersonInfo;
+import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.service.MaterialService;
 import com.rainyhon.common.service.PersonService;
 import com.rainyhon.common.service.AlarmResultService;
@@ -116,15 +116,15 @@ public class AsyncTask {
 			PsmMaterial material = materialService.getMaterial(materialId);
 			String areaId = material.getAreaId();
 			String userId = face.getUserId();
-			log.info(">>> detected face: {}, score: {}", personService.getPsmPersonInfoName(userId), face.getScore());
+			log.info(">>> detected face: {}, score: {}", personService.getPersonInfoName(userId), face.getScore());
 			log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
 			// k-v  k: user_id, v: area_id & capture_time
 			Map<String, String> map = new HashMap<>();
-			map.put("userName", personService.getPsmPersonInfoName(userId));
+			map.put("userName", personService.getPersonInfoName(userId));
 			map.put("areaId", areaId);
 			map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
-			map.put("teamId", personService.getPsmPersonInfo(userId).getDeptId());
+			map.put("teamId", personService.getPersonInfo(userId).getDeptId());
 			redisUtil.hmset("user:" + userId, map);
 
 			// k-v  k: area_id, v: user_id set
@@ -154,12 +154,12 @@ public class AsyncTask {
 		vo.setAlarmType(random("警告弹出框", "警报声音"));
 
 		String userId = face.getUserId();
-		PsmPersonInfo psmPersonInfo = personService.getPsmPersonInfo(userId);
+		PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
 		if (psmPersonInfo == null) {
-			psmPersonInfo = new PsmPersonInfo();
+			psmPersonInfo = new PersonInfo();
 		}
 
-		vo.setPsmPersonInfo(psmPersonInfo);
+		vo.setPersonInfo(psmPersonInfo);
 		vo.setCharacterInfo(psmPersonInfo.getPersonId());
 
 		Date d = face.getCreateTime();

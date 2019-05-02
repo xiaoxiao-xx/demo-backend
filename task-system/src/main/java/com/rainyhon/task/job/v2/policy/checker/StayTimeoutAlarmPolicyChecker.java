@@ -2,7 +2,7 @@ package com.rainyhon.task.job.v2.policy.checker;
 
 import com.microcore.center.model.AlarmResult;
 import com.rainyhon.common.model.AlarmPolicy;
-import com.rainyhon.common.service.impl.AlarmPolicyService;
+import com.rainyhon.common.service.AlarmPolicyService;
 import com.rainyhon.task.job.v2.policy.base.AbstractAlarmPolicyChecker;
 import com.rainyhon.task.job.v2.policy.base.LocalExpiredCache;
 import com.rainyhon.task.job.v2.policy.entity.AlarmEntity;

@@ -1,8 +1,8 @@
 package com.rainyhon.common.service;
 
-import com.microcore.center.model.PsmPersonInfo;
 import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.mapper.ScheduleDetailMapper;
+import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.model.RollCallResult;
 import com.rainyhon.common.model.ScheduleDetail;
 import com.rainyhon.common.model.ScheduleDetailExample;
@@ -59,27 +59,27 @@ public class ScheduleDetailService {
 
 	@Autowired
 	public ScheduleDetailService(ScheduleDetailMapper psmScheduleDetailMapper, CommonService commonService,
-	                                 JedisPoolUtil redisUtil, PersonService personService) {
+	                             JedisPoolUtil redisUtil, PersonService personService) {
 		this.scheduleDetailMapper = psmScheduleDetailMapper;
 		this.commonService = commonService;
 		this.redisUtil = redisUtil;
 		this.personService = personService;
 	}
 
-	
+
 	public ResultVo add(ScheduleDetailVo vo) {
 		addDetail(vo);
 		return ResultVo.ok();
 	}
 
-	
+
 	public void addDetail(ScheduleDetail detail) {
 		String detailId = CommonUtil.getUUID();
 		detail.setId(detailId);
 
 		// 为电子点名生成结果表
 		if (SCHEDULE_DETAIL_TYPE_ROLL_CALL.equals(detail.getType())) {
-			List<PsmPersonInfo> personInfoList = personService.getPersonInfoList(detail.getObjectId());
+			List<PersonInfo> personInfoList = personService.getPersonInfoList(detail.getObjectId());
 			if (CommonUtil.isNotEmpty(personInfoList)) {
 				personInfoList.forEach(personInfo -> {
 					RollCallResult result = new RollCallResult();
@@ -96,24 +96,24 @@ public class ScheduleDetailService {
 		scheduleDetailMapper.insertSelective(detail);
 	}
 
-	
+
 	public ResultVo update(ScheduleDetailVo vo) {
 		scheduleDetailMapper.updateByPrimaryKeySelective(vo);
 		return ResultVo.ok();
 	}
 
-	
+
 	public void update(ScheduleDetail detail) {
 		scheduleDetailMapper.updateByPrimaryKeySelective(detail);
 	}
 
-	
+
 	public ResultVo delete(String id) {
 		scheduleDetailMapper.deleteByPrimaryKey(id);
 		return ResultVo.ok();
 	}
 
-	
+
 	public ResultVo getScheduleDetailList(String objectType) {
 		ScheduleDetailExample example = new ScheduleDetailExample();
 		example.setOrderByClause("start_time asc");
@@ -123,7 +123,7 @@ public class ScheduleDetailService {
 		return ResultVo.ok(psmScheduleDetails);
 	}
 
-	
+
 	public ResultVo getOnDutyData() {
 		String sql = "SELECT p.dept_id team_id, COUNT( 1 ) total_count, d.dept_name team_name \n" +
 				"FROM psm_person_info_t p \n" +
@@ -170,9 +170,9 @@ public class ScheduleDetailService {
 
 		Duty duty = new Duty();
 		int dayOfWeek = getDayOfWeek();
-		PsmPersonInfo leader = getLeader(dayOfWeek);
+		PersonInfo leader = getLeader(dayOfWeek);
 		duty.setLeaderName(leader.getName());
-		PsmPersonInfo onDutyPerson = getOnDutyPerson(dayOfWeek);
+		PersonInfo onDutyPerson = getOnDutyPerson(dayOfWeek);
 		duty.setOnDutyPerson(onDutyPerson.getName());
 		duty.setStatList(statList);
 		duty.setTotalCount(totalCount);
@@ -181,7 +181,7 @@ public class ScheduleDetailService {
 		return ResultVo.ok(duty);
 	}
 
-	
+
 	public List<ScheduleDetail> getScheduleDetailByTimeAndArea(String userId, Date time, String areaId) {
 		Date timeAdd10Minute = new Date(time.getTime() + 10 * 60 * 1000);
 		Date timeSub10Minute = new Date(time.getTime() - 10 * 60 * 1000);
@@ -198,7 +198,7 @@ public class ScheduleDetailService {
 		return scheduleDetailMapper.selectByExample(example);
 	}
 
-	
+
 	public List<ScheduleDetail> getScheduleDetailByTimeForRollCall(String orgId, Date time, String areaId) {
 		Date timeAdd10Minute = new Date(time.getTime() + 30 * 1000);
 		Date timeSub10Minute = new Date(time.getTime() - 30 * 1000);
@@ -230,16 +230,16 @@ public class ScheduleDetailService {
 		return nineClock;
 	}
 
-	private PsmPersonInfo getLeader(int dayOfWeek) {
+	private PersonInfo getLeader(int dayOfWeek) {
 		int index = (dayOfWeek - 1) % leaderList.size();
 		String userId = leaderList.get(index);
-		return personService.getPsmPersonInfo(userId);
+		return personService.getPersonInfo(userId);
 	}
 
-	private PsmPersonInfo getOnDutyPerson(int dayOfWeek) {
+	private PersonInfo getOnDutyPerson(int dayOfWeek) {
 		int index = (dayOfWeek - 1) % onDutyPersonList.size();
 		String userId = onDutyPersonList.get(index);
-		return personService.getPsmPersonInfo(userId);
+		return personService.getPersonInfo(userId);
 	}
 
 	private void addOne(Map<String, Integer> map, String key) {

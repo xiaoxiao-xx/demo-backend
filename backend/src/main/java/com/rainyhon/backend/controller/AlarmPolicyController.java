@@ -2,7 +2,7 @@ package com.rainyhon.backend.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.model.AlarmPolicy;
-import com.rainyhon.common.service.impl.AlarmPolicyService;
+import com.rainyhon.common.service.AlarmPolicyService;
 import com.rainyhon.common.vo.AlarmPolicyOpt;
 import com.rainyhon.common.vo.AlarmPolicyVo;
 import com.rainyhon.common.vo.ResultVo;

@@ -11,7 +11,8 @@ import static com.rainyhon.common.constant.Constants.*;
 public enum RuntimeExceptionMessage {
 
 	// public CommonExceptionMessage USER_ALREADY_EXISTS = new CommonExceptionMessage("USER_ALREADY_EXISTS","同名用户已经存在");
-	USER_ALREADY_EXISTS(CommonExceptionType.USER_ALREADY_EXISTS, "同名用户已经存在");
+	USER_ALREADY_EXISTS(CommonExceptionType.USER_ALREADY_EXISTS, "同名用户已经存在"),
+	GET_ROOT_ORG_FAILED(CommonExceptionType.GET_ROOT_ORG_FAILED, "获取顶级机构失败");
 
 	private String realMessage;
 

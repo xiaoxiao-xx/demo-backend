@@ -6,16 +6,12 @@ import com.microcore.center.mapper.InOutRecordMapper;
 import com.microcore.center.model.Face;
 import com.microcore.center.model.InOutRecord;
 import com.microcore.center.model.PsmMaterial;
-import com.microcore.center.model.PsmPersonInfo;
 import com.rainyhon.common.cllient.HttpTemplate;
 import com.rainyhon.common.constant.Constants;
-import com.rainyhon.common.model.RollCallResult;
-import com.rainyhon.common.model.ScheduleDetail;
-import com.rainyhon.common.model.WorkAttendance;
-import com.rainyhon.common.model.WorkCheckTime;
+import com.rainyhon.common.model.*;
 import com.rainyhon.common.mq.rabbit.RabbitMQUtil;
 import com.rainyhon.common.service.*;
-import com.rainyhon.common.service.impl.AlarmPolicyService;
+import com.rainyhon.common.service.AlarmPolicyService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.util.JedisPoolUtil;
@@ -141,7 +137,7 @@ public class AsyncTaskRec {
             PsmMaterial material = materialService.getMaterial(materialId);
             String areaId = material.getAreaId();
             String userId = face.getUserId();
-            PsmPersonInfo psmPersonInfo = personService.getPsmPersonInfo(userId);
+            PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
 
             //sendEvent(face);
             alarm(face, psmPersonInfo.getName());
@@ -159,15 +155,15 @@ public class AsyncTaskRec {
             // 更新电子点名记录
             updateRollCallResultRecord(face, material);
 
-            // log.info(">>> detected face: {}, score: {}", personService.getPsmPersonInfoName(userId), face2.getScore());
+            // log.info(">>> detected face: {}, score: {}", personService.getPersonInfoName(userId), face2.getScore());
             // log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
             // k-v  k: user_id, v: area_id & capture_time
             Map<String, String> map = new HashMap<>();
-            map.put("userName", personService.getPsmPersonInfoName(userId));
+            map.put("userName", personService.getPersonInfoName(userId));
             map.put("areaId", areaId);
             map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
-            map.put("teamId", personService.getPsmPersonInfo(userId).getDeptId());
+            map.put("teamId", personService.getPersonInfo(userId).getDeptId());
             redisUtil.hmset("user:" + userId, map);
 
             // k-v  k: area_id, v: user_id set
@@ -187,7 +183,7 @@ public class AsyncTaskRec {
 
     private void updateRollCallResultRecord(Face face, PsmMaterial material) {
         String userId = face.getUserId();
-        String orgId = personService.getPsmPersonInfo(userId).getDeptId();
+        String orgId = personService.getPersonInfo(userId).getDeptId();
         String areaId = material.getAreaId();
         Date time = material.getCreateTime();
 
@@ -359,12 +355,12 @@ public class AsyncTaskRec {
         vo.setAlarmType(random("警告弹出框", "警报声音"));
 
         String userId = face.getUserId();
-        PsmPersonInfo psmPersonInfo = personService.getPsmPersonInfo(userId);
+        PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
         if (psmPersonInfo == null) {
-            psmPersonInfo = new PsmPersonInfo();
+            psmPersonInfo = new PersonInfo();
         }
 
-        vo.setPsmPersonInfo(psmPersonInfo);
+        vo.setPersonInfo(psmPersonInfo);
         vo.setCharacterInfo(psmPersonInfo.getPersonId());
 
         Date d = face.getCreateTime();

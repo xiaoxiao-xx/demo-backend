@@ -6,9 +6,12 @@ import com.rainyhon.common.constant.Constants;
 import com.microcore.center.mapper.OrgMapper;
 import com.microcore.center.model.Org;
 import com.microcore.center.model.OrgExample;
+import com.rainyhon.common.exception.CommonException;
+import com.rainyhon.common.exception.CommonExceptionType;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.vo.OrgVo;
+import com.rainyhon.common.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +76,55 @@ public class OrgService {
 		List<Org> list = orgMapper.selectByExample(example);
 		List<OrgVo> voList = CommonUtil.listPo2VO(list, OrgVo.class);
 		return voList;
+	}
+
+	public ResultVo<?> getOrgTree() {
+		OrgVo rootOrg = getRootOrg();
+		if (rootOrg == null) {
+			throw new CommonException(CommonExceptionType.GET_ROOT_ORG_FAILED);
+		}
+
+		List<OrgVo> children = getChildren(rootOrg.getId());
+		rootOrg.setChildren(children);
+		return ResultVo.ok(rootOrg);
+	}
+
+	private List<OrgVo> getChildren(String parentId) {
+		List<OrgVo> children = getChildrenByParentId(parentId);
+
+		if (CommonUtil.isEmpty(children)) {
+			return null;
+		}
+
+		children.forEach(child -> child.setChildren(getChildren(child.getId())));
+
+		return children;
+	}
+
+	private List<OrgVo> getChildrenByParentId(String parentId) {
+		OrgExample example = new OrgExample();
+		OrgExample.Criteria criteria = example.createCriteria();
+		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
+		criteria.andParentIdEqualTo(parentId);
+		List<Org> orgList = orgMapper.selectByExample(example);
+		if (CommonUtil.isNotEmpty(orgList)) {
+			return CommonUtil.listPo2VO(orgList, OrgVo.class);
+		}
+
+		return null;
+	}
+
+	private OrgVo getRootOrg() {
+		OrgExample example = new OrgExample();
+		OrgExample.Criteria criteria = example.createCriteria();
+		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
+		criteria.andParentIdIsNull();
+		List<Org> orgList = orgMapper.selectByExample(example);
+		if (CommonUtil.isNotEmpty(orgList)) {
+			return CommonUtil.po2VO(orgList.get(0), OrgVo.class);
+		}
+
+		return null;
 	}
 
 }
