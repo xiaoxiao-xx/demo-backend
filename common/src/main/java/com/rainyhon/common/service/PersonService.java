@@ -2,19 +2,16 @@ package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.mapper.PsmPersonInfoMapper;
-import com.microcore.center.model.PsmPersonInfo;
-import com.microcore.center.model.PsmPersonInfoExample;
-import com.rainyhon.common.cllient.HttpTemplate;
 import com.rainyhon.common.constant.AreaDef;
 import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.exception.CommonException;
+import com.rainyhon.common.mapper.PersonInfoMapper;
+import com.rainyhon.common.model.PersonInfo;
+import com.rainyhon.common.model.PersonInfoExample;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.JedisPoolUtil;
 import com.rainyhon.common.util.StringUtil;
-import com.rainyhon.common.vo.FaceSdkUserVo;
-import com.rainyhon.common.vo.PersonInfoVo;
-import com.rainyhon.common.vo.ResultVo;
-import com.rainyhon.common.vo.SearchVo;
+import com.rainyhon.common.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +31,7 @@ import static com.rainyhon.common.util.CommonUtil.image2byte;
 public class PersonService {
 
 	@Autowired
-	private PsmPersonInfoMapper psmPersonInfoMapper;
+	private PersonInfoMapper psmPersonInfoMapper;
 
 	@Autowired
 	private DepartmentService departmentService;
@@ -44,9 +41,6 @@ public class PersonService {
 
 	@Autowired
 	private CommonService commonService;
-
-	@Autowired
-	private HttpTemplate httpTemplate;
 
 	@Autowired
 	private FaceApiService faceApiService;
@@ -92,11 +86,11 @@ public class PersonService {
 		return df.get().format(new Date(ctm)) + "-" + ctm % 1000;
 	}
 
-	public PsmPersonInfo getRandomPerson() {
+	public PersonInfo getRandomPerson() {
 		Map<String, Object> params = new HashMap<>();
 		params.put("sql", "SELECT * FROM psm_person_info_t ORDER BY RAND() LIMIT 1");
 		Map<String, Object> record = commonService.findOne(params);
-		return CommonUtil.map2PO(record, PsmPersonInfo.class);
+		return CommonUtil.map2PO(record, PersonInfo.class);
 	}
 
 	public ResultVo update(PersonInfoVo personInfoVo) {
@@ -118,9 +112,13 @@ public class PersonService {
 		return ResultVo.ok();
 	}
 
-	public ResultVo delete(String id) {
-		String[] ids = id.split(",");
-		for (String i : ids) {
+	public ResultVo delete(PersonDeleteVo vo) {
+		List<String> idList = vo.getIdList();
+		if (CommonUtil.isEmpty(idList)) {
+			return ResultVo.ok();
+		}
+
+		for (String i : idList) {
 			psmPersonInfoMapper.deleteByPrimaryKey(i);
 
 			FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
@@ -136,8 +134,8 @@ public class PersonService {
 	}
 
 	public ResultVo getPersonList(String name, String deptId, Integer pageIndex, Integer pageSize) {
-		PsmPersonInfoExample example = new PsmPersonInfoExample();
-		PsmPersonInfoExample.Criteria criteria = example.createCriteria();
+		PersonInfoExample example = new PersonInfoExample();
+		PersonInfoExample.Criteria criteria = example.createCriteria();
 		if (StringUtil.isNotEmpty(name)) {
 			criteria.andNameLike("%" + name.trim() + "%");
 		}
@@ -145,9 +143,9 @@ public class PersonService {
 			criteria.andDeptIdEqualTo(deptId);
 		}
 		List<PersonInfoVo> listPersonInfoVo = new ArrayList<>();
-		PageInfo<PsmPersonInfo> psmPersonInfoPage = PageHelper.startPage(pageIndex, pageSize)
+		PageInfo<PersonInfo> psmPersonInfoPage = PageHelper.startPage(pageIndex, pageSize)
 				.doSelectPageInfo(() -> psmPersonInfoMapper.selectByExample(example));
-		for (PsmPersonInfo psmPersonInfo : psmPersonInfoPage.getList()) {
+		for (PersonInfo psmPersonInfo : psmPersonInfoPage.getList()) {
 			String deptName = departmentService.getDepartmentName(psmPersonInfo.getDeptId());
 			PersonInfoVo personInfoVo = CommonUtil.po2VO(psmPersonInfo, PersonInfoVo.class);
 			personInfoVo.setDeptName(deptName);
@@ -170,15 +168,15 @@ public class PersonService {
 	}
 
 	public ResultVo list() {
-		PsmPersonInfoExample example = new PsmPersonInfoExample();
-		PsmPersonInfoExample.Criteria criteria = example.createCriteria();
+		PersonInfoExample example = new PersonInfoExample();
+		PersonInfoExample.Criteria criteria = example.createCriteria();
 		// TODO 没有del_status字段
 		return ResultVo.ok(psmPersonInfoMapper.selectByExample(example));
 	}
 
-	public List<PsmPersonInfo> getPersonInfoList(String orgId) {
-		PsmPersonInfoExample example = new PsmPersonInfoExample();
-		PsmPersonInfoExample.Criteria criteria = example.createCriteria();
+	public List<PersonInfo> getPersonInfoList(String orgId) {
+		PersonInfoExample example = new PersonInfoExample();
+		PersonInfoExample.Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotBlank(orgId)) {
 			criteria.andDeptIdEqualTo(orgId);
 		}
@@ -186,12 +184,12 @@ public class PersonService {
 		return psmPersonInfoMapper.selectByExample(example);
 	}
 
-	public PsmPersonInfo getPsmPersonInfo(String id) {
+	public PersonInfo getPersonInfo(String id) {
 		return psmPersonInfoMapper.selectByPrimaryKey(id);
 	}
 
-	public String getPsmPersonInfoName(String id) {
-		PsmPersonInfo psmPersonInfo = getPsmPersonInfo(id);
+	public String getPersonInfoName(String id) {
+		PersonInfo psmPersonInfo = getPersonInfo(id);
 		if (psmPersonInfo != null) {
 			return psmPersonInfo.getName();
 		}
@@ -203,8 +201,8 @@ public class PersonService {
 			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
 
 	public ResultVo getPersonInfoByName(SearchVo searchVo) {
-		PsmPersonInfoExample example = new PsmPersonInfoExample();
-		PsmPersonInfoExample.Criteria criteria = example.createCriteria();
+		PersonInfoExample example = new PersonInfoExample();
+		PersonInfoExample.Criteria criteria = example.createCriteria();
 		String name = searchVo.getName();
 		if (StringUtils.isNotBlank(name)) {
 			criteria.andNameEqualTo(name.trim());
@@ -212,9 +210,9 @@ public class PersonService {
 			return ResultVo.fail("输入不可为空");
 		}
 
-		List<PsmPersonInfo> psmPersonInfoList = psmPersonInfoMapper.selectByExample(example);
+		List<PersonInfo> psmPersonInfoList = psmPersonInfoMapper.selectByExample(example);
 		if (CommonUtil.isNotEmpty(psmPersonInfoList)) {
-			PsmPersonInfo info = psmPersonInfoList.get(0);
+			PersonInfo info = psmPersonInfoList.get(0);
 			PersonInfoVo vo = CommonUtil.po2VO(info, PersonInfoVo.class);
 
 			String key = "user:" + info.getPersonId();
@@ -276,11 +274,21 @@ public class PersonService {
 	}
 
 	public ResultVo getPersonListByOrgId(String orgId) {
-		PsmPersonInfoExample example = new PsmPersonInfoExample();
-		PsmPersonInfoExample.Criteria criteria = example.createCriteria();
+		PersonInfoExample example = new PersonInfoExample();
+		PersonInfoExample.Criteria criteria = example.createCriteria();
 		criteria.andDeptIdEqualTo(orgId);
-		List<PsmPersonInfo> psmPersonInfos = psmPersonInfoMapper.selectByExample(example);
+		List<PersonInfo> psmPersonInfos = psmPersonInfoMapper.selectByExample(example);
 		return ResultVo.ok(psmPersonInfos);
 	}
 
+	public ResultVo<?> getPersonInfoById(String id) {
+		PersonInfo personInfo = getPersonInfo(id);
+		if (personInfo == null) {
+			throw new CommonException("查找不到该人的信息");
+		}
+
+		return ResultVo.ok(personInfo);
+	}
+
 }
+

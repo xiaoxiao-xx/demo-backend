@@ -2,7 +2,7 @@ package com.rainyhon.task.job.v2.policy;
 
 import com.rainyhon.common.constant.AreaDef;
 import com.rainyhon.common.model.AlarmPolicy;
-import com.rainyhon.common.service.impl.AlarmPolicyService;
+import com.rainyhon.common.service.AlarmPolicyService;
 import com.rainyhon.task.job.v2.policy.base.IAlarmPolicyChecker;
 import com.rainyhon.task.job.v2.policy.checker.StayTimeoutAlarmPolicyChecker;
 import org.springframework.beans.factory.annotation.Autowired;

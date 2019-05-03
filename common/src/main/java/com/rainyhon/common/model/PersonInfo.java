@@ -1,8 +1,8 @@
-package com.microcore.center.model;
+package com.rainyhon.common.model;
 
 import java.util.Date;
 
-public class PsmPersonInfo {
+public class PersonInfo {
     /**
      * 
      */
@@ -14,7 +14,7 @@ public class PsmPersonInfo {
     private String name;
 
     /**
-     * 性别 性别
+     * 性别
      */
     private String gender;
 
@@ -111,16 +111,16 @@ public class PsmPersonInfo {
     }
 
     /**
-     * 性别 性别
-     * @return gender 性别 性别
+     * 性别
+     * @return gender 性别
      */
     public String getGender() {
         return gender;
     }
 
     /**
-     * 性别 性别
-     * @param gender 性别 性别
+     * 性别
+     * @param gender 性别
      */
     public void setGender(String gender) {
         this.gender = gender == null ? null : gender.trim();

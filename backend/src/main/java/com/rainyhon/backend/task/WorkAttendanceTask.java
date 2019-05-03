@@ -1,7 +1,7 @@
 package com.rainyhon.backend.task;
 
-import com.microcore.center.model.PsmPersonInfo;
 import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.model.ScheduleConfig;
 import com.rainyhon.common.model.ScheduleDetail;
 import com.rainyhon.common.model.WorkAttendance;
@@ -54,8 +54,8 @@ public class WorkAttendanceTask {
 		}
 
 		// 为每个人员生成考勤记录
-		List<PsmPersonInfo> personInfoList = personService.getPersonInfoList(null);
-		for (PsmPersonInfo personInfo : personInfoList) {
+		List<PersonInfo> personInfoList = personService.getPersonInfoList(null);
+		for (PersonInfo personInfo : personInfoList) {
 			String personId = personInfo.getPersonId();
 			// 如果是豁免人员，不生成考勤记录
 			if (workService.isExemptionPerson(personId)) {
@@ -92,7 +92,7 @@ public class WorkAttendanceTask {
 			}
 
 			if (SCHEDULE_CONFIG_OBJECT_TYPE_ORG.equals(config.getObjectType())) {
-				List<PsmPersonInfo> personInfoList = personService.getPersonInfoList(config.getObjectId());
+				List<PersonInfo> personInfoList = personService.getPersonInfoList(config.getObjectId());
 				if (CommonUtil.isEmpty(personInfoList)) {
 					return;
 				}

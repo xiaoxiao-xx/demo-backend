@@ -1,26 +1,128 @@
 package com.rainyhon.common.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.microcore.center.mapper.PsmDeviceVersionMapper;
 import com.microcore.center.model.PsmDeviceVersion;
+import com.microcore.center.model.PsmDeviceVersionExample;
+import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.vo.DeviceVersionVo;
 import com.rainyhon.common.vo.ResultVo;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface DeviceVersionService {
-    ResultVo add(DeviceVersionVo deviceVersionVo);
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-    ResultVo update(DeviceVersionVo deviceVersionVo);
+import static com.rainyhon.common.util.CommonUtil.getUUID;
 
-    ResultVo delete(String id);
+@Service
+@Transactional
+public class DeviceVersionService {
 
-    ResultVo getDeviceVersionList(String version, String type, Integer pageIndex, Integer pageSize);
+	@Autowired
+	private PsmDeviceVersionMapper deviceVersionMapper;
 
-    ResultVo getDeviceVersion(String id);
+	@Autowired
+	private DeviceService deviceService;
 
-    PsmDeviceVersion getDeviceVersionById(String id);
+	@Autowired
+	private CommonService commonService;
 
-    ResultVo getVersion(String devTypeCode);
 
-    ResultVo batchDelete(String idList);
+	public ResultVo add(DeviceVersionVo deviceVersionVo) {
+		deviceVersionVo.setDevversionId(getUUID());
+		deviceVersionMapper.insert(deviceVersionVo);
+		return ResultVo.ok();
+	}
 
-    String getDeviceVersionStringById(String id);
+
+	public ResultVo update(DeviceVersionVo deviceVersionVo) {
+		deviceVersionMapper.updateByPrimaryKeySelective(deviceVersionVo);
+		return ResultVo.ok();
+	}
+
+
+	public ResultVo delete(String id) {
+		deviceVersionMapper.deleteByPrimaryKey(id);
+		return ResultVo.ok();
+	}
+
+
+	public ResultVo getDeviceVersionList(String version, String type, Integer pageIndex, Integer pageSize) {
+		PsmDeviceVersionExample example = new PsmDeviceVersionExample();
+		PsmDeviceVersionExample.Criteria criteria = example.createCriteria();
+		// 按类型查
+		if (StringUtils.isNotEmpty(type) && !"x".equals(type)) {
+			criteria.andDevtypeCodeEqualTo(type);
+		}
+		// 按型号的ID查
+		if (StringUtils.isNotEmpty(version) && !"xt".equals(version)) {
+			criteria.andDevversionIdEqualTo(version);
+		}
+
+		PageInfo<PsmDeviceVersion> pageInfo = PageHelper.startPage(pageIndex, pageSize)
+				.doSelectPageInfo(() -> deviceVersionMapper.selectByExample(example));
+
+		List<PsmDeviceVersion> list = pageInfo.getList();
+		if (CommonUtil.isNotEmpty(list)) {
+			list.forEach(device -> {
+				// 转设备类型为中文
+				device.setDevtypeVal(deviceService.getDevtypeValByTypeCode(device.getDevtypeCode()));
+			});
+		}
+
+		return ResultVo.ok(pageInfo);
+	}
+
+
+	public ResultVo getDeviceVersion(String id) {
+		return ResultVo.ok(getDeviceVersionById(id));
+	}
+
+
+	public PsmDeviceVersion getDeviceVersionById(String id) {
+		return deviceVersionMapper.selectByPrimaryKey(id);
+	}
+
+
+	public ResultVo getVersion(String devTypeCode) {
+		Map<String, Object> prams = new HashMap<>();
+		String sql = "select * from psm_device_version_t "
+				+ "where devtype_code = #{devTypeCode} "
+				+ "group by device_version";
+		prams.put("sql", sql);
+		prams.put("devTypeCode", devTypeCode);
+		List<Map<String, Object>> list = commonService.executeSelectSQL(prams);
+		return ResultVo.ok(list);
+	}
+
+
+	public ResultVo batchDelete(String idList) {
+		idList = idList.trim();
+		if (StringUtils.isEmpty(idList)) {
+			return ResultVo.ok();
+		}
+
+		String[] ids = idList.split(",");
+		for (String i : ids) {
+			deviceVersionMapper.deleteByPrimaryKey(i);
+		}
+
+		return ResultVo.ok();
+	}
+
+
+	public String getDeviceVersionStringById(String id) {
+		PsmDeviceVersion deviceVersion = getDeviceVersionById(id);
+		if (deviceVersion == null) {
+			return "";
+		}
+		return deviceVersion.getDeviceVersion();
+	}
 
 }
+

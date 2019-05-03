@@ -1,12 +1,12 @@
 package com.rainyhon.common.vo;
 
-import com.microcore.center.model.PsmPersonInfo;
+import com.rainyhon.common.model.PersonInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class PersonInfoVo extends PsmPersonInfo {
+public class PersonInfoVo extends PersonInfo {
 
 	/**
 	 * 机构名称

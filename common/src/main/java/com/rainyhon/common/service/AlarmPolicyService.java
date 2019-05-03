@@ -1,4 +1,4 @@
-package com.rainyhon.common.service.impl;
+package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

@@ -1,6 +1,6 @@
 package com.rainyhon.common.service;
 
-import com.microcore.center.model.PsmPersonInfo;
+import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.JedisPoolUtil;
 import com.rainyhon.common.vo.DetailVo;
@@ -96,7 +96,7 @@ public class SummaryService {
 
 		List<DetailVo> detailVos = CommonUtil.map2PO(list, DetailVo.class);
 		detailVos.forEach(detailVo -> {
-			PsmPersonInfo info = personService.getPsmPersonInfo(detailVo.getUserId());
+			PersonInfo info = personService.getPersonInfo(detailVo.getUserId());
 			detailVo.setUserId(info.getPersonalPhoto1());
 		});
 
@@ -109,7 +109,7 @@ public class SummaryService {
 		String areaKey = "area:" + areaId;
 		Set<String> userIdSet = redisUtil.smemebers(areaKey);
 		for (String userId : userIdSet) {
-			PsmPersonInfo psmPersonInfo = personService.getPsmPersonInfo(userId);
+			PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
 
 			DetailVo vo = new DetailVo();
 			vo.setId("");
@@ -132,7 +132,10 @@ public class SummaryService {
 		for (String areaKey : areaList) {
 			Set<String> userIdSet = redisUtil.smemebers(areaKey);
 			for (String userId : userIdSet) {
-				PsmPersonInfo psmPersonInfo = personService.getPsmPersonInfo(userId);
+				PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
+				if (psmPersonInfo == null) {
+					continue;
+				}
 
 				DetailVo vo = new DetailVo();
 				vo.setId("");
