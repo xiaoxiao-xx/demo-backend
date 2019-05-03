@@ -7,7 +7,7 @@ import static java.util.Optional.ofNullable;
 
 public class AreaDef {
 
-	private static Map<String, String> areaMap = new HashMap<>(5);
+	public static Map<String, String> areaMap = new HashMap<>(5);
 
 	static {
 		areaMap.put("1", "入口");

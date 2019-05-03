@@ -1,5 +1,6 @@
 package com.rainyhon.task.job.v2.policy;
 
+import com.rainyhon.common.constant.AreaDef;
 import com.rainyhon.common.model.AlarmPolicy;
 import com.rainyhon.common.service.impl.AlarmPolicyService;
 import com.rainyhon.task.job.v2.policy.base.IAlarmPolicyChecker;
@@ -42,17 +43,24 @@ public class AlarmPolicyManager implements CommandLineRunner {
         return addressList;
     }
 
+    public synchronized void refreshPolicy() {
+        policies = (List<AlarmPolicy>) policyService.getAllEnableAlarmPolicy().getData();
+    }
+
     @Override
     public void run(String... strings) throws Exception {
         // 加载已有的处理策略
-        policies = (List<AlarmPolicy>) policyService.getAllEnableAlarmPolicy().getData();
+        new Thread(() -> {
+            try {
+                refreshPolicy();
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
         addressList = new HashMap<>();
-        addressList.put("1", "入口");
-        addressList.put("2", "入口");
-        addressList.put("3", "工作区");
-        addressList.put("4", "会议室");
-        addressList.put("5", "总经理室");
+        addressList = AreaDef.areaMap;
 
 
         checker.put("DEFAULT", new StayTimeoutAlarmPolicyChecker(addressList));

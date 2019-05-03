@@ -21,11 +21,8 @@ public class AlarmPolicyController {
 
     @ApiOperation(value = "告警策略查询", notes = "告警策略查询")
     @GetMapping("page")
-    public ResultVo<PageInfo<AlarmPolicyVo>> page(@RequestParam(name = "alarmType", required = false) String alarmType,
-                                                  @RequestParam(name = "strategy", required = false) String strategy,
-                                                  @RequestParam(name = "pageIndex") Integer pageIndex,
-                                                  @RequestParam(name = "pageSize") Integer pageSize) {
-        return ResultVo.ok(alarmPolicyService.page(alarmType, strategy, pageIndex, pageSize));
+    public ResultVo<PageInfo<AlarmPolicy>> page(String alarmModel, String alarmType, String alarmLevel, String objectType, String alarmAddress, String policyName, Integer pageIndex, Integer pageSize) {
+        return ResultVo.ok(alarmPolicyService.page(alarmModel, alarmType, alarmLevel, objectType, alarmAddress, policyName, pageIndex, pageSize));
     }
 
     @ApiOperation(value = "告警策略新增", notes = "告警策略新增")
@@ -42,12 +39,15 @@ public class AlarmPolicyController {
 
     @ApiOperation(value = "告警策略删除", notes = "告警策略删除")
     @PostMapping("delete")
-    public ResultVo delete(@RequestBody String id) {
-        return alarmPolicyService.delete(id);
+    public ResultVo delete(@RequestBody String[] ids) {
+        for (String id : ids) {
+            alarmPolicyService.delete(id);
+        }
+        return ResultVo.ok();
     }
 
     @ApiOperation(value = "告警策略启动/停止", notes = "告警策略启动/停止")
-    @PostMapping("startStop")
+    @PostMapping("state")
     public ResultVo startStop(@RequestBody AlarmPolicyOpt alarmPolicyOpt) {
         return alarmPolicyService.startStop(alarmPolicyOpt);
     }

@@ -2,6 +2,7 @@ package com.rainyhon.common.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.rainyhon.common.constant.AreaDef;
 import com.rainyhon.common.mapper.AlarmPolicyMapper;
 import com.rainyhon.common.model.AlarmPolicy;
 import com.rainyhon.common.model.AlarmPolicyExample;
@@ -12,14 +13,17 @@ import com.rainyhon.common.util.StringUtil;
 import com.rainyhon.common.vo.AlarmPolicyOpt;
 import com.rainyhon.common.vo.AlarmPolicyVo;
 import com.rainyhon.common.vo.ResultVo;
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -64,29 +68,42 @@ public class AlarmPolicyService {
         return ResultVo.ok();
     }
 
-    public PageInfo<AlarmPolicyVo> page(String alarmType, String strategy, Integer pageIndex, Integer pageSize) {
+    public PageInfo<AlarmPolicy> page(String alarmMode, String alarmType, String alarmLevel, String objectType, String areaId, String policyName, Integer pageIndex, Integer pageSize) {
         AlarmPolicyExample example = new AlarmPolicyExample();
         AlarmPolicyExample.Criteria criteria = example.createCriteria();
-        if (StringUtil.isNotEmpty(alarmType)) {
+        if (StringUtils.isNotBlank(alarmMode)) {
+            criteria.andAlarmModeIdEqualTo(alarmMode);
+        }
+        if (StringUtils.isNotBlank(alarmType)) {
             criteria.andAlarmTypeEqualTo(alarmType);
         }
-        if (StringUtil.isNotEmpty(strategy)) {
-            criteria.andPolicyNameLike("%" + strategy.trim() + "%");
+        if (StringUtils.isNotBlank(alarmLevel)) {
+            criteria.andAlarmLevelEqualTo(alarmLevel);
         }
-        PageInfo<AlarmPolicy> psmAlarmPolicyPage = PageHelper.startPage(pageIndex, pageSize)
+        if (StringUtils.isNotBlank(objectType)) {
+            criteria.andObjectTypeEqualTo(objectType);
+        }
+        if (StringUtils.isNotBlank(areaId)) {
+            criteria.andAreaIdEqualTo(areaId);
+        }
+        if (StringUtil.isNotEmpty(policyName)) {
+            criteria.andPolicyNameLike("%" + policyName.trim() + "%");
+        }
+
+        PageInfo<AlarmPolicy> page = PageHelper.startPage(pageIndex, pageSize)
                 .doSelectPageInfo(() -> psmAlarmPolicyMapper.selectByExample(example));
-        List<AlarmPolicyVo> list = new ArrayList<>();
-        for (AlarmPolicy psmAlarmPolicy : psmAlarmPolicyPage.getList()) {
-            AlarmPolicyVo vo = new AlarmPolicyVo();
-            BeanUtils.copyProperties(psmAlarmPolicy, vo);
-            vo.setAlarmTypeName(paraDefineService.getValueByTypeAnd("ALARM_MODE", psmAlarmPolicy.getAlarmType()));
-            vo.setAlarmModeName(alarmModeService.getAlarmMode(psmAlarmPolicy.getAlarmModeId()));
-            list.add(vo);
-        }
-        PageInfo<AlarmPolicyVo> pageInfo = new PageInfo<>();
-        pageInfo.setList(list);
-        pageInfo.setTotal(psmAlarmPolicyPage.getTotal());
-        return pageInfo;
+        //List<AlarmPolicyVo> list = new ArrayList<>();
+        //for (AlarmPolicy psmAlarmPolicy : psmAlarmPolicyPage.getList()) {
+        //    AlarmPolicyVo vo = new AlarmPolicyVo();
+        //    BeanUtils.copyProperties(psmAlarmPolicy, vo);
+        //    vo.setAlarmTypeName(paraDefineService.getValueByTypeAnd("ALARM_MODE", psmAlarmPolicy.getAlarmType()));
+        //    vo.setAlarmModeName(alarmModeService.getAlarmMode(psmAlarmPolicy.getAlarmModeId()));
+        //    list.add(vo);
+        //}
+        //PageInfo<AlarmPolicyVo> pageInfo = new PageInfo<>();
+        //pageInfo.setList(list);
+        //pageInfo.setTotal(psmAlarmPolicyPage.getTotal());
+        return page;
     }
 
     public ResultVo startStop(AlarmPolicyOpt alarmPolicyOpt) {
@@ -186,12 +203,7 @@ public class AlarmPolicyService {
      * @return
      */
     public ResultVo getAlarmAddress() {
-        Map<String, String> map = new HashMap<>();
-        map.put("1", "A入口");
-        map.put("2", "B入口");
-        map.put("3", "工作区");
-        map.put("4", "会议室");
-        map.put("5", "总经理室");
+        Map<String, String> map = AreaDef.areaMap;
         return ResultVo.ok(map);
     }
 
