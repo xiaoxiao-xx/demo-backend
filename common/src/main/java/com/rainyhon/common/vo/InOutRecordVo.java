@@ -10,4 +10,6 @@ public class InOutRecordVo extends InOutRecord {
 
 	private String personName;
 
+	private String orgName;
+
 }

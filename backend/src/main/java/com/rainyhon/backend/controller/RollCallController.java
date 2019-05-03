@@ -44,8 +44,8 @@ public class RollCallController {
 
 	@ApiOperation(value = "电子点名查询", notes = "电子点名查询")
 	@GetMapping("getRollCallResultList")
-	public ResultVo<PageInfo<RollCallResultVo>> getRollCallResultList(@RequestParam(name = "team", required = false) String orgId,
-	                                                                  @RequestParam(name = "team", required = false) String personId,
+	public ResultVo<PageInfo<RollCallResultVo>> getRollCallResultList(@RequestParam(name = "orgId", required = false) String orgId,
+	                                                                  @RequestParam(name = "personId", required = false) String personId,
 	                                                                  @RequestParam(name = "pageIndex") Integer pageIndex,
 	                                                                  @RequestParam(name = "pageSize") Integer pageSize) {
 		return ResultVo.ok(rollCallService.getRollCallResultList(orgId, personId, pageIndex, pageSize));

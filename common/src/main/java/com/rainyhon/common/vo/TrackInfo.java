@@ -9,5 +9,7 @@ public class TrackInfo {
 
 	private String areaId;
 
+	private String areaName;
+
 }
 

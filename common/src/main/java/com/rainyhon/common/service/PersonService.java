@@ -118,6 +118,7 @@ public class PersonService {
 			return ResultVo.ok();
 		}
 
+		// TODO 删除目录中保存的照片
 		for (String i : idList) {
 			psmPersonInfoMapper.deleteByPrimaryKey(i);
 

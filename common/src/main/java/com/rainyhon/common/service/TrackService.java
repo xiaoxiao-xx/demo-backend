@@ -6,18 +6,17 @@ import com.microcore.center.mapper.InOutRecordMapper;
 import com.microcore.center.model.InOutRecord;
 import com.microcore.center.model.InOutRecordExample;
 import com.rainyhon.common.constant.AreaDef;
+import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.vo.InOutRecordVo;
 import com.rainyhon.common.vo.ResultVo;
 import com.rainyhon.common.vo.TrackInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -31,13 +30,13 @@ public class TrackService {
 	}
 
 	/**
-	 * Get Track info
+	 * 查询人员轨迹信息
 	 *
 	 * @param userId user's id
 	 * @return Track info list
 	 */
 	public ResultVo getTrackInfo(String userId) {
-		String sql = "SELECT DATE_FORMAT( m.create_time, '%H:%i' ) time, m.area_id, m.create_time FROM psm_face f \n" +
+		String sql = "SELECT DATE_FORMAT( m.create_time, '%H:%i' ) time, m.area_id, m.create_time FROM face f \n" +
 				"LEFT JOIN psm_material m ON f.material_id = m.id \n" +
 				"GROUP BY m.area_id, f.user_id, DATE_FORMAT(m.create_time, '%Y-%m-%d %H-%i') \n" +
 				"HAVING user_id = #{userId} AND DATE_FORMAT(NOW( ), '%Y-%m-%d') = DATE_FORMAT(m.create_time, '%Y-%m-%d') \n" +
@@ -51,6 +50,34 @@ public class TrackService {
 		return ResultVo.ok(infoList);
 	}
 
+	public ResultVo getTrackInfo2(String userId, Date time) {
+		String sql = "SELECT DATE_FORMAT( time, '%H:%i' ) time,\n" +
+				"\tarea_id \n" +
+				"FROM\n" +
+				"\tin_out_record \n" +
+				"WHERE\n" +
+				"\t1 = 1 \n" +
+				"\tAND user_id = #{userId} \n" +
+				"\tAND type = 'IN' \n" +
+				"\tAND DATE_FORMAT( #{inOutTime}, \"%Y-%m-%d\" ) = DATE_FORMAT( time, \"%Y-%m-%d\" ) \n" +
+				"ORDER BY\n" +
+				"\ttime ASC";
+
+		Map<String, Object> params = new HashMap<>(2);
+		params.put("sql", sql);
+		params.put("userId", userId);
+		if (time == null) {
+			params.put("inOutTime", new Date());
+		} else {
+			params.put("inOutTime", time);
+		}
+
+		List<Map<String, Object>> list = commonService.executeSelectSQL(params);
+		List<TrackInfo> infoList = CommonUtil.map2PO(list, TrackInfo.class);
+		infoList.forEach(info -> info.setAreaName(AreaDef.getAreaNameById(info.getAreaId())));
+
+		return ResultVo.ok(infoList);
+	}
 
 	@Autowired
 	private InOutRecordMapper inOutRecordMapper;
@@ -58,6 +85,12 @@ public class TrackService {
 	@Autowired
 	private PersonService personService;
 
+	/**
+	 * 查询用户的进出记录
+	 *
+	 * @param userId
+	 * @return
+	 */
 	public ResultVo<?> getInOutTrack(String userId) {
 		InOutRecordExample example = new InOutRecordExample();
 		example.setOrderByClause("time desc");
@@ -68,7 +101,10 @@ public class TrackService {
 			list = new ArrayList<>();
 		}
 
-		List<InOutRecord> recordList = list.subList(0, 10);
+		List<InOutRecord> recordList = list;
+		if (list.size() > 10) {
+			recordList = list.subList(0, 10);
+		}
 		List<InOutRecordVo> voList = CommonUtil.listPo2VO(recordList, InOutRecordVo.class);
 		voList.forEach(vo -> {
 			vo.setAreaName(AreaDef.getAreaNameById(vo.getAreaId()));
@@ -78,10 +114,23 @@ public class TrackService {
 		return ResultVo.ok(voList);
 	}
 
-	public ResultVo getInOutTrackList(Integer pageIndex, Integer pageSize) {
+	@Autowired
+	private OrgService orgService;
+
+	/**
+	 * 查询人员进出记录
+	 *
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 */
+	public ResultVo getInOutTrackList(String areaId, Integer pageIndex, Integer pageSize) {
 		InOutRecordExample example = new InOutRecordExample();
 		example.setOrderByClause("time desc");
 		InOutRecordExample.Criteria criteria = example.createCriteria();
+		if (StringUtils.isNotBlank(areaId)) {
+			criteria.andAreaIdEqualTo(areaId);
+		}
 
 		PageInfo<InOutRecord> pageInfo = PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(()
 				-> inOutRecordMapper.selectByExample(example));
@@ -94,11 +143,39 @@ public class TrackService {
 		voList.forEach(vo -> {
 			vo.setAreaName(AreaDef.getAreaNameById(vo.getAreaId()));
 			vo.setPersonName(personService.getPersonInfoName(vo.getUserId()));
+
+			String userId = vo.getUserId();
+			PersonInfo personInfo = personService.getPersonInfo(userId);
+			String orgId = personInfo.getDeptId();
+			vo.setOrgName(orgService.getOrgNameById(orgId));
 		});
 
 		PageInfo<InOutRecordVo> voPageInfo = CommonUtil.po2VO(pageInfo, PageInfo.class);
 		voPageInfo.setList(voList);
 		return ResultVo.ok(voPageInfo);
+	}
+
+	public ResultVo getPieChart(String userId, Date time) {
+		String sql ="SELECT area_id,\tcount( area_id ) count\n" +
+				"FROM in_out_record \n" +
+				"WHERE 1 = 1 AND user_id = 'u9' \tAND type = 'IN' \tAND DATE_FORMAT( #{inOutTime}, \"%Y-%m-%d\" ) = DATE_FORMAT( time, \"%Y-%m-%d\" ) \n" +
+				"GROUP BY area_id \n" +
+				"ORDER BY time ASC";
+
+		Map<String, Object> params = new HashMap<>(2);
+		params.put("sql", sql);
+		params.put("userId", userId);
+		if (time == null) {
+			params.put("inOutTime", new Date());
+		} else {
+			params.put("inOutTime", time);
+		}
+
+		List<Map<String, Object>> list = commonService.executeSelectSQL(params);
+		List<TrackInfo> infoList = CommonUtil.map2PO(list, TrackInfo.class);
+		infoList.forEach(info -> info.setAreaName(AreaDef.getAreaNameById(info.getAreaId())));
+
+		return ResultVo.ok(infoList);
 	}
 
 }

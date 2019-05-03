@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -125,6 +126,14 @@ public class OrgService {
 		}
 
 		return null;
+	}
+
+	public String getOrgNameById(String orgId) {
+		Org org = getOrgById(orgId);
+		if (org == null) {
+			return "";
+		}
+		return Optional.ofNullable(org.getOrgName()).orElse("");
 	}
 
 }
