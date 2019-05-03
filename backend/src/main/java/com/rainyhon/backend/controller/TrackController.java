@@ -35,8 +35,8 @@ public class TrackController {
 	}
 
 	@GetMapping("getTrackPieChart")
-	public ResultVo getPieChart( @RequestParam String userId,
-				@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH-mm-ss SSS") Date time) {
+	public ResultVo getPieChart(@RequestParam String userId,
+	                            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH-mm-ss SSS") Date time) {
 		return trackService.getPieChart(userId, time);
 	}
 

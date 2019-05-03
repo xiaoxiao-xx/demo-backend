@@ -51,4 +51,10 @@ public class RollCallController {
 		return ResultVo.ok(rollCallService.getRollCallResultList(orgId, personId, pageIndex, pageSize));
 	}
 
+	@GetMapping("getRollCall")
+	public ResultVo<PageInfo<?>> getRollCall(@RequestParam(name = "pageIndex") Integer pageIndex,
+	                                         @RequestParam(name = "pageSize") Integer pageSize) {
+		return ResultVo.ok(rollCallService.getRollCall(pageIndex, pageSize));
+	}
+
 }

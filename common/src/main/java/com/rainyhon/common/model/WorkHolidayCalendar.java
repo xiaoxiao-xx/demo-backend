@@ -1,5 +1,7 @@
 package com.rainyhon.common.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class WorkHolidayCalendar {
@@ -11,6 +13,7 @@ public class WorkHolidayCalendar {
     /**
      * 节假日日期
      */
+    @DateTimeFormat(pattern= "yyyy-MM-dd")
     private Date holidayDate;
 
     /**

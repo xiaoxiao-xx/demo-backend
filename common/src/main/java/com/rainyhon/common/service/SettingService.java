@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +30,9 @@ public class SettingService {
 	private WorkExemptionMapper exemptionMapper;
 
 	public void addCheckTime(WorkCheckTime checkTime) {
+		WorkCheckTimeExample example = new WorkCheckTimeExample();
+		checkTimeMapper.deleteByExample(example);
+
 		checkTime.setId(CommonUtil.getUUID());
 		checkTimeMapper.insert(checkTime);
 	}
@@ -59,6 +63,16 @@ public class SettingService {
 		exemptionMapper.insert(exemption);
 	}
 
+	public void addExemptionPersonList(List<WorkExemption> exemptionList) {
+		if (CommonUtil.isNotEmpty(exemptionList)) {
+			exemptionList.forEach(exemption -> {
+				exemption.setId(CommonUtil.getUUID());
+				EntityUtils.setCreateAndUpdateInfo(exemption);
+				exemptionMapper.insert(exemption);
+			});
+		}
+	}
+
 	public void deleteExemptionPerson(String id) {
 		WorkExemption exemption = new WorkExemption();
 		exemption.setId(id);
@@ -77,6 +91,18 @@ public class SettingService {
 		return PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(()
 				-> exemptionMapper.selectByExample(example));
 	}
+
+	public List<WorkExemption> getAllExemptionPersons() {
+		WorkExemptionExample example = new WorkExemptionExample();
+		WorkExemptionExample.Criteria criteria = example.createCriteria();
+		List<WorkExemption> workExemptionList = exemptionMapper.selectByExample(example);
+		if (CommonUtil.isNotEmpty(workExemptionList)) {
+			return workExemptionList;
+		}
+
+		return new ArrayList<>();
+	}
+
 
 	public void addHolidayCalendar(WorkHolidayCalendar calendar) {
 		calendar.setId(CommonUtil.getUUID());
