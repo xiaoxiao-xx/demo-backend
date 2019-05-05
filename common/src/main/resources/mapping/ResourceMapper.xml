@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.microcore.center.mapper.ResourceMapper" >
-  <resultMap id="BaseResultMap" type="com.microcore.center.model.Resource" >
+<mapper namespace="com.rainyhon.common.mapper.ResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.Resource" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="resource_name" property="resourceName" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
@@ -78,7 +78,7 @@
     id, resource_name, url, type, icon, description, del_status, upd_user_id, upd_org_id, 
     upd_tm, crt_user_id, crt_org_id, crt_tm
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.ResourceExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.ResourceExample" >
     select
     <if test="distinct" >
       distinct
@@ -103,13 +103,13 @@
     delete from resource
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.microcore.center.model.ResourceExample" >
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.ResourceExample" >
     delete from resource
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.microcore.center.model.Resource" >
+  <insert id="insert" parameterType="com.rainyhon.common.model.Resource" >
     insert into resource (id, resource_name, url, 
       type, icon, description, 
       del_status, upd_user_id, upd_org_id, 
@@ -121,7 +121,7 @@
       #{updTm,jdbcType=TIMESTAMP}, #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, 
       #{crtTm,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.microcore.center.model.Resource" >
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.Resource" >
     insert into resource
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -206,7 +206,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.microcore.center.model.ResourceExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.rainyhon.common.model.ResourceExample" resultType="java.lang.Integer" >
     select count(*) from resource
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -278,7 +278,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.Resource" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.Resource" >
     update resource
     <set >
       <if test="resourceName != null" >
@@ -320,7 +320,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.Resource" >
+  <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.Resource" >
     update resource
     set resource_name = #{resourceName,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},

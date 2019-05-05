@@ -1,5 +1,6 @@
 package com.rainyhon.common.service;
 
+import com.rainyhon.common.model.PsmUser;
 import com.rainyhon.common.model.ScheduleConfig;
 import com.rainyhon.common.vo.ScheduleConfigVo;
 import com.rainyhon.common.vo.ResultVo;
@@ -7,18 +8,10 @@ import com.rainyhon.common.vo.ResultVo;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.model.PsmUser;
 import com.rainyhon.common.mapper.ScheduleConfigMapper;
-import com.rainyhon.common.model.ScheduleConfig;
 import com.rainyhon.common.model.ScheduleConfigExample;
 import com.rainyhon.common.model.ScheduleDetail;
-import com.rainyhon.common.service.ParaDefineService;
-import com.rainyhon.common.service.ScheduleConfigService;
-import com.rainyhon.common.service.ScheduleDetailService;
-import com.rainyhon.common.service.PsmUserService;
 import com.rainyhon.common.util.CommonUtil;
-import com.rainyhon.common.vo.ScheduleConfigVo;
-import com.rainyhon.common.vo.ResultVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +41,6 @@ public class ScheduleConfigService {
 	@Autowired
 	private ParaDefineService paraDefineService;
 
-	
 	public ResultVo add(ScheduleConfigVo vo) {
 		vo.setId(getUUID());
 		scheduleConfigMapper.insert(vo);
@@ -113,19 +105,16 @@ public class ScheduleConfigService {
 		return detail;
 	}
 
-	
 	public ResultVo update(ScheduleConfigVo vo) {
 		scheduleConfigMapper.updateByPrimaryKeySelective(vo);
 		return ResultVo.ok();
 	}
 
-	
 	public ResultVo delete(String id) {
 		scheduleConfigMapper.deleteByPrimaryKey(id);
 		return ResultVo.ok();
 	}
 
-	
 	public ResultVo getScheduleConfigList(String team, Integer pageIndex, Integer pageSize) {
 		ScheduleConfigExample example = new ScheduleConfigExample();
 		ScheduleConfigExample.Criteria criteria = example.createCriteria();
@@ -136,7 +125,6 @@ public class ScheduleConfigService {
 				.doSelectPageInfo(() -> scheduleConfigMapper.selectByExample(example));
 
 		List<ScheduleConfig> configList = scheduleConfigPageInfo.getList();
-
 
 		List<ScheduleConfigVo> configVos = listPo2VO(configList, ScheduleConfigVo.class);
 		if (CommonUtil.isNotEmpty(configVos)) {
@@ -152,7 +140,6 @@ public class ScheduleConfigService {
 		return ResultVo.ok(scheduleConfigVoPageInfo);
 	}
 
-	
 	public List<ScheduleConfig> getScheduleConfigList() {
 		ScheduleConfigExample example = new ScheduleConfigExample();
 		ScheduleConfigExample.Criteria criteria = example.createCriteria();
@@ -160,7 +147,6 @@ public class ScheduleConfigService {
 		return configList;
 	}
 
-	
 	public void batchDelete(String idList) {
 		idList = idList.trim();
 		if (StringUtils.isEmpty(idList)) {
@@ -211,7 +197,6 @@ public class ScheduleConfigService {
 		return resultList;
 	}
 
-	
 	public ResultVo setRepeatType(String id, String repeatType) {
 		ScheduleConfig config = new ScheduleConfig();
 		config.setId(id);

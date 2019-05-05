@@ -1,6 +1,6 @@
 package com.rainyhon.task.job.v2.policy.entity;
 
-import com.microcore.center.model.AlarmResult;
+import com.rainyhon.common.model.AlarmResult;
 import lombok.Data;
 
 /**

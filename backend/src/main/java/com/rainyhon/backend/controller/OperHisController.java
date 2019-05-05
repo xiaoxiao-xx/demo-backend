@@ -17,6 +17,6 @@ public class OperHisController {
 
     @GetMapping("query")
     public ResultVo query(@RequestParam String operTarget) {
-        return ResultVo.ok(operHisService.getPsmOperHis(operTarget));
+        return ResultVo.ok(operHisService.getOperationHistory(operTarget));
     }
 }

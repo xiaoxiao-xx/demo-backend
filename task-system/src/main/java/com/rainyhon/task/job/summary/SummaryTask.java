@@ -1,11 +1,11 @@
 package com.rainyhon.task.job.summary;
 
-import com.microcore.center.model.PsmDetail;
-import com.microcore.center.model.PsmSummary;
-import com.microcore.center.model.PsmUser;
+import com.rainyhon.common.model.Detail;
+import com.rainyhon.common.model.PersonInfo;
+import com.rainyhon.common.model.Summary;
 import com.rainyhon.common.service.CommonService;
+import com.rainyhon.common.service.PersonService;
 import com.rainyhon.task.service.SummaryService;
-import com.rainyhon.common.service.PsmUserService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.JedisPoolUtil;
 import com.rainyhon.common.vo.FaceSummaryVo;
@@ -30,8 +30,6 @@ public class SummaryTask {
 
 	private final CommonService commonService;
 
-	private final PsmUserService psmUserService;
-
 	/**
 	 * 定期汇总时间间隔，单位为milisecond
 	 */
@@ -43,10 +41,9 @@ public class SummaryTask {
 
 	@Autowired
 	public SummaryTask(SummaryService summaryService, CommonService commonService,
-	                   PsmUserService psmUserService, JedisPoolUtil redisUtil) {
+	                   JedisPoolUtil redisUtil) {
 		this.summaryService = summaryService;
 		this.commonService = commonService;
-		this.psmUserService = psmUserService;
 		this.redisUtil = redisUtil;
 	}
 
@@ -58,8 +55,8 @@ public class SummaryTask {
 		Date now = new Date();
 
 		String sql = "SELECT f.*, m.create_time AS capture_time, m.area_id area_id \n" +
-				"FROM psm_face f \n" +
-				"LEFT JOIN psm_material m ON f.material_id = m.id \n" +
+				"FROM face f \n" +
+				"LEFT JOIN material m ON f.material_id = m.id \n" +
 				"WHERE m.create_time > DATE_SUB(NOW(), INTERVAL #{intervalTime} SECOND) \n" +
 				"ORDER BY m.create_time DESC";
 
@@ -77,7 +74,7 @@ public class SummaryTask {
 
 		String summaryId = CommonUtil.getUUID();
 		String areaId = "--";
-		PsmSummary summary = new PsmSummary();
+		Summary summary = new Summary();
 		summary.setId(summaryId);
 		summary.setPeriodHead(head);
 		summary.setPeriodEnd(now);
@@ -86,7 +83,7 @@ public class SummaryTask {
 		summaryService.addSummary(summary);
 
 		faceSummaryVoList.forEach(faceSummaryVo -> {
-			PsmDetail detail = new PsmDetail();
+			Detail detail = new Detail();
 			String id = CommonUtil.getUUID();
 			detail.setId(id);
 			detail.setSummaryId(summaryId);
@@ -94,16 +91,19 @@ public class SummaryTask {
 			detail.setTime(faceSummaryVo.getCaptureTime());
 			detail.setUserId(faceSummaryVo.getUserId());
 
-			PsmUser user = psmUserService.getPsmUserById(faceSummaryVo.getUserId());
+			PersonInfo personInfo = personService.getPersonInfo(faceSummaryVo.getUserId());
 			String username = "";
-			if (user != null) {
-				username = user.getUsername();
+			if (personInfo != null) {
+				username = personInfo.getName();
 			}
 			detail.setUserName(username);
 
 			summaryService.addDetail(detail);
 		});
 	}
+
+	@Autowired
+	private PersonService personService;
 
 	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
 			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));

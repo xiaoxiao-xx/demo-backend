@@ -1,5 +1,6 @@
 package com.rainyhon.backend.controller;
 
+import com.rainyhon.common.model.PsmUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -7,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rainyhon.backend.config.SessionManage;
-import com.microcore.center.model.PsmUser;
 import com.rainyhon.common.service.PsmUserService;
 import com.rainyhon.common.util.Encode;
 import com.rainyhon.common.util.JwtUtil;

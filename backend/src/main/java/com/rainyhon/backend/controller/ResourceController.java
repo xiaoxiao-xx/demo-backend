@@ -1,6 +1,6 @@
 package com.rainyhon.backend.controller;
 
-import com.microcore.center.model.Resource;
+import com.rainyhon.common.model.Resource;
 import com.rainyhon.common.service.ResourceService;
 import com.rainyhon.common.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,8 @@ public class ResourceController {
 	}
 
 	@PostMapping("addResource")
-	public ResultVo addResource(@RequestBody Resource vo) {
-		resourceService.addResource(vo);
+	public ResultVo addResource(@RequestBody Resource resource) {
+		resourceService.addResource(resource);
 		return ResultVo.ok();
 	}
 

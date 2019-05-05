@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.microcore.center.mapper.DetectResultMapper" >
-  <resultMap id="BaseResultMap" type="com.microcore.center.model.DetectResult" >
+<mapper namespace="com.rainyhon.common.mapper.DetectResultMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.DetectResult" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="material_id" property="materialId" jdbcType="VARCHAR" />
     <result column="angle" property="angle" jdbcType="INTEGER" />
@@ -12,7 +12,7 @@
     <result column="width" property="width" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.microcore.center.model.DetectResult" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.rainyhon.common.model.DetectResult" extends="BaseResultMap" >
     <result column="base64" property="base64" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -79,7 +79,7 @@
   <sql id="Blob_Column_List" >
     base64
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.microcore.center.model.DetectResultExample" >
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.rainyhon.common.model.DetectResultExample" >
     select
     <if test="distinct" >
       distinct
@@ -96,7 +96,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.DetectResultExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.DetectResultExample" >
     select
     <if test="distinct" >
       distinct
@@ -123,13 +123,13 @@
     delete from detect_result
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.microcore.center.model.DetectResultExample" >
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.DetectResultExample" >
     delete from detect_result
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.microcore.center.model.DetectResult" >
+  <insert id="insert" parameterType="com.rainyhon.common.model.DetectResult" >
     insert into detect_result (id, material_id, angle, 
       center_x, center_y, group_id, 
       height, width, create_time, 
@@ -139,7 +139,7 @@
       #{height,jdbcType=INTEGER}, #{width,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{base64,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.microcore.center.model.DetectResult" >
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.DetectResult" >
     insert into detect_result
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -206,7 +206,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.microcore.center.model.DetectResultExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.rainyhon.common.model.DetectResultExample" resultType="java.lang.Integer" >
     select count(*) from detect_result
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -281,7 +281,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.DetectResult" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.DetectResult" >
     update detect_result
     <set >
       <if test="materialId != null" >
@@ -314,7 +314,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.microcore.center.model.DetectResult" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rainyhon.common.model.DetectResult" >
     update detect_result
     set material_id = #{materialId,jdbcType=VARCHAR},
       angle = #{angle,jdbcType=INTEGER},
@@ -327,7 +327,7 @@
       base64 = #{base64,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.DetectResult" >
+  <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.DetectResult" >
     update detect_result
     set material_id = #{materialId,jdbcType=VARCHAR},
       angle = #{angle,jdbcType=INTEGER},

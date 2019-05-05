@@ -22,7 +22,7 @@ public interface PersonInfoMapper {
      *
      * @mbggenerated
      */
-    int deleteByPrimaryKey(String personId);
+    int deleteByPrimaryKey(String id);
 
     /**
      *
@@ -46,7 +46,7 @@ public interface PersonInfoMapper {
      *
      * @mbggenerated
      */
-    PersonInfo selectByPrimaryKey(String personId);
+    PersonInfo selectByPrimaryKey(String id);
 
     /**
      *

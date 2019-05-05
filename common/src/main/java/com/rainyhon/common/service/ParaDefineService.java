@@ -1,8 +1,8 @@
 package com.rainyhon.common.service;
 
-import com.microcore.center.mapper.PsmParaDefineMapper;
-import com.microcore.center.model.PsmParaDefine;
-import com.microcore.center.model.PsmParaDefineExample;
+import com.rainyhon.common.mapper.ParaDefineMapper;
+import com.rainyhon.common.model.ParaDefine;
+import com.rainyhon.common.model.ParaDefineExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,32 +14,30 @@ import java.util.List;
 public class ParaDefineService {
 
 	@Autowired
-	private PsmParaDefineMapper psmParaDefineMapper;
+	private ParaDefineMapper paraDefineMapper;
 
 
-	public List<PsmParaDefine> getPsmParaDefineByType(String type) {
-		PsmParaDefineExample example = new PsmParaDefineExample();
-		PsmParaDefineExample.Criteria criteria = example.createCriteria();
+	public List<ParaDefine> getParaDefineByType(String type) {
+		ParaDefineExample example = new ParaDefineExample();
+		ParaDefineExample.Criteria criteria = example.createCriteria();
 		criteria.andParaTypeEqualTo(type);
-		return psmParaDefineMapper.selectByExample(example);
+		return paraDefineMapper.selectByExample(example);
 	}
 
-
-	public PsmParaDefine getPsmParaDefineByTypeAnd(String type, String code) {
-		PsmParaDefineExample example = new PsmParaDefineExample();
-		PsmParaDefineExample.Criteria criteria = example.createCriteria();
+	public ParaDefine getParaDefineByTypeAnd(String type, String code) {
+		ParaDefineExample example = new ParaDefineExample();
+		ParaDefineExample.Criteria criteria = example.createCriteria();
 		criteria.andParaTypeEqualTo(type);
 		criteria.andParaCodeEqualTo(code);
-		List<PsmParaDefine> list = psmParaDefineMapper.selectByExample(example);
+		List<ParaDefine> list = paraDefineMapper.selectByExample(example);
 		if (list != null && !list.isEmpty()) {
 			return list.get(0);
 		}
 		return null;
 	}
 
-
 	public String getValueByTypeAnd(String type, String code) {
-		PsmParaDefine psmParaDefine = getPsmParaDefineByTypeAnd(type, code);
+		ParaDefine psmParaDefine = getParaDefineByTypeAnd(type, code);
 		if (psmParaDefine != null) {
 			return psmParaDefine.getParaValue();
 		}

@@ -21,7 +21,7 @@ public class ParaDefineController {
 	@ApiOperation(value = "参数列表查询", notes = "参数列表查询")
 	@GetMapping("query")
 	public ResultVo query(@RequestParam(name = "type") String type) {
-		return ResultVo.ok(paraDefineService.getPsmParaDefineByType(type));
+		return ResultVo.ok(paraDefineService.getParaDefineByType(type));
 	}
 
 }

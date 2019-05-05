@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.service.PsmRollCallService;
-import com.rainyhon.common.vo.PsmRollCallVo;
+import com.rainyhon.common.vo.RollCallVo;
 import com.rainyhon.common.vo.ResultVo;
 
 import io.swagger.annotations.ApiOperation;
@@ -35,10 +35,10 @@ public class RollCallController {
 
 	@ApiOperation(value = "电子点名查询", notes = "电子点名查询")
 	@GetMapping("query")
-	public ResultVo<PageInfo<PsmRollCallVo>> query(@RequestParam(name = "team", required = false) String team,
-	                                               @RequestParam(name = "callTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date callTime,
-	                                               @RequestParam(name = "pageIndex") Integer pageIndex,
-	                                               @RequestParam(name = "pageSize") Integer pageSize) {
+	public ResultVo<PageInfo<RollCallVo>> query(@RequestParam(name = "team", required = false) String team,
+	                                            @RequestParam(name = "callTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date callTime,
+	                                            @RequestParam(name = "pageIndex") Integer pageIndex,
+	                                            @RequestParam(name = "pageSize") Integer pageSize) {
 		return ResultVo.ok(psmRollCallService.query(team, callTime, pageIndex, pageSize));
 	}
 

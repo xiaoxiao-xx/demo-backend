@@ -3,8 +3,8 @@ package com.rainyhon.task.job.v1;
 import com.rainyhon.common.cllient.HttpTemplate;
 import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.hcnetsdk.HCNetSDK;
-import com.microcore.center.model.Face;
-import com.microcore.center.model.PsmMaterial;
+import com.rainyhon.common.model.Face;
+import com.rainyhon.common.model.Material;
 import com.rainyhon.common.service.MaterialService;
 import com.rainyhon.task.service.SdkService;
 import com.rainyhon.common.util.CommonUtil;
@@ -145,7 +145,7 @@ public class CaptureTask {
 			faceSdkRecVo.setImage(image);
 
 			// 保存素材信息
-			PsmMaterial material = new PsmMaterial();
+			Material material = new Material();
 			String uuid = CommonUtil.getUUID();
 			material.setId(uuid);
 			material.setCreateTime(CommonUtil.getCurrentTime());
@@ -192,7 +192,7 @@ public class CaptureTask {
 		String uuid = CommonUtil.getUUID();
 		String imageName = "input.jpeg";
 
-		PsmMaterial material = new PsmMaterial();
+		Material material = new Material();
 		material.setId(uuid);
 		material.setCreateTime(CommonUtil.getCurrentTime());
 		material.setImageName(imageName);

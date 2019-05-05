@@ -2,10 +2,10 @@ package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.mapper.PsmRollCallMapper;
-import com.microcore.center.model.PsmRollCall;
-import com.microcore.center.model.PsmRollCallExample;
+import com.rainyhon.common.mapper.RollCallMapper;
 import com.rainyhon.common.mapper.RollCallResultMapper;
+import com.rainyhon.common.model.RollCall;
+import com.rainyhon.common.model.RollCallExample;
 import com.rainyhon.common.model.RollCallResult;
 import com.rainyhon.common.model.RollCallResultExample;
 import com.rainyhon.common.util.CommonUtil;
@@ -57,12 +57,12 @@ public class RollCallService {
 	}
 
 	@Autowired
-	private PsmRollCallMapper rollCallMapper;
+	private RollCallMapper rollCallMapper;
 
-	public PageInfo<PsmRollCall> getRollCall(Integer pageIndex, Integer pageSize) {
-		PsmRollCallExample example = new PsmRollCallExample();
-		PsmRollCallExample.Criteria criteria = example.createCriteria();
-		PageInfo<PsmRollCall> pageInfo = PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(()
+	public PageInfo<RollCall> getRollCall(Integer pageIndex, Integer pageSize) {
+		RollCallExample example = new RollCallExample();
+		RollCallExample.Criteria criteria = example.createCriteria();
+		PageInfo<RollCall> pageInfo = PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(()
 				-> rollCallMapper.selectByExample(example));
 		return pageInfo;
 	}

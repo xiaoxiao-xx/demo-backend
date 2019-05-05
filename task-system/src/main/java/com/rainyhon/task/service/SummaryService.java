@@ -1,9 +1,9 @@
 package com.rainyhon.task.service;
 
-import com.microcore.center.mapper.PsmDetailMapper;
-import com.microcore.center.mapper.PsmSummaryMapper;
-import com.microcore.center.model.PsmDetail;
-import com.microcore.center.model.PsmSummary;
+import com.rainyhon.common.mapper.DetailMapper;
+import com.rainyhon.common.mapper.SummaryMapper;
+import com.rainyhon.common.model.Detail;
+import com.rainyhon.common.model.Summary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,16 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class SummaryService {
 
 	@Autowired
-	private PsmSummaryMapper summaryMapper;
+	private SummaryMapper summaryMapper;
 
 	@Autowired
-	private PsmDetailMapper detailMapper;
+	private DetailMapper detailMapper;
 
-	public void addSummary(PsmSummary summary) {
+	public void addSummary(Summary summary) {
 		summaryMapper.insert(summary);
 	}
 
-	public void addDetail(PsmDetail detail) {
+	public void addDetail(Detail detail) {
 		detailMapper.insert(detail);
 	}
 

@@ -3,8 +3,7 @@ package com.rainyhon.common.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.microcore.center.model.PsmUser;
-
+import com.rainyhon.common.model.PsmUser;
 import com.rainyhon.common.model.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

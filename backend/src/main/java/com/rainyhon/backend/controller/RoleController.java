@@ -1,6 +1,6 @@
 package com.rainyhon.backend.controller;
 
-import com.microcore.center.model.Role;
+import com.rainyhon.common.model.Role;
 import com.rainyhon.common.service.RoleService;
 import com.rainyhon.common.vo.ResultVo;
 import com.rainyhon.common.vo.RoleVo;
@@ -51,8 +51,8 @@ public class RoleController {
 	}
 
 	@PostMapping("updateRole")
-	public ResultVo updateRole(@RequestBody Role vo) {
-		roleService.updateRole(vo);
+	public ResultVo updateRole(@RequestBody Role role) {
+		roleService.updateRole(role);
 		return ResultVo.ok();
 	}
 

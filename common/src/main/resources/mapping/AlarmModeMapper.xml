@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.microcore.center.mapper.AlarmModeMapper" >
-  <resultMap id="BaseResultMap" type="com.microcore.center.model.AlarmMode" >
+<mapper namespace="com.rainyhon.common.mapper.AlarmModeMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.AlarmMode" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="alarm_mode" property="alarmMode" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="VARCHAR" />
@@ -68,7 +68,7 @@
   <sql id="Base_Column_List" >
     id, alarm_mode, state, action
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.AlarmModeExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.AlarmModeExample" >
     select
     <if test="distinct" >
       distinct
@@ -93,19 +93,19 @@
     delete from alarm_mode
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.microcore.center.model.AlarmModeExample" >
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.AlarmModeExample" >
     delete from alarm_mode
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.microcore.center.model.AlarmMode" >
+  <insert id="insert" parameterType="com.rainyhon.common.model.AlarmMode" >
     insert into alarm_mode (id, alarm_mode, state, 
       action)
     values (#{id,jdbcType=VARCHAR}, #{alarmMode,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
       #{action,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.microcore.center.model.AlarmMode" >
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.AlarmMode" >
     insert into alarm_mode
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -136,7 +136,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.microcore.center.model.AlarmModeExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.rainyhon.common.model.AlarmModeExample" resultType="java.lang.Integer" >
     select count(*) from alarm_mode
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -172,7 +172,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.AlarmMode" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.AlarmMode" >
     update alarm_mode
     <set >
       <if test="alarmMode != null" >
@@ -187,7 +187,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.AlarmMode" >
+  <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.AlarmMode" >
     update alarm_mode
     set alarm_mode = #{alarmMode,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},

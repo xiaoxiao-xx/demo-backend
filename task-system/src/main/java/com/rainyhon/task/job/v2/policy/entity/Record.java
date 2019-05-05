@@ -1,7 +1,7 @@
 package com.rainyhon.task.job.v2.policy.entity;
 
-import com.microcore.center.model.Face;
-import com.microcore.center.model.PsmMaterial;
+import com.rainyhon.common.model.Face;
+import com.rainyhon.common.model.Material;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -19,6 +19,6 @@ public class Record {
 
     private Face face;
 
-    private PsmMaterial material;
+    private Material material;
 
 }

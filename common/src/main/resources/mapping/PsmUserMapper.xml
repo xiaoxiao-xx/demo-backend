@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.microcore.center.mapper.PsmUserMapper" >
-  <resultMap id="BaseResultMap" type="com.microcore.center.model.PsmUser" >
+<mapper namespace="com.rainyhon.common.mapper.PsmUserMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.PsmUser" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="realname" property="realname" jdbcType="VARCHAR" />
@@ -72,14 +72,14 @@
   <sql id="Base_Column_List" >
     id, username, realname, password, is_enable, is_lock, optime, org_id
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.PsmUserExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.PsmUserExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from psm_user_t
+    from psm_user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -90,29 +90,29 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from psm_user_t
+    from psm_user
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from psm_user_t
+    delete from psm_user
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.microcore.center.model.PsmUserExample" >
-    delete from psm_user_t
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.PsmUserExample" >
+    delete from psm_user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.microcore.center.model.PsmUser" >
-    insert into psm_user_t (id, username, realname, 
+  <insert id="insert" parameterType="com.rainyhon.common.model.PsmUser" >
+    insert into psm_user (id, username, realname, 
       password, is_enable, is_lock, 
       optime, org_id)
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{isEnable,jdbcType=INTEGER}, #{isLock,jdbcType=INTEGER}, 
       #{optime,jdbcType=TIMESTAMP}, #{orgId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.microcore.center.model.PsmUser" >
-    insert into psm_user_t
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.PsmUser" >
+    insert into psm_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -166,14 +166,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.microcore.center.model.PsmUserExample" resultType="java.lang.Integer" >
-    select count(*) from psm_user_t
+  <select id="countByExample" parameterType="com.rainyhon.common.model.PsmUserExample" resultType="java.lang.Integer" >
+    select count(*) from psm_user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update psm_user_t
+    update psm_user
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
@@ -205,7 +205,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update psm_user_t
+    update psm_user
     set id = #{record.id,jdbcType=VARCHAR},
       username = #{record.username,jdbcType=VARCHAR},
       realname = #{record.realname,jdbcType=VARCHAR},
@@ -218,8 +218,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.PsmUser" >
-    update psm_user_t
+  <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.PsmUser" >
+    update psm_user
     <set >
       <if test="username != null" >
         username = #{username,jdbcType=VARCHAR},
@@ -245,8 +245,8 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.PsmUser" >
-    update psm_user_t
+  <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.PsmUser" >
+    update psm_user
     set username = #{username,jdbcType=VARCHAR},
       realname = #{realname,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.microcore.center.model.PsmFile;
 import com.rainyhon.common.service.FileService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.vo.ResultVo;
@@ -25,7 +24,7 @@ public class FileController {
 	private String filePath;
 
 	@Autowired
-	private FileService fileService ;
+	private FileService fileService;
 
 	// TODO
 	@PostMapping("fileUpload")
@@ -48,7 +47,7 @@ public class FileController {
 		try {
 			file.transferTo(destFile); // 保存文件
 
-			PsmFile psmFile = new PsmFile();
+			com.rainyhon.common.model.File psmFile = new com.rainyhon.common.model.File();
 			psmFile.setId(fileId);
 			psmFile.setOldFileName(fileName);
 			psmFile.setSuffix(getSuffix(fileName));
@@ -61,7 +60,7 @@ public class FileController {
 			e.printStackTrace();
 			return ResultVo.fail("文件上传失败！");
 		}
-    }
+	}
 
 	private String getSuffix(String fileName) {
 		String[] names = fileName.split("\\.");

@@ -2,7 +2,7 @@ package com.rainyhon.backend.controller;
 
 import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.service.DeviceService;
-import com.rainyhon.common.vo.PsmDeviceVo;
+import com.rainyhon.common.vo.DeviceVo;
 import com.rainyhon.common.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class DeviceController {
     }
 
     @PostMapping("add")
-    public ResultVo addDevice(@RequestBody PsmDeviceVo vo) {
+    public ResultVo addDevice(@RequestBody DeviceVo vo) {
         deviceService.add(vo);
         return ResultVo.ok();
     }
@@ -41,7 +41,7 @@ public class DeviceController {
     }
 
     @PostMapping("update")
-    public ResultVo updateDevice(@RequestBody PsmDeviceVo vo) {
+    public ResultVo updateDevice(@RequestBody DeviceVo vo) {
         deviceService.update(vo);
         return ResultVo.ok();
     }

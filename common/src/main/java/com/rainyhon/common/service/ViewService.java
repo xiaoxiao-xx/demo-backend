@@ -2,14 +2,10 @@ package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.mapper.ViewMapper;
-import com.microcore.center.model.*;
-import com.rainyhon.common.model.DynamicQuery;
-import com.rainyhon.common.model.DynamicQueryColumn;
-import com.rainyhon.common.model.DynamicQueryWeb;
+import com.rainyhon.common.mapper.ViewMapper;
+import com.rainyhon.common.model.*;
 import com.rainyhon.common.util.CommonUtil;
-import com.rainyhon.common.vo.ResultVo;
-import com.rainyhon.common.vo.Unary;
+import com.rainyhon.common.vo.*;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,7 +105,7 @@ public class ViewService {
         // condition;
         appendConditions(sql, query.getUnary());
         log.info(sql.toString());
-        PageInfo<PsmDeviceVersion> pageInfo = PageHelper.startPage(query.getPageIndex(), query.getPageSize())
+        PageInfo<DeviceVersion> pageInfo = PageHelper.startPage(query.getPageIndex(), query.getPageSize())
                 .doSelectPageInfo(() -> viewMapper.query(sql.toString()));
         return new ResultVo().success(pageInfo);
     }

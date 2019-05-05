@@ -1,6 +1,6 @@
 package com.rainyhon.common.vo;
 
-import com.microcore.center.model.Face;
+import com.rainyhon.common.model.Face;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

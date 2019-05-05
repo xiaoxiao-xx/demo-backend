@@ -2,12 +2,12 @@ package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.mapper.PsmDeviceMapper;
-import com.microcore.center.model.PsmDevice;
-import com.microcore.center.model.PsmDeviceExample;
-import com.microcore.center.model.PsmParaDefine;
-import com.rainyhon.common.dto.PsmDeviceDto;
-import com.rainyhon.common.vo.PsmDeviceVo;
+import com.rainyhon.common.dto.DeviceDto;
+import com.rainyhon.common.mapper.DeviceMapper;
+import com.rainyhon.common.model.Device;
+import com.rainyhon.common.model.DeviceExample;
+import com.rainyhon.common.model.ParaDefine;
+import com.rainyhon.common.vo.DeviceVo;
 import com.rainyhon.common.vo.ResultVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,7 +30,7 @@ import static com.rainyhon.common.util.CommonUtil.*;
 public class DeviceService {
 
 	@Autowired
-	private PsmDeviceMapper psmDeviceMapper;
+	private DeviceMapper psmDeviceMapper;
 
 	@Autowired
 	private ParaDefineService paraDefineService;
@@ -136,16 +136,15 @@ public class DeviceService {
 		return "";
 	}
 
-	
 	public String getDeviceLocation(Integer x, Integer y) {
 		Point point = new Point(x, y);
 		return getDeviceLocation(point, indexPageAreaList);
 	}
 
-	public PageInfo<PsmDeviceDto> getDeviceList(String deviceId, String devtypeVal,
-	                                            String state, Integer pageIndex, Integer pageSize) {
-		PsmDeviceExample example = new PsmDeviceExample();
-		PsmDeviceExample.Criteria criteria = example.createCriteria();
+	public PageInfo<DeviceDto> getDeviceList(String deviceId, String devtypeVal,
+	                                         String state, Integer pageIndex, Integer pageSize) {
+		DeviceExample example = new DeviceExample();
+		DeviceExample.Criteria criteria = example.createCriteria();
 
 		if (StringUtils.isNotEmpty(devtypeVal) && !"x".equals(devtypeVal)) {
 			criteria.andDevtypeCodeEqualTo(devtypeVal.trim());
@@ -154,11 +153,11 @@ public class DeviceService {
 			criteria.andStateEqualTo(state.trim());
 		}
 
-		PageInfo<PsmDevice> pageInfo = PageHelper.startPage(pageIndex, pageSize)
+		PageInfo<Device> pageInfo = PageHelper.startPage(pageIndex, pageSize)
 				.doSelectPageInfo(() -> psmDeviceMapper.selectByExample(example));
 
-		List<PsmDeviceDto> deviceDtoList = listPo2VO(pageInfo.getList(), PsmDeviceDto.class);
-		for (PsmDeviceDto device : deviceDtoList) {
+		List<DeviceDto> deviceDtoList = listPo2VO(pageInfo.getList(), DeviceDto.class);
+		for (DeviceDto device : deviceDtoList) {
 			// 设置DeviceLocation
 			String xy = device.getPositionXy();
 			String[] xys = xy.split(",");
@@ -175,37 +174,33 @@ public class DeviceService {
 			device.setDevtypeVal(getDevtypeValByTypeCode(device.getDevtypeCode()));
 		}
 
-		PageInfo<PsmDeviceDto> deviceDtoPageInfo = po2VO(pageInfo, PageInfo.class);
+		PageInfo<DeviceDto> deviceDtoPageInfo = po2VO(pageInfo, PageInfo.class);
 		deviceDtoPageInfo.setList(deviceDtoList);
 
 		return deviceDtoPageInfo;
 	}
 
-	
 	public String getDevtypeValByTypeCode(String typeCode) {
 		return paraDefineService.getValueByTypeAnd(DEVICE_TYPE, typeCode);
 	}
 
-	
 	public int getEnableDeviceCount() {
 		Map<String, Object> params = new HashMap<>(3);
-		String sql = "from psm_device where state = 'E'";
+		String sql = "from device where state = 'E'";
 		params.put("sql", sql);
 		Long count = commonService.executeGetCount(params);
 		return count.intValue();
 	}
 
-	
 	public int getDisabledDeviceCount() {
 		Map<String, Object> params = new HashMap<>(3);
-		String sql = "from psm_device where state = 'D'";
+		String sql = "from device where state = 'D'";
 		params.put("sql", sql);
 		Long count = commonService.executeGetCount(params);
 		return count.intValue();
 	}
 
-	
-	public void add(PsmDeviceVo vo) {
+	public void add(DeviceVo vo) {
 		vo.setDeviceId(getUUID());
 		vo.setState(DEVICE_STATE_ENABLE);
 		psmDeviceMapper.insert(vo);
@@ -213,20 +208,17 @@ public class DeviceService {
 		operHisService.add(vo.getDeviceId(), OPER_HIS_ADD);
 	}
 
-	
 	public void delete(String deviceId) {
 		psmDeviceMapper.deleteByPrimaryKey(deviceId);
 	}
 
-	
-	public void update(PsmDeviceVo vo) {
+	public void update(DeviceVo vo) {
 		psmDeviceMapper.updateByPrimaryKeySelective(vo);
 		operHisService.add(vo.getDeviceId(), OPER_HIS_UPD);
 	}
 
-	
 	public void setDeviceState(String deviceId, String state) {
-		PsmDevice device = new PsmDevice();
+		Device device = new Device();
 		device.setDeviceId(deviceId);
 		device.setState(state);
 		psmDeviceMapper.updateByPrimaryKeySelective(device);
@@ -240,12 +232,10 @@ public class DeviceService {
 		operHisService.add(device.getDeviceId(), operType);
 	}
 
-	
-	public List<PsmParaDefine> getDeviceTypes() {
-		return paraDefineService.getPsmParaDefineByType(DEVICE_TYPE);
+	public List<ParaDefine> getDeviceTypes() {
+		return paraDefineService.getParaDefineByType(DEVICE_TYPE);
 	}
 
-	
 	public ResultVo batchDelete(String idList) {
 		idList = idList.trim();
 		if (StringUtils.isEmpty(idList)) {

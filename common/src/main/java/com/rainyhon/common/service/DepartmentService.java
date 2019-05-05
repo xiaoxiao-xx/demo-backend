@@ -1,8 +1,8 @@
 package com.rainyhon.common.service;
 
-import com.microcore.center.mapper.PsmDeptInfoMapper;
-import com.microcore.center.model.PsmDeptInfo;
-import com.microcore.center.model.PsmDeptInfoExample;
+import com.rainyhon.common.mapper.DeptInfoMapper;
+import com.rainyhon.common.model.DeptInfo;
+import com.rainyhon.common.model.DeptInfoExample;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.StringUtil;
 import com.rainyhon.common.vo.DepartmentVo;
@@ -18,7 +18,7 @@ import java.util.List;
 public class DepartmentService {
 
 	@Autowired
-	private PsmDeptInfoMapper psmDeptInfoMapper;
+	private DeptInfoMapper psmDeptInfoMapper;
 
 	public ResultVo add(DepartmentVo departmentVo) {
 		departmentVo.setDeptId(CommonUtil.getUUID());
@@ -41,8 +41,8 @@ public class DepartmentService {
 	}
 
 	public ResultVo getDeptList(String name) {
-		PsmDeptInfoExample example = new PsmDeptInfoExample();
-		PsmDeptInfoExample.Criteria criteria = example.createCriteria();
+		DeptInfoExample example = new DeptInfoExample();
+		DeptInfoExample.Criteria criteria = example.createCriteria();
 		if (StringUtil.isNotEmpty(name)) {
 			criteria.andDeptNameLike("%" + name.trim() + "%");
 		}
@@ -50,22 +50,22 @@ public class DepartmentService {
 	}
 
 	public String getDepartmentName(String id) {
-		PsmDeptInfo psmDeptInfo = getDepartment(id);
+		DeptInfo psmDeptInfo = getDepartment(id);
 		if (psmDeptInfo != null) {
 			return psmDeptInfo.getDeptName();
 		}
 		return null;
 	}
 
-	public PsmDeptInfo getDepartment(String id) {
+	public DeptInfo getDepartment(String id) {
 		return psmDeptInfoMapper.selectByPrimaryKey(id);
 	}
 
 	public List<DepartmentVo> getDeptTree() {
-		PsmDeptInfoExample example = new PsmDeptInfoExample();
-		PsmDeptInfoExample.Criteria criteria = example.createCriteria();
+		DeptInfoExample example = new DeptInfoExample();
+		DeptInfoExample.Criteria criteria = example.createCriteria();
 		criteria.andDeptLevEqualTo(1);
-		List<PsmDeptInfo> list = psmDeptInfoMapper.selectByExample(example);
+		List<DeptInfo> list = psmDeptInfoMapper.selectByExample(example);
 		List<DepartmentVo> listVo = CommonUtil.listPo2VO(list, DepartmentVo.class);
 		for (DepartmentVo departmentVo : listVo) {
 			departmentVo.setChildren(getChildrenDept(departmentVo.getDeptId()));
@@ -74,10 +74,10 @@ public class DepartmentService {
 	}
 
 	public List<DepartmentVo> getChildrenDept(String deptId) {
-		PsmDeptInfoExample example = new PsmDeptInfoExample();
-		PsmDeptInfoExample.Criteria criteria = example.createCriteria();
+		DeptInfoExample example = new DeptInfoExample();
+		DeptInfoExample.Criteria criteria = example.createCriteria();
 		criteria.andParentDeptidEqualTo(deptId);
-		List<PsmDeptInfo> list = psmDeptInfoMapper.selectByExample(example);
+		List<DeptInfo> list = psmDeptInfoMapper.selectByExample(example);
 		return CommonUtil.listPo2VO(list, DepartmentVo.class);
 	}
 

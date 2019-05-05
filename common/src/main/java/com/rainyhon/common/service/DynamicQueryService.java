@@ -2,8 +2,8 @@ package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.model.PsmDeviceVersion;
 import com.rainyhon.common.mapper.DynamicQueryMapper;
+import com.rainyhon.common.model.DeviceVersion;
 import com.rainyhon.common.model.DynamicQuery;
 import com.rainyhon.common.model.DynamicQueryExample;
 import com.rainyhon.common.vo.ResultVo;
@@ -25,7 +25,7 @@ public class DynamicQueryService {
             criteria.andViewDisplayNameLike(viewDisplayName);
         }
         example.setOrderByClause("create_time desc");
-        PageInfo<PsmDeviceVersion> pageInfo = PageHelper.startPage(pageIndex, pageSize)
+        PageInfo<DeviceVersion> pageInfo = PageHelper.startPage(pageIndex, pageSize)
                 .doSelectPageInfo(() -> mapper.selectByExample(example));
 
         return ResultVo.ok(pageInfo);

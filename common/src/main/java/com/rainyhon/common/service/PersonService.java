@@ -9,6 +9,7 @@ import com.rainyhon.common.mapper.PersonInfoMapper;
 import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.model.PersonInfoExample;
 import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.util.JedisPoolUtil;
 import com.rainyhon.common.util.StringUtil;
 import com.rainyhon.common.vo.*;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -55,17 +57,18 @@ public class PersonService {
 	private String faceApiPort;
 
 	@Value("${sls.FILE_PATH}")
-	private String filePath;
+	private String faceImageDirPath;
 
 	public ResultVo add(PersonInfoVo personInfoVo) {
 		String userId = CommonUtil.getUUID();
 
-		personInfoVo.setPersonId(userId);
+		personInfoVo.setId(userId);
+		EntityUtils.setCreateAndUpdateInfo(personInfoVo);
 		psmPersonInfoMapper.insertSelective(personInfoVo);
 
-		operHisService.add(personInfoVo.getPersonId(), Constants.OPER_HIS_ADD);
+		operHisService.add(personInfoVo.getId(), Constants.OPER_HIS_ADD);
 
-		byte[] image = image2byte(filePath + "/" + personInfoVo.getPersonalPhoto1().replace("/static/", ""));
+		byte[] image = image2byte(faceImageDirPath + "/" + personInfoVo.getPhoto());
 		String imageString = CommonUtil.byte2Base64Str(image);
 
 		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
@@ -88,26 +91,27 @@ public class PersonService {
 
 	public PersonInfo getRandomPerson() {
 		Map<String, Object> params = new HashMap<>();
-		params.put("sql", "SELECT * FROM psm_person_info_t ORDER BY RAND() LIMIT 1");
+		params.put("sql", "SELECT * FROM person_info ORDER BY RAND() LIMIT 1");
 		Map<String, Object> record = commonService.findOne(params);
 		return CommonUtil.map2PO(record, PersonInfo.class);
 	}
 
 	public ResultVo update(PersonInfoVo personInfoVo) {
+		EntityUtils.setUpdateInfo(personInfoVo);
 		psmPersonInfoMapper.updateByPrimaryKeySelective(personInfoVo);
 
-		byte[] image = image2byte(filePath + "/" + personInfoVo.getPersonalPhoto1().replace("/static/", ""));
+		byte[] image = image2byte(faceImageDirPath + "/" + personInfoVo.getPhoto());
 		String imageString = CommonUtil.byte2Base64Str(image);
 
-		String userId = personInfoVo.getPersonId();
+		String personId = personInfoVo.getId();
 		FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
 		faceSdkUserVo.setGroup_id("g1");
-		faceSdkUserVo.setUser_id(userId);
+		faceSdkUserVo.setUser_id(personId);
 		faceSdkUserVo.setSeiralNo("uUpd-" + getSerialNumber());
 		faceSdkUserVo.setImage(imageString);
 		faceApiService.updateUser(faceSdkUserVo);
 
-		operHisService.add(personInfoVo.getPersonId(), Constants.OPER_HIS_UPD);
+		operHisService.add(personId, Constants.OPER_HIS_UPD);
 
 		return ResultVo.ok();
 	}
@@ -118,36 +122,67 @@ public class PersonService {
 			return ResultVo.ok();
 		}
 
-		// TODO 删除目录中保存的照片
-		for (String i : idList) {
-			psmPersonInfoMapper.deleteByPrimaryKey(i);
+		for (String id : idList) {
+			deletePersonInfo(id);
 
 			FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
 			faceSdkUserVo.setGroup_id("g1");
-			faceSdkUserVo.setUser_id(i);
+			faceSdkUserVo.setUser_id(id);
 			faceSdkUserVo.setSeiralNo("uDel-" + getSerialNumber());
 			faceApiService.deleteUser(faceSdkUserVo);
 
-			operHisService.add(i, Constants.OPER_HIS_DEL);
+			operHisService.add(id, Constants.OPER_HIS_DEL);
+
+			// 删除人员头像目录中保存的照片
+			removeFaceImage(id);
 		}
 
 		return ResultVo.ok();
 	}
 
+	private void deletePersonInfo(String id) {
+		PersonInfo personInfo = new PersonInfo();
+		personInfo.setId(id);
+		personInfo.setDelStatus(Constants.DELETE_STATUS_YES);
+		psmPersonInfoMapper.updateByPrimaryKeySelective(personInfo);
+	}
+
+	private void removeFaceImage(String personId) {
+		PersonInfo personInfo = getPersonInfo(personId);
+		if (StringUtils.isEmpty(personInfo.getPhoto())) {
+			return;
+		}
+
+		String path = faceImageDirPath + "/" + personInfo.getPhoto();
+		boolean result = deleteFile(path);
+		if (!result) {
+			throw new CommonException("删除用户照片失败");
+		}
+	}
+
+	private boolean deleteFile(String path) {
+		File file = new File(path);
+		if (!file.exists()) {
+			return true;
+		}
+		return file.delete();
+	}
+
 	public ResultVo getPersonList(String name, String deptId, Integer pageIndex, Integer pageSize) {
 		PersonInfoExample example = new PersonInfoExample();
 		PersonInfoExample.Criteria criteria = example.createCriteria();
+		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
 		if (StringUtil.isNotEmpty(name)) {
 			criteria.andNameLike("%" + name.trim() + "%");
 		}
 		if (StringUtils.isNotEmpty(deptId)) {
-			criteria.andDeptIdEqualTo(deptId);
+			criteria.andOrgIdEqualTo(deptId);
 		}
 		List<PersonInfoVo> listPersonInfoVo = new ArrayList<>();
 		PageInfo<PersonInfo> psmPersonInfoPage = PageHelper.startPage(pageIndex, pageSize)
 				.doSelectPageInfo(() -> psmPersonInfoMapper.selectByExample(example));
 		for (PersonInfo psmPersonInfo : psmPersonInfoPage.getList()) {
-			String deptName = departmentService.getDepartmentName(psmPersonInfo.getDeptId());
+			String deptName = departmentService.getDepartmentName(psmPersonInfo.getOrgId());
 			PersonInfoVo personInfoVo = CommonUtil.po2VO(psmPersonInfo, PersonInfoVo.class);
 			personInfoVo.setDeptName(deptName);
 			listPersonInfoVo.add(personInfoVo);
@@ -171,7 +206,7 @@ public class PersonService {
 	public ResultVo list() {
 		PersonInfoExample example = new PersonInfoExample();
 		PersonInfoExample.Criteria criteria = example.createCriteria();
-		// TODO 没有del_status字段
+		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
 		return ResultVo.ok(psmPersonInfoMapper.selectByExample(example));
 	}
 
@@ -179,9 +214,9 @@ public class PersonService {
 		PersonInfoExample example = new PersonInfoExample();
 		PersonInfoExample.Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotBlank(orgId)) {
-			criteria.andDeptIdEqualTo(orgId);
+			criteria.andOrgIdEqualTo(orgId);
 		}
-		// TODO 没有del_status字段
+		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
 		return psmPersonInfoMapper.selectByExample(example);
 	}
 
@@ -216,7 +251,7 @@ public class PersonService {
 			PersonInfo info = psmPersonInfoList.get(0);
 			PersonInfoVo vo = CommonUtil.po2VO(info, PersonInfoVo.class);
 
-			String key = "user:" + info.getPersonId();
+			String key = "user:" + info.getId();
 			List<String> map = redisUtil.hmget(key, "captureTime", "areaId");
 			String captureTime = map.get(0);
 			String areaId = map.get(1);
@@ -250,7 +285,7 @@ public class PersonService {
 
 	public int getPersonCount() {
 		Map<String, Object> params = new HashMap<>(3);
-		String sql = "from psm_person_info_t";
+		String sql = "from person_info";
 		params.put("sql", sql);
 		Long count = commonService.executeGetCount(params);
 		return count.intValue();
@@ -258,7 +293,7 @@ public class PersonService {
 
 	public int getImportantCarePersonCount() {
 		Map<String, Object> params = new HashMap<>(3);
-		String sql = "from psm_person_info_t where impt_care_status = 'Y'";
+		String sql = "from person_info where impt_care_status = 'Y'";
 		params.put("sql", sql);
 		Long count = commonService.executeGetCount(params);
 		return count.intValue();
@@ -277,7 +312,7 @@ public class PersonService {
 	public ResultVo getPersonListByOrgId(String orgId) {
 		PersonInfoExample example = new PersonInfoExample();
 		PersonInfoExample.Criteria criteria = example.createCriteria();
-		criteria.andDeptIdEqualTo(orgId);
+		criteria.andOrgIdEqualTo(orgId);
 		List<PersonInfo> psmPersonInfos = psmPersonInfoMapper.selectByExample(example);
 		return ResultVo.ok(psmPersonInfos);
 	}

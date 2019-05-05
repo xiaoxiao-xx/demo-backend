@@ -1,6 +1,6 @@
 package com.rainyhon.common.vo;
 
-import com.microcore.center.model.Role;
+import com.rainyhon.common.model.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

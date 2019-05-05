@@ -1,6 +1,6 @@
 package com.rainyhon.backend.controller;
 
-import com.microcore.center.model.Org;
+import com.rainyhon.common.model.Org;
 import com.rainyhon.common.service.OrgService;
 import com.rainyhon.common.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;

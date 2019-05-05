@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.microcore.center.mapper.FaceMapper" >
-  <resultMap id="BaseResultMap" type="com.microcore.center.model.Face" >
+<mapper namespace="com.rainyhon.common.mapper.FaceMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.Face" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="material_id" property="materialId" jdbcType="VARCHAR" />
     <result column="detect_result_id" property="detectResultId" jdbcType="VARCHAR" />
@@ -77,7 +77,7 @@
     id, material_id, detect_result_id, create_time, angle, center_x, center_y, user_id, 
     group_id, score, width, height
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.microcore.center.model.FaceExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.FaceExample" >
     select
     <if test="distinct" >
       distinct
@@ -102,13 +102,13 @@
     delete from face
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.microcore.center.model.FaceExample" >
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.FaceExample" >
     delete from face
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.microcore.center.model.Face" >
+  <insert id="insert" parameterType="com.rainyhon.common.model.Face" >
     insert into face (id, material_id, detect_result_id, 
       create_time, angle, center_x, 
       center_y, user_id, group_id, 
@@ -120,7 +120,7 @@
       #{score,jdbcType=VARCHAR}, #{width,jdbcType=INTEGER}, #{height,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.microcore.center.model.Face" >
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.Face" >
     insert into face
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -199,7 +199,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.microcore.center.model.FaceExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.rainyhon.common.model.FaceExample" resultType="java.lang.Integer" >
     select count(*) from face
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -267,7 +267,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.microcore.center.model.Face" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.Face" >
     update face
     <set >
       <if test="materialId != null" >
@@ -306,7 +306,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.microcore.center.model.Face" >
+  <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.Face" >
     update face
     set material_id = #{materialId,jdbcType=VARCHAR},
       detect_result_id = #{detectResultId,jdbcType=VARCHAR},

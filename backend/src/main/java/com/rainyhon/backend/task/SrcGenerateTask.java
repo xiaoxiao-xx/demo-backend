@@ -1,15 +1,15 @@
 package com.rainyhon.backend.task;
 
 import com.google.gson.Gson;
-import com.microcore.center.model.PsmSrcRecord;
 import com.rainyhon.common.model.PersonInfo;
+import com.rainyhon.common.model.SrcRecord;
 import com.rainyhon.common.service.DealResultDetailService;
 import com.rainyhon.common.service.PersonService;
 import com.rainyhon.common.service.AlarmResultService;
 import com.rainyhon.common.service.SrcRecordService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.mq.rabbit.RabbitMQUtil;
-import com.rainyhon.common.vo.PsmDealResDetailVo;
+import com.rainyhon.common.vo.DealResDetailVo;
 import com.rainyhon.common.vo.AlarmResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ import static com.rainyhon.common.util.CommonUtil.random;
 @Component
 public class SrcGenerateTask {
 
-	private static BlockingQueue<PsmSrcRecord> QUEUE_SRC = new LinkedBlockingQueue<>();
+	private static BlockingQueue<SrcRecord> QUEUE_SRC = new LinkedBlockingQueue<>();
 
 	@Autowired
 	private SrcRecordService srcRecordService;
@@ -52,7 +52,7 @@ public class SrcGenerateTask {
 	/*
 	@PostConstruct
 	public void init() {
-		List<PsmSrcRecord> list = srcRecordService.getPsmSrcRecord("1");
+		List<SrcRecord> list = srcRecordService.getSrcRecord("1");
 		list.forEach((srcRecord) -> QUEUE_SRC.offer(srcRecord));
 	}
 	*/
@@ -65,7 +65,7 @@ public class SrcGenerateTask {
 	 */
 	// @Scheduled(fixedRate = 5000)
 	public void gnerate() {
-		PsmSrcRecord srcRecord = new PsmSrcRecord();
+		SrcRecord srcRecord = new SrcRecord();
 		srcRecord.setCreateType(random("自动采集", "主动采集"));
 		srcRecord.setSrcType(random("图像", "视频", "位置"));
 		srcRecord.setGetEventId(random("电子点名", "记录点名"));
@@ -83,20 +83,20 @@ public class SrcGenerateTask {
 	// @Scheduled(fixedRate = 1000)
 	public void analysis() {
 		try {
-			PsmSrcRecord psmSrcRecord = QUEUE_SRC.poll(1, TimeUnit.SECONDS);
+			SrcRecord psmSrcRecord = QUEUE_SRC.poll(1, TimeUnit.SECONDS);
 			if (psmSrcRecord == null || returnFlag()) {
 				return;
 			}
 			psmSrcRecord.setSrcState("2");
 			srcRecordService.update(psmSrcRecord);
 
-			PsmDealResDetailVo vo = new PsmDealResDetailVo();
+			DealResDetailVo vo = new DealResDetailVo();
 			vo.setAddress(random("食堂", "教学楼", "教师宿舍", "仓库", "生物园地", "门卫室", "乒乓球台", "篮球场", "少年宫", "办公楼"));
 			vo.setAlarmState(random("是", "否"));
 			vo.setAlarmType(random("警告弹出框", "警报声音"));
 			PersonInfo psmPersonInfo = personService.getRandomPerson();
 			vo.setPersonInfo(psmPersonInfo);
-			vo.setCharacterInfo(psmPersonInfo.getPersonId());
+			vo.setCharacterInfo(psmPersonInfo.getId());
 
 			// 某人离开或者进入区域也要推送消息
 			vo.setEventInfo("人员：" + psmPersonInfo.getName()
@@ -127,7 +127,7 @@ public class SrcGenerateTask {
 
 			alarmVo.setAlarmReason(vo.getEventInfo());
 			alarmVo.setAlarmModeType(random("1", "2"));
-			alarmVo.setObjectId(psmPersonInfo.getPersonId());
+			alarmVo.setObjectId(psmPersonInfo.getId());
 			alarmVo.setObjectType(random("1", "2"));
 			alarmVo.setTriggerTime(CommonUtil.getCurrentTime());
 			alarmVo.setState("0");

@@ -1,9 +1,8 @@
 package com.rainyhon.backend.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.rainyhon.common.service.DealResultDetailService;
 import com.rainyhon.common.service.DealResultService;
-import com.rainyhon.common.vo.PsmDealResVo;
+import com.rainyhon.common.vo.DealResVo;
 import com.rainyhon.common.vo.ResultVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,27 +18,24 @@ public class AlarmDealResultController {
     @Autowired
     private DealResultService dealResultService;
 
-    @Autowired
-    private DealResultDetailService dealResultDetailService;
-
     @ApiOperation(value = "查询素材处理信息", notes = "查询素材处理信息")
     @GetMapping("query")
-    public ResultVo<PageInfo<PsmDealResVo>> query(@RequestParam(name = "alarmType", required = false) String alarmType,
-    											  @RequestParam(name = "dealState", required = false) String dealState,
-                                                  @RequestParam(name = "pageIndex") Integer pageIndex,
-                                                  @RequestParam(name = "pageSize") Integer pageSize) {
+    public ResultVo<PageInfo<DealResVo>> query(@RequestParam(name = "alarmType", required = false) String alarmType,
+                                               @RequestParam(name = "dealState", required = false) String dealState,
+                                               @RequestParam(name = "pageIndex") Integer pageIndex,
+                                               @RequestParam(name = "pageSize") Integer pageSize) {
         return ResultVo.ok(dealResultService.getDealResultList(alarmType,dealState, pageIndex, pageSize));
     }
 
     @ApiOperation(value = "素材处理结果新增", notes = "素材处理结果新增")
     @PostMapping("add")
-    public ResultVo add(@RequestBody PsmDealResVo vo) {
+    public ResultVo add(@RequestBody DealResVo vo) {
         return dealResultService.add(vo);
     }
 
     @ApiOperation(value = "素材处理结果修改", notes = "素材处理结果修改")
     @PostMapping("update")
-    public ResultVo update(@RequestBody PsmDealResVo vo) {
+    public ResultVo update(@RequestBody DealResVo vo) {
         return dealResultService.update(vo);
     }
 
@@ -51,7 +47,7 @@ public class AlarmDealResultController {
 
     @ApiOperation(value = "素材处理结果处理", notes = "素材处理结果处理")
     @PostMapping("deal")
-    public ResultVo deal(@RequestBody PsmDealResVo dealResVo) {
+    public ResultVo deal(@RequestBody DealResVo dealResVo) {
         return dealResultService.deal(dealResVo);
     }
 

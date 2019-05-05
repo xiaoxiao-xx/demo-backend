@@ -1,6 +1,6 @@
 package com.rainyhon.backend.controller;
 
-import com.microcore.center.model.Permission;
+import com.rainyhon.common.model.Permission;
 import com.rainyhon.common.service.PermissionService;
 import com.rainyhon.common.vo.PermissionVo;
 import com.rainyhon.common.vo.ResultVo;
@@ -46,8 +46,8 @@ public class PermissionController {
 	}
 
 	@PostMapping("updatePermission")
-	public ResultVo updatePermission(@RequestBody Permission vo) {
-		permissionService.updatePermission(vo);
+	public ResultVo updatePermission(@RequestBody Permission permission) {
+		permissionService.updatePermission(permission);
 		return ResultVo.ok();
 	}
 

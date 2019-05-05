@@ -1,8 +1,8 @@
 package com.rainyhon.backend.controller;
 
-import com.microcore.center.model.ViewAddVo;
-import com.microcore.center.model.ViewModifyVo;
-import com.microcore.center.model.ViewQueryVo;
+import com.rainyhon.common.vo.ViewAddVo;
+import com.rainyhon.common.vo.ViewModifyVo;
+import com.rainyhon.common.vo.ViewQueryVo;
 import com.rainyhon.common.service.DynamicQueryService;
 import com.rainyhon.common.service.ViewService;
 import com.rainyhon.common.vo.ResultVo;

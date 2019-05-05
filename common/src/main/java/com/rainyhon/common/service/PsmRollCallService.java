@@ -2,12 +2,12 @@ package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.mapper.PsmRollCallMapper;
-import com.microcore.center.model.PsmRollCall;
-import com.microcore.center.model.PsmRollCallExample;
+import com.rainyhon.common.mapper.RollCallMapper;
+import com.rainyhon.common.model.RollCall;
+import com.rainyhon.common.model.RollCallExample;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.StringUtil;
-import com.rainyhon.common.vo.PsmRollCallVo;
+import com.rainyhon.common.vo.RollCallVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ import java.util.List;
 public class PsmRollCallService {
 
 	@Autowired
-	private PsmRollCallMapper psmRollCallMapper;
+	private RollCallMapper rollCallMapper;
 
 	@Autowired
 	private ParaDefineService paraDefineService;
@@ -31,10 +31,9 @@ public class PsmRollCallService {
 	@Autowired
 	private DepartmentService departmentService;
 
-
-	public PageInfo<PsmRollCallVo> query(String team, Date callTime, Integer pageIndex, Integer pageSize) {
-		PsmRollCallExample example = new PsmRollCallExample();
-		PsmRollCallExample.Criteria criteria = example.createCriteria();
+	public PageInfo<RollCallVo> query(String team, Date callTime, Integer pageIndex, Integer pageSize) {
+		RollCallExample example = new RollCallExample();
+		RollCallExample.Criteria criteria = example.createCriteria();
 		if (StringUtil.isNotEmpty(team)) {
 			criteria.andTeamEqualTo(team);
 		}
@@ -42,16 +41,16 @@ public class PsmRollCallService {
 			criteria.andCallTimeEqualTo(callTime);
 		}
 
-		PageInfo<PsmRollCall> page = PageHelper.startPage(pageIndex, pageSize)
-				.doSelectPageInfo(() -> psmRollCallMapper.selectByExample(example));
+		PageInfo<RollCall> page = PageHelper.startPage(pageIndex, pageSize)
+				.doSelectPageInfo(() -> rollCallMapper.selectByExample(example));
 
-		List<PsmRollCallVo> list = CommonUtil.listPo2VO(page.getList(), PsmRollCallVo.class);
-		for (PsmRollCallVo psmRollCallVo : list) {
-			psmRollCallVo.setCallResName(paraDefineService.getValueByTypeAnd("CALL_RES", psmRollCallVo.getCallRes()));
-			psmRollCallVo.setTeamName(departmentService.getDepartmentName(psmRollCallVo.getTeam()));
-			psmRollCallVo.setLeaderName(personService.getPersonInfoName(psmRollCallVo.getLeader()));
+		List<RollCallVo> list = CommonUtil.listPo2VO(page.getList(), RollCallVo.class);
+		for (RollCallVo rollCallVo : list) {
+			rollCallVo.setCallResName(paraDefineService.getValueByTypeAnd("CALL_RES", rollCallVo.getCallRes()));
+			rollCallVo.setTeamName(departmentService.getDepartmentName(rollCallVo.getTeam()));
+			rollCallVo.setLeaderName(personService.getPersonInfoName(rollCallVo.getLeader()));
 		}
-		PageInfo<PsmRollCallVo> pageVo = new PageInfo<>(list);
+		PageInfo<RollCallVo> pageVo = new PageInfo<>(list);
 		pageVo.setTotal(page.getTotal());
 		return pageVo;
 	}

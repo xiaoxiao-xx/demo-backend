@@ -2,9 +2,9 @@ package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.mapper.InOutRecordMapper;
-import com.microcore.center.model.InOutRecord;
-import com.microcore.center.model.InOutRecordExample;
+import com.rainyhon.common.mapper.InOutRecordMapper;
+import com.rainyhon.common.model.InOutRecord;
+import com.rainyhon.common.model.InOutRecordExample;
 import com.rainyhon.common.constant.AreaDef;
 import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.util.CommonUtil;
@@ -37,7 +37,7 @@ public class TrackService {
 	 */
 	public ResultVo getTrackInfo(String userId) {
 		String sql = "SELECT DATE_FORMAT( m.create_time, '%H:%i' ) time, m.area_id, m.create_time FROM face f \n" +
-				"LEFT JOIN psm_material m ON f.material_id = m.id \n" +
+				"LEFT JOIN material m ON f.material_id = m.id \n" +
 				"GROUP BY m.area_id, f.user_id, DATE_FORMAT(m.create_time, '%Y-%m-%d %H-%i') \n" +
 				"HAVING user_id = #{userId} AND DATE_FORMAT(NOW( ), '%Y-%m-%d') = DATE_FORMAT(m.create_time, '%Y-%m-%d') \n" +
 				"ORDER BY m.create_time ASC";
@@ -93,7 +93,7 @@ public class TrackService {
 	 */
 	public ResultVo<?> getInOutTrack(String userId) {
 		InOutRecordExample example = new InOutRecordExample();
-		example.setOrderByClause("time desc");
+		example.setOrderByClause("in_time desc");
 		InOutRecordExample.Criteria criteria = example.createCriteria();
 		criteria.andUserIdEqualTo(userId);
 		List<InOutRecord> list = inOutRecordMapper.selectByExample(example);
@@ -146,7 +146,7 @@ public class TrackService {
 
 			String userId = vo.getUserId();
 			PersonInfo personInfo = personService.getPersonInfo(userId);
-			String orgId = personInfo.getDeptId();
+			String orgId = personInfo.getOrgId();
 			vo.setOrgName(orgService.getOrgNameById(orgId));
 		});
 

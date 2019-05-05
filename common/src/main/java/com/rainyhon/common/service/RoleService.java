@@ -2,15 +2,11 @@ package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.mapper.RoleMapper;
-import com.microcore.center.mapper.UserRoleRelationMapper;
-import com.microcore.center.model.Role;
-import com.microcore.center.model.RoleExample;
-import com.microcore.center.model.UserRoleRelation;
-import com.microcore.center.model.UserRoleRelationExample;
 import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.mapper.RoleMapper;
 import com.rainyhon.common.mapper.RolePermissionRelationMapper;
-import com.rainyhon.common.model.RolePermissionRelation;
+import com.rainyhon.common.mapper.UserRoleRelationMapper;
+import com.rainyhon.common.model.*;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.vo.PermissionVo;

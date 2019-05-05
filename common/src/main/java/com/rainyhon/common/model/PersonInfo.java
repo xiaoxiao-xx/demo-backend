@@ -6,7 +6,7 @@ public class PersonInfo {
     /**
      * 
      */
-    private String personId;
+    private String id;
 
     /**
      * 姓名
@@ -44,14 +44,9 @@ public class PersonInfo {
     private String rank;
 
     /**
-     * 个人照片1
+     * 个人照片
      */
-    private String personalPhoto1;
-
-    /**
-     * 个人照片2
-     */
-    private String personalPhoto2;
+    private String photo;
 
     /**
      * 是否关注
@@ -76,22 +71,57 @@ public class PersonInfo {
     /**
      * 组织机构ID
      */
-    private String deptId;
+    private String orgId;
+
+    /**
+     * 删除状态 
+     */
+    private String delStatus;
+
+    /**
+     * 最后修改人ID 
+     */
+    private String updUserId;
+
+    /**
+     * 最后修改机构ID 
+     */
+    private String updOrgId;
+
+    /**
+     * 最后修改时间 
+     */
+    private Date updTm;
+
+    /**
+     * 创建人ID
+     */
+    private String crtUserId;
+
+    /**
+     * 创建机构ID
+     */
+    private String crtOrgId;
+
+    /**
+     * 创建时间
+     */
+    private Date crtTm;
 
     /**
      * 
-     * @return person_id 
+     * @return id 
      */
-    public String getPersonId() {
-        return personId;
+    public String getId() {
+        return id;
     }
 
     /**
      * 
-     * @param personId 
+     * @param id 
      */
-    public void setPersonId(String personId) {
-        this.personId = personId == null ? null : personId.trim();
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     /**
@@ -207,35 +237,19 @@ public class PersonInfo {
     }
 
     /**
-     * 个人照片1
-     * @return personal_photo1 个人照片1
+     * 个人照片
+     * @return photo 个人照片
      */
-    public String getPersonalPhoto1() {
-        return personalPhoto1;
+    public String getPhoto() {
+        return photo;
     }
 
     /**
-     * 个人照片1
-     * @param personalPhoto1 个人照片1
+     * 个人照片
+     * @param photo 个人照片
      */
-    public void setPersonalPhoto1(String personalPhoto1) {
-        this.personalPhoto1 = personalPhoto1 == null ? null : personalPhoto1.trim();
-    }
-
-    /**
-     * 个人照片2
-     * @return personal_photo2 个人照片2
-     */
-    public String getPersonalPhoto2() {
-        return personalPhoto2;
-    }
-
-    /**
-     * 个人照片2
-     * @param personalPhoto2 个人照片2
-     */
-    public void setPersonalPhoto2(String personalPhoto2) {
-        this.personalPhoto2 = personalPhoto2 == null ? null : personalPhoto2.trim();
+    public void setPhoto(String photo) {
+        this.photo = photo == null ? null : photo.trim();
     }
 
     /**
@@ -304,17 +318,129 @@ public class PersonInfo {
 
     /**
      * 组织机构ID
-     * @return dept_id 组织机构ID
+     * @return org_id 组织机构ID
      */
-    public String getDeptId() {
-        return deptId;
+    public String getOrgId() {
+        return orgId;
     }
 
     /**
      * 组织机构ID
-     * @param deptId 组织机构ID
+     * @param orgId 组织机构ID
      */
-    public void setDeptId(String deptId) {
-        this.deptId = deptId == null ? null : deptId.trim();
+    public void setOrgId(String orgId) {
+        this.orgId = orgId == null ? null : orgId.trim();
+    }
+
+    /**
+     * 删除状态 
+     * @return del_status 删除状态 
+     */
+    public String getDelStatus() {
+        return delStatus;
+    }
+
+    /**
+     * 删除状态 
+     * @param delStatus 删除状态 
+     */
+    public void setDelStatus(String delStatus) {
+        this.delStatus = delStatus == null ? null : delStatus.trim();
+    }
+
+    /**
+     * 最后修改人ID 
+     * @return upd_user_id 最后修改人ID 
+     */
+    public String getUpdUserId() {
+        return updUserId;
+    }
+
+    /**
+     * 最后修改人ID 
+     * @param updUserId 最后修改人ID 
+     */
+    public void setUpdUserId(String updUserId) {
+        this.updUserId = updUserId == null ? null : updUserId.trim();
+    }
+
+    /**
+     * 最后修改机构ID 
+     * @return upd_org_id 最后修改机构ID 
+     */
+    public String getUpdOrgId() {
+        return updOrgId;
+    }
+
+    /**
+     * 最后修改机构ID 
+     * @param updOrgId 最后修改机构ID 
+     */
+    public void setUpdOrgId(String updOrgId) {
+        this.updOrgId = updOrgId == null ? null : updOrgId.trim();
+    }
+
+    /**
+     * 最后修改时间 
+     * @return upd_tm 最后修改时间 
+     */
+    public Date getUpdTm() {
+        return updTm;
+    }
+
+    /**
+     * 最后修改时间 
+     * @param updTm 最后修改时间 
+     */
+    public void setUpdTm(Date updTm) {
+        this.updTm = updTm;
+    }
+
+    /**
+     * 创建人ID
+     * @return crt_user_id 创建人ID
+     */
+    public String getCrtUserId() {
+        return crtUserId;
+    }
+
+    /**
+     * 创建人ID
+     * @param crtUserId 创建人ID
+     */
+    public void setCrtUserId(String crtUserId) {
+        this.crtUserId = crtUserId == null ? null : crtUserId.trim();
+    }
+
+    /**
+     * 创建机构ID
+     * @return crt_org_id 创建机构ID
+     */
+    public String getCrtOrgId() {
+        return crtOrgId;
+    }
+
+    /**
+     * 创建机构ID
+     * @param crtOrgId 创建机构ID
+     */
+    public void setCrtOrgId(String crtOrgId) {
+        this.crtOrgId = crtOrgId == null ? null : crtOrgId.trim();
+    }
+
+    /**
+     * 创建时间
+     * @return crt_tm 创建时间
+     */
+    public Date getCrtTm() {
+        return crtTm;
+    }
+
+    /**
+     * 创建时间
+     * @param crtTm 创建时间
+     */
+    public void setCrtTm(Date crtTm) {
+        this.crtTm = crtTm;
     }
 }

@@ -1,10 +1,10 @@
 package com.rainyhon.common.service;
 
-import com.microcore.center.mapper.PsmOperHisMapper;
-import com.microcore.center.model.PsmOperHis;
-import com.microcore.center.model.PsmOperHisExample;
+import com.rainyhon.common.mapper.OperationHistoryMapper;
+import com.rainyhon.common.model.OperationHistory;
+import com.rainyhon.common.model.OperationHistoryExample;
 import com.rainyhon.common.util.CommonUtil;
-import com.rainyhon.common.vo.PsmOperHisVo;
+import com.rainyhon.common.vo.OperationHistoryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,7 @@ import java.util.List;
 public class OperHisService {
 
 	@Autowired
-	private PsmOperHisMapper psmOperHisMapper;
+	private OperationHistoryMapper psmOperHisMapper;
 
 	@Autowired
 	private ParaDefineService paraDefineService;
@@ -25,7 +25,7 @@ public class OperHisService {
 	private PsmUserService psmUserService;
 
 	public void add(String operTarget, String operType) {
-		PsmOperHis operHis = new PsmOperHis();
+		OperationHistory operHis = new OperationHistory();
 		operHis.setId(CommonUtil.getUUID());
 		operHis.setOperator(CommonUtil.getCurrentUserId());
 		operHis.setOperTarget(operTarget);
@@ -34,18 +34,18 @@ public class OperHisService {
 		psmOperHisMapper.insert(operHis);
 	}
 
-	public void add(PsmOperHis psmOperHis) {
+	public void add(OperationHistory psmOperHis) {
 		add(psmOperHis.getOperTarget(), psmOperHis.getOperType());
 	}
 
-	public List<PsmOperHisVo> getPsmOperHis(String operTarget) {
-		PsmOperHisExample example = new PsmOperHisExample();
-		PsmOperHisExample.Criteria criteria = example.createCriteria();
+	public List<OperationHistoryVo> getOperationHistory(String operTarget) {
+		OperationHistoryExample example = new OperationHistoryExample();
+		OperationHistoryExample.Criteria criteria = example.createCriteria();
 		criteria.andOperTargetEqualTo(operTarget);
-		List<PsmOperHisVo> listVo = CommonUtil.listPo2VO(psmOperHisMapper.selectByExample(example), PsmOperHisVo.class);
-		for (PsmOperHisVo psmOperHisVo : listVo) {
-			psmOperHisVo.setOperTypeName(paraDefineService.getValueByTypeAnd("OPER_TYPE", psmOperHisVo.getOperType()));
-			psmOperHisVo.setOperatorName(psmUserService.getPsmUserRealName(psmOperHisVo.getOperator()));
+		List<OperationHistoryVo> listVo = CommonUtil.listPo2VO(psmOperHisMapper.selectByExample(example), OperationHistoryVo.class);
+		for (OperationHistoryVo operationHistoryVo : listVo) {
+			operationHistoryVo.setOperTypeName(paraDefineService.getValueByTypeAnd("OPER_TYPE", operationHistoryVo.getOperType()));
+			operationHistoryVo.setOperatorName(psmUserService.getPsmUserRealName(operationHistoryVo.getOperator()));
 		}
 		return listVo;
 	}

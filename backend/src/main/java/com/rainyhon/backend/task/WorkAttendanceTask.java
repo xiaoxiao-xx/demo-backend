@@ -56,7 +56,7 @@ public class WorkAttendanceTask {
 		// 为每个人员生成考勤记录
 		List<PersonInfo> personInfoList = personService.getPersonInfoList(null);
 		for (PersonInfo personInfo : personInfoList) {
-			String personId = personInfo.getPersonId();
+			String personId = personInfo.getId();
 			// 如果是豁免人员，不生成考勤记录
 			if (workService.isExemptionPerson(personId)) {
 				continue;
@@ -101,7 +101,7 @@ public class WorkAttendanceTask {
 					ScheduleDetail detail = new ScheduleDetail();
 					detail.setConfigId(config.getId());
 					detail.setObjectType(SCHEDULE_CONFIG_OBJECT_TYPE_PERSON);
-					detail.setObjectId(psmPersonInfo.getPersonId());
+					detail.setObjectId(psmPersonInfo.getId());
 					detail.setNumber(config.getNumber());
 					detail.setSomeDate(cal.getTime());
 					detail.setStartTime(config.getStartTime());

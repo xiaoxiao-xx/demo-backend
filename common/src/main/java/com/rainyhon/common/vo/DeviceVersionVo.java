@@ -1,11 +1,11 @@
 package com.rainyhon.common.vo;
 
-import com.microcore.center.model.PsmDeviceVersion;
+import com.rainyhon.common.model.DeviceVersion;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DeviceVersionVo extends PsmDeviceVersion {
+public class DeviceVersionVo extends DeviceVersion {
 
 }

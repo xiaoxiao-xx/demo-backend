@@ -2,8 +2,8 @@ package com.rainyhon.task.job.v1;
 
 import com.google.gson.Gson;
 import com.rainyhon.common.cllient.HttpTemplate;
-import com.microcore.center.model.Face;
-import com.microcore.center.model.PsmMaterial;
+import com.rainyhon.common.model.Face;
+import com.rainyhon.common.model.Material;
 import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.service.MaterialService;
 import com.rainyhon.common.service.PersonService;
@@ -12,7 +12,7 @@ import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.JedisPoolUtil;
 import com.rainyhon.common.mq.rabbit.RabbitMQUtil;
 import com.rainyhon.common.vo.FaceSdkRecVo;
-import com.rainyhon.common.vo.PsmDealResDetailVo;
+import com.rainyhon.common.vo.DealResDetailVo;
 import com.rainyhon.common.vo.AlarmResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +113,7 @@ public class AsyncTask {
 
 			sendEvent(face);
 
-			PsmMaterial material = materialService.getMaterial(materialId);
+			Material material = materialService.getMaterial(materialId);
 			String areaId = material.getAreaId();
 			String userId = face.getUserId();
 			log.info(">>> detected face: {}, score: {}", personService.getPersonInfoName(userId), face.getScore());
@@ -124,7 +124,7 @@ public class AsyncTask {
 			map.put("userName", personService.getPersonInfoName(userId));
 			map.put("areaId", areaId);
 			map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
-			map.put("teamId", personService.getPersonInfo(userId).getDeptId());
+			map.put("teamId", personService.getPersonInfo(userId).getOrgId());
 			redisUtil.hmset("user:" + userId, map);
 
 			// k-v  k: area_id, v: user_id set
@@ -143,9 +143,9 @@ public class AsyncTask {
 	}
 
 	private void sendEvent(Face face) {
-		PsmDealResDetailVo vo = new PsmDealResDetailVo();
+		DealResDetailVo vo = new DealResDetailVo();
 		String materialId = face.getMaterialId();
-		PsmMaterial material = materialService.getMaterial(materialId);
+		Material material = materialService.getMaterial(materialId);
 		String areaId = material.getAreaId();
 		vo.setAddress(addressList.get(areaId));
 
@@ -160,7 +160,7 @@ public class AsyncTask {
 		}
 
 		vo.setPersonInfo(psmPersonInfo);
-		vo.setCharacterInfo(psmPersonInfo.getPersonId());
+		vo.setCharacterInfo(psmPersonInfo.getId());
 
 		Date d = face.getCreateTime();
 		// 某人离开或者进入区域也要推送消息
@@ -180,7 +180,7 @@ public class AsyncTask {
 				rabbitMQUtil.sendMsg(gson.toJson(vo));
 
 				String alarmAreaId = "5";
-				if ("1".equals(psmPersonInfo.getDeptId()) && alarmAreaId.equals(areaId)) {
+				if ("1".equals(psmPersonInfo.getOrgId()) && alarmAreaId.equals(areaId)) {
 					generateAlarmMessage(face, personName);
 				}
 			}
@@ -194,7 +194,7 @@ public class AsyncTask {
 	}
 
 	private void generateAlarmMessage(Face face, String personName) {
-		PsmMaterial material = materialService.getMaterial(face.getMaterialId());
+		Material material = materialService.getMaterial(face.getMaterialId());
 		String areaId = material.getAreaId();
 		Date captureTime = material.getCreateTime();
 

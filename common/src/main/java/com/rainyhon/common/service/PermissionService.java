@@ -2,15 +2,11 @@ package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.mapper.PermissionMapper;
-import com.microcore.center.model.Permission;
-import com.microcore.center.model.PermissionExample;
 import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.mapper.PermissionMapper;
 import com.rainyhon.common.mapper.PermissionResourceRelationMapper;
 import com.rainyhon.common.mapper.RolePermissionRelationMapper;
-import com.rainyhon.common.model.PermissionResourceRelation;
-import com.rainyhon.common.model.RolePermissionRelation;
-import com.rainyhon.common.model.RolePermissionRelationExample;
+import com.rainyhon.common.model.*;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.vo.PermissionVo;
@@ -114,10 +110,6 @@ public class PermissionService {
 	}
 
 	public PermissionVo getPermissionDetailById() {
-
-
-
-
 
 		return null;
 	}

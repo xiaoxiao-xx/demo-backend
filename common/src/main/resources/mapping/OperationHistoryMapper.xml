@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rainyhon.common.mapper.OperationHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.OperationHistory" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="oper_time" property="operTime" jdbcType="TIMESTAMP" />
+    <result column="oper_type" property="operType" jdbcType="VARCHAR" />
+    <result column="oper_target" property="operTarget" jdbcType="VARCHAR" />
+    <result column="oper_content" property="operContent" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, oper_time, oper_type, oper_target, oper_content, operator
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.OperationHistoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from operation_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from operation_history
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from operation_history
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.OperationHistoryExample" >
+    delete from operation_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.rainyhon.common.model.OperationHistory" >
+    insert into operation_history (id, oper_time, oper_type, 
+      oper_target, oper_content, operator
+      )
+    values (#{id,jdbcType=VARCHAR}, #{operTime,jdbcType=TIMESTAMP}, #{operType,jdbcType=VARCHAR}, 
+      #{operTarget,jdbcType=VARCHAR}, #{operContent,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.OperationHistory" >
+    insert into operation_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="operTime != null" >
+        oper_time,
+      </if>
+      <if test="operType != null" >
+        oper_type,
+      </if>
+      <if test="operTarget != null" >
+        oper_target,
+      </if>
+      <if test="operContent != null" >
+        oper_content,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="operTime != null" >
+        #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operType != null" >
+        #{operType,jdbcType=VARCHAR},
+      </if>
+      <if test="operTarget != null" >
+        #{operTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="operContent != null" >
+        #{operContent,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.rainyhon.common.model.OperationHistoryExample" resultType="java.lang.Integer" >
+    select count(*) from operation_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update operation_history
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operTime != null" >
+        oper_time = #{record.operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operType != null" >
+        oper_type = #{record.operType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operTarget != null" >
+        oper_target = #{record.operTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operContent != null" >
+        oper_content = #{record.operContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update operation_history
+    set id = #{record.id,jdbcType=VARCHAR},
+      oper_time = #{record.operTime,jdbcType=TIMESTAMP},
+      oper_type = #{record.operType,jdbcType=VARCHAR},
+      oper_target = #{record.operTarget,jdbcType=VARCHAR},
+      oper_content = #{record.operContent,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.OperationHistory" >
+    update operation_history
+    <set >
+      <if test="operTime != null" >
+        oper_time = #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operType != null" >
+        oper_type = #{operType,jdbcType=VARCHAR},
+      </if>
+      <if test="operTarget != null" >
+        oper_target = #{operTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="operContent != null" >
+        oper_content = #{operContent,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.OperationHistory" >
+    update operation_history
+    set oper_time = #{operTime,jdbcType=TIMESTAMP},
+      oper_type = #{operType,jdbcType=VARCHAR},
+      oper_target = #{operTarget,jdbcType=VARCHAR},
+      oper_content = #{operContent,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

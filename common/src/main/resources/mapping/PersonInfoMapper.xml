@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.rainyhon.common.mapper.PersonInfoMapper" >
   <resultMap id="BaseResultMap" type="com.rainyhon.common.model.PersonInfo" >
-    <id column="person_id" property="personId" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="VARCHAR" />
     <result column="birth_date" property="birthDate" jdbcType="DATE" />
@@ -10,13 +10,19 @@
     <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
     <result column="join_date" property="joinDate" jdbcType="DATE" />
     <result column="rank" property="rank" jdbcType="VARCHAR" />
-    <result column="personal_photo1" property="personalPhoto1" jdbcType="VARCHAR" />
-    <result column="personal_photo2" property="personalPhoto2" jdbcType="VARCHAR" />
+    <result column="photo" property="photo" jdbcType="VARCHAR" />
     <result column="care_status" property="careStatus" jdbcType="VARCHAR" />
     <result column="impt_care_status" property="imptCareStatus" jdbcType="VARCHAR" />
     <result column="impt_care_reason" property="imptCareReason" jdbcType="VARCHAR" />
     <result column="para" property="para" jdbcType="VARCHAR" />
-    <result column="dept_id" property="deptId" jdbcType="VARCHAR" />
+    <result column="org_id" property="orgId" jdbcType="VARCHAR" />
+    <result column="del_status" property="delStatus" jdbcType="VARCHAR" />
+    <result column="upd_user_id" property="updUserId" jdbcType="VARCHAR" />
+    <result column="upd_org_id" property="updOrgId" jdbcType="VARCHAR" />
+    <result column="upd_tm" property="updTm" jdbcType="TIMESTAMP" />
+    <result column="crt_user_id" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="crt_org_id" property="crtOrgId" jdbcType="VARCHAR" />
+    <result column="crt_tm" property="crtTm" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -77,8 +83,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    person_id, name, gender, birth_date, card_type, card_no, join_date, rank, personal_photo1, 
-    personal_photo2, care_status, impt_care_status, impt_care_reason, para, dept_id
+    id, name, gender, birth_date, card_type, card_no, join_date, rank, photo, care_status, 
+    impt_care_status, impt_care_reason, para, org_id, del_status, upd_user_id, upd_org_id, 
+    upd_tm, crt_user_id, crt_org_id, crt_tm
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.PersonInfoExample" >
     select
@@ -99,11 +106,11 @@
     select 
     <include refid="Base_Column_List" />
     from person_info
-    where person_id = #{personId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from person_info
-    where person_id = #{personId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.rainyhon.common.model.PersonInfoExample" >
     delete from person_info
@@ -112,24 +119,28 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.rainyhon.common.model.PersonInfo" >
-    insert into person_info (person_id, name, gender, 
+    insert into person_info (id, name, gender, 
       birth_date, card_type, card_no, 
-      join_date, rank, personal_photo1, 
-      personal_photo2, care_status, impt_care_status, 
-      impt_care_reason, para, dept_id
+      join_date, rank, photo, 
+      care_status, impt_care_status, impt_care_reason, 
+      para, org_id, del_status, 
+      upd_user_id, upd_org_id, upd_tm, 
+      crt_user_id, crt_org_id, crt_tm
       )
-    values (#{personId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
       #{birthDate,jdbcType=DATE}, #{cardType,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, 
-      #{joinDate,jdbcType=DATE}, #{rank,jdbcType=VARCHAR}, #{personalPhoto1,jdbcType=VARCHAR}, 
-      #{personalPhoto2,jdbcType=VARCHAR}, #{careStatus,jdbcType=VARCHAR}, #{imptCareStatus,jdbcType=VARCHAR}, 
-      #{imptCareReason,jdbcType=VARCHAR}, #{para,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}
+      #{joinDate,jdbcType=DATE}, #{rank,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, 
+      #{careStatus,jdbcType=VARCHAR}, #{imptCareStatus,jdbcType=VARCHAR}, #{imptCareReason,jdbcType=VARCHAR}, 
+      #{para,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, 
+      #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, #{updTm,jdbcType=TIMESTAMP}, 
+      #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.rainyhon.common.model.PersonInfo" >
     insert into person_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="personId != null" >
-        person_id,
+      <if test="id != null" >
+        id,
       </if>
       <if test="name != null" >
         name,
@@ -152,11 +163,8 @@
       <if test="rank != null" >
         rank,
       </if>
-      <if test="personalPhoto1 != null" >
-        personal_photo1,
-      </if>
-      <if test="personalPhoto2 != null" >
-        personal_photo2,
+      <if test="photo != null" >
+        photo,
       </if>
       <if test="careStatus != null" >
         care_status,
@@ -170,13 +178,34 @@
       <if test="para != null" >
         para,
       </if>
-      <if test="deptId != null" >
-        dept_id,
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="delStatus != null" >
+        del_status,
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id,
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id,
+      </if>
+      <if test="updTm != null" >
+        upd_tm,
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id,
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id,
+      </if>
+      <if test="crtTm != null" >
+        crt_tm,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="personId != null" >
-        #{personId,jdbcType=VARCHAR},
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -199,11 +228,8 @@
       <if test="rank != null" >
         #{rank,jdbcType=VARCHAR},
       </if>
-      <if test="personalPhoto1 != null" >
-        #{personalPhoto1,jdbcType=VARCHAR},
-      </if>
-      <if test="personalPhoto2 != null" >
-        #{personalPhoto2,jdbcType=VARCHAR},
+      <if test="photo != null" >
+        #{photo,jdbcType=VARCHAR},
       </if>
       <if test="careStatus != null" >
         #{careStatus,jdbcType=VARCHAR},
@@ -217,8 +243,29 @@
       <if test="para != null" >
         #{para,jdbcType=VARCHAR},
       </if>
-      <if test="deptId != null" >
-        #{deptId,jdbcType=VARCHAR},
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -231,8 +278,8 @@
   <update id="updateByExampleSelective" parameterType="map" >
     update person_info
     <set >
-      <if test="record.personId != null" >
-        person_id = #{record.personId,jdbcType=VARCHAR},
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -255,11 +302,8 @@
       <if test="record.rank != null" >
         rank = #{record.rank,jdbcType=VARCHAR},
       </if>
-      <if test="record.personalPhoto1 != null" >
-        personal_photo1 = #{record.personalPhoto1,jdbcType=VARCHAR},
-      </if>
-      <if test="record.personalPhoto2 != null" >
-        personal_photo2 = #{record.personalPhoto2,jdbcType=VARCHAR},
+      <if test="record.photo != null" >
+        photo = #{record.photo,jdbcType=VARCHAR},
       </if>
       <if test="record.careStatus != null" >
         care_status = #{record.careStatus,jdbcType=VARCHAR},
@@ -273,8 +317,29 @@
       <if test="record.para != null" >
         para = #{record.para,jdbcType=VARCHAR},
       </if>
-      <if test="record.deptId != null" >
-        dept_id = #{record.deptId,jdbcType=VARCHAR},
+      <if test="record.orgId != null" >
+        org_id = #{record.orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delStatus != null" >
+        del_status = #{record.delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updUserId != null" >
+        upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updOrgId != null" >
+        upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updTm != null" >
+        upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.crtUserId != null" >
+        crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtOrgId != null" >
+        crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        crt_tm = #{record.crtTm,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -283,7 +348,7 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update person_info
-    set person_id = #{record.personId,jdbcType=VARCHAR},
+    set id = #{record.id,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       gender = #{record.gender,jdbcType=VARCHAR},
       birth_date = #{record.birthDate,jdbcType=DATE},
@@ -291,13 +356,19 @@
       card_no = #{record.cardNo,jdbcType=VARCHAR},
       join_date = #{record.joinDate,jdbcType=DATE},
       rank = #{record.rank,jdbcType=VARCHAR},
-      personal_photo1 = #{record.personalPhoto1,jdbcType=VARCHAR},
-      personal_photo2 = #{record.personalPhoto2,jdbcType=VARCHAR},
+      photo = #{record.photo,jdbcType=VARCHAR},
       care_status = #{record.careStatus,jdbcType=VARCHAR},
       impt_care_status = #{record.imptCareStatus,jdbcType=VARCHAR},
       impt_care_reason = #{record.imptCareReason,jdbcType=VARCHAR},
       para = #{record.para,jdbcType=VARCHAR},
-      dept_id = #{record.deptId,jdbcType=VARCHAR}
+      org_id = #{record.orgId,jdbcType=VARCHAR},
+      del_status = #{record.delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{record.updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{record.updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{record.updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{record.crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{record.crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{record.crtTm,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -326,11 +397,8 @@
       <if test="rank != null" >
         rank = #{rank,jdbcType=VARCHAR},
       </if>
-      <if test="personalPhoto1 != null" >
-        personal_photo1 = #{personalPhoto1,jdbcType=VARCHAR},
-      </if>
-      <if test="personalPhoto2 != null" >
-        personal_photo2 = #{personalPhoto2,jdbcType=VARCHAR},
+      <if test="photo != null" >
+        photo = #{photo,jdbcType=VARCHAR},
       </if>
       <if test="careStatus != null" >
         care_status = #{careStatus,jdbcType=VARCHAR},
@@ -344,11 +412,32 @@
       <if test="para != null" >
         para = #{para,jdbcType=VARCHAR},
       </if>
-      <if test="deptId != null" >
-        dept_id = #{deptId,jdbcType=VARCHAR},
+      <if test="orgId != null" >
+        org_id = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="delStatus != null" >
+        del_status = #{delStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updUserId != null" >
+        upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="updOrgId != null" >
+        upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="updTm != null" >
+        upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crtUserId != null" >
+        crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtOrgId != null" >
+        crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="crtTm != null" >
+        crt_tm = #{crtTm,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where person_id = #{personId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.PersonInfo" >
     update person_info
@@ -359,13 +448,19 @@
       card_no = #{cardNo,jdbcType=VARCHAR},
       join_date = #{joinDate,jdbcType=DATE},
       rank = #{rank,jdbcType=VARCHAR},
-      personal_photo1 = #{personalPhoto1,jdbcType=VARCHAR},
-      personal_photo2 = #{personalPhoto2,jdbcType=VARCHAR},
+      photo = #{photo,jdbcType=VARCHAR},
       care_status = #{careStatus,jdbcType=VARCHAR},
       impt_care_status = #{imptCareStatus,jdbcType=VARCHAR},
       impt_care_reason = #{imptCareReason,jdbcType=VARCHAR},
       para = #{para,jdbcType=VARCHAR},
-      dept_id = #{deptId,jdbcType=VARCHAR}
-    where person_id = #{personId,jdbcType=VARCHAR}
+      org_id = #{orgId,jdbcType=VARCHAR},
+      del_status = #{delStatus,jdbcType=VARCHAR},
+      upd_user_id = #{updUserId,jdbcType=VARCHAR},
+      upd_org_id = #{updOrgId,jdbcType=VARCHAR},
+      upd_tm = #{updTm,jdbcType=TIMESTAMP},
+      crt_user_id = #{crtUserId,jdbcType=VARCHAR},
+      crt_org_id = #{crtOrgId,jdbcType=VARCHAR},
+      crt_tm = #{crtTm,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

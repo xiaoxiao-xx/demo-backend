@@ -2,9 +2,9 @@ package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.microcore.center.mapper.PsmDeviceVersionMapper;
-import com.microcore.center.model.PsmDeviceVersion;
-import com.microcore.center.model.PsmDeviceVersionExample;
+import com.rainyhon.common.mapper.DeviceVersionMapper;
+import com.rainyhon.common.model.DeviceVersion;
+import com.rainyhon.common.model.DeviceVersionExample;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.vo.DeviceVersionVo;
 import com.rainyhon.common.vo.ResultVo;
@@ -24,7 +24,7 @@ import static com.rainyhon.common.util.CommonUtil.getUUID;
 public class DeviceVersionService {
 
 	@Autowired
-	private PsmDeviceVersionMapper deviceVersionMapper;
+	private DeviceVersionMapper deviceVersionMapper;
 
 	@Autowired
 	private DeviceService deviceService;
@@ -53,8 +53,8 @@ public class DeviceVersionService {
 
 
 	public ResultVo getDeviceVersionList(String version, String type, Integer pageIndex, Integer pageSize) {
-		PsmDeviceVersionExample example = new PsmDeviceVersionExample();
-		PsmDeviceVersionExample.Criteria criteria = example.createCriteria();
+		DeviceVersionExample example = new DeviceVersionExample();
+		DeviceVersionExample.Criteria criteria = example.createCriteria();
 		// 按类型查
 		if (StringUtils.isNotEmpty(type) && !"x".equals(type)) {
 			criteria.andDevtypeCodeEqualTo(type);
@@ -64,10 +64,10 @@ public class DeviceVersionService {
 			criteria.andDevversionIdEqualTo(version);
 		}
 
-		PageInfo<PsmDeviceVersion> pageInfo = PageHelper.startPage(pageIndex, pageSize)
+		PageInfo<DeviceVersion> pageInfo = PageHelper.startPage(pageIndex, pageSize)
 				.doSelectPageInfo(() -> deviceVersionMapper.selectByExample(example));
 
-		List<PsmDeviceVersion> list = pageInfo.getList();
+		List<DeviceVersion> list = pageInfo.getList();
 		if (CommonUtil.isNotEmpty(list)) {
 			list.forEach(device -> {
 				// 转设备类型为中文
@@ -84,14 +84,14 @@ public class DeviceVersionService {
 	}
 
 
-	public PsmDeviceVersion getDeviceVersionById(String id) {
+	public DeviceVersion getDeviceVersionById(String id) {
 		return deviceVersionMapper.selectByPrimaryKey(id);
 	}
 
 
 	public ResultVo getVersion(String devTypeCode) {
 		Map<String, Object> prams = new HashMap<>();
-		String sql = "select * from psm_device_version_t "
+		String sql = "select * from device_version "
 				+ "where devtype_code = #{devTypeCode} "
 				+ "group by device_version";
 		prams.put("sql", sql);
@@ -117,7 +117,7 @@ public class DeviceVersionService {
 
 
 	public String getDeviceVersionStringById(String id) {
-		PsmDeviceVersion deviceVersion = getDeviceVersionById(id);
+		DeviceVersion deviceVersion = getDeviceVersionById(id);
 		if (deviceVersion == null) {
 			return "";
 		}

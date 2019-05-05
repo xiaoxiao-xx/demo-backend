@@ -1,6 +1,6 @@
 package com.rainyhon.common.vo;
 
-import com.microcore.center.model.AlarmResult;
+import com.rainyhon.common.model.AlarmResult;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

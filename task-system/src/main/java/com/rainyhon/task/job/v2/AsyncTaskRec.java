@@ -1,13 +1,10 @@
 package com.rainyhon.task.job.v2;
 
 import com.google.gson.Gson;
-import com.microcore.center.mapper.AlarmResultMapper;
-import com.microcore.center.mapper.InOutRecordMapper;
-import com.microcore.center.model.Face;
-import com.microcore.center.model.InOutRecord;
-import com.microcore.center.model.PsmMaterial;
 import com.rainyhon.common.cllient.HttpTemplate;
 import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.mapper.AlarmResultMapper;
+import com.rainyhon.common.mapper.InOutRecordMapper;
 import com.rainyhon.common.model.*;
 import com.rainyhon.common.mq.rabbit.RabbitMQUtil;
 import com.rainyhon.common.service.*;
@@ -17,8 +14,8 @@ import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.util.JedisPoolUtil;
 import com.rainyhon.common.vo.AlarmResultVo;
 import com.rainyhon.common.vo.FaceSdkRecVo;
-import com.rainyhon.common.vo.PsmDealResDetailVo;
-import com.rainyhon.common.vo.PsmFaceVo;
+import com.rainyhon.common.vo.DealResDetailVo;
+import com.rainyhon.common.vo.FaceVo;
 import com.rainyhon.task.job.v2.policy.AlarmPolicyManager;
 import com.rainyhon.task.job.v2.policy.base.IAlarmPolicyChecker;
 import com.rainyhon.task.job.v2.policy.entity.AlarmPolicyResult;
@@ -33,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.rainyhon.common.util.CommonUtil.getCurrentTime;
 import static com.rainyhon.common.util.CommonUtil.random;
 
 /**
@@ -43,6 +41,7 @@ import static com.rainyhon.common.util.CommonUtil.random;
 public class AsyncTaskRec {
 
     public static final int Timeout = 3;
+
     private final HttpTemplate httpTemplate;
 
     private final MaterialService materialService;
@@ -117,7 +116,7 @@ public class AsyncTaskRec {
             faces = new ArrayList<>();
         }
 
-        List<PsmFaceVo> faceList = convertFaces(materialId, detectResultId, faces);
+        List<FaceVo> faceList = convertFaces(materialId, detectResultId, faces);
         if (faceList.size() > 0) {
             // log.info("faceList2 size: {}", faceList2.size());
         }
@@ -134,17 +133,17 @@ public class AsyncTaskRec {
 
             // log.info("name: {}", face2.getUserId());
 
-            PsmMaterial material = materialService.getMaterial(materialId);
+            Material material = materialService.getMaterial(materialId);
             String areaId = material.getAreaId();
             String userId = face.getUserId();
             PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
 
-            //sendEvent(face);
+            sendEvent(face);
             alarm(face, psmPersonInfo.getName());
 
             // TODO Test
             // 生成进出记录
-            generateInOutRecord(face, areaId);
+	        String lastInRecordId = generateInOutRecord(face, areaId);
 
             // 更新考勤记录
             updateWorkAttendanceRecord(face.getUserId());
@@ -155,7 +154,7 @@ public class AsyncTaskRec {
             // 更新电子点名记录
             updateRollCallResultRecord(face, material);
 
-            // log.info(">>> detected face: {}, score: {}", personService.getPersonInfoName(userId), face2.getScore());
+            log.info(">>> detected face: {}, score: {}", personService.getPersonInfoName(userId), face.getScore());
             // log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
             // k-v  k: user_id, v: area_id & capture_time
@@ -163,7 +162,8 @@ public class AsyncTaskRec {
             map.put("userName", personService.getPersonInfoName(userId));
             map.put("areaId", areaId);
             map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
-            map.put("teamId", personService.getPersonInfo(userId).getDeptId());
+            map.put("teamId", personService.getPersonInfo(userId).getOrgId());
+            map.put("lastInRecordId", lastInRecordId);
             redisUtil.hmset("user:" + userId, map);
 
             // k-v  k: area_id, v: user_id set
@@ -176,14 +176,14 @@ public class AsyncTaskRec {
             redisUtil.sadd(areaKey, userId);
         }
 
-        List<Face> facest = CommonUtil.listPo2VO(faceList, Face.class);
-        materialService.addFaceList(facest);
+        List<Face> faceList1 = CommonUtil.listPo2VO(faceList, Face.class);
+        materialService.addFaceList(faceList1);
         // log.info("thread id= {}", Thread.currentThread().getName());
     }
 
-    private void updateRollCallResultRecord(Face face, PsmMaterial material) {
+    private void updateRollCallResultRecord(Face face, Material material) {
         String userId = face.getUserId();
-        String orgId = personService.getPersonInfo(userId).getDeptId();
+        String orgId = personService.getPersonInfo(userId).getOrgId();
         String areaId = material.getAreaId();
         Date time = material.getCreateTime();
 
@@ -214,7 +214,7 @@ public class AsyncTaskRec {
      * @param face
      * @param material
      */
-    private void updateScheduleDetailRecord(Face face, PsmMaterial material) {
+    private void updateScheduleDetailRecord(Face face, Material material) {
         // 时间，地点，人物
         String userId = face.getUserId();
         String areaId = material.getAreaId();
@@ -286,13 +286,13 @@ public class AsyncTaskRec {
         workService.updateWorkAttendance(attendance);
     }
 
-    private List<PsmFaceVo> convertFaces(String materialId, String detectResultId, List<DataStructure.FaceInfo> faceInfoList) {
+    private List<FaceVo> convertFaces(String materialId, String detectResultId, List<DataStructure.FaceInfo> faceInfoList) {
         return faceInfoList.stream().map(faceInfo -> {
-            PsmFaceVo face = new PsmFaceVo();
+            FaceVo face = new FaceVo();
 
             face.setId(CommonUtil.getUUID());
             face.setMaterialId(materialId);
-            face.setCreateTime(CommonUtil.getCurrentTime());
+            face.setCreateTime(getCurrentTime());
 
             face.setAngle(faceInfo.getAngle());
             face.setCenterX(faceInfo.getCenter_x());
@@ -309,44 +309,48 @@ public class AsyncTaskRec {
         }).collect(Collectors.toList());
     }
 
-    private void generateInOutRecord(Face face, String newAreaId) {
+    private String generateInOutRecord(Face face, String newAreaId) {
         String key = "user:" + face.getUserId();
-        List<String> result = redisUtil.hmget(key, "areaId");
+        List<String> result = redisUtil.hmget(key, "areaId", "lastInRecordId");
         String areaId = result.get(0);
+	    // 获取上一条数据的记录
+        String lastInRecordId = result.get(1);
 
         if (newAreaId.equals(areaId)) {
-            return;
+            return lastInRecordId;
         }
 
         // out record
-        InOutRecord outRecord = new InOutRecord();
-        outRecord.setId(CommonUtil.getUUID());
-        outRecord.setType(Constants.IN_OUT_TYPE_OUT);
-        outRecord.setAreaId(areaId);
-        // in_out_record 表 rec_id 字段是 psm_face.id， 即导致进入离开/记录产生的第一条数据的ID
-        outRecord.setTime(CommonUtil.getCurrentTime());
-        outRecord.setRecId(face.getId());
-        outRecord.setUserId(face.getUserId());
-        inOutRecordMapper.insert(outRecord);
+	    if (areaId != null) {
+            InOutRecord outRecord = new InOutRecord();
+            outRecord.setId(lastInRecordId);
+            outRecord.setAreaId(areaId);
+            // in_out_record 表 rec_id 字段是 face.id， 即导致进入离开/记录产生的第一条数据的ID
+            outRecord.setOutTime(getCurrentTime());
+            outRecord.setRecId(face.getId());
+            outRecord.setUserId(face.getUserId());
+            inOutRecordMapper.updateByPrimaryKeySelective(outRecord);
+        }
 
         // in record
         InOutRecord inRecord = new InOutRecord();
-        inRecord.setId(CommonUtil.getUUID());
-        inRecord.setType(Constants.IN_OUT_TYPE_IN);
+        String inRecordId = CommonUtil.getUUID();
+        inRecord.setId(inRecordId);
         inRecord.setAreaId(newAreaId);
-        inRecord.setTime(CommonUtil.getCurrentTime());
+        inRecord.setInTime(getCurrentTime());
         inRecord.setRecId(face.getId());
         inRecord.setUserId(face.getUserId());
         inOutRecordMapper.insert(inRecord);
+        return inRecordId;
     }
 
     /**
      * 推送消息
      */
     private void sendEvent(Face face) {
-        PsmDealResDetailVo vo = new PsmDealResDetailVo();
+        DealResDetailVo vo = new DealResDetailVo();
         String materialId = face.getMaterialId();
-        PsmMaterial material = materialService.getMaterial(materialId);
+        Material material = materialService.getMaterial(materialId);
         String areaId = material.getAreaId();
         vo.setAddress(((Map<String, String>) alarmPolicyService.getAlarmAddress().getData()).get(areaId));
 
@@ -361,7 +365,7 @@ public class AsyncTaskRec {
         }
 
         vo.setPersonInfo(psmPersonInfo);
-        vo.setCharacterInfo(psmPersonInfo.getPersonId());
+        vo.setCharacterInfo(psmPersonInfo.getId());
 
         Date d = face.getCreateTime();
         // 某人离开或者进入区域也要推送消息
@@ -373,7 +377,7 @@ public class AsyncTaskRec {
 
         vo.setResId(CommonUtil.getUUID());
         vo.setSrcId("");
-        vo.setTime(CommonUtil.getCurrentTime());
+        vo.setTime(getCurrentTime());
         vo.setValidState(random("是", "否"));
 
         try {
@@ -381,7 +385,7 @@ public class AsyncTaskRec {
                 rabbitMQUtil.sendMsg(gson.toJson(vo));
                 //
                 //String alarmAreaId = "5";
-                //if ("1".equals(psmPersonInfo.getDeptId()) && alarmAreaId.equals(areaId)) {
+                //if ("1".equals(psmPersonInfo.getOrgId()) && alarmAreaId.equals(areaId)) {
                 //    generateAlarmMessage(face, personName);
                 //}
             }
@@ -398,7 +402,7 @@ public class AsyncTaskRec {
     private AlarmPolicyManager policyManager;
 
     @Autowired
-    private AlarmResultMapper psmRealAlarmMapper;
+    private AlarmResultMapper alarmResultMapper;
 
     /**
      * 告警监测
@@ -407,19 +411,19 @@ public class AsyncTaskRec {
      * @param personName
      */
     private void alarm(Face face, String personName) {
-        PsmMaterial material = materialService.getMaterial(face.getMaterialId());
+        Material material = materialService.getMaterial(face.getMaterialId());
         IAlarmPolicyChecker checker = policyManager.getChecker();
         policyManager.getPolicies().forEach(policy -> {
             Record record = new Record(personName, face, material);
             AlarmPolicyResult result = checker.doCheck(policy, record);
             if (result.isSuccess()) {
-                psmRealAlarmMapper.insertSelective(result.getResult());
+                alarmResultMapper.insertSelective(result.getResult());
             }
         });
     }
 
     private void generateAlarmMessage(Face face, String personName) {
-        PsmMaterial material = materialService.getMaterial(face.getMaterialId());
+        Material material = materialService.getMaterial(face.getMaterialId());
         String areaId = material.getAreaId();
         Date captureTime = material.getCreateTime();
 
@@ -433,7 +437,7 @@ public class AsyncTaskRec {
         alarm.setOperator("");
         alarm.setRemark("");
         alarm.setState("0");
-        alarm.setTriggerTime(CommonUtil.getCurrentTime());
+        alarm.setTriggerTime(getCurrentTime());
         alarm.setObjectId(face.getUserId());
         alarm.setObjectType(random("1", "2"));
         alarm.setAlarmModeType(random("1", "2"));

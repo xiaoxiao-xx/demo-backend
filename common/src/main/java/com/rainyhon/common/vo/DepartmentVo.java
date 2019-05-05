@@ -2,12 +2,12 @@ package com.rainyhon.common.vo;
 
 import java.util.List;
 
-import com.microcore.center.model.PsmDeptInfo;
+import com.rainyhon.common.model.DeptInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DepartmentVo extends PsmDeptInfo {
+public class DepartmentVo extends DeptInfo {
 	private List<DepartmentVo> children ;
 }

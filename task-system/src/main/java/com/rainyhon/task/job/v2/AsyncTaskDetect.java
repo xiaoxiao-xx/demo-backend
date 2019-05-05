@@ -2,11 +2,11 @@ package com.rainyhon.task.job.v2;
 
 import com.google.gson.Gson;
 import com.rainyhon.common.cllient.HttpTemplate;
-import com.microcore.center.mapper.DetectResultMapper;
-import com.microcore.center.model.DetectResult;
+import com.rainyhon.common.mapper.DetectResultMapper;
+import com.rainyhon.common.model.DetectResult;
 import com.rainyhon.common.util.*;
 import com.rainyhon.common.vo.FaceSdkRecVo;
-import com.rainyhon.common.vo.PsmFaceVo;
+import com.rainyhon.common.vo.FaceVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,10 +77,10 @@ public class AsyncTaskDetect {
 			faces = new ArrayList<>();
 		}
 
-		List<PsmFaceVo> faceList = convertFaces(materialId, faces);
+		List<FaceVo> faceList = convertFaces(materialId, faces);
 		if (faceList.size() > 0) {
 			log.info("faceList size: {}", faceList.size());
-			for (PsmFaceVo face : faceList) {
+			for (FaceVo face : faceList) {
 				String detectResultId = CommonUtil.getUUID();
 
 				DetectResult detectResult = new DetectResult();
@@ -103,7 +103,7 @@ public class AsyncTaskDetect {
 		// TODO
 		// faceList = new ArrayList<>();
 
-		for (PsmFaceVo face : faceList) {// Drop the faces which scores under 60
+		for (FaceVo face : faceList) {// Drop the faces which scores under 60
 			// 封装请求JSON
 			FaceSdkRecVo faceSdkRec = new FaceSdkRecVo();
 			faceSdkRec.setGroup_id("g1");
@@ -126,9 +126,9 @@ public class AsyncTaskDetect {
 		}
 	}
 
-	private List<PsmFaceVo> convertFaces(String materialId, List<DataStructure.FaceInfo> faceInfoList) {
+	private List<FaceVo> convertFaces(String materialId, List<DataStructure.FaceInfo> faceInfoList) {
 		return faceInfoList.stream().map(faceInfo -> {
-			PsmFaceVo face = new PsmFaceVo();
+			FaceVo face = new FaceVo();
 
 			face.setId(CommonUtil.getUUID());
 			face.setMaterialId(materialId);

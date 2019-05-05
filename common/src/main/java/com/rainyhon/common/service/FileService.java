@@ -1,7 +1,7 @@
 package com.rainyhon.common.service;
 
-import com.microcore.center.mapper.PsmFileMapper;
-import com.microcore.center.model.PsmFile;
+import com.rainyhon.common.mapper.FileMapper;
+import com.rainyhon.common.model.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class FileService {
 
 	@Autowired
-	private PsmFileMapper psmFileMapper;
+	private FileMapper psmFileMapper;
 
-	public void add(PsmFile psmFile) {
+	public void add(File psmFile) {
 		psmFileMapper.insert(psmFile);
 	}
 

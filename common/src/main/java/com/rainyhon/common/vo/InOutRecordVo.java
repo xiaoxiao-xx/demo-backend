@@ -1,6 +1,6 @@
 package com.rainyhon.common.vo;
 
-import com.microcore.center.model.InOutRecord;
+import com.rainyhon.common.model.InOutRecord;
 import lombok.Data;
 
 @Data

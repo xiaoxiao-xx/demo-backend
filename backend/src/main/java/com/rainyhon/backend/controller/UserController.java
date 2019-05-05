@@ -47,7 +47,7 @@ public class UserController {
 	}
 
 	@GetMapping("getUserList")
-	public ResultVo<PageInfo<UserVo>> getUserList(@RequestParam String orgId,
+	public ResultVo<PageInfo<UserVo>> getUserList(@RequestParam(required = false) String orgId,
 	                                              @RequestParam Integer pageIndex,
 	                                              @RequestParam Integer pageSize) {
 		return ResultVo.ok(userService.getUserList(orgId, pageIndex, pageSize));

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.microcore.center.model.PsmUser;
+import com.rainyhon.common.model.PsmUser;
 import com.rainyhon.common.util.JwtUtil;
 import com.rainyhon.common.vo.UserInfo;
 

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rainyhon.common.mapper.DeptInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.rainyhon.common.model.DeptInfo" >
+    <id column="dept_id" property="deptId" jdbcType="VARCHAR" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="dept_fullname" property="deptFullname" jdbcType="VARCHAR" />
+    <result column="dept_lev" property="deptLev" jdbcType="INTEGER" />
+    <result column="parent_deptid" property="parentDeptid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    dept_id, dept_name, dept_fullname, dept_lev, parent_deptid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.DeptInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dept_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from dept_info
+    where dept_id = #{deptId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dept_info
+    where dept_id = #{deptId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.rainyhon.common.model.DeptInfoExample" >
+    delete from dept_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.rainyhon.common.model.DeptInfo" >
+    insert into dept_info (dept_id, dept_name, dept_fullname, 
+      dept_lev, parent_deptid)
+    values (#{deptId,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, #{deptFullname,jdbcType=VARCHAR}, 
+      #{deptLev,jdbcType=INTEGER}, #{parentDeptid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rainyhon.common.model.DeptInfo" >
+    insert into dept_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deptId != null" >
+        dept_id,
+      </if>
+      <if test="deptName != null" >
+        dept_name,
+      </if>
+      <if test="deptFullname != null" >
+        dept_fullname,
+      </if>
+      <if test="deptLev != null" >
+        dept_lev,
+      </if>
+      <if test="parentDeptid != null" >
+        parent_deptid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null" >
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptFullname != null" >
+        #{deptFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="deptLev != null" >
+        #{deptLev,jdbcType=INTEGER},
+      </if>
+      <if test="parentDeptid != null" >
+        #{parentDeptid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.rainyhon.common.model.DeptInfoExample" resultType="java.lang.Integer" >
+    select count(*) from dept_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update dept_info
+    <set >
+      <if test="record.deptId != null" >
+        dept_id = #{record.deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptName != null" >
+        dept_name = #{record.deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptFullname != null" >
+        dept_fullname = #{record.deptFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptLev != null" >
+        dept_lev = #{record.deptLev,jdbcType=INTEGER},
+      </if>
+      <if test="record.parentDeptid != null" >
+        parent_deptid = #{record.parentDeptid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update dept_info
+    set dept_id = #{record.deptId,jdbcType=VARCHAR},
+      dept_name = #{record.deptName,jdbcType=VARCHAR},
+      dept_fullname = #{record.deptFullname,jdbcType=VARCHAR},
+      dept_lev = #{record.deptLev,jdbcType=INTEGER},
+      parent_deptid = #{record.parentDeptid,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.DeptInfo" >
+    update dept_info
+    <set >
+      <if test="deptName != null" >
+        dept_name = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptFullname != null" >
+        dept_fullname = #{deptFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="deptLev != null" >
+        dept_lev = #{deptLev,jdbcType=INTEGER},
+      </if>
+      <if test="parentDeptid != null" >
+        parent_deptid = #{parentDeptid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where dept_id = #{deptId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.DeptInfo" >
+    update dept_info
+    set dept_name = #{deptName,jdbcType=VARCHAR},
+      dept_fullname = #{deptFullname,jdbcType=VARCHAR},
+      dept_lev = #{deptLev,jdbcType=INTEGER},
+      parent_deptid = #{parentDeptid,jdbcType=VARCHAR}
+    where dept_id = #{deptId,jdbcType=VARCHAR}
+  </update>
+</mapper>

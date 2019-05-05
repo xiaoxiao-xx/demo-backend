@@ -66,8 +66,8 @@ public class SettingController {
 	}
 
 	@GetMapping("getExemptionPersonList")
-	public ResultVo<?> getExemptionPersonList(@RequestParam Integer pageIndex,
-	                                          @RequestParam Integer pageSize) {
+	public ResultVo<?> getExemptionPersonList(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+	                                          @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
 		return ResultVo.ok(settingService.getExemptionPersonList(pageIndex, pageSize));
 	}
 

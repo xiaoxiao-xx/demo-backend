@@ -32,8 +32,8 @@ public class SummaryService {
 	public List getSummary() {
 		String sql = "SELECT area_id, count(1) count \n" +
 				" FROM\n" +
-				" (SELECT * FROM psm_detail " +
-				"      WHERE psm_detail.time > DATE_SUB(NOW(), INTERVAL #{intervalTime} SECOND) " +
+				" (SELECT * FROM detail " +
+				"      WHERE detail.time > DATE_SUB(NOW(), INTERVAL #{intervalTime} SECOND) " +
 				"      GROUP BY area_id, user_id) a \n" +
 				" GROUP BY area_id";
 		Map<String, Object> params = new HashMap<>(3);
@@ -83,8 +83,8 @@ public class SummaryService {
 	 * 返回一个区域的人的列表
 	 */
 	public List<DetailVo> getDetailList(String areaId) {
-		String sql = "SELECT * FROM psm_detail \n" +
-				" WHERE psm_detail.time > DATE_SUB(NOW( ), INTERVAL #{intervalTime} SECOND) \n" +
+		String sql = "SELECT * FROM detail \n" +
+				" WHERE detail.time > DATE_SUB(NOW( ), INTERVAL #{intervalTime} SECOND) \n" +
 				" AND area_id = #{areaId} \n" +
 				" group by user_id";
 
@@ -97,7 +97,7 @@ public class SummaryService {
 		List<DetailVo> detailVos = CommonUtil.map2PO(list, DetailVo.class);
 		detailVos.forEach(detailVo -> {
 			PersonInfo info = personService.getPersonInfo(detailVo.getUserId());
-			detailVo.setUserId(info.getPersonalPhoto1());
+			detailVo.setUserId(info.getPhoto());
 		});
 
 		return CommonUtil.map2PO(list, DetailVo.class);
@@ -113,7 +113,7 @@ public class SummaryService {
 
 			DetailVo vo = new DetailVo();
 			vo.setId("");
-			vo.setSummaryId(psmPersonInfo.getPersonalPhoto1());
+			vo.setSummaryId(psmPersonInfo.getPhoto());
 			vo.setAreaId(areaId);
 			vo.setUserId(userId);
 			vo.setUserName(psmPersonInfo.getName());
@@ -139,7 +139,7 @@ public class SummaryService {
 
 				DetailVo vo = new DetailVo();
 				vo.setId("");
-				vo.setSummaryId(psmPersonInfo.getPersonalPhoto1());
+				vo.setSummaryId(psmPersonInfo.getPhoto());
 				vo.setAreaId(areaKey.split(":")[1]);
 				vo.setUserId(userId);
 				vo.setUserName(psmPersonInfo.getName());

@@ -1,13 +1,13 @@
 package com.rainyhon.common.service;
 
 import com.github.pagehelper.PageInfo;
-import com.rainyhon.common.vo.PsmDealResVo;
+import com.rainyhon.common.mapper.DealResMapper;
+import com.rainyhon.common.model.DealRes;
+import com.rainyhon.common.model.DealResExample;
+import com.rainyhon.common.vo.DealResVo;
 import com.rainyhon.common.vo.ResultVo;
 
 import com.github.pagehelper.PageHelper;
-import com.microcore.center.mapper.PsmDealResMapper;
-import com.microcore.center.model.PsmDealRes;
-import com.microcore.center.model.PsmDealResExample;
 import com.rainyhon.common.util.CommonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,27 +24,26 @@ import java.util.List;
 public class DealResultService {
 
 	@Autowired
-	private PsmDealResMapper psmDealResMapper;
+	private DealResMapper psmDealResMapper;
 
-	public PageInfo<PsmDealResVo> getDealResultList(String alarmType, String dealState,
-	                                                Integer pageIndex, Integer pageSize) {
-		PsmDealResExample example = new PsmDealResExample();
-		PsmDealResExample.Criteria criteria = example.createCriteria();
+	public PageInfo<DealResVo> getDealResultList(String alarmType, String dealState,
+	                                             Integer pageIndex, Integer pageSize) {
+		DealResExample example = new DealResExample();
+		DealResExample.Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotEmpty(alarmType)) {
 			criteria.andAlarmTypeEqualTo(alarmType);
 		}
 		if (StringUtils.isNotEmpty(dealState)) {
 			criteria.andDealStateEqualTo(dealState);
 		}
-		PageInfo<PsmDealRes> psmDealResPageInfo = PageHelper.startPage(pageIndex, pageSize)
+		PageInfo<DealRes> psmDealResPageInfo = PageHelper.startPage(pageIndex, pageSize)
 				.doSelectPageInfo(() -> psmDealResMapper.selectByExample(example));
 
-		List<PsmDealResVo> resVoList = CommonUtil.listPo2VO(psmDealResPageInfo.getList(), PsmDealResVo.class);
-		PageInfo<PsmDealResVo> resVoPageInfo = CommonUtil.po2VO(psmDealResPageInfo, PageInfo.class);
+		List<DealResVo> resVoList = CommonUtil.listPo2VO(psmDealResPageInfo.getList(), DealResVo.class);
+		PageInfo<DealResVo> resVoPageInfo = CommonUtil.po2VO(psmDealResPageInfo, PageInfo.class);
 		resVoPageInfo.setList(resVoList);
 		return resVoPageInfo;
 	}
-
 
 	public ResultVo delete(String id) {
 		String[] ids = id.split(",");
@@ -55,22 +54,19 @@ public class DealResultService {
 		return ResultVo.ok();
 	}
 
-
-	public ResultVo update(PsmDealResVo vo) {
+	public ResultVo update(DealResVo vo) {
 		psmDealResMapper.updateByPrimaryKeySelective(vo);
 		return ResultVo.ok();
 	}
 
-
-	public ResultVo add(PsmDealResVo vo) {
+	public ResultVo add(DealResVo vo) {
 		vo.setId(CommonUtil.getUUID());
 		psmDealResMapper.insert(vo);
 		return ResultVo.ok();
 	}
 
-
-	public ResultVo deal(PsmDealResVo dealResVo) {
-		PsmDealRes psmDealRes = psmDealResMapper.selectByPrimaryKey(dealResVo.getId());
+	public ResultVo deal(DealResVo dealResVo) {
+		DealRes psmDealRes = psmDealResMapper.selectByPrimaryKey(dealResVo.getId());
 		if (psmDealRes == null) {
 			return ResultVo.fail("非法数据！");
 		}

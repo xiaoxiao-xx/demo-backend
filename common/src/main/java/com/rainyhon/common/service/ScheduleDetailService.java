@@ -84,8 +84,8 @@ public class ScheduleDetailService {
 				personInfoList.forEach(personInfo -> {
 					RollCallResult result = new RollCallResult();
 					result.setId(CommonUtil.getUUID());
-					result.setOrgId(personInfo.getDeptId());
-					result.setPersonId(personInfo.getPersonId());
+					result.setOrgId(personInfo.getOrgId());
+					result.setPersonId(personInfo.getId());
 					result.setDetailId(detailId);
 					result.setResult(Constants.ATTENDANCE_RESULT_ABSENTEEISM);
 					EntityUtils.setCreateAndUpdateInfo(result);
@@ -125,10 +125,10 @@ public class ScheduleDetailService {
 
 
 	public ResultVo getOnDutyData() {
-		String sql = "SELECT p.dept_id team_id, COUNT( 1 ) total_count, d.dept_name team_name \n" +
-				"FROM psm_person_info_t p \n" +
-				"LEFT JOIN psm_dept_info_t d ON p.dept_id = d.dept_id \n" +
-				"GROUP BY p.dept_id HAVING p.dept_id <> '0'";
+		String sql = "SELECT p.org_id team_id, COUNT( 1 ) total_count, d.dept_name team_name \n" +
+				"FROM person_info p \n" +
+				"LEFT JOIN dept_info d ON p.org_id = d.dept_id \n" +
+				"GROUP BY p.org_id HAVING p.org_id <> '0'";
 
 		Map<String, Object> params = new HashMap<>(3);
 		params.put("sql", sql);
