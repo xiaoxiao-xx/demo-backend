@@ -1,8 +1,12 @@
 package com.rainyhon.common.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * ID
      */
@@ -14,7 +18,7 @@ public class User {
     private String username;
 
     /**
-     * 密码 
+     * 密码
      */
     private String password;
 
@@ -34,12 +38,12 @@ public class User {
     private String phoneNumber;
 
     /**
-     * 最近登录错误次数 
+     * 最近登录错误次数
      */
     private Integer loginErrorCount;
 
     /**
-     * 是否锁定该用户的账户 （1-锁定，0-未锁定） 
+     * 是否锁定该用户的账户 （1-锁定，0-未锁定）
      */
     private Integer locked;
 
@@ -49,27 +53,27 @@ public class User {
     private Date lastLoginTime;
 
     /**
-     * 总登录次数 
+     * 总登录次数
      */
     private Integer totalLoginCount;
 
     /**
-     * 删除状态 
+     * 删除状态
      */
     private String delStatus;
 
     /**
-     * 最后修改人ID 
+     * 最后修改人ID
      */
     private String updUserId;
 
     /**
-     * 最后修改机构ID 
+     * 最后修改机构ID
      */
     private String updOrgId;
 
     /**
-     * 最后修改时间 
+     * 最后修改时间
      */
     private Date updTm;
 
@@ -121,16 +125,16 @@ public class User {
     }
 
     /**
-     * 密码 
-     * @return password 密码 
+     * 密码
+     * @return password 密码
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * 密码 
-     * @param password 密码 
+     * 密码
+     * @param password 密码
      */
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
@@ -185,32 +189,40 @@ public class User {
     }
 
     /**
-     * 最近登录错误次数 
-     * @return login_error_count 最近登录错误次数 
+     * 最近登录错误次数
+
+     * @return login_error_count 最近登录错误次数
+
      */
     public Integer getLoginErrorCount() {
         return loginErrorCount;
     }
 
     /**
-     * 最近登录错误次数 
-     * @param loginErrorCount 最近登录错误次数 
+     * 最近登录错误次数
+
+     * @param loginErrorCount 最近登录错误次数
+
      */
     public void setLoginErrorCount(Integer loginErrorCount) {
         this.loginErrorCount = loginErrorCount;
     }
 
     /**
-     * 是否锁定该用户的账户 （1-锁定，0-未锁定） 
-     * @return locked 是否锁定该用户的账户 （1-锁定，0-未锁定） 
+     * 是否锁定该用户的账户 （1-锁定，0-未锁定）
+
+     * @return locked 是否锁定该用户的账户 （1-锁定，0-未锁定）
+
      */
     public Integer getLocked() {
         return locked;
     }
 
     /**
-     * 是否锁定该用户的账户 （1-锁定，0-未锁定） 
-     * @param locked 是否锁定该用户的账户 （1-锁定，0-未锁定） 
+     * 是否锁定该用户的账户 （1-锁定，0-未锁定）
+
+     * @param locked 是否锁定该用户的账户 （1-锁定，0-未锁定）
+
      */
     public void setLocked(Integer locked) {
         this.locked = locked;
@@ -233,80 +245,100 @@ public class User {
     }
 
     /**
-     * 总登录次数 
-     * @return total_login_count 总登录次数 
+     * 总登录次数
+
+     * @return total_login_count 总登录次数
+
      */
     public Integer getTotalLoginCount() {
         return totalLoginCount;
     }
 
     /**
-     * 总登录次数 
-     * @param totalLoginCount 总登录次数 
+     * 总登录次数
+
+     * @param totalLoginCount 总登录次数
+
      */
     public void setTotalLoginCount(Integer totalLoginCount) {
         this.totalLoginCount = totalLoginCount;
     }
 
     /**
-     * 删除状态 
-     * @return del_status 删除状态 
+     * 删除状态
+
+     * @return del_status 删除状态
+
      */
     public String getDelStatus() {
         return delStatus;
     }
 
     /**
-     * 删除状态 
-     * @param delStatus 删除状态 
+     * 删除状态
+
+     * @param delStatus 删除状态
+
      */
     public void setDelStatus(String delStatus) {
         this.delStatus = delStatus == null ? null : delStatus.trim();
     }
 
     /**
-     * 最后修改人ID 
-     * @return upd_user_id 最后修改人ID 
+     * 最后修改人ID
+
+     * @return upd_user_id 最后修改人ID
+
      */
     public String getUpdUserId() {
         return updUserId;
     }
 
     /**
-     * 最后修改人ID 
-     * @param updUserId 最后修改人ID 
+     * 最后修改人ID
+
+     * @param updUserId 最后修改人ID
+
      */
     public void setUpdUserId(String updUserId) {
         this.updUserId = updUserId == null ? null : updUserId.trim();
     }
 
     /**
-     * 最后修改机构ID 
-     * @return upd_org_id 最后修改机构ID 
+     * 最后修改机构ID
+
+     * @return upd_org_id 最后修改机构ID
+
      */
     public String getUpdOrgId() {
         return updOrgId;
     }
 
     /**
-     * 最后修改机构ID 
-     * @param updOrgId 最后修改机构ID 
+     * 最后修改机构ID
+
+     * @param updOrgId 最后修改机构ID
+
      */
     public void setUpdOrgId(String updOrgId) {
         this.updOrgId = updOrgId == null ? null : updOrgId.trim();
     }
 
     /**
-     * 最后修改时间 
-     * @return upd_tm 最后修改时间 
+     * 最后修改时间
+
+     * @return upd_tm 最后修改时间
+
      */
     public Date getUpdTm() {
         return updTm;
     }
 
     /**
-     * 最后修改时间 
-     * @param updTm 最后修改时间 
+     * 最后修改时间
+
+     * @param updTm 最后修改时间
+
      */
     public void setUpdTm(Date updTm) {
         this.updTm = updTm;

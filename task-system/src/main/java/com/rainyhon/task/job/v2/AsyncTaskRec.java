@@ -21,15 +21,18 @@ import com.rainyhon.task.job.v2.policy.base.IAlarmPolicyChecker;
 import com.rainyhon.task.job.v2.policy.entity.AlarmPolicyResult;
 import com.rainyhon.task.job.v2.policy.entity.Record;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.rainyhon.common.constant.Constants.*;
 import static com.rainyhon.common.util.CommonUtil.getCurrentTime;
 import static com.rainyhon.common.util.CommonUtil.random;
 
@@ -48,7 +51,7 @@ public class AsyncTaskRec {
 
     private final JedisPoolUtil redisUtil;
 
-    private final PersonService personService;
+    private final PersonInfoService personInfoService;
 
     private final RabbitMQUtil rabbitMQUtil;
 
@@ -82,12 +85,12 @@ public class AsyncTaskRec {
 
     @Autowired
     public AsyncTaskRec(HttpTemplate httpTemplate, MaterialService materialService,
-                        JedisPoolUtil redisUtil, PersonService personService,
+                        JedisPoolUtil redisUtil, PersonInfoService personInfoService,
                         RabbitMQUtil rabbitMQUtil, AlarmResultService alarmResultService) {
         this.httpTemplate = httpTemplate;
         this.materialService = materialService;
         this.redisUtil = redisUtil;
-        this.personService = personService;
+        this.personInfoService = personInfoService;
         this.rabbitMQUtil = rabbitMQUtil;
         this.alarmResultService = alarmResultService;
     }
@@ -136,14 +139,14 @@ public class AsyncTaskRec {
             Material material = materialService.getMaterial(materialId);
             String areaId = material.getAreaId();
             String userId = face.getUserId();
-            PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
+            PersonInfo personInfo = personInfoService.getPersonInfo(userId);
 
             sendEvent(face);
-            alarm(face, psmPersonInfo.getName());
+            alarm(face, personInfo.getName());
 
             // TODO Test
             // 生成进出记录
-	        String lastInRecordId = generateInOutRecord(face, areaId);
+            String lastInRecordId = generateInOutRecord(face, areaId);
 
             // 更新考勤记录
             updateWorkAttendanceRecord(face.getUserId());
@@ -154,15 +157,15 @@ public class AsyncTaskRec {
             // 更新电子点名记录
             updateRollCallResultRecord(face, material);
 
-            log.info(">>> detected face: {}, score: {}", personService.getPersonInfoName(userId), face.getScore());
+            log.info(">>> detected face: {}, score: {}", personInfoService.getPersonInfoName(userId), face.getScore());
             // log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
             // k-v  k: user_id, v: area_id & capture_time
             Map<String, String> map = new HashMap<>();
-            map.put("userName", personService.getPersonInfoName(userId));
+            map.put("userName", personInfoService.getPersonInfoName(userId));
             map.put("areaId", areaId);
             map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
-            map.put("teamId", personService.getPersonInfo(userId).getOrgId());
+            map.put("teamId", personInfoService.getPersonInfo(userId).getOrgId());
             map.put("lastInRecordId", lastInRecordId);
             redisUtil.hmset("user:" + userId, map);
 
@@ -183,7 +186,7 @@ public class AsyncTaskRec {
 
     private void updateRollCallResultRecord(Face face, Material material) {
         String userId = face.getUserId();
-        String orgId = personService.getPersonInfo(userId).getOrgId();
+        String orgId = personInfoService.getPersonInfo(userId).getOrgId();
         String areaId = material.getAreaId();
         Date time = material.getCreateTime();
 
@@ -201,7 +204,7 @@ public class AsyncTaskRec {
                 List<RollCallResult> callResultList = rollCallService.getRollCallResultList(scheduleDetail.getId(), face.getUserId());
                 if (CommonUtil.isNotEmpty(callResultList)) {
                     RollCallResult result = callResultList.get(0);
-                    result.setResult(Constants.ATTENDANCE_RESULT_OK);
+                    result.setResult(ATTENDANCE_RESULT_OK);
                     rollCallService.updateRollCall(result);
                 }
             });
@@ -228,7 +231,7 @@ public class AsyncTaskRec {
                 }
 
                 scheduleDetail.setRealEndTime(time);
-                scheduleDetail.setResult(Constants.ATTENDANCE_RESULT_OK);
+                scheduleDetail.setResult(ATTENDANCE_RESULT_OK);
                 scheduleDetailService.update(scheduleDetail);
             });
         }
@@ -268,16 +271,16 @@ public class AsyncTaskRec {
         String result = "";
         if (realInTime.getTime() < inTime.getTime() && realOutTime.getTime() > outTime.getTime()) {
             // 正常
-            result = result + Constants.ATTENDANCE_RESULT_OK;
+            result = result + ATTENDANCE_RESULT_OK;
         } else {
             // 迟到
             if (realInTime.getTime() > inTime.getTime()) {
-                result = result + Constants.ATTENDANCE_RESULT_LATE;
+                result = result + ATTENDANCE_RESULT_LATE;
             }
 
             // 早退
             if (realOutTime.getTime() < outTime.getTime()) {
-                result = result + Constants.ATTENDANCE_RESULT_LEAVE_EARLY;
+                result = result + ATTENDANCE_RESULT_LEAVE_EARLY;
             }
         }
 
@@ -310,18 +313,29 @@ public class AsyncTaskRec {
     }
 
     private String generateInOutRecord(Face face, String newAreaId) {
+        // 距离上次捕获时间太久就认为已经离开
+        int timeOut = 5 * 60;
         String key = "user:" + face.getUserId();
-        List<String> result = redisUtil.hmget(key, "areaId", "lastInRecordId");
+        List<String> result = redisUtil.hmget(key, "areaId", "lastInRecordId", "captureTime");
         String areaId = result.get(0);
-	    // 获取上一条数据的记录
+        // 获取上一条数据的记录
         String lastInRecordId = result.get(1);
+        String captureTime = result.get(2);
 
-        if (newAreaId.equals(areaId)) {
-            return lastInRecordId;
+        try {
+            if (newAreaId.equals(areaId)
+                    && new DateTime(dateFormat.get().parse(captureTime)).plusSeconds(timeOut).toDate().getTime()
+                    >= new Date().getTime()) {
+                log.info("skip in_out");
+                return lastInRecordId;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
+        // TODO 多个线程可能都会读到area == null
         // out record
-	    if (areaId != null) {
+        if (areaId != null) {
             InOutRecord outRecord = new InOutRecord();
             outRecord.setId(lastInRecordId);
             outRecord.setAreaId(areaId);
@@ -341,6 +355,7 @@ public class AsyncTaskRec {
         inRecord.setRecId(face.getId());
         inRecord.setUserId(face.getUserId());
         inOutRecordMapper.insert(inRecord);
+
         return inRecordId;
     }
 
@@ -359,17 +374,17 @@ public class AsyncTaskRec {
         vo.setAlarmType(random("警告弹出框", "警报声音"));
 
         String userId = face.getUserId();
-        PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
-        if (psmPersonInfo == null) {
-            psmPersonInfo = new PersonInfo();
+        PersonInfo personInfo = personInfoService.getPersonInfo(userId);
+        if (personInfo == null) {
+            personInfo = new PersonInfo();
         }
 
-        vo.setPersonInfo(psmPersonInfo);
-        vo.setCharacterInfo(psmPersonInfo.getId());
+        vo.setPersonInfo(personInfo);
+        vo.setCharacterInfo(personInfo.getId());
 
         Date d = face.getCreateTime();
         // 某人离开或者进入区域也要推送消息
-        String personName = psmPersonInfo.getName();
+        String personName = personInfo.getName();
         vo.setEventInfo("人员：" + personName
                 + "，时间：" + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(d)
                 + "，进入" + getAreaName(areaId) + ""
@@ -384,10 +399,10 @@ public class AsyncTaskRec {
             if (Double.parseDouble(face.getScore()) >= 60.00D) {
                 rabbitMQUtil.sendMsg(gson.toJson(vo));
                 //
-                //String alarmAreaId = "5";
-                //if ("1".equals(psmPersonInfo.getOrgId()) && alarmAreaId.equals(areaId)) {
-                //    generateAlarmMessage(face, personName);
-                //}
+                // String alarmAreaId = "5";
+                // if ("1".equals(personInfo.getCurrentOrgId()) && alarmAreaId.equals(areaId)) {
+                //     generateAlarmMessage(face, personName);
+                // }
             }
         } catch (Exception e) {
             log.error("{}", e);

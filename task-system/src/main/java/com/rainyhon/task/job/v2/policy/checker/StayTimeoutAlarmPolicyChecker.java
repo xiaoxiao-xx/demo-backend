@@ -9,6 +9,7 @@ import com.rainyhon.task.job.v2.policy.entity.AlarmEntity;
 import com.rainyhon.task.job.v2.policy.entity.AlarmPolicyResult;
 import com.rainyhon.task.job.v2.policy.entity.Record;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -89,7 +90,12 @@ public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
         String format = DATE_FORMAT.format(date);
         Date bTime = policy.getBeginTime();
         Date eTime = policy.getEndTime();
-        Date cTime = new Date(format);
+        Date cTime = null;
+        try {
+            cTime = DATE_FORMAT.parse(format);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         // bTime < date < eTime
         return cTime.after(bTime) && cTime.before(eTime);
     }

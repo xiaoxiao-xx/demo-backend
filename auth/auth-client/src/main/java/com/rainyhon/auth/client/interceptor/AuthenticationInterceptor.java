@@ -46,8 +46,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 		// String user_roles = request.getHeader("user_roles");
 		if (StringUtil.isNotEmpty(userInfoBase64Str)) {
 			try {
-				String userInfoStr = Base64Utils.base64Dcode(userInfoBase64Str);
-				UserInfo userInfo = new Gson().fromJson(userInfoStr, UserInfo.class);
+				String userInfoJsonStr = Base64Utils.base64Dcode(userInfoBase64Str);
+				UserInfo userInfo = new Gson().fromJson(userInfoJsonStr, UserInfo.class);
 				AuthContextHandler.setDbUserDto(userInfo);
 				// AuthContextHandler.set("user_info_string", userInfo1);
 				return true;

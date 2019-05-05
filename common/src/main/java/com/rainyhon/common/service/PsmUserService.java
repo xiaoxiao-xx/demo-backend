@@ -12,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-@Transactional
+//@Service
+//@Transactional
 public class PsmUserService {
 
 	@Autowired
 	private PsmUserMapper psmUserMapper;
 
-	public PsmUser getPsmUser(String userName) {
+	private PsmUser getPsmUser(String userName) {
 		if (StringUtil.isEmpty(userName)) {
 			return null;
 		}
@@ -37,7 +37,7 @@ public class PsmUserService {
 		return psmUserMapper.selectByPrimaryKey(id);
 	}
 
-	public void add(PsmUser psmUser) {
+	private void add(PsmUser psmUser) {
 		if (getPsmUser(psmUser.getUsername()) != null) {
 			throw new CommonException("用户名重复！");
 		}
@@ -45,29 +45,29 @@ public class PsmUserService {
 		psmUserMapper.insert(psmUser);
 	}
 
-	public void delete(String userName) {
+	private void delete(String userName) {
 		PsmUserExample example = new PsmUserExample();
 		PsmUserExample.Criteria criteria = example.createCriteria();
 		criteria.andUsernameEqualTo(userName);
 		psmUserMapper.deleteByExample(example);
 	}
 
-	public void deleteById(String id) {
+	private void deleteById(String id) {
 		psmUserMapper.deleteByPrimaryKey(id);
 	}
 
-	public void update(PsmUser psmUser) {
+	private void update(PsmUser psmUser) {
 		psmUserMapper.updateByPrimaryKey(psmUser);
 	}
 
-	public List<PsmUser> getUserListByOrgId(String orgId) {
+	private List<PsmUser> getUserListByOrgId(String orgId) {
 		PsmUserExample example = new PsmUserExample();
 		PsmUserExample.Criteria criteria = example.createCriteria();
 		criteria.andOrgIdEqualTo(orgId);
 		return psmUserMapper.selectByExample(example);
 	}
 
-	public String getPsmUserRealName(String userName) {
+	private String getUserRealName(String userName) {
 		PsmUser psmUser = this.getPsmUser(userName);
 		if (psmUser != null) {
 			return psmUser.getRealname();

@@ -14,16 +14,16 @@ import java.util.List;
 public class AlarmModeService {
 
 	@Autowired
-	private AlarmModeMapper psmAlarmModeMapper;
+	private AlarmModeMapper alarmModeMapper;
 
 	public List<AlarmMode> getAlarmMode() {
 		AlarmModeExample example = new AlarmModeExample();
 		AlarmModeExample.Criteria criteria = example.createCriteria();
-		return psmAlarmModeMapper.selectByExample(example);
+		return alarmModeMapper.selectByExample(example);
 	}
 
 	public String getAlarmMode(String id) {
-		AlarmMode mode = psmAlarmModeMapper.selectByPrimaryKey(id);
+		AlarmMode mode = alarmModeMapper.selectByPrimaryKey(id);
 		if (mode != null) {
 			return mode.getAlarmMode();
 		}
@@ -31,7 +31,7 @@ public class AlarmModeService {
 	}
 
 	public AlarmMode getAlarmModeById(String id) {
-		return psmAlarmModeMapper.selectByPrimaryKey(id);
+		return alarmModeMapper.selectByPrimaryKey(id);
 	}
 
 }

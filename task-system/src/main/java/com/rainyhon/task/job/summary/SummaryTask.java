@@ -4,7 +4,7 @@ import com.rainyhon.common.model.Detail;
 import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.model.Summary;
 import com.rainyhon.common.service.CommonService;
-import com.rainyhon.common.service.PersonService;
+import com.rainyhon.common.service.PersonInfoService;
 import com.rainyhon.task.service.SummaryService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.JedisPoolUtil;
@@ -91,7 +91,7 @@ public class SummaryTask {
 			detail.setTime(faceSummaryVo.getCaptureTime());
 			detail.setUserId(faceSummaryVo.getUserId());
 
-			PersonInfo personInfo = personService.getPersonInfo(faceSummaryVo.getUserId());
+			PersonInfo personInfo = personInfoService.getPersonInfo(faceSummaryVo.getUserId());
 			String username = "";
 			if (personInfo != null) {
 				username = personInfo.getName();
@@ -103,7 +103,7 @@ public class SummaryTask {
 	}
 
 	@Autowired
-	private PersonService personService;
+	private PersonInfoService personInfoService;
 
 	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
 			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
@@ -131,7 +131,7 @@ public class SummaryTask {
 
 			Date now = new Date();
 			if (now.getTime() - captureTime.getTime() > EXPIRE_TIME) {
-				redisUtil.srem("area:" + areaId, key);
+				redisUtil.srem("area:" + areaId, key.split(":")[1]);
 				log.info("Removed expired set value: {}", key);
 			}
 		}

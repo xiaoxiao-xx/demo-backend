@@ -16,13 +16,10 @@ import java.util.List;
 public class OperHisService {
 
 	@Autowired
-	private OperationHistoryMapper psmOperHisMapper;
+	private OperationHistoryMapper operationHistoryMapper;
 
 	@Autowired
 	private ParaDefineService paraDefineService;
-
-	@Autowired
-	private PsmUserService psmUserService;
 
 	public void add(String operTarget, String operType) {
 		OperationHistory operHis = new OperationHistory();
@@ -31,22 +28,27 @@ public class OperHisService {
 		operHis.setOperTarget(operTarget);
 		operHis.setOperType(operType);
 		operHis.setOperTime(CommonUtil.getCurrentTime());
-		psmOperHisMapper.insert(operHis);
+		operationHistoryMapper.insert(operHis);
 	}
 
-	public void add(OperationHistory psmOperHis) {
-		add(psmOperHis.getOperTarget(), psmOperHis.getOperType());
+	public void add(OperationHistory operationHistory) {
+		add(operationHistory.getOperTarget(), operationHistory.getOperType());
 	}
+
+	@Autowired
+	private UserService userService;
 
 	public List<OperationHistoryVo> getOperationHistory(String operTarget) {
 		OperationHistoryExample example = new OperationHistoryExample();
 		OperationHistoryExample.Criteria criteria = example.createCriteria();
 		criteria.andOperTargetEqualTo(operTarget);
-		List<OperationHistoryVo> listVo = CommonUtil.listPo2VO(psmOperHisMapper.selectByExample(example), OperationHistoryVo.class);
+		List<OperationHistoryVo> listVo = CommonUtil.listPo2VO(operationHistoryMapper.selectByExample(example), OperationHistoryVo.class);
 		for (OperationHistoryVo operationHistoryVo : listVo) {
 			operationHistoryVo.setOperTypeName(paraDefineService.getValueByTypeAnd("OPER_TYPE", operationHistoryVo.getOperType()));
-			operationHistoryVo.setOperatorName(psmUserService.getPsmUserRealName(operationHistoryVo.getOperator()));
+			operationHistoryVo.setOperatorName(userService.getUserNameById(operationHistoryVo.getOperator()));
+
 		}
+
 		return listVo;
 	}
 

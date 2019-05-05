@@ -1,7 +1,6 @@
 package com.rainyhon.common.service;
 
-import com.rainyhon.common.model.PsmUser;
-import com.rainyhon.common.model.ScheduleConfig;
+import com.rainyhon.common.model.*;
 import com.rainyhon.common.vo.ScheduleConfigVo;
 import com.rainyhon.common.vo.ResultVo;
 
@@ -9,8 +8,6 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.mapper.ScheduleConfigMapper;
-import com.rainyhon.common.model.ScheduleConfigExample;
-import com.rainyhon.common.model.ScheduleDetail;
 import com.rainyhon.common.util.CommonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +32,8 @@ public class ScheduleConfigService {
 	@Autowired
 	private ScheduleDetailService scheduleDetailService;
 
-	@Autowired
-	private PsmUserService psmUserService;
+//	@Autowired
+//	private PsmUserService psmUserService;
 
 	@Autowired
 	private ParaDefineService paraDefineService;
@@ -58,6 +55,9 @@ public class ScheduleConfigService {
 		}
 	}
 
+	@Autowired
+	private PersonInfoService personInfoService;
+
 	private List<ScheduleDetail> buildDetailList(ScheduleConfig config) {
 		List<ScheduleDetail> resultList = new ArrayList<>();
 
@@ -66,20 +66,34 @@ public class ScheduleConfigService {
 			resultList.add(detail);
 
 			// 按重复周期生成后续日程
-			List<ScheduleDetail> psmScheduleDetails = generateScheduleDetail(detail, config.getRepeatType());
-			resultList.addAll(psmScheduleDetails);
+			List<ScheduleDetail> scheduleDetailList = generateScheduleDetail(detail, config.getRepeatType());
+			resultList.addAll(scheduleDetailList);
 		} else {
-			List<PsmUser> userList = psmUserService.getUserListByOrgId(config.getTeamId());
-			if (userList != null && userList.size() > 0) {
-				userList.forEach(user -> {
-					config.setObjectId(user.getId());
-					config.setRepeatType(user.getUsername());
+//			List<PsmUser> userList = psmUserService.getUserListByOrgId(config.getTeamId());
+//			if (userList != null && userList.size() > 0) {
+//				userList.forEach(user -> {
+//					config.setObjectId(user.getId());
+//					config.setRepeatType(user.getUsername());
+//					ScheduleDetail detail = buildDetail(config);
+//					resultList.add(detail);
+//
+			// 按重复周期生成后续日程
+//					List<ScheduleDetail> scheduleDetailList = generateScheduleDetail(detail, config.getRepeatType());
+//					resultList.addAll(scheduleDetailList);
+//				});
+//			}
+
+			List<PersonInfo> personInfoList = personInfoService.getPersonInfoListByOrgId(config.getTeamId());
+			if (CommonUtil.isNotEmpty(personInfoList)) {
+				personInfoList.forEach(personInfo -> {
+					config.setObjectId(personInfo.getId());
+					// config.setRepeatType(user.getUsername());
 					ScheduleDetail detail = buildDetail(config);
 					resultList.add(detail);
 
 					// 按重复周期生成后续日程
-					List<ScheduleDetail> psmScheduleDetails = generateScheduleDetail(detail, config.getRepeatType());
-					resultList.addAll(psmScheduleDetails);
+					List<ScheduleDetail> scheduleDetailList = generateScheduleDetail(detail, config.getRepeatType());
+					resultList.addAll(scheduleDetailList);
 				});
 			}
 		}

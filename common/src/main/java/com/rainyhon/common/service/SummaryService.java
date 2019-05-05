@@ -6,6 +6,7 @@ import com.rainyhon.common.util.JedisPoolUtil;
 import com.rainyhon.common.vo.DetailVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.*;
 
 @Service(value = "commonSummary")
 @Transactional(rollbackFor = Exception.class)
+@Slf4j
 public class SummaryService {
 
 	@Value("${summary.task.interval}")
@@ -24,7 +26,7 @@ public class SummaryService {
 	private CommonService commonService;
 
 	@Autowired
-	private PersonService personService;
+	private PersonInfoService personInfoService;
 
 	@Autowired
 	private JedisPoolUtil redisUtil;
@@ -96,7 +98,7 @@ public class SummaryService {
 
 		List<DetailVo> detailVos = CommonUtil.map2PO(list, DetailVo.class);
 		detailVos.forEach(detailVo -> {
-			PersonInfo info = personService.getPersonInfo(detailVo.getUserId());
+			PersonInfo info = personInfoService.getPersonInfo(detailVo.getUserId());
 			detailVo.setUserId(info.getPhoto());
 		});
 
@@ -109,14 +111,14 @@ public class SummaryService {
 		String areaKey = "area:" + areaId;
 		Set<String> userIdSet = redisUtil.smemebers(areaKey);
 		for (String userId : userIdSet) {
-			PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
+			PersonInfo personInfo = personInfoService.getPersonInfo(userId);
 
 			DetailVo vo = new DetailVo();
 			vo.setId("");
-			vo.setSummaryId(psmPersonInfo.getPhoto());
+			vo.setSummaryId(personInfo.getPhoto());
 			vo.setAreaId(areaId);
 			vo.setUserId(userId);
-			vo.setUserName(psmPersonInfo.getName());
+			vo.setUserName(personInfo.getName());
 			vo.setTime(new Date());
 
 			voList.add(vo);
@@ -132,17 +134,17 @@ public class SummaryService {
 		for (String areaKey : areaList) {
 			Set<String> userIdSet = redisUtil.smemebers(areaKey);
 			for (String userId : userIdSet) {
-				PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
-				if (psmPersonInfo == null) {
+				PersonInfo personInfo = personInfoService.getPersonInfo(userId);
+				if (personInfo == null) {
 					continue;
 				}
 
 				DetailVo vo = new DetailVo();
 				vo.setId("");
-				vo.setSummaryId(psmPersonInfo.getPhoto());
+				vo.setSummaryId(personInfo.getPhoto());
 				vo.setAreaId(areaKey.split(":")[1]);
 				vo.setUserId(userId);
-				vo.setUserName(psmPersonInfo.getName());
+				vo.setUserName(personInfo.getName());
 				vo.setTime(new Date());
 
 				voList.add(vo);

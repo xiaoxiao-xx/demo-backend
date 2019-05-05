@@ -16,8 +16,8 @@ import org.springframework.web.client.RestTemplate;
 @EnableScheduling
 @SpringBootApplication
 @EnableAsync
-@MapperScan(basePackages = { "com.microcore.center.mapper", "com.rainyhon.common.mapper" })
-@ComponentScan(basePackages = { "com.microcore.center", "com.rainyhon.common", "com.rainyhon.task", "com.rainyhon.auth" })
+@MapperScan(basePackages = { "com.rainyhon.common.mapper" })
+@ComponentScan(basePackages = { "com.rainyhon.common", "com.rainyhon.task", "com.rainyhon.auth" })
 public class TaskSystemApplication {
 
 	public static void main(String[] args) {

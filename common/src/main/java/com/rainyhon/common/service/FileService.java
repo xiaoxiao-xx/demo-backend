@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class FileService {
 
 	@Autowired
-	private FileMapper psmFileMapper;
+	private FileMapper fileMapper;
 
-	public void add(File psmFile) {
-		psmFileMapper.insert(psmFile);
+	public void add(File file) {
+		fileMapper.insert(file);
 	}
 
 }

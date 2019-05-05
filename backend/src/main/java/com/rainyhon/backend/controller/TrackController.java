@@ -19,10 +19,6 @@ public class TrackController {
 		this.trackService = trackService;
 	}
 
-	/**
-	 * 作废接口
-	 * 不再使用 summary 表及 detail 表
-	 */
 	@GetMapping("getTrackInfo")
 	public ResultVo getTrackInfo(@RequestParam String userId,
 	                             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH-mm-ss SSS") Date time) {

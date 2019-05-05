@@ -8,4 +8,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class RollCallResultVo extends RollCallResult {
 
+	private String resultStr;
+
+	private String personName;
+
+	private String orgName;
+
 }

@@ -30,10 +30,10 @@ import static com.rainyhon.common.util.CommonUtil.image2byte;
 @Service
 @Transactional
 @Slf4j
-public class PersonService {
+public class PersonInfoService {
 
 	@Autowired
-	private PersonInfoMapper psmPersonInfoMapper;
+	private PersonInfoMapper personInfoMapper;
 
 	@Autowired
 	private DepartmentService departmentService;
@@ -64,7 +64,7 @@ public class PersonService {
 
 		personInfoVo.setId(userId);
 		EntityUtils.setCreateAndUpdateInfo(personInfoVo);
-		psmPersonInfoMapper.insertSelective(personInfoVo);
+		personInfoMapper.insertSelective(personInfoVo);
 
 		operHisService.add(personInfoVo.getId(), Constants.OPER_HIS_ADD);
 
@@ -98,7 +98,7 @@ public class PersonService {
 
 	public ResultVo update(PersonInfoVo personInfoVo) {
 		EntityUtils.setUpdateInfo(personInfoVo);
-		psmPersonInfoMapper.updateByPrimaryKeySelective(personInfoVo);
+		personInfoMapper.updateByPrimaryKeySelective(personInfoVo);
 
 		byte[] image = image2byte(faceImageDirPath + "/" + personInfoVo.getPhoto());
 		String imageString = CommonUtil.byte2Base64Str(image);
@@ -144,7 +144,7 @@ public class PersonService {
 		PersonInfo personInfo = new PersonInfo();
 		personInfo.setId(id);
 		personInfo.setDelStatus(Constants.DELETE_STATUS_YES);
-		psmPersonInfoMapper.updateByPrimaryKeySelective(personInfo);
+		personInfoMapper.updateByPrimaryKeySelective(personInfo);
 	}
 
 	private void removeFaceImage(String personId) {
@@ -179,27 +179,27 @@ public class PersonService {
 			criteria.andOrgIdEqualTo(deptId);
 		}
 		List<PersonInfoVo> listPersonInfoVo = new ArrayList<>();
-		PageInfo<PersonInfo> psmPersonInfoPage = PageHelper.startPage(pageIndex, pageSize)
-				.doSelectPageInfo(() -> psmPersonInfoMapper.selectByExample(example));
-		for (PersonInfo psmPersonInfo : psmPersonInfoPage.getList()) {
-			String deptName = departmentService.getDepartmentName(psmPersonInfo.getOrgId());
-			PersonInfoVo personInfoVo = CommonUtil.po2VO(psmPersonInfo, PersonInfoVo.class);
+		PageInfo<PersonInfo> personInfoPageInfo = PageHelper.startPage(pageIndex, pageSize)
+				.doSelectPageInfo(() -> personInfoMapper.selectByExample(example));
+		for (PersonInfo personInfo : personInfoPageInfo.getList()) {
+			String deptName = departmentService.getDepartmentName(personInfo.getOrgId());
+			PersonInfoVo personInfoVo = CommonUtil.po2VO(personInfo, PersonInfoVo.class);
 			personInfoVo.setDeptName(deptName);
 			listPersonInfoVo.add(personInfoVo);
 		}
 		PageInfo<PersonInfoVo> pageInfo = new PageInfo(listPersonInfoVo);
-		pageInfo.setTotal(psmPersonInfoPage.getTotal());
+		pageInfo.setTotal(personInfoPageInfo.getTotal());
 		return ResultVo.ok(pageInfo);
 	}
 
 	public ResultVo importantCare(PersonInfoVo personInfoVo) {
 		personInfoVo.setCareStatus("YES");
-		psmPersonInfoMapper.updateByPrimaryKeySelective(personInfoVo);
+		personInfoMapper.updateByPrimaryKeySelective(personInfoVo);
 		return ResultVo.ok();
 	}
 
 	public ResultVo imageAcquisition(PersonInfoVo personInfoVo) {
-		psmPersonInfoMapper.updateByPrimaryKeySelective(personInfoVo);
+		personInfoMapper.updateByPrimaryKeySelective(personInfoVo);
 		return ResultVo.ok();
 	}
 
@@ -207,27 +207,27 @@ public class PersonService {
 		PersonInfoExample example = new PersonInfoExample();
 		PersonInfoExample.Criteria criteria = example.createCriteria();
 		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
-		return ResultVo.ok(psmPersonInfoMapper.selectByExample(example));
+		return ResultVo.ok(personInfoMapper.selectByExample(example));
 	}
 
-	public List<PersonInfo> getPersonInfoList(String orgId) {
+	public List<PersonInfo> getPersonInfoListByOrgId(String orgId) {
 		PersonInfoExample example = new PersonInfoExample();
 		PersonInfoExample.Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotBlank(orgId)) {
 			criteria.andOrgIdEqualTo(orgId);
 		}
 		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
-		return psmPersonInfoMapper.selectByExample(example);
+		return personInfoMapper.selectByExample(example);
 	}
 
 	public PersonInfo getPersonInfo(String id) {
-		return psmPersonInfoMapper.selectByPrimaryKey(id);
+		return personInfoMapper.selectByPrimaryKey(id);
 	}
 
 	public String getPersonInfoName(String id) {
-		PersonInfo psmPersonInfo = getPersonInfo(id);
-		if (psmPersonInfo != null) {
-			return psmPersonInfo.getName();
+		PersonInfo personInfo = getPersonInfo(id);
+		if (personInfo != null) {
+			return personInfo.getName();
 		}
 
 		return "";
@@ -246,9 +246,9 @@ public class PersonService {
 			return ResultVo.fail("输入不可为空");
 		}
 
-		List<PersonInfo> psmPersonInfoList = psmPersonInfoMapper.selectByExample(example);
-		if (CommonUtil.isNotEmpty(psmPersonInfoList)) {
-			PersonInfo info = psmPersonInfoList.get(0);
+		List<PersonInfo> personInfoList = personInfoMapper.selectByExample(example);
+		if (CommonUtil.isNotEmpty(personInfoList)) {
+			PersonInfo info = personInfoList.get(0);
 			PersonInfoVo vo = CommonUtil.po2VO(info, PersonInfoVo.class);
 
 			String key = "user:" + info.getId();
@@ -285,15 +285,24 @@ public class PersonService {
 
 	public int getPersonCount() {
 		Map<String, Object> params = new HashMap<>(3);
-		String sql = "from person_info";
+		String sql = "from person_info where del_status = 'NO'";
 		params.put("sql", sql);
+		Long count = commonService.executeGetCount(params);
+		return count.intValue();
+	}
+
+	public int getPersonCountByOrgId(String orgId) {
+		Map<String, Object> params = new HashMap<>(3);
+		String sql = "from person_info where org_id = #{orgId} and del_status = 'NO'";
+		params.put("sql", sql);
+		params.put("orgId", orgId);
 		Long count = commonService.executeGetCount(params);
 		return count.intValue();
 	}
 
 	public int getImportantCarePersonCount() {
 		Map<String, Object> params = new HashMap<>(3);
-		String sql = "from person_info where impt_care_status = 'Y'";
+		String sql = "from person_info where impt_care_status = 'Y' and del_status = 'NO'";
 		params.put("sql", sql);
 		Long count = commonService.executeGetCount(params);
 		return count.intValue();
@@ -313,8 +322,8 @@ public class PersonService {
 		PersonInfoExample example = new PersonInfoExample();
 		PersonInfoExample.Criteria criteria = example.createCriteria();
 		criteria.andOrgIdEqualTo(orgId);
-		List<PersonInfo> psmPersonInfos = psmPersonInfoMapper.selectByExample(example);
-		return ResultVo.ok(psmPersonInfos);
+		List<PersonInfo> personInfoList = personInfoMapper.selectByExample(example);
+		return ResultVo.ok(personInfoList);
 	}
 
 	public ResultVo<?> getPersonInfoById(String id) {

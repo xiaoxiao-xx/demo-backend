@@ -37,7 +37,6 @@ public class AlarmResultService {
 	@Autowired
 	private CommonService commonService;
 
-	
 	public PageInfo<AlarmResultVo> getRealAlarmList(String alarmType, String operator, String state,
 	                                                Integer pageIndex, Integer pageSize) {
 		AlarmResultExample example = new AlarmResultExample();
@@ -68,7 +67,6 @@ public class AlarmResultService {
 		return pageInfo;
 	}
 
-	
 	public PageInfo<AlarmResultVo> page(String alarmType, String operator, String state,
 	                                    Integer pageIndex, Integer pageSize) {
 		String sql = "SELECT\n" +
@@ -86,7 +84,6 @@ public class AlarmResultService {
 		return pageInfo;
 	}
 
-	
 	public ResultVo delete(String id) {
 		String[] ids = id.split(",");
 		for (String i : ids) {
@@ -96,7 +93,6 @@ public class AlarmResultService {
 		return ResultVo.ok();
 	}
 
-	
 	public ResultVo update(AlarmResultVo vo) {
 		AlarmResult realAlarm = CommonUtil.po2VO(vo, AlarmResult.class);
 		alarmResultMapper.updateByPrimaryKey(realAlarm);
@@ -104,7 +100,6 @@ public class AlarmResultService {
 		return ResultVo.ok();
 	}
 
-	
 	public ResultVo add(AlarmResultVo vo) {
 		AlarmResult realAlarm = CommonUtil.po2VO(vo, AlarmResult.class);
 		realAlarm.setId(getUUID());
@@ -113,17 +108,15 @@ public class AlarmResultService {
 		return ResultVo.ok();
 	}
 
-	
 	public ResultVo dealRealAlarm(AlarmResultVo vo) {
-		AlarmResult psmRealAlarm = alarmResultMapper.selectByPrimaryKey(vo.getId());
-		psmRealAlarm.setRemark(vo.getRemark());
-		psmRealAlarm.setState(vo.getState());
-		psmRealAlarm.setOperator(CommonUtil.getCurrentUserId());
-		alarmResultMapper.updateByPrimaryKey(psmRealAlarm);
+		AlarmResult alarmResult = alarmResultMapper.selectByPrimaryKey(vo.getId());
+		alarmResult.setRemark(vo.getRemark());
+		alarmResult.setState(vo.getState());
+		alarmResult.setOperator(CommonUtil.getCurrentUserId());
+		alarmResultMapper.updateByPrimaryKey(alarmResult);
 		return ResultVo.ok();
 	}
 
-	
 	public ResultVo getAlarmCount() {
 		String sql = "SELECT alarm_type, count( * ) count, p.para_value " +
 				"FROM alarm_result " +
@@ -134,8 +127,6 @@ public class AlarmResultService {
 		List<Map<String, Object>> list = commonService.executeSelectSQL(prams);
 		return ResultVo.ok(list);
 	}
-
-	
 
 	public ResultVo getAlarmStateInfo() {
 		String sql = "select state, count(id) count from alarm_result GROUP BY state";
@@ -163,7 +154,6 @@ public class AlarmResultService {
 		return ResultVo.ok(resultMap);
 	}
 
-	
 	public int getUnprocessedAlarmCount() {
 		String sql = "from alarm_result where state = '0'";
 		Map<String, Object> params = new HashMap<>(3);

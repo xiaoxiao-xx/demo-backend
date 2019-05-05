@@ -6,7 +6,7 @@ import com.rainyhon.common.model.Face;
 import com.rainyhon.common.model.Material;
 import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.service.MaterialService;
-import com.rainyhon.common.service.PersonService;
+import com.rainyhon.common.service.PersonInfoService;
 import com.rainyhon.common.service.AlarmResultService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.JedisPoolUtil;
@@ -39,7 +39,7 @@ public class AsyncTask {
 
 	private final JedisPoolUtil redisUtil;
 
-	private final PersonService personService;
+	private final PersonInfoService personInfoService;
 
 	private final RabbitMQUtil rabbitMQUtil;
 
@@ -68,11 +68,11 @@ public class AsyncTask {
 
 	@Autowired
 	public AsyncTask(HttpTemplate httpTemplate, MaterialService materialService,
-	                 JedisPoolUtil redisUtil, PersonService personService, RabbitMQUtil rabbitMQUtil, AlarmResultService alarmResultService) {
+	                 JedisPoolUtil redisUtil, PersonInfoService personInfoService, RabbitMQUtil rabbitMQUtil, AlarmResultService alarmResultService) {
 		this.httpTemplate = httpTemplate;
 		this.materialService = materialService;
 		this.redisUtil = redisUtil;
-		this.personService = personService;
+		this.personInfoService = personInfoService;
 		this.rabbitMQUtil = rabbitMQUtil;
 		this.alarmResultService = alarmResultService;
 	}
@@ -116,15 +116,15 @@ public class AsyncTask {
 			Material material = materialService.getMaterial(materialId);
 			String areaId = material.getAreaId();
 			String userId = face.getUserId();
-			log.info(">>> detected face: {}, score: {}", personService.getPersonInfoName(userId), face.getScore());
+			log.info(">>> detected face: {}, score: {}", personInfoService.getPersonInfoName(userId), face.getScore());
 			log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
 			// k-v  k: user_id, v: area_id & capture_time
 			Map<String, String> map = new HashMap<>();
-			map.put("userName", personService.getPersonInfoName(userId));
+			map.put("userName", personInfoService.getPersonInfoName(userId));
 			map.put("areaId", areaId);
 			map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
-			map.put("teamId", personService.getPersonInfo(userId).getOrgId());
+			map.put("teamId", personInfoService.getPersonInfo(userId).getOrgId());
 			redisUtil.hmset("user:" + userId, map);
 
 			// k-v  k: area_id, v: user_id set
@@ -154,17 +154,17 @@ public class AsyncTask {
 		vo.setAlarmType(random("警告弹出框", "警报声音"));
 
 		String userId = face.getUserId();
-		PersonInfo psmPersonInfo = personService.getPersonInfo(userId);
-		if (psmPersonInfo == null) {
-			psmPersonInfo = new PersonInfo();
+		PersonInfo personInfo = personInfoService.getPersonInfo(userId);
+		if (personInfo == null) {
+			personInfo = new PersonInfo();
 		}
 
-		vo.setPersonInfo(psmPersonInfo);
-		vo.setCharacterInfo(psmPersonInfo.getId());
+		vo.setPersonInfo(personInfo);
+		vo.setCharacterInfo(personInfo.getId());
 
 		Date d = face.getCreateTime();
 		// 某人离开或者进入区域也要推送消息
-		String personName = psmPersonInfo.getName();
+		String personName = personInfo.getName();
 		vo.setEventInfo("人员：" + personName
 				+ "，时间：" + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(d)
 				+ "，进入" + getAreaName(areaId) + ""
@@ -180,7 +180,7 @@ public class AsyncTask {
 				rabbitMQUtil.sendMsg(gson.toJson(vo));
 
 				String alarmAreaId = "5";
-				if ("1".equals(psmPersonInfo.getOrgId()) && alarmAreaId.equals(areaId)) {
+				if ("1".equals(personInfo.getOrgId()) && alarmAreaId.equals(areaId)) {
 					generateAlarmMessage(face, personName);
 				}
 			}

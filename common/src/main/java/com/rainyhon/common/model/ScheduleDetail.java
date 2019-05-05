@@ -1,5 +1,7 @@
 package com.rainyhon.common.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class ScheduleDetail {
@@ -36,26 +38,31 @@ public class ScheduleDetail {
     /**
      * 日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date someDate;
 
     /**
      * 开始时间：完整时间yyyymmddhh24miss
      */
+    @DateTimeFormat(pattern = "HH:mm:ss")
     private Date startTime;
 
     /**
      * 结束时间：完整时间yyyymmddhh24miss
      */
+    @DateTimeFormat(pattern = "HH:mm:ss")
     private Date endTime;
 
     /**
      * 实际开始时间
      */
+    @DateTimeFormat(pattern = "HH:mm:ss")
     private Date realStartTime;
 
     /**
      * 实际结束时间
      */
+    @DateTimeFormat(pattern = "HH:mm:ss")
     private Date realEndTime;
 
     /**
@@ -90,25 +97,25 @@ public class ScheduleDetail {
 
     /**
      * 删除状态
- 
+
      */
     private String delStatus;
 
     /**
      * 最后修改人ID
- 
+
      */
     private String updUserId;
 
     /**
      * 最后修改机构ID
- 
+
      */
     private String updOrgId;
 
     /**
      * 最后修改时间
- 
+
      */
     private Date updTm;
 
@@ -401,9 +408,9 @@ public class ScheduleDetail {
 
     /**
      * 删除状态
- 
+
      * @return del_status 删除状态
- 
+
      */
     public String getDelStatus() {
         return delStatus;
@@ -411,9 +418,9 @@ public class ScheduleDetail {
 
     /**
      * 删除状态
- 
+
      * @param delStatus 删除状态
- 
+
      */
     public void setDelStatus(String delStatus) {
         this.delStatus = delStatus == null ? null : delStatus.trim();
@@ -421,9 +428,9 @@ public class ScheduleDetail {
 
     /**
      * 最后修改人ID
- 
+
      * @return upd_user_id 最后修改人ID
- 
+
      */
     public String getUpdUserId() {
         return updUserId;
@@ -431,9 +438,9 @@ public class ScheduleDetail {
 
     /**
      * 最后修改人ID
- 
+
      * @param updUserId 最后修改人ID
- 
+
      */
     public void setUpdUserId(String updUserId) {
         this.updUserId = updUserId == null ? null : updUserId.trim();
@@ -441,9 +448,9 @@ public class ScheduleDetail {
 
     /**
      * 最后修改机构ID
- 
+
      * @return upd_org_id 最后修改机构ID
- 
+
      */
     public String getUpdOrgId() {
         return updOrgId;
@@ -451,9 +458,9 @@ public class ScheduleDetail {
 
     /**
      * 最后修改机构ID
- 
+
      * @param updOrgId 最后修改机构ID
- 
+
      */
     public void setUpdOrgId(String updOrgId) {
         this.updOrgId = updOrgId == null ? null : updOrgId.trim();
@@ -461,9 +468,9 @@ public class ScheduleDetail {
 
     /**
      * 最后修改时间
- 
+
      * @return upd_tm 最后修改时间
- 
+
      */
     public Date getUpdTm() {
         return updTm;
@@ -471,9 +478,9 @@ public class ScheduleDetail {
 
     /**
      * 最后修改时间
- 
+
      * @param updTm 最后修改时间
- 
+
      */
     public void setUpdTm(Date updTm) {
         this.updTm = updTm;

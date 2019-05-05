@@ -1,11 +1,9 @@
 package com.rainyhon.common.service;
 
 import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.mapper.RollCallResultMapper;
 import com.rainyhon.common.mapper.ScheduleDetailMapper;
-import com.rainyhon.common.model.PersonInfo;
-import com.rainyhon.common.model.RollCallResult;
-import com.rainyhon.common.model.ScheduleDetail;
-import com.rainyhon.common.model.ScheduleDetailExample;
+import com.rainyhon.common.model.*;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.util.JedisPoolUtil;
@@ -14,6 +12,7 @@ import com.rainyhon.common.vo.ScheduleDetailVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.rainyhon.common.constant.Constants.ATTENDANCE_RESULT_ABSENTEEISM;
 import static com.rainyhon.common.constant.Constants.SCHEDULE_DETAIL_TYPE_ROLL_CALL;
 
 @Service
@@ -35,7 +35,7 @@ public class ScheduleDetailService {
 
 	private final JedisPoolUtil redisUtil;
 
-	private final PersonService personService;
+	private final PersonInfoService personInfoService;
 
 	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
 			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
@@ -58,28 +58,45 @@ public class ScheduleDetailService {
 	}
 
 	@Autowired
-	public ScheduleDetailService(ScheduleDetailMapper psmScheduleDetailMapper, CommonService commonService,
-	                             JedisPoolUtil redisUtil, PersonService personService) {
-		this.scheduleDetailMapper = psmScheduleDetailMapper;
+	public ScheduleDetailService(ScheduleDetailMapper scheduleDetailMapper, CommonService commonService,
+	                             JedisPoolUtil redisUtil, PersonInfoService personInfoService) {
+		this.scheduleDetailMapper = scheduleDetailMapper;
 		this.commonService = commonService;
 		this.redisUtil = redisUtil;
-		this.personService = personService;
+		this.personInfoService = personInfoService;
 	}
 
-
-	public ResultVo add(ScheduleDetailVo vo) {
-		addDetail(vo);
-		return ResultVo.ok();
+	public ResultVo<String> add(ScheduleDetailVo vo) {
+		String id = addDetail(vo);
+		return ResultVo.ok(id);
 	}
 
+	@Autowired
+	private UserService userService;
 
-	public void addDetail(ScheduleDetail detail) {
+	public String addDetail(ScheduleDetail detail) {
 		String detailId = CommonUtil.getUUID();
 		detail.setId(detailId);
 
+		// 默认把机构总人数设置为应到人数
+		String currentOrgId = CommonUtil.getCurrentOrgId();
+		Integer number = personInfoService.getPersonCountByOrgId(currentOrgId);
+		detail.setNumber(number);
+
+		// 后台默认设置时间
+		int defaultTime = 60;
+		detail.setSomeDate(new Date());
+		detail.setStartTime(new Date());
+		detail.setEndTime(new DateTime().plusSeconds(defaultTime).toDate());
+
+		String currentUserId = CommonUtil.getCurrentUserId();
+		String teacherId = userService.getRealPersonIdByUserId(currentUserId);
+		detail.setTeacher(teacherId);
+		EntityUtils.setCreateAndUpdateInfo(detail);
+
 		// 为电子点名生成结果表
 		if (SCHEDULE_DETAIL_TYPE_ROLL_CALL.equals(detail.getType())) {
-			List<PersonInfo> personInfoList = personService.getPersonInfoList(detail.getObjectId());
+			List<PersonInfo> personInfoList = personInfoService.getPersonInfoListByOrgId(detail.getObjectId());
 			if (CommonUtil.isNotEmpty(personInfoList)) {
 				personInfoList.forEach(personInfo -> {
 					RollCallResult result = new RollCallResult();
@@ -87,42 +104,43 @@ public class ScheduleDetailService {
 					result.setOrgId(personInfo.getOrgId());
 					result.setPersonId(personInfo.getId());
 					result.setDetailId(detailId);
-					result.setResult(Constants.ATTENDANCE_RESULT_ABSENTEEISM);
+					result.setResult(ATTENDANCE_RESULT_ABSENTEEISM);
 					EntityUtils.setCreateAndUpdateInfo(result);
+					rollCallResultMapper.insert(result);
 				});
 			}
 		}
 
 		scheduleDetailMapper.insertSelective(detail);
+
+		return detailId;
 	}
 
+	@Autowired
+	private RollCallResultMapper rollCallResultMapper;
 
 	public ResultVo update(ScheduleDetailVo vo) {
 		scheduleDetailMapper.updateByPrimaryKeySelective(vo);
 		return ResultVo.ok();
 	}
 
-
 	public void update(ScheduleDetail detail) {
 		scheduleDetailMapper.updateByPrimaryKeySelective(detail);
 	}
-
 
 	public ResultVo delete(String id) {
 		scheduleDetailMapper.deleteByPrimaryKey(id);
 		return ResultVo.ok();
 	}
 
-
 	public ResultVo getScheduleDetailList(String objectType) {
 		ScheduleDetailExample example = new ScheduleDetailExample();
 		example.setOrderByClause("start_time asc");
 		ScheduleDetailExample.Criteria criteria = example.createCriteria();
 		criteria.andObjectTypeLike("%" + objectType.trim() + "%");
-		List<ScheduleDetail> psmScheduleDetails = scheduleDetailMapper.selectByExample(example);
-		return ResultVo.ok(psmScheduleDetails);
+		List<ScheduleDetail> scheduleDetailList = scheduleDetailMapper.selectByExample(example);
+		return ResultVo.ok(scheduleDetailList);
 	}
-
 
 	public ResultVo getOnDutyData() {
 		String sql = "SELECT p.org_id team_id, COUNT( 1 ) total_count, d.dept_name team_name \n" +
@@ -181,7 +199,6 @@ public class ScheduleDetailService {
 		return ResultVo.ok(duty);
 	}
 
-
 	public List<ScheduleDetail> getScheduleDetailByTimeAndArea(String userId, Date time, String areaId) {
 		Date timeAdd10Minute = new Date(time.getTime() + 10 * 60 * 1000);
 		Date timeSub10Minute = new Date(time.getTime() - 10 * 60 * 1000);
@@ -197,7 +214,6 @@ public class ScheduleDetailService {
 		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
 		return scheduleDetailMapper.selectByExample(example);
 	}
-
 
 	public List<ScheduleDetail> getScheduleDetailByTimeForRollCall(String orgId, Date time, String areaId) {
 		Date timeAdd10Minute = new Date(time.getTime() + 30 * 1000);
@@ -233,13 +249,13 @@ public class ScheduleDetailService {
 	private PersonInfo getLeader(int dayOfWeek) {
 		int index = (dayOfWeek - 1) % leaderList.size();
 		String userId = leaderList.get(index);
-		return personService.getPersonInfo(userId);
+		return personInfoService.getPersonInfo(userId);
 	}
 
 	private PersonInfo getOnDutyPerson(int dayOfWeek) {
 		int index = (dayOfWeek - 1) % onDutyPersonList.size();
 		String userId = onDutyPersonList.get(index);
-		return personService.getPersonInfo(userId);
+		return personInfoService.getPersonInfo(userId);
 	}
 
 	private void addOne(Map<String, Integer> map, String key) {

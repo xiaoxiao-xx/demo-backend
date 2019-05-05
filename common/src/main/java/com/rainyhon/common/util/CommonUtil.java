@@ -327,10 +327,6 @@ public class CommonUtil {
 		return new Date();
 	}
 
-	public static String getCurrentUserId() {
-		return "system";
-	}
-
 	/**
 	 * 获取当前时间
 	 *
@@ -447,7 +443,7 @@ public class CommonUtil {
 	 *
 	 * @return 当前用户的机构ID
 	 */
-	public static String getOrgId() {
+	public static String getCurrentOrgId() {
 		return UserUtil.getOrgId();
 	}
 
@@ -456,7 +452,7 @@ public class CommonUtil {
 	 *
 	 * @return 用户ID
 	 */
-	public static String getUserId() {
+	public static String getCurrentUserId() {
 		return UserUtil.getUserId();
 	}
 
@@ -475,14 +471,21 @@ public class CommonUtil {
 		endCalendar.setTime(endDate);
 		long beginTime = beginCalendar.getTime().getTime();
 		long endTime = endCalendar.getTime().getTime();
-		int betweenDays = (int) ((endTime - beginTime) / (1000 * 60 * 60 * 24)); // 先算出两时间的毫秒数之差大于一天的天数
+		// 先算出两时间的毫秒数之差大于一天的天数
+		int betweenDays = (int) ((endTime - beginTime) / (1000 * 60 * 60 * 24));
 
-		endCalendar.add(Calendar.DAY_OF_MONTH, -betweenDays); // 使endCalendar减去这些天数，将问题转换为两时间的毫秒数之差不足一天的情况
-		endCalendar.add(Calendar.DAY_OF_MONTH, -1); // 再使endCalendar减去1天
-		if (beginCalendar.get(Calendar.DAY_OF_MONTH) == endCalendar.get(Calendar.DAY_OF_MONTH)) // 比较两日期的DAY_OF_MONTH是否相等
-			return betweenDays + 1;    // 相等说明确实跨天了
-		else
-			return betweenDays + 0;    // 不相等说明确实未跨天
+		// 使endCalendar减去这些天数，将问题转换为两时间的毫秒数之差不足一天的情况
+		endCalendar.add(Calendar.DAY_OF_MONTH, -betweenDays);
+		// 再使endCalendar减去1
+		endCalendar.add(Calendar.DAY_OF_MONTH, -1);
+		// 比较两日期的DAY_OF_MONTH是否相等天
+		if (beginCalendar.get(Calendar.DAY_OF_MONTH) == endCalendar.get(Calendar.DAY_OF_MONTH)) {
+			// 相等说明确实跨天了
+			return betweenDays + 1;
+		} else {
+			// 不相等说明确实未跨天
+			return betweenDays + 0;
+		}
 	}
 
 }

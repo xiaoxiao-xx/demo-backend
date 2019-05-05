@@ -30,14 +30,14 @@ public class FaceApiService {
 	public void addGroup(String groupId) {
 		FaceSdkGroupVo faceSdkGroupVo = new FaceSdkGroupVo();
 		faceSdkGroupVo.setGroup_id(groupId);
-		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/add_group", faceSdkGroupVo, String.class);
+		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/add_group", faceSdkGroupVo, String.class);
 		log.info("addGroup ret={}", ret);
 	}
 
 	public void delGroup(String groupId) {
 		FaceSdkGroupVo faceSdkGroupVo = new FaceSdkGroupVo();
 		faceSdkGroupVo.setGroup_id(groupId);
-		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/delete_group", faceSdkGroupVo, String.class);
+		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/delete_group", faceSdkGroupVo, String.class);
 		log.info("delGroup ret={}", ret);
 	}
 
@@ -47,7 +47,7 @@ public class FaceApiService {
 
 		String ret = "";
 		try {
-			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_add", faceSdkUserVo, String.class);
+			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/user_add", faceSdkUserVo, String.class);
 		} catch (Exception e) {
 			log.error("", e);
 			throw new CommonException("增加人脸识别标准照失败");
@@ -62,7 +62,7 @@ public class FaceApiService {
 
 		String ret = "";
 		try {
-			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_update", faceSdkUserVo, String.class);
+			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/user_update", faceSdkUserVo, String.class);
 		} catch (Exception e) {
 			log.error("", e);
 			throw new CommonException("更新人脸识别标准照失败");
@@ -76,7 +76,7 @@ public class FaceApiService {
 
 		String ret = "";
 		try {
-			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_delete", faceSdkUserVo, String.class);
+			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/user_delete", faceSdkUserVo, String.class);
 		} catch (Exception e) {
 			log.error("", e);
 			throw new CommonException("删除人脸识别标准照失败");
@@ -86,7 +86,7 @@ public class FaceApiService {
 	}
 
 	public void deleteUserFace(FaceSdkUserVo faceSdkUserVo) {
-		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v1/user_face_delete", faceSdkUserVo, String.class);
+		String ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/user_face_delete", faceSdkUserVo, String.class);
 		log.info("deleteUserFace ret={}", ret);
 	}
 

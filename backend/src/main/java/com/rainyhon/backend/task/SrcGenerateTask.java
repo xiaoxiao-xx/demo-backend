@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.model.SrcRecord;
 import com.rainyhon.common.service.DealResultDetailService;
-import com.rainyhon.common.service.PersonService;
+import com.rainyhon.common.service.PersonInfoService;
 import com.rainyhon.common.service.AlarmResultService;
 import com.rainyhon.common.service.SrcRecordService;
 import com.rainyhon.common.util.CommonUtil;
@@ -41,7 +41,7 @@ public class SrcGenerateTask {
 	private RabbitMQUtil rabbitMQUtil;
 
 	@Autowired
-	private PersonService personService;
+	private PersonInfoService personInfoService;
 
 	@Autowired
 	private AlarmResultService alarmResultService;
@@ -83,23 +83,23 @@ public class SrcGenerateTask {
 	// @Scheduled(fixedRate = 1000)
 	public void analysis() {
 		try {
-			SrcRecord psmSrcRecord = QUEUE_SRC.poll(1, TimeUnit.SECONDS);
-			if (psmSrcRecord == null || returnFlag()) {
+			SrcRecord srcRecord = QUEUE_SRC.poll(1, TimeUnit.SECONDS);
+			if (srcRecord == null || returnFlag()) {
 				return;
 			}
-			psmSrcRecord.setSrcState("2");
-			srcRecordService.update(psmSrcRecord);
+			srcRecord.setSrcState("2");
+			srcRecordService.update(srcRecord);
 
 			DealResDetailVo vo = new DealResDetailVo();
 			vo.setAddress(random("食堂", "教学楼", "教师宿舍", "仓库", "生物园地", "门卫室", "乒乓球台", "篮球场", "少年宫", "办公楼"));
 			vo.setAlarmState(random("是", "否"));
 			vo.setAlarmType(random("警告弹出框", "警报声音"));
-			PersonInfo psmPersonInfo = personService.getRandomPerson();
-			vo.setPersonInfo(psmPersonInfo);
-			vo.setCharacterInfo(psmPersonInfo.getId());
+			PersonInfo randomPerson = personInfoService.getRandomPerson();
+			vo.setPersonInfo(randomPerson);
+			vo.setCharacterInfo(randomPerson.getId());
 
 			// 某人离开或者进入区域也要推送消息
-			vo.setEventInfo("人员：" + psmPersonInfo.getName()
+			vo.setEventInfo("人员：" + randomPerson.getName()
 							+ "，时间：" + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(CommonUtil.getCurrentTime())
 							+ random(
 					"，进入区域(" + random("食堂", "教学楼", "教师宿舍", "仓库", "生物园地", "门卫室", "乒乓球台", "篮球场", "少年宫", "办公楼") + ")",
@@ -108,7 +108,7 @@ public class SrcGenerateTask {
 			);
 
 			vo.setResId(CommonUtil.getUUID());
-			vo.setSrcId(psmSrcRecord.getId());
+			vo.setSrcId(srcRecord.getId());
 			vo.setTime(CommonUtil.getCurrentTime());
 			vo.setValidState(random("是", "否"));
 			dealResultDetailService.add(vo);
@@ -117,7 +117,7 @@ public class SrcGenerateTask {
 			// rabbitMQUtil.sendMsg(gson.toJson(vo));
 
 			AlarmResultVo alarmVo = new AlarmResultVo();
-			vo.setEventInfo("人员：" + psmPersonInfo.getName()
+			vo.setEventInfo("人员：" + randomPerson.getName()
 							+ "，时间：" + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(CommonUtil.getCurrentTime())
 							+ random(
 					"，进入非法区域(" + random("食堂", "教学楼", "教师宿舍", "仓库", "生物园地", "门卫室", "乒乓球台", "篮球场", "少年宫", "办公楼") + ")！",
@@ -127,7 +127,7 @@ public class SrcGenerateTask {
 
 			alarmVo.setAlarmReason(vo.getEventInfo());
 			alarmVo.setAlarmModeType(random("1", "2"));
-			alarmVo.setObjectId(psmPersonInfo.getId());
+			alarmVo.setObjectId(randomPerson.getId());
 			alarmVo.setObjectType(random("1", "2"));
 			alarmVo.setTriggerTime(CommonUtil.getCurrentTime());
 			alarmVo.setState("0");

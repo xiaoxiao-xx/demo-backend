@@ -23,7 +23,7 @@ import java.util.List;
 public class DealResultDetailService {
 
 	@Autowired
-	private DealResDetailMapper psmDealResDetailMapper;
+	private DealResDetailMapper dealResDetailMapper;
 
 
 	public PageInfo<DealResDetailVo> getDealResultDetailList(String alarmType, Integer pageIndex, Integer pageSize) {
@@ -33,18 +33,18 @@ public class DealResultDetailService {
 			criteria.andAlarmTypeEqualTo(alarmType);
 		}
 
-		PageInfo<DealResDetail> psmDealResPageInfo = PageHelper.startPage(pageIndex, pageSize)
-				.doSelectPageInfo(() -> psmDealResDetailMapper.selectByExample(example));
+		PageInfo<DealResDetail> dealResDetailPageInfo = PageHelper.startPage(pageIndex, pageSize)
+				.doSelectPageInfo(() -> dealResDetailMapper.selectByExample(example));
 
-		List<DealResDetailVo> resVoList = CommonUtil.listPo2VO(psmDealResPageInfo.getList(), DealResDetailVo.class);
-		PageInfo<DealResDetailVo> resVoPageInfo = CommonUtil.po2VO(psmDealResPageInfo, PageInfo.class);
+		List<DealResDetailVo> resVoList = CommonUtil.listPo2VO(dealResDetailPageInfo.getList(), DealResDetailVo.class);
+		PageInfo<DealResDetailVo> resVoPageInfo = CommonUtil.po2VO(dealResDetailPageInfo, PageInfo.class);
 		resVoPageInfo.setList(resVoList);
 		return resVoPageInfo;
 	}
 
 
 	public ResultVo add(DealResDetailVo vo) {
-		psmDealResDetailMapper.insert(vo);
+		dealResDetailMapper.insert(vo);
 		return ResultVo.ok();
 	}
 
@@ -52,14 +52,14 @@ public class DealResultDetailService {
 	public ResultVo delete(String id) {
 		String[] ids = id.split(",");
 		for (String i : ids) {
-			psmDealResDetailMapper.deleteByPrimaryKey(i);
+			dealResDetailMapper.deleteByPrimaryKey(i);
 		}
 		return ResultVo.ok();
 	}
 
 
 	public ResultVo update(DealResDetailVo vo) {
-		psmDealResDetailMapper.updateByPrimaryKeySelective(vo);
+		dealResDetailMapper.updateByPrimaryKeySelective(vo);
 		return ResultVo.ok();
 	}
 

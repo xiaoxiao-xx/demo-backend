@@ -31,6 +31,8 @@ public class TrackService {
 
 	/**
 	 * 查询人员轨迹信息
+	 * 作废接口
+	 * 不再使用 summary 表及 detail 表
 	 *
 	 * @param userId user's id
 	 * @return Track info list
@@ -51,17 +53,12 @@ public class TrackService {
 	}
 
 	public ResultVo getTrackInfo2(String userId, Date time) {
-		String sql = "SELECT DATE_FORMAT( time, '%H:%i' ) time,\n" +
-				"\tarea_id \n" +
-				"FROM\n" +
-				"\tin_out_record \n" +
-				"WHERE\n" +
-				"\t1 = 1 \n" +
-				"\tAND user_id = #{userId} \n" +
-				"\tAND type = 'IN' \n" +
-				"\tAND DATE_FORMAT( #{inOutTime}, \"%Y-%m-%d\" ) = DATE_FORMAT( time, \"%Y-%m-%d\" ) \n" +
-				"ORDER BY\n" +
-				"\ttime ASC";
+		String sql = "SELECT DATE_FORMAT(in_time, '%H:%i') time, area_id \n" +
+				"FROM in_out_record \n" +
+				"WHERE 1 = 1 \n" +
+				"AND user_id = #{userId} \n" +
+				"AND DATE_FORMAT(#{inOutTime}, '%Y-%m-%d') = DATE_FORMAT(in_time, '%Y-%m-%d') \n" +
+				"ORDER BY in_time ASC";
 
 		Map<String, Object> params = new HashMap<>(2);
 		params.put("sql", sql);
@@ -83,7 +80,7 @@ public class TrackService {
 	private InOutRecordMapper inOutRecordMapper;
 
 	@Autowired
-	private PersonService personService;
+	private PersonInfoService personInfoService;
 
 	/**
 	 * 查询用户的进出记录
@@ -108,7 +105,7 @@ public class TrackService {
 		List<InOutRecordVo> voList = CommonUtil.listPo2VO(recordList, InOutRecordVo.class);
 		voList.forEach(vo -> {
 			vo.setAreaName(AreaDef.getAreaNameById(vo.getAreaId()));
-			vo.setPersonName(personService.getPersonInfoName(vo.getUserId()));
+			vo.setPersonName(personInfoService.getPersonInfoName(vo.getUserId()));
 		});
 
 		return ResultVo.ok(voList);
@@ -126,7 +123,7 @@ public class TrackService {
 	 */
 	public ResultVo getInOutTrackList(String areaId, Integer pageIndex, Integer pageSize) {
 		InOutRecordExample example = new InOutRecordExample();
-		example.setOrderByClause("time desc");
+		example.setOrderByClause("in_time desc");
 		InOutRecordExample.Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotBlank(areaId)) {
 			criteria.andAreaIdEqualTo(areaId);
@@ -142,10 +139,10 @@ public class TrackService {
 		List<InOutRecordVo> voList = CommonUtil.listPo2VO(list, InOutRecordVo.class);
 		voList.forEach(vo -> {
 			vo.setAreaName(AreaDef.getAreaNameById(vo.getAreaId()));
-			vo.setPersonName(personService.getPersonInfoName(vo.getUserId()));
+			vo.setPersonName(personInfoService.getPersonInfoName(vo.getUserId()));
 
 			String userId = vo.getUserId();
-			PersonInfo personInfo = personService.getPersonInfo(userId);
+			PersonInfo personInfo = personInfoService.getPersonInfo(userId);
 			String orgId = personInfo.getOrgId();
 			vo.setOrgName(orgService.getOrgNameById(orgId));
 		});
@@ -156,11 +153,11 @@ public class TrackService {
 	}
 
 	public ResultVo getPieChart(String userId, Date time) {
-		String sql ="SELECT area_id,\tcount( area_id ) count\n" +
+		String sql = "SELECT area_id, count(area_id) count\n" +
 				"FROM in_out_record \n" +
-				"WHERE 1 = 1 AND user_id = 'u9' \tAND type = 'IN' \tAND DATE_FORMAT( #{inOutTime}, \"%Y-%m-%d\" ) = DATE_FORMAT( time, \"%Y-%m-%d\" ) \n" +
+				"WHERE 1 = 1 AND user_id = #{userId} AND DATE_FORMAT( #{inOutTime}, '%Y-%m-%d') = DATE_FORMAT(in_time, '%Y-%m-%d') \n" +
 				"GROUP BY area_id \n" +
-				"ORDER BY time ASC";
+				"ORDER BY in_time ASC";
 
 		Map<String, Object> params = new HashMap<>(2);
 		params.put("sql", sql);

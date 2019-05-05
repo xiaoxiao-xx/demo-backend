@@ -1,5 +1,7 @@
 package com.rainyhon.backend.test;
 
+import com.rainyhon.common.util.Object2Byte;
+import com.rainyhon.common.vo.UserInfo;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,6 +24,18 @@ public class TimeTest {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_MONTH, 1);
 		System.out.println(cal.getTime());
+	}
+
+
+	@Test
+	public void SerializationTest() {
+		UserInfo userInfo = new UserInfo();
+		userInfo.setOrgId("org-1");
+		userInfo.setId("id-2");
+		byte[] bytes = Object2Byte.getBytesFromObject(userInfo);
+		UserInfo info = Object2Byte.getObjectFromBytes(bytes);
+		Assert.assertEquals(info.getOrgId(), "org-1");
+		Assert.assertEquals(info.getId(), "id-2");
 	}
 
 }

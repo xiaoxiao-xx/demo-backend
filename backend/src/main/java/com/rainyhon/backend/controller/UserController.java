@@ -2,7 +2,7 @@ package com.rainyhon.backend.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.model.User;
-import com.rainyhon.common.service.PsmUserService;
+//import com.rainyhon.common.service.PsmUserService;
 import com.rainyhon.common.service.UserService;
 import com.rainyhon.common.vo.ResultVo;
 import com.rainyhon.common.vo.UserInfo;
@@ -16,8 +16,8 @@ import java.util.List;
 @RequestMapping("user")
 public class UserController {
 
-	@Autowired
-	private PsmUserService psmUserService;
+//	@Autowired
+//	private PsmUserService psmUserService;
 
 	@Autowired
 	private UserService userService;
@@ -63,9 +63,9 @@ public class UserController {
 		return userService.getUserByUsername(username);
 	}
 
-	@GetMapping("getUserListByTeamId")
-	public ResultVo getUserListByTeamId(@RequestParam String id) {
-		return ResultVo.ok(psmUserService.getUserListByOrgId(id));
-	}
+//	@GetMapping("getUserListByTeamId")
+//	public ResultVo getUserListByTeamId(@RequestParam String id) {
+//		return ResultVo.ok(userService.getUserListByOrgId(id));
+//	}
 
 }

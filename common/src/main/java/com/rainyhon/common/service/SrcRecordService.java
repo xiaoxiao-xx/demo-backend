@@ -15,24 +15,24 @@ import java.util.List;
 public class SrcRecordService {
 
 	@Autowired
-	private SrcRecordMapper psmSrcRecordMapper;
+	private SrcRecordMapper srcRecordMapper;
 
 
 	public void add(SrcRecord srcRecord) {
 		srcRecord.setId(CommonUtil.getUUID());
 		srcRecord.setCreateTime(CommonUtil.getSystemDate());
-		psmSrcRecordMapper.insert(srcRecord);
+		srcRecordMapper.insert(srcRecord);
 	}
 
 	public List<SrcRecord> getSrcRecord(String srcState) {
 		SrcRecordExample example = new SrcRecordExample();
 		SrcRecordExample.Criteria criteria = example.createCriteria();
 		criteria.andSrcStateEqualTo(srcState);
-		return psmSrcRecordMapper.selectByExample(example);
+		return srcRecordMapper.selectByExample(example);
 	}
 
 	public void update(SrcRecord srcRecord) {
-		psmSrcRecordMapper.updateByPrimaryKey(srcRecord);
+		srcRecordMapper.updateByPrimaryKey(srcRecord);
 	}
 
 }

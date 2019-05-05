@@ -33,8 +33,8 @@ public class EntityUtils {
 		// 默认属性
 		String[] fields = { "delStatus", "crtUserId", "crtOrgId", "crtTm" };
 		Date date = CommonUtil.getCurrentTime();
-		String orgId = CommonUtil.getOrgId();
-		String userId = CommonUtil.getUserId();
+		String orgId = CommonUtil.getCurrentOrgId();
+		String userId = CommonUtil.getCurrentUserId();
 		Object[] value = { Constants.DELETE_STATUS_NO, userId, orgId, date };
 		// 填充默认属性值
 		setDefaultValues(entity, fields, value);
@@ -49,8 +49,8 @@ public class EntityUtils {
 		// 默认属性
 		String[] fields = { "updUserId", "updOrgId", "updTm" };
 		Date date = CommonUtil.getCurrentTime();
-		String orgId = CommonUtil.getOrgId();
-		String userId = CommonUtil.getUserId();
+		String orgId = CommonUtil.getCurrentOrgId();
+		String userId = CommonUtil.getCurrentUserId();
 		Object[] value = { userId, orgId, date };
 		// 填充默认属性值
 		setDefaultValues(entity, fields, value);

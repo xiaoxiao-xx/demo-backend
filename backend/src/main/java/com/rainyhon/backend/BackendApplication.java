@@ -19,8 +19,8 @@ import org.springframework.web.client.RestTemplate;
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableAsync
-@MapperScan(basePackages = { "com.microcore.center.mapper", "com.rainyhon.common.mapper" })
-@ComponentScan(basePackages = { "com.rainyhon.backend", "com.microcore.center", "com.rainyhon.auth", "com.rainyhon.common" })
+@MapperScan(basePackages = { "com.rainyhon.common.mapper" })
+@ComponentScan(basePackages = { "com.rainyhon.backend", "com.rainyhon.auth", "com.rainyhon.common" })
 public class BackendApplication {
 
 	public static void main(String[] args) {

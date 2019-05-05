@@ -1,6 +1,6 @@
 package com.rainyhon.backend.controller;
 
-import com.rainyhon.common.service.PersonService;
+import com.rainyhon.common.service.PersonInfoService;
 import com.rainyhon.common.vo.PersonDeleteVo;
 import com.rainyhon.common.vo.PersonInfoVo;
 import com.rainyhon.common.vo.ResultVo;
@@ -15,26 +15,26 @@ public class PersonInfoController {
 
 	// TODO 操作记录
 
-	private final PersonService personService;
+	private final PersonInfoService personInfoService;
 
 	@Autowired
-	public PersonInfoController(PersonService personService) {
-		this.personService = personService;
+	public PersonInfoController(PersonInfoService personInfoService) {
+		this.personInfoService = personInfoService;
 	}
 
 	@PostMapping("add")
 	public ResultVo add(@RequestBody PersonInfoVo personInfoVo) {
-		return personService.add(personInfoVo);
+		return personInfoService.add(personInfoVo);
 	}
 
 	@PostMapping("update")
 	public ResultVo update(@RequestBody PersonInfoVo personInfoVo) {
-		return personService.update(personInfoVo);
+		return personInfoService.update(personInfoVo);
 	}
 
 	@PostMapping("delete")
 	public ResultVo delete(@RequestBody PersonDeleteVo vo) {
-		return personService.delete(vo);
+		return personInfoService.delete(vo);
 	}
 
 	@GetMapping("getPersonList")
@@ -42,38 +42,38 @@ public class PersonInfoController {
 	                              @RequestParam(name = "deptId", required = false) String deptId,
 	                              @RequestParam(name = "pageIndex") Integer pageIndex,
 	                              @RequestParam(name = "pageSize") Integer pageSize) {
-		return personService.getPersonList(name, deptId, pageIndex, pageSize);
+		return personInfoService.getPersonList(name, deptId, pageIndex, pageSize);
 	}
 
 	@GetMapping("getPersonListByOrgId")
 	public ResultVo getPersonListByOrgId(@RequestParam(name = "orgId", required = false) String orgId) {
-		return personService.getPersonListByOrgId(orgId);
+		return personInfoService.getPersonListByOrgId(orgId);
 	}
 
 	@GetMapping("list")
 	public ResultVo list() {
-		return personService.list();
+		return personInfoService.list();
 	}
 
 	@PostMapping("importantCare")
 	public ResultVo importantCare(@RequestBody PersonInfoVo personInfoVo) {
-		return personService.importantCare(personInfoVo);
+		return personInfoService.importantCare(personInfoVo);
 	}
 
 	@PostMapping("imageAcquisition")
 	public ResultVo imageAcquisition(@RequestBody PersonInfoVo personInfoVo) {
-		return personService.imageAcquisition(personInfoVo);
+		return personInfoService.imageAcquisition(personInfoVo);
 	}
 
 	@ApiOperation(value = "首页人员搜索", notes = "首页人员搜索")
 	@PostMapping("getPersonInfoByName")
 	public ResultVo getPersonInfoByName(@RequestBody SearchVo vo) {
-		return personService.getPersonInfoByName(vo);
+		return personInfoService.getPersonInfoByName(vo);
 	}
 
 	@GetMapping("getPersonInfoById")
 	public ResultVo<?> getPersonInfoById(@RequestParam String id) {
-		return personService.getPersonInfoById(id);
+		return personInfoService.getPersonInfoById(id);
 	}
 
 }

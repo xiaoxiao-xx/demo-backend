@@ -4,6 +4,7 @@ import com.rainyhon.common.service.ScheduleConfigService;
 import com.rainyhon.common.service.ScheduleDetailService;
 import com.rainyhon.common.vo.ScheduleConfigVo;
 import com.rainyhon.common.vo.ResultVo;
+import com.rainyhon.common.vo.ScheduleDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,6 +60,11 @@ public class ScheduleController {
     @GetMapping("getOnDutyData")
     public ResultVo getOnDutyData() {
         return scheduleDetailService.getOnDutyData();
+    }
+
+    @PostMapping("addDetail")
+    public ResultVo<String> addDetail(@RequestBody ScheduleDetailVo vo) {
+    	return scheduleDetailService.add(vo);
     }
 
 }

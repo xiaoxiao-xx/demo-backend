@@ -1,4 +1,4 @@
-package com.microcore.face.rec;
+package com.rainyhon.test.face.rec;
 
 import com.google.gson.Gson;
 import com.rainyhon.task.TaskSystemApplication;

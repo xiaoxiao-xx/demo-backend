@@ -1,4 +1,4 @@
-package com.microcore.sdk;
+package com.rainyhon.test.sdk;
 
 import com.rainyhon.common.hcnetsdk.HCNetSDK;
 import com.rainyhon.common.vo.FaceSdkRequestVo;

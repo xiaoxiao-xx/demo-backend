@@ -24,7 +24,7 @@ import java.util.List;
 public class DealResultService {
 
 	@Autowired
-	private DealResMapper psmDealResMapper;
+	private DealResMapper dealResMapper;
 
 	public PageInfo<DealResVo> getDealResultList(String alarmType, String dealState,
 	                                             Integer pageIndex, Integer pageSize) {
@@ -36,11 +36,11 @@ public class DealResultService {
 		if (StringUtils.isNotEmpty(dealState)) {
 			criteria.andDealStateEqualTo(dealState);
 		}
-		PageInfo<DealRes> psmDealResPageInfo = PageHelper.startPage(pageIndex, pageSize)
-				.doSelectPageInfo(() -> psmDealResMapper.selectByExample(example));
+		PageInfo<DealRes> dealResPageInfo = PageHelper.startPage(pageIndex, pageSize)
+				.doSelectPageInfo(() -> dealResMapper.selectByExample(example));
 
-		List<DealResVo> resVoList = CommonUtil.listPo2VO(psmDealResPageInfo.getList(), DealResVo.class);
-		PageInfo<DealResVo> resVoPageInfo = CommonUtil.po2VO(psmDealResPageInfo, PageInfo.class);
+		List<DealResVo> resVoList = CommonUtil.listPo2VO(dealResPageInfo.getList(), DealResVo.class);
+		PageInfo<DealResVo> resVoPageInfo = CommonUtil.po2VO(dealResPageInfo, PageInfo.class);
 		resVoPageInfo.setList(resVoList);
 		return resVoPageInfo;
 	}
@@ -48,25 +48,25 @@ public class DealResultService {
 	public ResultVo delete(String id) {
 		String[] ids = id.split(",");
 		for (String i : ids) {
-			psmDealResMapper.deleteByPrimaryKey(i);
+			dealResMapper.deleteByPrimaryKey(i);
 		}
 
 		return ResultVo.ok();
 	}
 
 	public ResultVo update(DealResVo vo) {
-		psmDealResMapper.updateByPrimaryKeySelective(vo);
+		dealResMapper.updateByPrimaryKeySelective(vo);
 		return ResultVo.ok();
 	}
 
 	public ResultVo add(DealResVo vo) {
 		vo.setId(CommonUtil.getUUID());
-		psmDealResMapper.insert(vo);
+		dealResMapper.insert(vo);
 		return ResultVo.ok();
 	}
 
 	public ResultVo deal(DealResVo dealResVo) {
-		DealRes psmDealRes = psmDealResMapper.selectByPrimaryKey(dealResVo.getId());
+		DealRes psmDealRes = dealResMapper.selectByPrimaryKey(dealResVo.getId());
 		if (psmDealRes == null) {
 			return ResultVo.fail("非法数据！");
 		}

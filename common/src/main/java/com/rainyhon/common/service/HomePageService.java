@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class HomePageService {
 
 	@Autowired
-	private PersonService personService;
+	private PersonInfoService personInfoService;
 
 	@Autowired
 	private DeviceService deviceService;
@@ -20,8 +20,8 @@ public class HomePageService {
 	private AlarmResultService alarmResultService;
 
 	public ResultVo<?> getHomePageStatInfo() {
-		int personCount = personService.getPersonCount();
-		int importantCarePersonCount = personService.getImportantCarePersonCount();
+		int personCount = personInfoService.getPersonCount();
+		int importantCarePersonCount = personInfoService.getImportantCarePersonCount();
 		int enabledDeviceCount = deviceService.getEnableDeviceCount();
 		int disabledDeviceCount = deviceService.getDisabledDeviceCount();
 		int unprocessedAlarmCount = alarmResultService.getUnprocessedAlarmCount();

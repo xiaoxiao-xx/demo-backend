@@ -58,7 +58,7 @@ public class AsyncTaskDetect {
 			long t = System.currentTimeMillis();
 			ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/detect", faceSdkRecVo, String.class);
 			long tx = System.currentTimeMillis() - t;
-			log.info("detect: {}", tx);
+			// log.info("detect: {}", tx);
 		} catch (Exception e) {
 			log.error("Face detection error", e);
 		}

@@ -30,7 +30,7 @@ import static com.rainyhon.common.util.CommonUtil.*;
 public class DeviceService {
 
 	@Autowired
-	private DeviceMapper psmDeviceMapper;
+	private DeviceMapper deviceMapper;
 
 	@Autowired
 	private ParaDefineService paraDefineService;
@@ -154,7 +154,7 @@ public class DeviceService {
 		}
 
 		PageInfo<Device> pageInfo = PageHelper.startPage(pageIndex, pageSize)
-				.doSelectPageInfo(() -> psmDeviceMapper.selectByExample(example));
+				.doSelectPageInfo(() -> deviceMapper.selectByExample(example));
 
 		List<DeviceDto> deviceDtoList = listPo2VO(pageInfo.getList(), DeviceDto.class);
 		for (DeviceDto device : deviceDtoList) {
@@ -203,17 +203,17 @@ public class DeviceService {
 	public void add(DeviceVo vo) {
 		vo.setDeviceId(getUUID());
 		vo.setState(DEVICE_STATE_ENABLE);
-		psmDeviceMapper.insert(vo);
+		deviceMapper.insert(vo);
 
 		operHisService.add(vo.getDeviceId(), OPER_HIS_ADD);
 	}
 
 	public void delete(String deviceId) {
-		psmDeviceMapper.deleteByPrimaryKey(deviceId);
+		deviceMapper.deleteByPrimaryKey(deviceId);
 	}
 
 	public void update(DeviceVo vo) {
-		psmDeviceMapper.updateByPrimaryKeySelective(vo);
+		deviceMapper.updateByPrimaryKeySelective(vo);
 		operHisService.add(vo.getDeviceId(), OPER_HIS_UPD);
 	}
 
@@ -221,7 +221,7 @@ public class DeviceService {
 		Device device = new Device();
 		device.setDeviceId(deviceId);
 		device.setState(state);
-		psmDeviceMapper.updateByPrimaryKeySelective(device);
+		deviceMapper.updateByPrimaryKeySelective(device);
 
 		String operType = "";
 		if ("E".equals(state)) {
@@ -244,7 +244,7 @@ public class DeviceService {
 
 		String[] ids = idList.split(",");
 		for (String i : ids) {
-			psmDeviceMapper.deleteByPrimaryKey(i);
+			deviceMapper.deleteByPrimaryKey(i);
 		}
 
 		return ResultVo.ok();

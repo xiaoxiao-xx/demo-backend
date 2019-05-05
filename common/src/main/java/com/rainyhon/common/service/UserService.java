@@ -6,10 +6,7 @@ import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.exception.CommonException;
 import com.rainyhon.common.mapper.UserMapper;
 import com.rainyhon.common.mapper.UserRoleRelationMapper;
-import com.rainyhon.common.model.Role;
-import com.rainyhon.common.model.User;
-import com.rainyhon.common.model.UserExample;
-import com.rainyhon.common.model.UserRoleRelation;
+import com.rainyhon.common.model.*;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.vo.RoleVo;
@@ -23,9 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static com.rainyhon.common.constant.Constants.DELETE_STATUS_NO;
 import static com.rainyhon.common.exception.CommonExceptionType.USER_ALREADY_EXISTS;
-import static com.rainyhon.common.util.CommonUtil.listPo2VO;
+import static com.rainyhon.common.util.CommonUtil.*;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -39,6 +38,12 @@ public class UserService {
 
 	@Autowired
 	private UserRoleRelationMapper userRoleRelationMapper;
+
+	@Autowired
+	private RoleService roleService;
+
+	@Autowired
+	private PersonInfoService personInfoService;
 
 	public void addUser(UserVo vo) {
 		String username = vo.getUsername().trim();
@@ -87,33 +92,44 @@ public class UserService {
 		userMapper.updateByPrimaryKeySelective(user);
 	}
 
+	public String getUserNameById(String id) {
+		User user = getUserById(id);
+		if (user == null) {
+			return "";
+
+		}
+		return Optional.of(user.getUsername()).orElse("");
+	}
+
 	public List<User> getUserListByOrgId(String orgId) {
+
 		return null;
 	}
 
 	public UserInfo getUserByUsername(String username) {
 		List<User> userList = getUserInfoByUsername(username);
-		if (CommonUtil.isNotEmpty(userList)) {
-			User user = userList.get(0);
-			UserInfo userInfo = CommonUtil.po2VO(user, UserInfo.class);
-			return userInfo;
+		if (isEmpty(userList)) {
+			return null;
 		}
 
-		return null;
+		User user = userList.get(0);
+		UserInfo userInfo = po2VO(user, UserInfo.class);
+		userInfo.setOrgId(getOrgIdByUserId(userInfo.getId()));
+		return userInfo;
 	}
 
 	public List<User> getUserInfoByUsername(String username) {
 		UserExample example = new UserExample();
 		UserExample.Criteria criteria = example.createCriteria();
 		criteria.andUsernameEqualTo(username);
-		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
+		criteria.andDelStatusEqualTo(DELETE_STATUS_NO);
 		return userMapper.selectByExample(example);
 	}
 
 	public PageInfo<UserVo> getUserList(String orgId, Integer pageIndex, Integer pageSize) {
 		UserExample example = new UserExample();
 		UserExample.Criteria criteria = example.createCriteria();
-		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
+		criteria.andDelStatusEqualTo(DELETE_STATUS_NO);
 
 		if (StringUtils.isNotBlank(orgId)) {
 			// criteria.andOrgIdEqualTo(orgId.trim());
@@ -128,23 +144,39 @@ public class UserService {
 			List<RoleVo> roleVoList = listPo2VO(roleList, RoleVo.class);
 			vo.setRoleList(roleVoList);
 		});
-		PageInfo<UserVo> voPageInfo = CommonUtil.po2VO(pageInfo, PageInfo.class);
+		PageInfo<UserVo> voPageInfo = po2VO(pageInfo, PageInfo.class);
 		voPageInfo.setList(voList);
 		return voPageInfo;
 	}
 
-	@Autowired
-	private RoleService roleService;
-
 	public UserVo getUserDetailById(String userId) {
 		User user = getUserById(userId);
-		UserVo vo = CommonUtil.po2VO(user, UserVo.class);
+		UserVo vo = po2VO(user, UserVo.class);
 		vo.setRoleList(listPo2VO(roleService.getRoleListByUserId(userId), RoleVo.class));
 		return vo;
 	}
 
-	private User getUserById(String userId) {
+	public User getUserById(String userId) {
 		return userMapper.selectByPrimaryKey(userId);
+	}
+
+	public String getRealPersonIdByUserId(String userId) {
+		User user = getUserById(userId);
+		if (user == null) {
+			return "";
+		}
+
+		return Optional.ofNullable(user.getRealPersonId()).orElse("");
+	}
+
+	public String getOrgIdByUserId(String userId) {
+		String realPersonId = getRealPersonIdByUserId(userId);
+		PersonInfo personInfo = personInfoService.getPersonInfo(realPersonId);
+		if (personInfo == null) {
+			return "";
+		}
+
+		return Optional.ofNullable(personInfo.getOrgId()).orElse("");
 	}
 
 }

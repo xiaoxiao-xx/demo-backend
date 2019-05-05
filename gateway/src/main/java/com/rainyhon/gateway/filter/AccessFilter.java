@@ -44,8 +44,8 @@ public class AccessFilter extends ZuulFilter {
 
 	@Override
 	public Object run() {
-		RequestContext ctx = RequestContext.getCurrentContext();
-		HttpServletRequest request = ctx.getRequest();
+		RequestContext context = RequestContext.getCurrentContext();
+		HttpServletRequest request = context.getRequest();
 		String requestURL = request.getRequestURL().toString();
 		String uri = request.getRequestURI();
 
@@ -74,8 +74,10 @@ public class AccessFilter extends ZuulFilter {
 //					String json = JSONUtils.toJSONString(user);
 					//ctx.addZuulRequestHeader("user_info", ByteUtils.byte2hex(Object2Byte.getBytesFromObject(user)));
 //					ctx.addZuulRequestHeader("user_roles", JSONUtils.toJSONArray(user.getRoles()).toString());
+					// UserInfo转成JSON字符串
 					String userInfo = new Gson().toJson(user);
-					ctx.addZuulRequestHeader("user_info", Base64Utils.base64Ecode(userInfo));
+					// 再对JSON字符串进行Base64编码
+					context.addZuulRequestHeader("user_info", Base64Utils.base64Ecode(userInfo));
 //					log.info("Logged: {}", user.getUsername());
 					log.info(String.format("%-4s request to %s", request.getMethod(), request.getRequestURL().toString()));
 					return null;
@@ -87,10 +89,10 @@ public class AccessFilter extends ZuulFilter {
 
 		// 验证未通过
 		String result = JSONUtils.toJSONString(ResultVo.sessionOut());
-		ctx.setResponseBody(result);
-		ctx.setSendZuulResponse(false);
-		ctx.getResponse().setContentType("application/json");
-		ctx.setResponseStatusCode(250);
+		context.setResponseBody(result);
+		context.setSendZuulResponse(false);
+		context.getResponse().setContentType("application/json");
+		context.setResponseStatusCode(250);
 
 		log.error(String.format("%-4s request to %s auth failed", request.getMethod(), request.getRequestURL().toString()));
 

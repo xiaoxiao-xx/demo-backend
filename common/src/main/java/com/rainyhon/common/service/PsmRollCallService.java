@@ -26,7 +26,7 @@ public class PsmRollCallService {
 	private ParaDefineService paraDefineService;
 
 	@Autowired
-	private PersonService personService;
+	private PersonInfoService personInfoService;
 
 	@Autowired
 	private DepartmentService departmentService;
@@ -48,7 +48,7 @@ public class PsmRollCallService {
 		for (RollCallVo rollCallVo : list) {
 			rollCallVo.setCallResName(paraDefineService.getValueByTypeAnd("CALL_RES", rollCallVo.getCallRes()));
 			rollCallVo.setTeamName(departmentService.getDepartmentName(rollCallVo.getTeam()));
-			rollCallVo.setLeaderName(personService.getPersonInfoName(rollCallVo.getLeader()));
+			rollCallVo.setLeaderName(personInfoService.getPersonInfoName(rollCallVo.getLeader()));
 		}
 		PageInfo<RollCallVo> pageVo = new PageInfo<>(list);
 		pageVo.setTotal(page.getTotal());

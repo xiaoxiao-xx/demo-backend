@@ -37,9 +37,9 @@ public class ParaDefineService {
 	}
 
 	public String getValueByTypeAnd(String type, String code) {
-		ParaDefine psmParaDefine = getParaDefineByTypeAnd(type, code);
-		if (psmParaDefine != null) {
-			return psmParaDefine.getParaValue();
+		ParaDefine paraDefine = getParaDefineByTypeAnd(type, code);
+		if (paraDefine != null) {
+			return paraDefine.getParaValue();
 		}
 		return null;
 	}

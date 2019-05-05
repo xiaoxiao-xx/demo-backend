@@ -9,10 +9,10 @@
     <result column="object_id" property="objectId" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="INTEGER" />
     <result column="some_date" property="someDate" jdbcType="DATE" />
-    <result column="start_time" property="startTime" jdbcType="DATE" />
-    <result column="end_time" property="endTime" jdbcType="DATE" />
-    <result column="real_start_time" property="realStartTime" jdbcType="TIMESTAMP" />
-    <result column="real_end_time" property="realEndTime" jdbcType="TIMESTAMP" />
+    <result column="start_time" property="startTime" jdbcType="TIME" />
+    <result column="end_time" property="endTime" jdbcType="TIME" />
+    <result column="real_start_time" property="realStartTime" jdbcType="TIME" />
+    <result column="real_end_time" property="realEndTime" jdbcType="TIME" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="teacher" property="teacher" jdbcType="VARCHAR" />
@@ -86,7 +86,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, config_id, type, object_type, object_id, number, some_date, start_time, end_time,
+    id, config_id, type, object_type, object_id, number, some_date, start_time, end_time, 
     real_start_time, real_end_time, title, content, teacher, address, update_reason, 
     result, del_status, upd_user_id, upd_org_id, upd_tm, crt_user_id, crt_org_id, crt_tm
   </sql>
@@ -122,7 +122,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.rainyhon.common.model.ScheduleDetail" >
-    insert into schedule_detail (id, config_id, type,
+    insert into schedule_detail (id, config_id, type, 
       object_type, object_id, number, 
       some_date, start_time, end_time, 
       real_start_time, real_end_time, title, 
@@ -133,8 +133,8 @@
       )
     values (#{id,jdbcType=VARCHAR}, #{configId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{objectType,jdbcType=VARCHAR}, #{objectId,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
-      #{someDate,jdbcType=DATE}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, 
-      #{realStartTime,jdbcType=TIMESTAMP}, #{realEndTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
+      #{someDate,jdbcType=DATE}, #{startTime,jdbcType=TIME}, #{endTime,jdbcType=TIME}, 
+      #{realStartTime,jdbcType=TIME}, #{realEndTime,jdbcType=TIME}, #{title,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{teacher,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{updateReason,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, 
       #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, #{updTm,jdbcType=TIMESTAMP}, 
@@ -240,16 +240,16 @@
         #{someDate,jdbcType=DATE},
       </if>
       <if test="startTime != null" >
-        #{startTime,jdbcType=DATE},
+        #{startTime,jdbcType=TIME},
       </if>
       <if test="endTime != null" >
-        #{endTime,jdbcType=DATE},
+        #{endTime,jdbcType=TIME},
       </if>
       <if test="realStartTime != null" >
-        #{realStartTime,jdbcType=TIMESTAMP},
+        #{realStartTime,jdbcType=TIME},
       </if>
       <if test="realEndTime != null" >
-        #{realEndTime,jdbcType=TIMESTAMP},
+        #{realEndTime,jdbcType=TIME},
       </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
@@ -323,16 +323,16 @@
         some_date = #{record.someDate,jdbcType=DATE},
       </if>
       <if test="record.startTime != null" >
-        start_time = #{record.startTime,jdbcType=DATE},
+        start_time = #{record.startTime,jdbcType=TIME},
       </if>
       <if test="record.endTime != null" >
-        end_time = #{record.endTime,jdbcType=DATE},
+        end_time = #{record.endTime,jdbcType=TIME},
       </if>
       <if test="record.realStartTime != null" >
-        real_start_time = #{record.realStartTime,jdbcType=TIMESTAMP},
+        real_start_time = #{record.realStartTime,jdbcType=TIME},
       </if>
       <if test="record.realEndTime != null" >
-        real_end_time = #{record.realEndTime,jdbcType=TIMESTAMP},
+        real_end_time = #{record.realEndTime,jdbcType=TIME},
       </if>
       <if test="record.title != null" >
         title = #{record.title,jdbcType=VARCHAR},
@@ -387,10 +387,10 @@
       object_id = #{record.objectId,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=INTEGER},
       some_date = #{record.someDate,jdbcType=DATE},
-      start_time = #{record.startTime,jdbcType=DATE},
-      end_time = #{record.endTime,jdbcType=DATE},
-      real_start_time = #{record.realStartTime,jdbcType=TIMESTAMP},
-      real_end_time = #{record.realEndTime,jdbcType=TIMESTAMP},
+      start_time = #{record.startTime,jdbcType=TIME},
+      end_time = #{record.endTime,jdbcType=TIME},
+      real_start_time = #{record.realStartTime,jdbcType=TIME},
+      real_end_time = #{record.realEndTime,jdbcType=TIME},
       title = #{record.title,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
       teacher = #{record.teacher,jdbcType=VARCHAR},
@@ -430,16 +430,16 @@
         some_date = #{someDate,jdbcType=DATE},
       </if>
       <if test="startTime != null" >
-        start_time = #{startTime,jdbcType=DATE},
+        start_time = #{startTime,jdbcType=TIME},
       </if>
       <if test="endTime != null" >
-        end_time = #{endTime,jdbcType=DATE},
+        end_time = #{endTime,jdbcType=TIME},
       </if>
       <if test="realStartTime != null" >
-        real_start_time = #{realStartTime,jdbcType=TIMESTAMP},
+        real_start_time = #{realStartTime,jdbcType=TIME},
       </if>
       <if test="realEndTime != null" >
-        real_end_time = #{realEndTime,jdbcType=TIMESTAMP},
+        real_end_time = #{realEndTime,jdbcType=TIME},
       </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
@@ -491,10 +491,10 @@
       object_id = #{objectId,jdbcType=VARCHAR},
       number = #{number,jdbcType=INTEGER},
       some_date = #{someDate,jdbcType=DATE},
-      start_time = #{startTime,jdbcType=DATE},
-      end_time = #{endTime,jdbcType=DATE},
-      real_start_time = #{realStartTime,jdbcType=TIMESTAMP},
-      real_end_time = #{realEndTime,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=TIME},
+      end_time = #{endTime,jdbcType=TIME},
+      real_start_time = #{realStartTime,jdbcType=TIME},
+      real_end_time = #{realEndTime,jdbcType=TIME},
       title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       teacher = #{teacher,jdbcType=VARCHAR},

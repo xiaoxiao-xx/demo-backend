@@ -29,14 +29,14 @@ public class FileController {
 	// TODO
 	@PostMapping("fileUpload")
 	@ResponseBody
-	public ResultVo fileUpload(@RequestParam("fileName") MultipartFile file) {
-		if (file.isEmpty()) {
+	public ResultVo fileUpload(@RequestParam("fileName") MultipartFile multipartFile) {
+		if (multipartFile.isEmpty()) {
 			return ResultVo.fail("文件不能为空！");
 		}
 
 		// 用UUID重新命名上传的文件
 		String fileId = CommonUtil.getUUID();
-		String fileName = file.getOriginalFilename();
+		String fileName = multipartFile.getOriginalFilename();
 		String newFileName = fileId + "." + getSuffix(fileName);
 		File destFile = new File(filePath + "/" + newFileName);
 
@@ -45,15 +45,15 @@ public class FileController {
 		}
 
 		try {
-			file.transferTo(destFile); // 保存文件
+			multipartFile.transferTo(destFile); // 保存文件
 
-			com.rainyhon.common.model.File psmFile = new com.rainyhon.common.model.File();
-			psmFile.setId(fileId);
-			psmFile.setOldFileName(fileName);
-			psmFile.setSuffix(getSuffix(fileName));
-			psmFile.setStoreFileName(newFileName);
-			psmFile.setCrtDate(CommonUtil.getCurrentTime());
-			fileService.add(psmFile);
+			com.rainyhon.common.model.File file = new com.rainyhon.common.model.File();
+			file.setId(fileId);
+			file.setOldFileName(fileName);
+			file.setSuffix(getSuffix(fileName));
+			file.setStoreFileName(newFileName);
+			file.setCrtDate(CommonUtil.getCurrentTime());
+			fileService.add(file);
 
 			return ResultVo.ok(newFileName);
 		} catch (IllegalStateException | IOException e) {

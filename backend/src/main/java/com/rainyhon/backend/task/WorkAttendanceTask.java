@@ -5,7 +5,7 @@ import com.rainyhon.common.model.PersonInfo;
 import com.rainyhon.common.model.ScheduleConfig;
 import com.rainyhon.common.model.ScheduleDetail;
 import com.rainyhon.common.model.WorkAttendance;
-import com.rainyhon.common.service.PersonService;
+import com.rainyhon.common.service.PersonInfoService;
 import com.rainyhon.common.service.ScheduleConfigService;
 import com.rainyhon.common.service.ScheduleDetailService;
 import com.rainyhon.common.service.WorkService;
@@ -32,7 +32,7 @@ public class WorkAttendanceTask {
 	private WorkService workService;
 
 	@Autowired
-	private PersonService personService;
+	private PersonInfoService personInfoService;
 
 	@Autowired
 	private ScheduleConfigService scheduleConfigService;
@@ -54,7 +54,7 @@ public class WorkAttendanceTask {
 		}
 
 		// 为每个人员生成考勤记录
-		List<PersonInfo> personInfoList = personService.getPersonInfoList(null);
+		List<PersonInfo> personInfoList = personInfoService.getPersonInfoListByOrgId(null);
 		for (PersonInfo personInfo : personInfoList) {
 			String personId = personInfo.getId();
 			// 如果是豁免人员，不生成考勤记录
@@ -92,16 +92,16 @@ public class WorkAttendanceTask {
 			}
 
 			if (SCHEDULE_CONFIG_OBJECT_TYPE_ORG.equals(config.getObjectType())) {
-				List<PersonInfo> personInfoList = personService.getPersonInfoList(config.getObjectId());
+				List<PersonInfo> personInfoList = personInfoService.getPersonInfoListByOrgId(config.getObjectId());
 				if (CommonUtil.isEmpty(personInfoList)) {
 					return;
 				}
 
-				personInfoList.forEach(psmPersonInfo -> {
+				personInfoList.forEach(personInfo -> {
 					ScheduleDetail detail = new ScheduleDetail();
 					detail.setConfigId(config.getId());
 					detail.setObjectType(SCHEDULE_CONFIG_OBJECT_TYPE_PERSON);
-					detail.setObjectId(psmPersonInfo.getId());
+					detail.setObjectId(personInfo.getId());
 					detail.setNumber(config.getNumber());
 					detail.setSomeDate(cal.getTime());
 					detail.setStartTime(config.getStartTime());

@@ -1,4 +1,4 @@
-package com.microcore.http.cllient;
+package com.rainyhon.test.http;
 
 import com.rainyhon.common.cllient.HttpTemplate;
 import junit.framework.TestCase;
