@@ -22,6 +22,7 @@ import com.rainyhon.task.job.v2.policy.entity.AlarmPolicyResult;
 import com.rainyhon.task.job.v2.policy.entity.Record;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -106,7 +107,7 @@ public class AsyncTaskRec {
             long t1 = System.currentTimeMillis();
             ret = httpTemplate.post(faceApiIp, faceApiPort, "/face/api/v2/rec", faceSdkRec, String.class);
             long time = System.currentTimeMillis() - t1;
-            log.info("rec: {} ms", time);
+            // log.info("rec: {} ms", time);
         } catch (Exception e) {
             log.error("Face detection error", e);
         }
@@ -142,6 +143,7 @@ public class AsyncTaskRec {
             PersonInfo personInfo = personInfoService.getPersonInfo(userId);
 
             sendEvent(face);
+
             alarm(face, personInfo.getName());
 
             // TODO Test
@@ -157,7 +159,7 @@ public class AsyncTaskRec {
             // 更新电子点名记录
             updateRollCallResultRecord(face, material);
 
-            log.info(">>> detected face: {}, score: {}", personInfoService.getPersonInfoName(userId), face.getScore());
+            log.info("检测到人脸: {}, 分数: {}", personInfoService.getPersonInfoName(userId), face.getScore());
             // log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
 
             // k-v  k: user_id, v: area_id & capture_time
@@ -268,25 +270,45 @@ public class AsyncTaskRec {
         Date realInTime = attendance.getOnWorkTime();
         Date realOutTime = attendance.getQuitTime();
 
+        LocalTime inTime1 = new LocalTime(inTime);
+        LocalTime outTime1 = new LocalTime(outTime);
+        LocalTime realInTime1 = new LocalTime(realInTime);
+        LocalTime realOutTime1 = new LocalTime(realOutTime);
+
+        // TODO 时间的较只能用时分秒这种LocalTime
+        String result = judge(inTime1, outTime1, realInTime1, realOutTime1);
+        attendance.setResult(result);
+
+        workService.updateWorkAttendance(attendance);
+    }
+
+    /**
+     * 判断是否出勤状况
+     *
+     * @param inTime
+     * @param outTime
+     * @param realInTime
+     * @param realOutTime
+     * @return
+     */
+    private String judge(LocalTime inTime, LocalTime outTime, LocalTime realInTime, LocalTime realOutTime) {
         String result = "";
-        if (realInTime.getTime() < inTime.getTime() && realOutTime.getTime() > outTime.getTime()) {
+        // 宽限10分钟
+        if (realInTime.isBefore(inTime.plusMinutes(10)) && realOutTime.isAfter(outTime)) {
             // 正常
             result = result + ATTENDANCE_RESULT_OK;
         } else {
             // 迟到
-            if (realInTime.getTime() > inTime.getTime()) {
+            if (realInTime.isAfter(inTime.plusMinutes(10))) {
                 result = result + ATTENDANCE_RESULT_LATE;
             }
 
             // 早退
-            if (realOutTime.getTime() < outTime.getTime()) {
+            if (realOutTime.isBefore(outTime)) {
                 result = result + ATTENDANCE_RESULT_LEAVE_EARLY;
             }
         }
-
-        attendance.setResult(result);
-
-        workService.updateWorkAttendance(attendance);
+        return result;
     }
 
     private List<FaceVo> convertFaces(String materialId, String detectResultId, List<DataStructure.FaceInfo> faceInfoList) {
@@ -326,7 +348,6 @@ public class AsyncTaskRec {
             if (newAreaId.equals(areaId)
                     && new DateTime(dateFormat.get().parse(captureTime)).plusSeconds(timeOut).toDate().getTime()
                     >= new Date().getTime()) {
-                log.info("skip in_out");
                 return lastInRecordId;
             }
         } catch (ParseException e) {

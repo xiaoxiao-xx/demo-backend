@@ -98,6 +98,13 @@ public class Constants {
 	 */
 	public static final String SCHEDULE_DETAIL_TYPE_PATROL = "PATROL";
 
+	/**
+	 * 重点关注
+	 */
+	public static final String IMPT_CARE_TURE = "1";
+
+	public static final String IMPT_CARE_FALSE = "0";
+
 	public static int ERROR_CODE = 500;
 
 	public static final String NullPointerExceptionStr = "空指针异常";

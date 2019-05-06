@@ -7,4 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class DetailVo extends Detail {
+
+	private String imptCareStatus;
+
 }

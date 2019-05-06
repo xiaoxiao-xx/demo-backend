@@ -78,6 +78,7 @@ public class RollCallService {
 
 	public PageInfo<RollCallInfo> getRollCall(Integer pageIndex, Integer pageSize) {
 		ScheduleDetailExample example = new ScheduleDetailExample();
+		example.setOrderByClause("crt_tm desc");
 		ScheduleDetailExample.Criteria criteria = example.createCriteria();
 		criteria.andTypeEqualTo(SCHEDULE_DETAIL_TYPE_ROLL_CALL);
 

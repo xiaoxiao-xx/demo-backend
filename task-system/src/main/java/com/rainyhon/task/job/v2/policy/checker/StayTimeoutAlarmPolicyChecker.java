@@ -40,11 +40,13 @@ public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
         String areaId = record.getMaterial().getAreaId();
         Date captureTime = record.getFace().getCreateTime();
         // policy
+        // 驻留时长
         Integer duration = policy.getDuration();
         String expiredKey = userId + ":" + areaId;
         int expiredTime = duration * 60 * 1000;
         // 逗留时间，已存在则延长，否则指定时间过期
         expired.set(expiredKey, captureTime, expiredTime);
+
         if (isSameArea(policy, areaId)
                 && isBetweenTimePeriod(policy, captureTime)
                 && isStayTimeout(expiredKey, captureTime, expiredTime)) {
@@ -73,13 +75,13 @@ public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
             result.setResult(alarm);
             expired.remove(expiredKey);
         }
+
         return result;
     }
 
     private boolean isSameArea(AlarmPolicy policy, String areaId) {
         return policy.getAreaId().equals(areaId);
     }
-
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
@@ -114,10 +116,8 @@ public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
         long fTime = alarmEntity.getFirstTime().getTime();
         // 当前时间
         long cTime = currentTime.getTime();
-        if (cTime - fTime > expiredTime) {
-            // 逗留时间超过
-            return true;
-        }
-        return false;
+        // 逗留时间超过
+        return cTime - fTime > expiredTime;
     }
+
 }

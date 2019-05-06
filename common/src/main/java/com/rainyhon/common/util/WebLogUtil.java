@@ -39,7 +39,7 @@ public class WebLogUtil {
 		try {
 			result = pjp.proceed(); // result的值就是被拦截方法的返回值
 		} catch (Exception e) {
-			log.error("log-异常！|response|" + uri, e);
+			log.error("[异常] response: " + uri, e);
 			throw e;
 		}
 		if (result == null) {

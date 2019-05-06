@@ -39,7 +39,7 @@ public class AccessFilter extends ZuulFilter {
 	private Set<String> urlWhiteList = new HashSet<>();
 
 	{
-		urlWhiteList.add("/user/addUser");
+		// urlWhiteList.add("/user/addUser");
 	}
 
 	@Override
@@ -58,8 +58,18 @@ public class AccessFilter extends ZuulFilter {
 			return null;
 		}
 
-		boolean flag = true;
-		if (flag) {
+		// TODO 删除
+		if (uri.contains("/static/")) {
+			return null;
+		}
+
+		// TODO 删除
+		if (uri.contains("/file/")) {
+			return null;
+		}
+
+		// TODO 如果注销也要验证，则一个客户端退出了，另一个的注销请求就不会先auth成功
+		if (uri.contains("logout")) {
 			return null;
 		}
 

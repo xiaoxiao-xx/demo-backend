@@ -77,9 +77,11 @@ public class LoadTest {
 
 		ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
 		for (int i = 0; i < poolSize; i++) {
-			Runnable run = () -> {
+			Runnable task = () -> {
 				try {
 					start.await();
+
+					// Do something
 					testLoad(list);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -87,7 +89,7 @@ public class LoadTest {
 					end.countDown();
 				}
 			};
-			executorService.submit(run);
+			executorService.submit(task);
 		}
 		start.countDown();
 		end.await();

@@ -146,6 +146,7 @@ public class SummaryService {
 				vo.setUserId(userId);
 				vo.setUserName(personInfo.getName());
 				vo.setTime(new Date());
+				vo.setImptCareStatus(personInfo.getImptCareStatus());
 
 				voList.add(vo);
 			}

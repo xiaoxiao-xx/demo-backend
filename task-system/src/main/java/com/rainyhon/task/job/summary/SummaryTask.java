@@ -132,7 +132,7 @@ public class SummaryTask {
 			Date now = new Date();
 			if (now.getTime() - captureTime.getTime() > EXPIRE_TIME) {
 				redisUtil.srem("area:" + areaId, key.split(":")[1]);
-				log.info("Removed expired set value: {}", key);
+				// log.info("Removed expired set value: {}", key);
 			}
 		}
 	}

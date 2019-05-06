@@ -22,7 +22,8 @@ import java.util.Map;
 @Component
 public class AlarmPolicyManager implements CommandLineRunner {
 
-    public static final String DEFAULT = "DEFAULT";
+    private static final String DEFAULT = "DEFAULT";
+
     @Autowired
     private AlarmPolicyService policyService;
 
@@ -43,7 +44,7 @@ public class AlarmPolicyManager implements CommandLineRunner {
         return addressList;
     }
 
-    public synchronized void refreshPolicy() {
+    private synchronized void refreshPolicy() {
         policies = (List<AlarmPolicy>) policyService.getAllEnableAlarmPolicy().getData();
     }
 
@@ -62,8 +63,7 @@ public class AlarmPolicyManager implements CommandLineRunner {
         addressList = new HashMap<>();
         addressList = AreaDef.areaMap;
 
-
-        checker.put("DEFAULT", new StayTimeoutAlarmPolicyChecker(addressList));
+        checker.put(DEFAULT, new StayTimeoutAlarmPolicyChecker(addressList));
     }
 
     public IAlarmPolicyChecker getChecker() {

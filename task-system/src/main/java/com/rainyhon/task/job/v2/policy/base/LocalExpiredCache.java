@@ -66,12 +66,11 @@ public class LocalExpiredCache {
      * @return
      */
     public AlarmEntity get(String key) {
-        AlarmEntity n = cache.get(key);
-        return n == null ? null : n;
+        return cache.get(key);
     }
 
     /**
-     * 删出KEY，并返回该key对应的数据
+     * 删除KEY，并返回该key对应的数据
      * @param key
      * @return
      */
@@ -97,7 +96,6 @@ public class LocalExpiredCache {
 
         @Override
         public void run() {
-
             long now = System.currentTimeMillis();
             while (true) {
                 lock.lock();
@@ -107,15 +105,15 @@ public class LocalExpiredCache {
                     if (node == null || node.getExpireTime() > now) {
                         return;
                     }
-                    System.out.println(node.getKey() + "过期，当前时间：" + System.currentTimeMillis());
+                    // System.out.println(node.getKey() + "过期，当前时间：" + System.currentTimeMillis());
                     cache.remove(node.getKey());
                     expireQueue.poll();
-
                 } finally {
                     lock.unlock();
                 }
             }
         }
+
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -139,7 +137,6 @@ public class LocalExpiredCache {
         cache.set("leizhenyang", date, 5 * 1000);
         Thread.sleep(4000);
         cache.set("leizhenyang", date, 10 * 1000);
-
-
     }
+
 }

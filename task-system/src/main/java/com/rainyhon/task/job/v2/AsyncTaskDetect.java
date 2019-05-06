@@ -79,7 +79,7 @@ public class AsyncTaskDetect {
 
 		List<FaceVo> faceList = convertFaces(materialId, faces);
 		if (faceList.size() > 0) {
-			log.info("faceList size: {}", faceList.size());
+			// log.info("faceList size: {}", faceList.size());
 			for (FaceVo face : faceList) {
 				String detectResultId = CommonUtil.getUUID();
 

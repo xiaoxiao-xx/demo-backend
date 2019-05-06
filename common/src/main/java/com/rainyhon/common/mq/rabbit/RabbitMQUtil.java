@@ -51,7 +51,7 @@ public class RabbitMQUtil {
 	 */
 	public void sendMsg(String msg) {
 		try {
-			log.info("消息[{}]", msg);
+			// log.info("消息[{}]", msg);
 			channel.basicPublish("amq.topic", "topic_test", null, msg.getBytes("UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();

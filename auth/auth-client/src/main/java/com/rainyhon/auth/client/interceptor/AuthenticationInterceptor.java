@@ -23,23 +23,19 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 			throws Exception {
 
 		if (request.getRequestURL().toString().contains("swagger-resources")) {
-			log.info("swagger url: {}", request.getRequestURL().toString());
+			// log.info("Swagger url: {}", request.getRequestURL().toString());
 			return true;
 		}
 
-		boolean flag = true;
-		if (flag) {
+		// TODO 内部调用，没有携带用户信息
+		if (request.getRequestURI().contains("getUserByUsername")) {
 			return true;
 		}
 
-		// TEMP code
-//		if (request.getRequestURI().contains("addUser")) {
-//			return true;
-//		}
-
-//		if (request.getRequestURI().contains("getUserByUsername")) {
-//			return true;
-//		}
+		// TODO 删除
+		if (request.getRequestURI().contains("fileUpload")) {
+			return true;
+		}
 
 		// 如果请求头中带有用户信息，则将用户信息JSON字符串转成UserInfo对象，保存值AuthContextHandler中
 		String userInfoBase64Str = request.getHeader("user_info");

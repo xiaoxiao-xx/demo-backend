@@ -335,5 +335,12 @@ public class PersonInfoService {
 		return ResultVo.ok(personInfo);
 	}
 
+	public void setImptCareStatus(String personId, String imptCareStatus) {
+		PersonInfo personInfo = new PersonInfo();
+		personInfo.setId(personId);
+		personInfo.setImptCareStatus(imptCareStatus);
+		personInfoMapper.updateByPrimaryKeySelective(personInfo);
+	}
+
 }
 
