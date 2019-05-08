@@ -117,5 +117,7 @@ public class Constants {
 
 	public static final String DATA_SCOPE_CURRENT_ORG = "CURRENT_ORG";
 
+	public static final String RESOURCE_TYPE_MENU = "MENU";
+
 }
 

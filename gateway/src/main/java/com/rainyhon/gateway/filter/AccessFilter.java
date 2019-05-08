@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.rainyhon.common.util.CommonUtil.getBean;
+
 /**
  * @author
  */
@@ -79,7 +81,7 @@ public class AccessFilter extends ZuulFilter {
 //			log.info("AccessToken: [{}]", accessToken);
 			UserInfo user = null;
 			try {
-				user = CommonUtil.getBean(AuthApi.class).isLogged(accessToken);
+				user = getBean(AuthApi.class).isLogged(accessToken);
 				if (user != null && user.getIsLogged() != null && user.getIsLogged()) {
 //					String json = JSONUtils.toJSONString(user);
 					//ctx.addZuulRequestHeader("user_info", ByteUtils.byte2hex(Object2Byte.getBytesFromObject(user)));

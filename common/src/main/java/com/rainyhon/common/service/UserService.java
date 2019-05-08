@@ -9,22 +9,21 @@ import com.rainyhon.common.mapper.UserRoleRelationMapper;
 import com.rainyhon.common.model.*;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
-import com.rainyhon.common.vo.RoleVo;
-import com.rainyhon.common.vo.UserInfo;
-import com.rainyhon.common.vo.UserVo;
+import com.rainyhon.common.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import javax.xml.ws.Action;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.rainyhon.common.constant.Constants.DELETE_STATUS_NO;
 import static com.rainyhon.common.exception.CommonExceptionType.USER_ALREADY_EXISTS;
 import static com.rainyhon.common.util.CommonUtil.*;
+import static java.util.stream.Collectors.toSet;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -177,6 +176,60 @@ public class UserService {
 		}
 
 		return Optional.ofNullable(personInfo.getOrgId()).orElse("");
+	}
+
+	@Autowired
+	private PermissionService permissionService;
+
+	@Autowired
+	private ResourceService resourceService;
+
+	public List<ResourceVo> getResourcesByUserId(String userId) {
+		Map<String, ResourceVo> resourceVoMap = new HashMap<>();
+
+		List<Role> roleList = roleService.getRoleListByUserId(userId);
+
+		for (Role role : roleList) {
+			List<PermissionVo> permissionVoList = permissionService.getPermissionsByRoleId(role.getId());
+
+			for (PermissionVo permissionVo : permissionVoList) {
+				// 权限只和二级菜单相关联
+				List<ResourceVo> resourceList = resourceService.getResourcesByPermissionId(permissionVo.getId());
+				resourceList.forEach(resourceVo -> {
+					resourceVoMap.put(resourceVo.getId(), resourceVo);
+				});
+			}
+		}
+
+		// TODO 合并并排序
+		List<ResourceVo> list = mergeResourceTree(resourceVoMap);
+
+//		Resource resource = new Resource();
+		// getLevel 1 resources and get theis child
+//		return Resource Tree
+//		Constants.RESOURCE_TYPE_MENU;
+
+		return list;
+	}
+
+	private List<ResourceVo> mergeResourceTree(Map<String, ResourceVo> resourceVoMap) {
+		Set<String> parents = resourceVoMap.values().stream()
+				.map(Resource::getParentId).filter(Objects::nonNull).collect(toSet());
+
+		Map<String, ResourceVo> parentMap = new HashMap<>();
+		parents.forEach(parent -> parentMap.put(parent, resourceService.getResourceVoById(parent)));
+
+		Set<ResourceVo> voSet = new HashSet<>(resourceVoMap.values());
+		voSet.forEach(vo -> {
+			ResourceVo resourceVo = parentMap.get(vo.getParentId());
+			if (resourceVo == null) {
+				return;
+			}
+			List<ResourceVo> children = resourceVo.getChildren();
+			children.add(vo);
+		});
+
+		return new ArrayList<>(parentMap.values());
 	}
 
 }

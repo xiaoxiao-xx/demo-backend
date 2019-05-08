@@ -3,9 +3,9 @@ package com.rainyhon.common.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.mapper.PermissionResourceRelationMapper;
 import com.rainyhon.common.mapper.ResourceMapper;
-import com.rainyhon.common.model.Resource;
-import com.rainyhon.common.model.ResourceExample;
+import com.rainyhon.common.model.*;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.vo.ResourceVo;
@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.rainyhon.common.util.CommonUtil.po2VO;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -60,9 +63,14 @@ public class ResourceService {
 				-> resourceMapper.selectByExample(example));
 
 		List<ResourceVo> voList = CommonUtil.listPo2VO(pageInfo.getList(), ResourceVo.class);
-		PageInfo<ResourceVo> voPageInfo = CommonUtil.po2VO(pageInfo, PageInfo.class);
+		PageInfo<ResourceVo> voPageInfo = po2VO(pageInfo, PageInfo.class);
 		voPageInfo.setList(voList);
 		return voPageInfo;
+	}
+
+	public ResourceVo getResourceVoById(String id) {
+		Resource resource = resourceMapper.selectByPrimaryKey(id);
+		return CommonUtil.po2VO(resource, ResourceVo.class);
 	}
 
 	public List<ResourceVo> getAllResources() {
@@ -71,6 +79,24 @@ public class ResourceService {
 		List<Resource> list = resourceMapper.selectByExample(example);
 
 		List<ResourceVo> voList = CommonUtil.listPo2VO(list, ResourceVo.class);
+		return voList;
+	}
+
+	@Autowired
+	private PermissionResourceRelationMapper permissionResourceRelationMapper;
+
+	public List<ResourceVo> getResourcesByPermissionId(String id) {
+		PermissionResourceRelationExample example = new PermissionResourceRelationExample();
+		PermissionResourceRelationExample.Criteria criteria = example.createCriteria();
+		criteria.andPermissionIdEqualTo(id);
+		List<PermissionResourceRelation> list = permissionResourceRelationMapper.selectByExample(example);
+		List<ResourceVo> voList = new ArrayList<>();
+		list.forEach(relation -> {
+			Resource permission = getResourceById(relation.getResourceId());
+			ResourceVo permissionVo = po2VO(permission, ResourceVo.class);
+			voList.add(permissionVo);
+		});
+
 		return voList;
 	}
 

@@ -9,6 +9,16 @@ public class Resource {
     private String id;
 
     /**
+     * 父资源ID
+     */
+    private String parentId;
+
+    /**
+     * 级别
+     */
+    private Integer level;
+
+    /**
      * 名称
      */
     private String resourceName;
@@ -82,6 +92,38 @@ public class Resource {
      */
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 父资源ID
+     * @return parent_id 父资源ID
+     */
+    public String getParentId() {
+        return parentId;
+    }
+
+    /**
+     * 父资源ID
+     * @param parentId 父资源ID
+     */
+    public void setParentId(String parentId) {
+        this.parentId = parentId == null ? null : parentId.trim();
+    }
+
+    /**
+     * 级别
+     * @return level 级别
+     */
+    public Integer getLevel() {
+        return level;
+    }
+
+    /**
+     * 级别
+     * @param level 级别
+     */
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     /**

@@ -3,6 +3,8 @@
 <mapper namespace="com.rainyhon.common.mapper.ResourceMapper" >
   <resultMap id="BaseResultMap" type="com.rainyhon.common.model.Resource" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
     <result column="resource_name" property="resourceName" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="VARCHAR" />
@@ -75,8 +77,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, resource_name, url, type, icon, description, del_status, upd_user_id, upd_org_id, 
-    upd_tm, crt_user_id, crt_org_id, crt_tm
+    id, parent_id, level, resource_name, url, type, icon, description, del_status, upd_user_id, 
+    upd_org_id, upd_tm, crt_user_id, crt_org_id, crt_tm
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rainyhon.common.model.ResourceExample" >
     select
@@ -110,22 +112,30 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.rainyhon.common.model.Resource" >
-    insert into resource (id, resource_name, url, 
-      type, icon, description, 
-      del_status, upd_user_id, upd_org_id, 
-      upd_tm, crt_user_id, crt_org_id, 
-      crt_tm)
-    values (#{id,jdbcType=VARCHAR}, #{resourceName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{type,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{delStatus,jdbcType=VARCHAR}, #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, 
-      #{updTm,jdbcType=TIMESTAMP}, #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, 
-      #{crtTm,jdbcType=TIMESTAMP})
+    insert into resource (id, parent_id, level, 
+      resource_name, url, type, 
+      icon, description, del_status, 
+      upd_user_id, upd_org_id, upd_tm, 
+      crt_user_id, crt_org_id, crt_tm
+      )
+    values (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, 
+      #{resourceName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{delStatus,jdbcType=VARCHAR}, 
+      #{updUserId,jdbcType=VARCHAR}, #{updOrgId,jdbcType=VARCHAR}, #{updTm,jdbcType=TIMESTAMP}, 
+      #{crtUserId,jdbcType=VARCHAR}, #{crtOrgId,jdbcType=VARCHAR}, #{crtTm,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.rainyhon.common.model.Resource" >
     insert into resource
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="level != null" >
+        level,
       </if>
       <if test="resourceName != null" >
         resource_name,
@@ -167,6 +177,12 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
       </if>
       <if test="resourceName != null" >
         #{resourceName,jdbcType=VARCHAR},
@@ -218,6 +234,12 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.level != null" >
+        level = #{record.level,jdbcType=INTEGER},
+      </if>
       <if test="record.resourceName != null" >
         resource_name = #{record.resourceName,jdbcType=VARCHAR},
       </if>
@@ -262,6 +284,8 @@
   <update id="updateByExample" parameterType="map" >
     update resource
     set id = #{record.id,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=VARCHAR},
+      level = #{record.level,jdbcType=INTEGER},
       resource_name = #{record.resourceName,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=VARCHAR},
@@ -281,6 +305,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.rainyhon.common.model.Resource" >
     update resource
     <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
       <if test="resourceName != null" >
         resource_name = #{resourceName,jdbcType=VARCHAR},
       </if>
@@ -322,7 +352,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.rainyhon.common.model.Resource" >
     update resource
-    set resource_name = #{resourceName,jdbcType=VARCHAR},
+    set parent_id = #{parentId,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      resource_name = #{resourceName,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       icon = #{icon,jdbcType=VARCHAR},

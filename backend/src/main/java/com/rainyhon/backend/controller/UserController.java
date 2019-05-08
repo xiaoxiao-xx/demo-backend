@@ -63,6 +63,11 @@ public class UserController {
 		return userService.getUserByUsername(username);
 	}
 
+	@GetMapping("getResourcesByUserId")
+	public ResultVo<?> getResourcesByUserId(@RequestParam String userId) {
+		return ResultVo.ok(userService.getResourcesByUserId(userId));
+	}
+
 //	@GetMapping("getUserListByTeamId")
 //	public ResultVo getUserListByTeamId(@RequestParam String id) {
 //		return ResultVo.ok(userService.getUserListByOrgId(id));
