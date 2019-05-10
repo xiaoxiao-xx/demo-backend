@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients(basePackages = { "com.rainyhon.api" })
 // @MapperScan(basePackages = { "com.microcore.center.mapper" })
 @ComponentScan(
-		basePackages = { "com.rainyhon.auth.server", "com.rainyhon.api", "com.rainyhon.auth", "com.rainyhon.common" },
+		basePackages = { "com.rainyhon.auth", "com.rainyhon.api", "com.rainyhon.common" },
 		excludeFilters = {
 				@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.rainyhon.common.service.*"),
 				@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.rainyhon.common.mq.*")

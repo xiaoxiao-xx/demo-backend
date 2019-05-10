@@ -302,7 +302,7 @@ public class PersonInfoService {
 
 	public int getImportantCarePersonCount() {
 		Map<String, Object> params = new HashMap<>(3);
-		String sql = "from person_info where impt_care_status = 'Y' and del_status = 'NO'";
+		String sql = "from person_info where impt_care_status = '1' and del_status = 'NO'";
 		params.put("sql", sql);
 		Long count = commonService.executeGetCount(params);
 		return count.intValue();

@@ -27,6 +27,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 			return true;
 		}
 
+		if (request.getRequestURI().contains("/auth/login")) {
+			return true;
+		}
+
+		if (request.getRequestURI().contains("/auth/isLogged")) {
+			return true;
+		}
+
 		// TODO 内部调用，没有携带用户信息
 		if (request.getRequestURI().contains("getUserByUsername")) {
 			return true;

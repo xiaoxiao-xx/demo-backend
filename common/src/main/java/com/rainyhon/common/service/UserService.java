@@ -193,33 +193,36 @@ public class UserService {
 			List<PermissionVo> permissionVoList = permissionService.getPermissionsByRoleId(role.getId());
 
 			for (PermissionVo permissionVo : permissionVoList) {
-				// 权限只和二级菜单相关联
+				// 权限和一级或者二级菜单相关联
 				List<ResourceVo> resourceList = resourceService.getResourcesByPermissionId(permissionVo.getId());
-				resourceList.forEach(resourceVo -> {
-					resourceVoMap.put(resourceVo.getId(), resourceVo);
-				});
+				resourceList.forEach(resourceVo -> resourceVoMap.put(resourceVo.getId(), resourceVo));
 			}
 		}
 
+		return new ArrayList<>(resourceVoMap.values());
+
 		// TODO 合并并排序
-		List<ResourceVo> list = mergeResourceTree(resourceVoMap);
+//		List<ResourceVo> list = mergeResourceTree(resourceVoMap);
+//		return list;
 
 //		Resource resource = new Resource();
 		// getLevel 1 resources and get theis child
 //		return Resource Tree
 //		Constants.RESOURCE_TYPE_MENU;
-
-		return list;
 	}
 
 	private List<ResourceVo> mergeResourceTree(Map<String, ResourceVo> resourceVoMap) {
 		Set<String> parents = resourceVoMap.values().stream()
-				.map(Resource::getParentId).filter(Objects::nonNull).collect(toSet());
+				.filter(resourceVo -> StringUtils.isBlank(resourceVo.getParentId()))
+				.map(Resource::getId)
+				.filter(Objects::nonNull)
+				.collect(toSet());
 
 		Map<String, ResourceVo> parentMap = new HashMap<>();
 		parents.forEach(parent -> parentMap.put(parent, resourceService.getResourceVoById(parent)));
 
-		Set<ResourceVo> voSet = new HashSet<>(resourceVoMap.values());
+		Set<ResourceVo> voSet = resourceVoMap.values().stream()
+				.filter(resourceVo -> StringUtils.isNotBlank(resourceVo.getParentId())).collect(toSet());
 		voSet.forEach(vo -> {
 			ResourceVo resourceVo = parentMap.get(vo.getParentId());
 			if (resourceVo == null) {
