@@ -51,8 +51,8 @@ public class RoleController {
 	}
 
 	@PostMapping("updateRole")
-	public ResultVo updateRole(@RequestBody Role role) {
-		roleService.updateRole(role);
+	public ResultVo updateRole(@RequestBody RoleVo vo) {
+		roleService.updateRole(vo);
 		return ResultVo.ok();
 	}
 

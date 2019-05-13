@@ -1,4 +1,4 @@
-package com.rainyhon.backend.websocket;
+package com.rainyhon.task.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.MessageChannel;
@@ -14,7 +14,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 
 import java.util.List;
 
-//@Configuration
+@Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 

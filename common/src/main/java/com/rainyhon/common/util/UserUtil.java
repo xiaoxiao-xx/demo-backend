@@ -2,7 +2,7 @@ package com.rainyhon.common.util;
 
 import com.rainyhon.common.vo.UserInfo;
 
-import static com.rainyhon.common.context.AuthContextHandler.getDbUserDto;
+import static com.rainyhon.common.context.AuthContextHandler.getLoginUserInfo;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -18,7 +18,7 @@ public class UserUtil {
 	 * @return SysUser对象
 	 */
 	public static UserInfo getCurrentLoginUser() {
-		return ofNullable((UserInfo) getDbUserDto()).orElse(new UserInfo());
+		return ofNullable((UserInfo) getLoginUserInfo()).orElse(new UserInfo());
 	}
 
 	/**

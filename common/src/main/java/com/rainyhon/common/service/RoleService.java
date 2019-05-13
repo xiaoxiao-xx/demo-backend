@@ -44,15 +44,8 @@ public class RoleService {
 			permissionList.add("1");
 		}
 
-		if (CommonUtil.isNotEmpty(permissionList)) {
-			permissionList.forEach(permissionId -> {
-				RolePermissionRelation relation = new RolePermissionRelation();
-				relation.setId(CommonUtil.getUUID());
-				relation.setRoleId(roleId);
-				relation.setPermissionId(permissionId);
-				rolePermissionRelationMapper.insert(relation);
-			});
-		}
+		// 插入角色-权限关联表
+		insertRolePermissionRelationList(roleId, permissionList);
 
 		roleMapper.insert(vo);
 	}
@@ -72,8 +65,41 @@ public class RoleService {
 		}
 	}
 
-	public void updateRole(Role role) {
-		roleMapper.updateByPrimaryKeySelective(role);
+	public void updateRole(RoleVo vo) {
+		roleMapper.updateByPrimaryKeySelective(vo);
+
+		// 删除和权限的关联
+		deleteRolePermissionRelationByRoleId(vo.getId());
+
+		// 重新插入角色-权限关联表
+		String roleId = vo.getId();
+		List<String> permissionList = vo.getPermissionList();
+		insertRolePermissionRelationList(roleId, permissionList);
+	}
+
+	/**
+	 * 插入角色-权限关联表
+	 *
+	 * @param roleId         角色ID
+	 * @param permissionList 权限ID列表
+	 */
+	private void insertRolePermissionRelationList(String roleId, List<String> permissionList) {
+		if (CommonUtil.isNotEmpty(permissionList)) {
+			permissionList.forEach(permissionId -> {
+				RolePermissionRelation relation = new RolePermissionRelation();
+				relation.setId(CommonUtil.getUUID());
+				relation.setRoleId(roleId);
+				relation.setPermissionId(permissionId);
+				rolePermissionRelationMapper.insert(relation);
+			});
+		}
+	}
+
+	private void deleteRolePermissionRelationByRoleId(String roleId) {
+		RolePermissionRelationExample example = new RolePermissionRelationExample();
+		RolePermissionRelationExample.Criteria criteria = example.createCriteria();
+		criteria.andRoleIdEqualTo(roleId);
+		rolePermissionRelationMapper.deleteByExample(example);
 	}
 
 	public Role getRoleById(String id) {

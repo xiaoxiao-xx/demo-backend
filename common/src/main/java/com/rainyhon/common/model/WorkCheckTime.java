@@ -1,6 +1,6 @@
 package com.rainyhon.common.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -13,19 +13,19 @@ public class WorkCheckTime {
     /**
      * 上班考核时间
      */
-    @DateTimeFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm")
     private Date inTime;
 
     /**
      * 下班考核时间
      */
-    @DateTimeFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm")
     private Date outTime;
 
     /**
      * 加班考核起算时间
      */
-    @DateTimeFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm")
     private Date overTime;
 
     /**

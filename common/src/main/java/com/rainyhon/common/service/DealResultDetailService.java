@@ -25,7 +25,6 @@ public class DealResultDetailService {
 	@Autowired
 	private DealResDetailMapper dealResDetailMapper;
 
-
 	public PageInfo<DealResDetailVo> getDealResultDetailList(String alarmType, Integer pageIndex, Integer pageSize) {
 		DealResDetailExample example = new DealResDetailExample();
 		DealResDetailExample.Criteria criteria = example.createCriteria();
@@ -42,12 +41,10 @@ public class DealResultDetailService {
 		return resVoPageInfo;
 	}
 
-
 	public ResultVo add(DealResDetailVo vo) {
 		dealResDetailMapper.insert(vo);
 		return ResultVo.ok();
 	}
-
 
 	public ResultVo delete(String id) {
 		String[] ids = id.split(",");
@@ -56,7 +53,6 @@ public class DealResultDetailService {
 		}
 		return ResultVo.ok();
 	}
-
 
 	public ResultVo update(DealResDetailVo vo) {
 		dealResDetailMapper.updateByPrimaryKeySelective(vo);

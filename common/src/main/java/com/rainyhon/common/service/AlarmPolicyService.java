@@ -31,7 +31,7 @@ public class AlarmPolicyService {
 
     public static final String SPLIT_TIME_PERIOD = " - ";
 
-    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
+    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     @Autowired
     private AlarmPolicyMapper psmAlarmPolicyMapper;
@@ -68,7 +68,9 @@ public class AlarmPolicyService {
         return ResultVo.ok();
     }
 
-    public PageInfo<AlarmPolicy> page(String alarmMode, String alarmType, String alarmLevel, String objectType, String areaId, String policyName, Integer pageIndex, Integer pageSize) {
+    public PageInfo<AlarmPolicy> page(String alarmMode, String alarmType, String alarmLevel,
+                                      String objectType, String areaId, String policyName,
+                                      Integer pageIndex, Integer pageSize) {
         AlarmPolicyExample example = new AlarmPolicyExample();
         AlarmPolicyExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(alarmMode)) {

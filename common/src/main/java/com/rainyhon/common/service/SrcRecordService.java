@@ -17,7 +17,6 @@ public class SrcRecordService {
 	@Autowired
 	private SrcRecordMapper srcRecordMapper;
 
-
 	public void add(SrcRecord srcRecord) {
 		srcRecord.setId(CommonUtil.getUUID());
 		srcRecord.setCreateTime(CommonUtil.getSystemDate());

@@ -32,25 +32,21 @@ public class DeviceVersionService {
 	@Autowired
 	private CommonService commonService;
 
-
 	public ResultVo add(DeviceVersionVo deviceVersionVo) {
 		deviceVersionVo.setDevversionId(getUUID());
 		deviceVersionMapper.insert(deviceVersionVo);
 		return ResultVo.ok();
 	}
 
-
 	public ResultVo update(DeviceVersionVo deviceVersionVo) {
 		deviceVersionMapper.updateByPrimaryKeySelective(deviceVersionVo);
 		return ResultVo.ok();
 	}
 
-
 	public ResultVo delete(String id) {
 		deviceVersionMapper.deleteByPrimaryKey(id);
 		return ResultVo.ok();
 	}
-
 
 	public ResultVo getDeviceVersionList(String version, String type, Integer pageIndex, Integer pageSize) {
 		DeviceVersionExample example = new DeviceVersionExample();
@@ -78,16 +74,13 @@ public class DeviceVersionService {
 		return ResultVo.ok(pageInfo);
 	}
 
-
 	public ResultVo getDeviceVersion(String id) {
 		return ResultVo.ok(getDeviceVersionById(id));
 	}
 
-
 	public DeviceVersion getDeviceVersionById(String id) {
 		return deviceVersionMapper.selectByPrimaryKey(id);
 	}
-
 
 	public ResultVo getVersion(String devTypeCode) {
 		Map<String, Object> prams = new HashMap<>();
@@ -99,7 +92,6 @@ public class DeviceVersionService {
 		List<Map<String, Object>> list = commonService.executeSelectSQL(prams);
 		return ResultVo.ok(list);
 	}
-
 
 	public ResultVo batchDelete(String idList) {
 		idList = idList.trim();
@@ -114,7 +106,6 @@ public class DeviceVersionService {
 
 		return ResultVo.ok();
 	}
-
 
 	public String getDeviceVersionStringById(String id) {
 		DeviceVersion deviceVersion = getDeviceVersionById(id);

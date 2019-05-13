@@ -1,5 +1,7 @@
 package com.rainyhon.common.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class ScheduleConfig {
@@ -41,16 +43,19 @@ public class ScheduleConfig {
     /**
      * 日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date someDate;
 
     /**
      * 开始时间：只有时分秒hh24miss
      */
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date startTime;
 
     /**
      * 结束时间：只有时分秒hh24miss
      */
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date endTime;
 
     /**
@@ -81,11 +86,13 @@ public class ScheduleConfig {
     /**
      * 考核开始时间
      */
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date checkStartTime;
 
     /**
      * 考核结束时间
      */
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date checkEndTime;
 
     /**

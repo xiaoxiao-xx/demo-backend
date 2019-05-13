@@ -37,6 +37,9 @@ public class Constants {
 
 	public static final String DEVICE_TYPE = "DEVICE_TYPE";
 
+	/**
+	 * 操作类型
+	 */
 	public static final String OPER_HIS_ADD = "ADD";
 
 	public static final String OPER_HIS_UPD = "UPD";
@@ -47,10 +50,9 @@ public class Constants {
 
 	public static final String OPER_HIS_DISABLE = "DISABLE";
 
-	public static final String IN_OUT_TYPE_IN = "IN";
-
-	public static final String IN_OUT_TYPE_OUT = "OUT";
-
+	/**
+	 * 日程重复类型
+	 */
 	public static final String REPEAT_TYPE_DAY = "D";
 
 	public static final String REPEAT_TYPE_WEEK = "W";
@@ -59,9 +61,12 @@ public class Constants {
 
 	public static final String REPEAT_TYPE_NO = "N";
 
-	public static final String SCHEDULE_CONFIG_OBJECT_TYPE_ORG = "O";
+	/**
+	 * 日程对象配置类型
+	 */
+	public static final String SCHEDULE_CONFIG_OBJECT_TYPE_ORG = "ORG";
 
-	public static final String SCHEDULE_CONFIG_OBJECT_TYPE_PERSON = "P";
+	public static final String SCHEDULE_CONFIG_OBJECT_TYPE_PERSON = "PERSON";
 
 	/**
 	 * 缺勤
@@ -105,8 +110,6 @@ public class Constants {
 
 	public static final String IMPT_CARE_FALSE = "0";
 
-	public static int ERROR_CODE = 500;
-
 	public static final String NullPointerExceptionStr = "空指针异常";
 
 	public static final String ArrayIndexOutOfBoundsStr = "数组越界异常";
@@ -117,7 +120,12 @@ public class Constants {
 
 	public static final String DATA_SCOPE_CURRENT_ORG = "CURRENT_ORG";
 
+	/**
+	 * 资源类型
+	 */
 	public static final String RESOURCE_TYPE_MENU = "MENU";
+
+	public static int ERROR_CODE = 500;
 
 }
 

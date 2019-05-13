@@ -1,6 +1,6 @@
 package com.rainyhon.common.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ public class WorkHolidayCalendar {
     /**
      * 节假日日期
      */
-    @DateTimeFormat(pattern= "yyyy-MM-dd")
+    @JsonFormat(pattern= "yyyy-MM-dd")
     private Date holidayDate;
 
     /**

@@ -166,7 +166,7 @@ public class AlarmResultService {
 	 * Notice: the modifier of the class must be public
 	 */
 	@Data
-	public static class AlarmState {
+	private static class AlarmState {
 
 		private String state;
 

@@ -16,7 +16,6 @@ public class ParaDefineService {
 	@Autowired
 	private ParaDefineMapper paraDefineMapper;
 
-
 	public List<ParaDefine> getParaDefineByType(String type) {
 		ParaDefineExample example = new ParaDefineExample();
 		ParaDefineExample.Criteria criteria = example.createCriteria();

@@ -1,6 +1,6 @@
 package com.rainyhon.common.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -38,31 +38,31 @@ public class ScheduleDetail {
     /**
      * 日期
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date someDate;
 
     /**
      * 开始时间：完整时间yyyymmddhh24miss
      */
-    @DateTimeFormat(pattern = "HH:mm:ss")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date startTime;
 
     /**
      * 结束时间：完整时间yyyymmddhh24miss
      */
-    @DateTimeFormat(pattern = "HH:mm:ss")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date endTime;
 
     /**
      * 实际开始时间
      */
-    @DateTimeFormat(pattern = "HH:mm:ss")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date realStartTime;
 
     /**
      * 实际结束时间
      */
-    @DateTimeFormat(pattern = "HH:mm:ss")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date realEndTime;
 
     /**

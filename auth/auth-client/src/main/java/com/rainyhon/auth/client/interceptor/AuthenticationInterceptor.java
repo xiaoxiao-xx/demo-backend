@@ -35,6 +35,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 			return true;
 		}
 
+		// TODO 如果注销也要验证，则一个客户端退出了，另一个的注销请求就不会先auth成功
+		if (request.getRequestURI().contains("/auth/logout")) {
+			return true;
+		}
+
 		// TODO 内部调用，没有携带用户信息
 		if (request.getRequestURI().contains("getUserByUsername")) {
 			return true;
@@ -52,7 +57,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 			try {
 				String userInfoJsonStr = Base64Utils.base64Dcode(userInfoBase64Str);
 				UserInfo userInfo = new Gson().fromJson(userInfoJsonStr, UserInfo.class);
-				AuthContextHandler.setDbUserDto(userInfo);
+				AuthContextHandler.setLoginUserInfo(userInfo);
 				// AuthContextHandler.set("user_info_string", userInfo1);
 				return true;
 			} catch (Exception e) {

@@ -16,14 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.ws.Action;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.rainyhon.common.constant.Constants.DELETE_STATUS_NO;
 import static com.rainyhon.common.exception.CommonExceptionType.USER_ALREADY_EXISTS;
 import static com.rainyhon.common.util.CommonUtil.*;
-import static java.util.stream.Collectors.toSet;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -101,7 +98,6 @@ public class UserService {
 	}
 
 	public List<User> getUserListByOrgId(String orgId) {
-
 		return null;
 	}
 
@@ -200,39 +196,6 @@ public class UserService {
 		}
 
 		return new ArrayList<>(resourceVoMap.values());
-
-		// TODO 合并并排序
-//		List<ResourceVo> list = mergeResourceTree(resourceVoMap);
-//		return list;
-
-//		Resource resource = new Resource();
-		// getLevel 1 resources and get theis child
-//		return Resource Tree
-//		Constants.RESOURCE_TYPE_MENU;
-	}
-
-	private List<ResourceVo> mergeResourceTree(Map<String, ResourceVo> resourceVoMap) {
-		Set<String> parents = resourceVoMap.values().stream()
-				.filter(resourceVo -> StringUtils.isBlank(resourceVo.getParentId()))
-				.map(Resource::getId)
-				.filter(Objects::nonNull)
-				.collect(toSet());
-
-		Map<String, ResourceVo> parentMap = new HashMap<>();
-		parents.forEach(parent -> parentMap.put(parent, resourceService.getResourceVoById(parent)));
-
-		Set<ResourceVo> voSet = resourceVoMap.values().stream()
-				.filter(resourceVo -> StringUtils.isNotBlank(resourceVo.getParentId())).collect(toSet());
-		voSet.forEach(vo -> {
-			ResourceVo resourceVo = parentMap.get(vo.getParentId());
-			if (resourceVo == null) {
-				return;
-			}
-			List<ResourceVo> children = resourceVo.getChildren();
-			children.add(vo);
-		});
-
-		return new ArrayList<>(parentMap.values());
 	}
 
 }

@@ -132,25 +132,25 @@ public class SummaryService {
 
 		Set<String> areaList = redisUtil.keys("area:*");
 		for (String areaKey : areaList) {
-			Set<String> userIdSet = redisUtil.smemebers(areaKey);
-			for (String userId : userIdSet) {
-				PersonInfo personInfo = personInfoService.getPersonInfo(userId);
+			Set<String> personIdSet = redisUtil.smemebers(areaKey);
+			for (String personId : personIdSet) {
+				PersonInfo personInfo = personInfoService.getPersonInfo(personId);
 				if (personInfo == null) {
 					continue;
 				}
 
 				DetailVo vo = new DetailVo();
 				vo.setId("");
+				// 照片名
 				vo.setSummaryId(personInfo.getPhoto());
 				vo.setAreaId(areaKey.split(":")[1]);
-				vo.setUserId(userId);
+				vo.setUserId(personId);
 				vo.setUserName(personInfo.getName());
 				vo.setTime(new Date());
 				vo.setImptCareStatus(personInfo.getImptCareStatus());
 
 				voList.add(vo);
 			}
-
 		}
 
 		return voList;

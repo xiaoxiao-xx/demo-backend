@@ -1,7 +1,7 @@
 server:
   port: 7100
 eureka:
-   client:
+  client:
     serviceUrl:
       defaultZone: http://peer1:7001/eureka/, http://peer2:7002/eureka/, http://peer3:7003/eureka/
 
@@ -67,5 +67,11 @@ redis:
   server: 127.0.0.1
   port: 6379
 
-#logging.level: debug
+# logging.level: debug
 
+# Activiti default configuration
+spring.activiti:
+  database-schema-update: true
+  check-process-definitions: true
+  process-definition-location-prefix: classpath:/process/
+  history-level: full

@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.rainyhon.common.util.CommonUtil.listPo2VO;
+
 @Service
 @Transactional
 public class OperHisService {
@@ -42,7 +44,7 @@ public class OperHisService {
 		OperationHistoryExample example = new OperationHistoryExample();
 		OperationHistoryExample.Criteria criteria = example.createCriteria();
 		criteria.andOperTargetEqualTo(operTarget);
-		List<OperationHistoryVo> listVo = CommonUtil.listPo2VO(operationHistoryMapper.selectByExample(example), OperationHistoryVo.class);
+		List<OperationHistoryVo> listVo = listPo2VO(operationHistoryMapper.selectByExample(example), OperationHistoryVo.class);
 		for (OperationHistoryVo operationHistoryVo : listVo) {
 			operationHistoryVo.setOperTypeName(paraDefineService.getValueByTypeAnd("OPER_TYPE", operationHistoryVo.getOperType()));
 			operationHistoryVo.setOperatorName(userService.getUserNameById(operationHistoryVo.getOperator()));

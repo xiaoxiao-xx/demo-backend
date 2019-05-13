@@ -2,7 +2,6 @@ package com.rainyhon.task.job.v2;
 
 import com.google.gson.Gson;
 import com.rainyhon.common.cllient.HttpTemplate;
-import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.mapper.AlarmResultMapper;
 import com.rainyhon.common.mapper.InOutRecordMapper;
 import com.rainyhon.common.model.*;
@@ -20,6 +19,9 @@ import com.rainyhon.task.job.v2.policy.AlarmPolicyManager;
 import com.rainyhon.task.job.v2.policy.base.IAlarmPolicyChecker;
 import com.rainyhon.task.job.v2.policy.entity.AlarmPolicyResult;
 import com.rainyhon.task.job.v2.policy.entity.Record;
+import com.rainyhon.task.websocket.WebSocketTask;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
@@ -34,8 +36,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.rainyhon.common.constant.Constants.*;
-import static com.rainyhon.common.util.CommonUtil.getCurrentTime;
-import static com.rainyhon.common.util.CommonUtil.random;
+import static com.rainyhon.common.util.CommonUtil.*;
 
 /**
  *
@@ -83,6 +84,12 @@ public class AsyncTaskRec {
 
     @Autowired
     private AlarmPolicyService alarmPolicyService;
+
+    @Autowired
+    private AlarmPolicyManager policyManager;
+
+    @Autowired
+    private AlarmResultMapper alarmResultMapper;
 
     @Autowired
     public AsyncTaskRec(HttpTemplate httpTemplate, MaterialService materialService,
@@ -135,8 +142,6 @@ public class AsyncTaskRec {
                 log.error("{}", e);
             }
 
-            // log.info("name: {}", face2.getUserId());
-
             Material material = materialService.getMaterial(materialId);
             String areaId = material.getAreaId();
             String userId = face.getUserId();
@@ -144,11 +149,18 @@ public class AsyncTaskRec {
 
             sendEvent(face);
 
+            // log.info("name: {}", face.getUserId());
+            log.info("检测到人脸: {}, 分数: {}", personInfoService.getPersonInfoName(userId), face.getScore());
+            // log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
+
             alarm(face, personInfo.getName());
+
+            // 上次捕获记录
+            CaptureRecord captureRecord = getLastOneCaptureRecord(face.getUserId());
 
             // TODO Test
             // 生成进出记录
-            String lastInRecordId = generateInOutRecord(face, areaId);
+            String lastInRecordId = generateInOutRecord(captureRecord, face, areaId);
 
             // 更新考勤记录
             updateWorkAttendanceRecord(face.getUserId());
@@ -159,31 +171,77 @@ public class AsyncTaskRec {
             // 更新电子点名记录
             updateRollCallResultRecord(face, material);
 
-            log.info("检测到人脸: {}, 分数: {}", personInfoService.getPersonInfoName(userId), face.getScore());
-            // log.info(">>> detect cost=" + (System.currentTimeMillis() - ctm) + "ms, ret=" + ret);
+            // 更新Redis中的记录
+            updateRedisRecord(areaId, userId, material, lastInRecordId);
 
-            // k-v  k: user_id, v: area_id & capture_time
-            Map<String, String> map = new HashMap<>();
-            map.put("userName", personInfoService.getPersonInfoName(userId));
-            map.put("areaId", areaId);
-            map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
-            map.put("teamId", personInfoService.getPersonInfo(userId).getOrgId());
-            map.put("lastInRecordId", lastInRecordId);
-            redisUtil.hmset("user:" + userId, map);
-
-            // k-v  k: area_id, v: user_id set
-            String areaKey = "area:" + areaId;
-            // Remove the user from other areas
-            for (int i = 1; i < 6; i++) {
-                redisUtil.srem("area:" + i, userId);
-            }
-            // Add the user to the current area
-            redisUtil.sadd(areaKey, userId);
+            // 推送人员位置移动信息
+            pushPersonMoveInfo(captureRecord, areaId);
         }
 
-        List<Face> faceList1 = CommonUtil.listPo2VO(faceList, Face.class);
+        List<Face> faceList1 = listPo2VO(faceList, Face.class);
         materialService.addFaceList(faceList1);
         // log.info("thread id= {}", Thread.currentThread().getName());
+    }
+
+    @Autowired
+    private WebSocketTask webSocketTask;
+
+    private void pushPersonMoveInfo(CaptureRecord captureRecord, String newAreaId) {
+        int timeOut = 4 * 60;
+
+        String oldAreaId = captureRecord.getAreaId();
+        String captureTime = captureRecord.getCaptureTime();
+
+        // 区域变动或者捕获时间距离现在超过四分钟就推送一次
+        try {
+            if (!newAreaId.equals(oldAreaId) ||
+                    new DateTime(dateFormat.get().parse(captureTime)).plusSeconds(timeOut).toDate().getTime()
+                            < new Date().getTime()) {
+
+                webSocketTask.sendDetailList();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private CaptureRecord getLastOneCaptureRecord(String userId) {
+        String key = "user:" + userId;
+        List<String> result = redisUtil.hmget(key, "areaId", "lastInRecordId", "captureTime");
+        String areaId = result.get(0);
+        // 获取上一条数据的记录
+        String lastInRecordId = result.get(1);
+        String captureTime = result.get(2);
+
+        return new CaptureRecord(areaId, lastInRecordId, captureTime);
+    }
+
+    /**
+     * 更新Redis中的记录
+     */
+    private void updateRedisRecord(String areaId, String userId, Material material, String lastInRecordId) {
+        // 更新Redis中的记录
+        // k-v  k: user_id, v: area_id & capture_time
+        // user: xxx
+        Map<String, String> map = new HashMap<>();
+        map.put("userName", personInfoService.getPersonInfoName(userId));
+        map.put("areaId", areaId);
+        map.put("captureTime", dateFormat.get().format(material.getCreateTime()));
+        map.put("teamId", personInfoService.getPersonInfo(userId).getOrgId());
+        map.put("lastInRecordId", lastInRecordId);
+        redisUtil.hmset("user:" + userId, map);
+
+        // k-v  k: area_id, v: user_id set
+        // area: xxx
+        String areaKey = "area:" + areaId;
+        // Remove the user from other areas
+        for (int i = 1; i < 6; i++) {
+            redisUtil.srem("area:" + i, userId);
+        }
+
+        // Add the user to the current area
+        redisUtil.sadd(areaKey, userId);
     }
 
     private void updateRollCallResultRecord(Face face, Material material) {
@@ -334,15 +392,14 @@ public class AsyncTaskRec {
         }).collect(Collectors.toList());
     }
 
-    private String generateInOutRecord(Face face, String newAreaId) {
+    private String generateInOutRecord(CaptureRecord captureRecord, Face face, String newAreaId) {
         // 距离上次捕获时间太久就认为已经离开
         int timeOut = 5 * 60;
-        String key = "user:" + face.getUserId();
-        List<String> result = redisUtil.hmget(key, "areaId", "lastInRecordId", "captureTime");
-        String areaId = result.get(0);
+
+        String areaId = captureRecord.getAreaId();
         // 获取上一条数据的记录
-        String lastInRecordId = result.get(1);
-        String captureTime = result.get(2);
+        String lastInRecordId = captureRecord.getLastInRecordId();
+        String captureTime = captureRecord.getCaptureTime();
 
         try {
             if (newAreaId.equals(areaId)
@@ -434,12 +491,6 @@ public class AsyncTaskRec {
         return ((Map<String, String>) alarmPolicyService.getAlarmAddress().getData()).get(areaId);
     }
 
-    @Autowired
-    private AlarmPolicyManager policyManager;
-
-    @Autowired
-    private AlarmResultMapper alarmResultMapper;
-
     /**
      * 告警监测
      *
@@ -479,6 +530,18 @@ public class AsyncTaskRec {
         alarm.setAlarmModeType(random("1", "2"));
         alarm.setAlarmReason(reason);
         alarmResultService.add(alarm);
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class CaptureRecord {
+
+        private String areaId;
+
+        private String lastInRecordId;
+
+        private String captureTime;
+
     }
 
 }

@@ -103,7 +103,6 @@ public class SettingService {
 		return new ArrayList<>();
 	}
 
-
 	public void addHolidayCalendar(WorkHolidayCalendar calendar) {
 		calendar.setId(CommonUtil.getUUID());
 		holidayCalendarMapper.insert(calendar);

@@ -19,6 +19,7 @@ public class TrackController {
 		this.trackService = trackService;
 	}
 
+	// TODO 此处DateTimeFormat为何可以？
 	@GetMapping("getTrackInfo")
 	public ResultVo getTrackInfo(@RequestParam String userId,
 	                             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH-mm-ss SSS") Date time) {
