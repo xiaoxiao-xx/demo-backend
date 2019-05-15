@@ -20,7 +20,6 @@ import static com.rainyhon.common.util.CommonUtil.getTomorrowCalendarInstance;
 
 /**
  * 日程生成任务
- * TODO 多个节点可能重复生成日程
  *
  * @author
  */
@@ -41,6 +40,9 @@ public class ScheduleTask {
 
 	/**
 	 * 每天23:00执行生成日程的任务
+	 * TODO 多个节点可能重复生成日程
+	 * 加分布式锁，只由一个节点生成数据
+	 * 锁由超时时间，几分钟后自动解锁
 	 */
 	// TODO 测试
 	@Scheduled(cron = "0 0 23 * * *")
