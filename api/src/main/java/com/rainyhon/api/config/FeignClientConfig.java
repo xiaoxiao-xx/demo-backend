@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import feign.RequestInterceptor;
 
 @Component
-public class FeginClientConfig {
+public class FeignClientConfig {
 
 	@Bean
 	public RequestInterceptor headerInterceptor() {

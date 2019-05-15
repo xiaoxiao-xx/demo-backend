@@ -2,27 +2,27 @@ package com.rainyhon.common.constant;
 
 /**
  * 常量
- *
- * @author lmh
  */
 public class Constants {
 
+	/**
+	 * YES & NO
+	 */
 	public static final String YES = "YES";
 
 	public static final String NO = "NO";
 
-	public static final String TRUE = "TRUE";
+//	public static final String TRUE = "TRUE";
 
-	public static final String FALSE = "FALSE";
+//	public static final String FALSE = "FALSE";
 
-	public static final String INPUT = "INPUT";
+//	public static final String INPUT = "INPUT";
 
-	public static final String OUTPUT = "OUTPUT";
-
-	// 用于各表中的del_status字段
+//	public static final String OUTPUT = "OUTPUT";
 
 	/**
 	 * 删除状态: 已删除
+	 * 用于各表中的del_status字段
 	 */
 	public static final String DELETE_STATUS_YES = "YES";
 
@@ -31,9 +31,13 @@ public class Constants {
 	 */
 	public static final String DELETE_STATUS_NO = "NO";
 
+	/**
+	 * ENABLE & DISABLE
+	 */
 	public static final String DEVICE_STATE_ENABLE = "E";
 
 	public static final String DEVICE_STATE_DISABLE = "D";
+
 
 	public static final String DEVICE_TYPE = "DEVICE_TYPE";
 
@@ -93,15 +97,15 @@ public class Constants {
 	 */
 	public static final String SCHEDULE_DETAIL_TYPE_ROLL_CALL = "ROLL_CALL";
 
-	/**
-	 * 日程类型-电子点名
-	 */
-	public static final String SCHEDULE_DETAIL_TYPE_ON_DUTY = "ON_DUTY";
+//	/**
+//	 * 日程类型-电子点名
+//	 */
+//	public static final String SCHEDULE_DETAIL_TYPE_ON_DUTY = "ON_DUTY";
 
-	/**
-	 * 日程类型-电子点名
-	 */
-	public static final String SCHEDULE_DETAIL_TYPE_PATROL = "PATROL";
+//	/**
+//	 * 日程类型-电子点名
+//	 */
+//	public static final String SCHEDULE_DETAIL_TYPE_PATROL = "PATROL";
 
 	/**
 	 * 重点关注
@@ -110,6 +114,10 @@ public class Constants {
 
 	public static final String IMPT_CARE_FALSE = "0";
 
+
+	/**
+	 * 异常类型
+	 */
 	public static final String NullPointerExceptionStr = "空指针异常";
 
 	public static final String ArrayIndexOutOfBoundsStr = "数组越界异常";
@@ -125,6 +133,9 @@ public class Constants {
 	 */
 	public static final String RESOURCE_TYPE_MENU = "MENU";
 
+	/**
+	 * 错误码
+	 */
 	public static int ERROR_CODE = 500;
 
 }

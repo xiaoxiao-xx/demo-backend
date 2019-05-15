@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+//import org.springframework.web.servlet.resource.PathResourceResolver;
+//import org.springframework.web.servlet.resource.WebJarsResourceResolver;
 
 @Configuration
 public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
@@ -21,6 +23,19 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
 		// registry.addResourceHandler("/myimgs/**").addResourceLocations("file:H:/myimgs/");
 		// registry.addResourceHandler("/myres/**").addResourceLocations("classpath:/myres/");
 //		registry.addResourceHandler("/static/**").addResourceLocations(SUFFIX + filePath);
+
+		// TODO webjars
+//		registry.addResourceHandler("/webjars/**")
+//		.addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+//		registry.addResourceHandler("/webjars/**")
+//				.addResourceLocations("/webjars/")
+//				.resourceChain(false)
+//				.addResolver(new WebJarsResourceResolver())
+//				.addResolver(new PathResourceResolver());
+//		.addResolver(new WebJarsResourceResolver());
+
+
 		registry.addResourceHandler("/swagger*.html").addResourceLocations("/");
 		registry.addResourceHandler("/static/**").addResourceLocations(SUFFIX + filePath + "/");
 		super.addResourceHandlers(registry);

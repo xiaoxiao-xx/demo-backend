@@ -136,6 +136,7 @@ public class DeviceService {
 		return "";
 	}
 
+	// TODO 在加入区域后彻底重写
 	public String getDeviceLocation(Integer x, Integer y) {
 		Point point = new Point(x, y);
 		return getDeviceLocation(point, indexPageAreaList);

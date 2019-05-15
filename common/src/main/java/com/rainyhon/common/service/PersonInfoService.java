@@ -24,13 +24,21 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.rainyhon.common.util.CommonUtil.image2byte;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
 @Slf4j
 public class PersonInfoService {
+
+	private final ThreadLocal<SimpleDateFormat> df = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyyMMddHHmmss"));
+
+	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
 
 	@Autowired
 	private PersonInfoMapper personInfoMapper;
@@ -80,9 +88,6 @@ public class PersonInfoService {
 
 		return ResultVo.ok();
 	}
-
-	private final ThreadLocal<SimpleDateFormat> df = ThreadLocal.withInitial(()
-			-> new SimpleDateFormat("yyyyMMddHHmmss"));
 
 	private String getSerialNumber() {
 		long ctm = System.currentTimeMillis();
@@ -233,9 +238,6 @@ public class PersonInfoService {
 		return "";
 	}
 
-	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
-			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
-
 	public ResultVo getPersonInfoByName(SearchVo searchVo) {
 		PersonInfoExample example = new PersonInfoExample();
 		PersonInfoExample.Criteria criteria = example.createCriteria();
@@ -340,6 +342,33 @@ public class PersonInfoService {
 		personInfo.setId(personId);
 		personInfo.setImptCareStatus(imptCareStatus);
 		personInfoMapper.updateByPrimaryKeySelective(personInfo);
+	}
+
+	public List<String> getPersonListByLike(String personName) {
+		PersonInfoExample example = new PersonInfoExample();
+		PersonInfoExample.Criteria criteria = example.createCriteria();
+		criteria.andNameLike("%" + personName + "%");
+		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
+		List<PersonInfo> personInfoList = personInfoMapper.selectByExample(example);
+		if (CommonUtil.isNotEmpty(personInfoList)) {
+			return personInfoList.stream().map(PersonInfo::getId).collect(toList());
+		}
+
+		return Collections.singletonList("");
+	}
+
+	/**
+	 * 根据机构ID查询出该机构所有人的ID的列表
+	 */
+	public List<String> getPersonListByOrgLike(String orgId) {
+		List<String> personList = getPersonInfoListByOrgId(orgId).stream()
+				.map(PersonInfo::getId).collect(toList());
+
+		if (CommonUtil.isEmpty(personList)) {
+			return Collections.singletonList("");
+		}
+
+		return personList;
 	}
 
 }

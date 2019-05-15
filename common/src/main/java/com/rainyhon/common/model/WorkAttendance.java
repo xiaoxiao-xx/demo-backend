@@ -1,5 +1,7 @@
 package com.rainyhon.common.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class WorkAttendance {
@@ -21,11 +23,13 @@ public class WorkAttendance {
     /**
      * 上班时间
      */
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date onWorkTime;
 
     /**
      * 下班时间
      */
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date quitTime;
 
     /**
@@ -39,22 +43,26 @@ public class WorkAttendance {
     private String updateReason;
 
     /**
-     * 删除状态 
+     * 删除状态
+ 
      */
     private String delStatus;
 
     /**
-     * 最后修改人ID 
+     * 最后修改人ID
+ 
      */
     private String updUserId;
 
     /**
-     * 最后修改机构ID 
+     * 最后修改机构ID
+ 
      */
     private String updOrgId;
 
     /**
-     * 最后修改时间 
+     * 最后修改时间
+ 
      */
     private Date updTm;
 
@@ -186,64 +194,80 @@ public class WorkAttendance {
     }
 
     /**
-     * 删除状态 
-     * @return del_status 删除状态 
+     * 删除状态
+ 
+     * @return del_status 删除状态
+ 
      */
     public String getDelStatus() {
         return delStatus;
     }
 
     /**
-     * 删除状态 
-     * @param delStatus 删除状态 
+     * 删除状态
+ 
+     * @param delStatus 删除状态
+ 
      */
     public void setDelStatus(String delStatus) {
         this.delStatus = delStatus == null ? null : delStatus.trim();
     }
 
     /**
-     * 最后修改人ID 
-     * @return upd_user_id 最后修改人ID 
+     * 最后修改人ID
+ 
+     * @return upd_user_id 最后修改人ID
+ 
      */
     public String getUpdUserId() {
         return updUserId;
     }
 
     /**
-     * 最后修改人ID 
-     * @param updUserId 最后修改人ID 
+     * 最后修改人ID
+ 
+     * @param updUserId 最后修改人ID
+ 
      */
     public void setUpdUserId(String updUserId) {
         this.updUserId = updUserId == null ? null : updUserId.trim();
     }
 
     /**
-     * 最后修改机构ID 
-     * @return upd_org_id 最后修改机构ID 
+     * 最后修改机构ID
+ 
+     * @return upd_org_id 最后修改机构ID
+ 
      */
     public String getUpdOrgId() {
         return updOrgId;
     }
 
     /**
-     * 最后修改机构ID 
-     * @param updOrgId 最后修改机构ID 
+     * 最后修改机构ID
+ 
+     * @param updOrgId 最后修改机构ID
+ 
      */
     public void setUpdOrgId(String updOrgId) {
         this.updOrgId = updOrgId == null ? null : updOrgId.trim();
     }
 
     /**
-     * 最后修改时间 
-     * @return upd_tm 最后修改时间 
+     * 最后修改时间
+ 
+     * @return upd_tm 最后修改时间
+ 
      */
     public Date getUpdTm() {
         return updTm;
     }
 
     /**
-     * 最后修改时间 
-     * @param updTm 最后修改时间 
+     * 最后修改时间
+ 
+     * @param updTm 最后修改时间
+ 
      */
     public void setUpdTm(Date updTm) {
         this.updTm = updTm;

@@ -203,7 +203,6 @@ public class AsyncTaskRec {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     private CaptureRecord getLastOneCaptureRecord(String userId) {
@@ -333,7 +332,7 @@ public class AsyncTaskRec {
         LocalTime realInTime1 = new LocalTime(realInTime);
         LocalTime realOutTime1 = new LocalTime(realOutTime);
 
-        // TODO 时间的较只能用时分秒这种LocalTime
+        // 时间的较只能用时分秒这种LocalTime
         String result = judge(inTime1, outTime1, realInTime1, realOutTime1);
         attendance.setResult(result);
 
@@ -447,7 +446,6 @@ public class AsyncTaskRec {
         String areaId = material.getAreaId();
         vo.setAddress(((Map<String, String>) alarmPolicyService.getAlarmAddress().getData()).get(areaId));
 
-        // TODO
         vo.setAlarmState(random("是", "否"));
         vo.setAlarmType(random("警告弹出框", "警报声音"));
 

@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.rainyhon.common.constant.Constants.YES;
 import static com.rainyhon.common.util.CommonUtil.*;
 
 /**
@@ -127,7 +128,7 @@ public class CaptureTask {
 		if (result) {
 			String now = dateFormat.get().format(new Date());
 			String imageName = "" + now + ".jpeg";
-			if (Constants.YES.toLowerCase().equals(generateImageFile)) {
+			if (YES.toLowerCase().equals(generateImageFile)) {
 				saveImage(imageName, jpegBuffer, retLen);
 			}
 

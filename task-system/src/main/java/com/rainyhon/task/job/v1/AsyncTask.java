@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.rainyhon.common.constant.AreaDef.getAreaNameById;
 import static com.rainyhon.task.job.v1.CaptureTask.convertFaces;
 import static com.rainyhon.common.util.CommonUtil.random;
 
@@ -45,6 +46,9 @@ public class AsyncTask {
 
 	private final AlarmResultService alarmResultService;
 
+	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
+			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
+
 	private Gson gson = new Gson();
 
 	@Value("${face.api.ip}")
@@ -52,19 +56,6 @@ public class AsyncTask {
 
 	@Value("${face.api.port}")
 	private String faceApiPort;
-
-	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
-			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
-
-	private Map<String, String> addressList = new HashMap<>();
-
-	{
-		addressList.put("1", "入口");
-		addressList.put("2", "入口");
-		addressList.put("3", "工作区");
-		addressList.put("4", "会议室");
-		addressList.put("5", "总经理室");
-	}
 
 	@Autowired
 	public AsyncTask(HttpTemplate httpTemplate, MaterialService materialService,
@@ -147,7 +138,7 @@ public class AsyncTask {
 		String materialId = face.getMaterialId();
 		Material material = materialService.getMaterial(materialId);
 		String areaId = material.getAreaId();
-		vo.setAddress(addressList.get(areaId));
+		vo.setAddress(getAreaNameById(areaId));
 
 		// TODO
 		vo.setAlarmState(random("是", "否"));
@@ -167,7 +158,7 @@ public class AsyncTask {
 		String personName = personInfo.getName();
 		vo.setEventInfo("人员：" + personName
 				+ "，时间：" + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(d)
-				+ "，进入" + getAreaName(areaId) + ""
+				+ "，进入" + getAreaNameById(areaId) + ""
 		);
 
 		vo.setResId(CommonUtil.getUUID());
@@ -189,10 +180,6 @@ public class AsyncTask {
 		}
 	}
 
-	private String getAreaName(String areaId) {
-		return addressList.get(areaId);
-	}
-
 	private void generateAlarmMessage(Face face, String personName) {
 		Material material = materialService.getMaterial(face.getMaterialId());
 		String areaId = material.getAreaId();
@@ -200,7 +187,7 @@ public class AsyncTask {
 
 		String reason = "人员：" + personName
 				+ "，时间：" + new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(captureTime)
-				+ "，进入" + getAreaName(areaId);
+				+ "，进入" + getAreaNameById(areaId);
 
 		AlarmResultVo alarm = new AlarmResultVo();
 		String uuid = CommonUtil.getUUID();

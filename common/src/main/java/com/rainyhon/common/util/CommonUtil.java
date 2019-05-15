@@ -23,11 +23,11 @@ import javax.validation.constraints.NotNull;
 @Slf4j
 public class CommonUtil {
 
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 	static {
 		ConvertUtils.register(new DateConverter(null), Date.class);
 	}
-
-	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	/**
 	 * 获取Bean
@@ -296,7 +296,7 @@ public class CommonUtil {
 	 * 将List<String>变成以逗号分隔的字符串，形如 hello,world,again
 	 */
 	public static String getCommaString(List<String> list) {
-		return list.stream().collect(Collectors.joining(","));
+		return String.join(",", list);
 	}
 
 	/**
@@ -486,6 +486,12 @@ public class CommonUtil {
 			// 不相等说明确实未跨天
 			return betweenDays + 0;
 		}
+	}
+
+	public static Calendar getTomorrowCalendarInstance() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		return cal;
 	}
 
 }

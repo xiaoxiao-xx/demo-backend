@@ -3,6 +3,8 @@ spring.profiles.active: local
 spring:
   application:
     name: backend
+  jackson:
+    time-zone: GMT+8
 
 mybatis:
   mapper-locations: classpath:mapping/*.xml

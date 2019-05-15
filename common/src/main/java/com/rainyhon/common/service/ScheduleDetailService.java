@@ -1,5 +1,8 @@
 package com.rainyhon.common.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.rainyhon.common.constant.AreaDef;
 import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.mapper.RollCallResultMapper;
 import com.rainyhon.common.mapper.ScheduleDetailMapper;
@@ -12,6 +15,7 @@ import com.rainyhon.common.vo.ScheduleDetailVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,9 +44,19 @@ public class ScheduleDetailService {
 	private final ThreadLocal<SimpleDateFormat> dateFormat = ThreadLocal.withInitial(()
 			-> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS"));
 
+	// TODO 去掉
 	private List<String> leaderList = new ArrayList<>();
 
 	private List<String> onDutyPersonList = new ArrayList<>();
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private OrgService orgService;
+
+	@Autowired
+	private RollCallResultMapper rollCallResultMapper;
 
 	{
 		leaderList.add("u22");
@@ -70,9 +84,6 @@ public class ScheduleDetailService {
 		String id = addDetail(vo);
 		return ResultVo.ok(id);
 	}
-
-	@Autowired
-	private UserService userService;
 
 	public String addDetail(ScheduleDetail detail) {
 		String detailId = CommonUtil.getUUID();
@@ -116,15 +127,13 @@ public class ScheduleDetailService {
 		return detailId;
 	}
 
-	@Autowired
-	private RollCallResultMapper rollCallResultMapper;
-
 	public ResultVo update(ScheduleDetailVo vo) {
 		scheduleDetailMapper.updateByPrimaryKeySelective(vo);
 		return ResultVo.ok();
 	}
 
 	public void update(ScheduleDetail detail) {
+		EntityUtils.setUpdateInfo(detail);
 		scheduleDetailMapper.updateByPrimaryKeySelective(detail);
 	}
 
@@ -133,13 +142,79 @@ public class ScheduleDetailService {
 		return ResultVo.ok();
 	}
 
-	public ResultVo getScheduleDetailList(String objectType) {
+	public ResultVo getScheduleDetailList(String objectType, String teacherName,
+	                                      String crtOrgId, String areaId,
+	                                      String result, Date someDate,
+	                                      Integer pageIndex, Integer pageSize) {
 		ScheduleDetailExample example = new ScheduleDetailExample();
 		example.setOrderByClause("start_time asc");
 		ScheduleDetailExample.Criteria criteria = example.createCriteria();
-		criteria.andObjectTypeLike("%" + objectType.trim() + "%");
-		List<ScheduleDetail> scheduleDetailList = scheduleDetailMapper.selectByExample(example);
-		return ResultVo.ok(scheduleDetailList);
+		criteria.andTypeLike("%" + objectType.trim() + "%");
+
+		if (StringUtils.isNotBlank(teacherName)) {
+			List<String> personIdList = personInfoService.getPersonListByLike(teacherName);
+			criteria.andTeacherIn(personIdList);
+		}
+
+		if (StringUtils.isNotBlank(areaId)) {
+			criteria.andAddressEqualTo(areaId);
+		}
+
+		if (StringUtils.isNotBlank(crtOrgId)) {
+			criteria.andCrtOrgIdEqualTo(crtOrgId);
+		}
+
+		if (StringUtils.isNotBlank(result)) {
+			criteria.andResultEqualTo(result);
+		}
+
+		if (someDate != null) {
+			criteria.andSomeDateEqualTo(someDate);
+		}
+
+		PageInfo<ScheduleDetail> pageInfo = PageHelper.startPage(pageIndex, pageSize).doSelectPageInfo(()
+				-> scheduleDetailMapper.selectByExample(example));
+
+		List<ScheduleDetail> scheduleDetailList = pageInfo.getList();
+		List<ScheduleDetailVo> scheduleDetailVoList = CommonUtil.listPo2VO(scheduleDetailList, ScheduleDetailVo.class);
+		scheduleDetailVoList.forEach(vo -> {
+			// 主管姓名
+			vo.setTeacherName(personInfoService.getPersonInfoName(vo.getTeacher()));
+			// 所属区域
+			vo.setAreaName(AreaDef.getAreaNameById(vo.getAddress()));
+			// 结果
+			vo.setResultName(getAttendanceResultString(vo.getResult()));
+			// 所属机构
+			vo.setCrtOrgName(orgService.getOrgNameById(vo.getCrtOrgId()));
+		});
+
+		PageInfo<ScheduleDetailVo> voPageInfo = CommonUtil.po2VO(pageInfo, PageInfo.class);
+		voPageInfo.setList(scheduleDetailVoList);
+
+		return ResultVo.ok(voPageInfo);
+	}
+
+	// TODO 从参数表中查询
+	String getAttendanceResultString(String result) {
+		if (result == null) {
+			result = "0";
+		}
+		switch (result) {
+			case "0":
+				return "缺勤";
+
+			case "1":
+				return "迟到";
+
+			case "2":
+				return "早退";
+
+			case "3":
+				return "正常";
+
+			default:
+				return "";
+		}
 	}
 
 	public ResultVo getOnDutyData() {
@@ -293,7 +368,7 @@ public class ScheduleDetailService {
 
 	@Data
 	@EqualsAndHashCode(callSuper = false)
-	public static class TeamStat {
+	private static class TeamStat {
 		/**
 		 *
 		 */

@@ -19,6 +19,7 @@ import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.rainyhon.common.constant.Constants.YES;
 import static com.rainyhon.common.util.CommonUtil.byte2Base64Str;
 import static com.rainyhon.common.util.CommonUtil.saveFile;
 
@@ -101,7 +102,7 @@ public class CaptureTask {
 			// Save image
 			String now = dateFormat.get().format(new Date());
 			String imageName = "" + now + ".jpeg";
-			if (Constants.YES.toLowerCase().equals(generateImageFile)) {
+			if (YES.toLowerCase().equals(generateImageFile)) {
 				saveImage(imageName, jpegBuffer, retLen);
 			}
 

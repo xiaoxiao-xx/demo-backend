@@ -1,25 +1,25 @@
 package com.rainyhon.common.service;
 
+import com.rainyhon.common.constant.Constants;
+import com.rainyhon.common.mapper.SchedulePersonMapper;
 import com.rainyhon.common.model.*;
 import com.rainyhon.common.vo.ScheduleConfigVo;
 import com.rainyhon.common.vo.ResultVo;
 
+import java.util.Date;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.mapper.ScheduleConfigMapper;
 import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.vo.SchedulePersonVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import static com.github.pagehelper.page.PageMethod.startPage;
+import static com.rainyhon.common.constant.Constants.*;
 import static com.rainyhon.common.util.CommonUtil.*;
 
 @Service
@@ -30,108 +30,95 @@ public class ScheduleConfigService {
 	private ScheduleConfigMapper scheduleConfigMapper;
 
 	@Autowired
-	private ScheduleDetailService scheduleDetailService;
-
-//	@Autowired
-//	private PsmUserService psmUserService;
-
-	@Autowired
 	private ParaDefineService paraDefineService;
 
-	public ResultVo add(ScheduleConfigVo vo) {
-		vo.setId(getUUID());
-		scheduleConfigMapper.insert(vo);
-
-		// TODO
-		// insertScheduleDetailList(vo);
-
-		return ResultVo.ok();
-	}
-
-	private void insertScheduleDetailList(ScheduleConfig config) {
-		List<ScheduleDetail> detailList = buildDetailList(config);
-		if (detailList != null && detailList.size() > 0) {
-			detailList.forEach(detail -> scheduleDetailService.addDetail(detail));
-		}
-	}
+	@Autowired
+	private SchedulePersonMapper schedulePersonMapper;
 
 	@Autowired
 	private PersonInfoService personInfoService;
 
-	private List<ScheduleDetail> buildDetailList(ScheduleConfig config) {
-		List<ScheduleDetail> resultList = new ArrayList<>();
+	@Autowired
+	private OrgService orgService;
 
-		if ("Y".equals(config.getSelectFlag())) {
-			ScheduleDetail detail = buildDetail(config);
-			resultList.add(detail);
+	public ResultVo add(ScheduleConfigVo vo) {
+		vo.setId(getUUID());
 
-			// 按重复周期生成后续日程
-			List<ScheduleDetail> scheduleDetailList = generateScheduleDetail(detail, config.getRepeatType());
-			resultList.addAll(scheduleDetailList);
-		} else {
-//			List<PsmUser> userList = psmUserService.getUserListByOrgId(config.getTeamId());
-//			if (userList != null && userList.size() > 0) {
-//				userList.forEach(user -> {
-//					config.setObjectId(user.getId());
-//					config.setRepeatType(user.getUsername());
-//					ScheduleDetail detail = buildDetail(config);
-//					resultList.add(detail);
-//
-			// 按重复周期生成后续日程
-//					List<ScheduleDetail> scheduleDetailList = generateScheduleDetail(detail, config.getRepeatType());
-//					resultList.addAll(scheduleDetailList);
-//				});
-//			}
+		if (SCHEDULE_CONFIG_OBJECT_TYPE_PERSON.equals(vo.getObjectType())) {
+			// 如果是个人类型的日程配置, 则特殊处理多个个人的列表
+			String objectId = CommonUtil.getUUID();
+			vo.setObjectId(objectId);
 
-			List<PersonInfo> personInfoList = personInfoService.getPersonInfoListByOrgId(config.getTeamId());
-			if (CommonUtil.isNotEmpty(personInfoList)) {
-				personInfoList.forEach(personInfo -> {
-					config.setObjectId(personInfo.getId());
-					// config.setRepeatType(user.getUsername());
-					ScheduleDetail detail = buildDetail(config);
-					resultList.add(detail);
-
-					// 按重复周期生成后续日程
-					List<ScheduleDetail> scheduleDetailList = generateScheduleDetail(detail, config.getRepeatType());
-					resultList.addAll(scheduleDetailList);
+			List<SchedulePersonVo> schedulePersonList = vo.getSchedulePersonList();
+			if (CommonUtil.isNotEmpty(schedulePersonList)) {
+				schedulePersonList.forEach(schedulePerson -> {
+					schedulePerson.setId(CommonUtil.getUUID());
+					schedulePerson.setObjectId(objectId);
+					schedulePersonMapper.insert(schedulePerson);
 				});
 			}
 		}
 
-		return resultList;
-	}
+		scheduleConfigMapper.insert(vo);
 
-	private ScheduleDetail buildDetail(ScheduleConfig config) {
-		ScheduleDetail detail = new ScheduleDetail();
-
-		detail.setObjectType(config.getObjectType());
-		detail.setObjectId(config.getObjectId());
-
-		detail.setNumber(config.getNumber());
-		detail.setSomeDate(config.getSomeDate());
-		detail.setStartTime(config.getStartTime());
-		detail.setEndTime(config.getEndTime());
-		detail.setAddress(config.getAddress());
-		detail.setTitle(config.getTitle());
-		detail.setContent(config.getContent());
-		detail.setTeacher(config.getTeacher());
-
-		return detail;
+		return ResultVo.ok();
 	}
 
 	public ResultVo update(ScheduleConfigVo vo) {
+		String id = vo.getId();
+		ScheduleConfig scheduleConfig = getScheduleConfigById(id);
+
+		// 如果是个人类型的日程配置, 则特殊处理多个个人的列表
+		if (SCHEDULE_CONFIG_OBJECT_TYPE_PERSON.equals(vo.getObjectType())) {
+			// 删除旧人员列表
+			deleteSchedulePersonByObjectId(scheduleConfig.getObjectId());
+
+			// 新增人员列表
+			String objectId = CommonUtil.getUUID();
+			vo.setObjectId(objectId);
+
+			List<SchedulePersonVo> schedulePersonList = vo.getSchedulePersonList();
+			if (CommonUtil.isNotEmpty(schedulePersonList)) {
+				schedulePersonList.forEach(schedulePerson -> {
+					schedulePerson.setId(CommonUtil.getUUID());
+					schedulePerson.setObjectId(objectId);
+					schedulePersonMapper.insert(schedulePerson);
+				});
+			}
+		}
+
 		scheduleConfigMapper.updateByPrimaryKeySelective(vo);
 		return ResultVo.ok();
 	}
 
+	private void deleteSchedulePersonByObjectId(String objectId) {
+		SchedulePersonExample example = new SchedulePersonExample();
+		SchedulePersonExample.Criteria criteria = example.createCriteria();
+		criteria.andObjectIdEqualTo(objectId);
+		schedulePersonMapper.deleteByExample(example);
+	}
+
 	public ResultVo delete(String id) {
-		scheduleConfigMapper.deleteByPrimaryKey(id);
+		ScheduleConfig scheduleConfig = getScheduleConfigById(id);
+		deleteSchedulePersonByObjectId(scheduleConfig.getObjectId());
+
 		return ResultVo.ok();
 	}
 
-	public ResultVo getScheduleConfigList(String team, Integer pageIndex, Integer pageSize) {
+	public ResultVo getScheduleConfigList(Date someDate, String configType, String objectType, String team,
+	                                      Integer pageIndex, Integer pageSize) {
 		ScheduleConfigExample example = new ScheduleConfigExample();
 		ScheduleConfigExample.Criteria criteria = example.createCriteria();
+
+		if (someDate != null) {
+			criteria.andSomeDateEqualTo(someDate);
+		}
+		if (StringUtils.isNotEmpty(configType)) {
+			criteria.andConfigTypeEqualTo(configType);
+		}
+		if (StringUtils.isNotEmpty(objectType)) {
+			criteria.andObjectTypeEqualTo(objectType);
+		}
 		if (StringUtils.isNotEmpty(team)) {
 			criteria.andTeamIdEqualTo(team);
 		}
@@ -145,6 +132,9 @@ public class ScheduleConfigService {
 			configVos.forEach(vo -> {
 				vo.setCheckFlag("Y".equals(vo.getCheckFlag()) ? "是" : "否");
 				vo.setConfigType(paraDefineService.getValueByTypeAnd("SCHEDULE_TYPE", vo.getConfigType()));
+				vo.setObjectName(getObjectName(vo));
+				vo.setSchedulePersonList(getSchedulePersonListByObjectId(vo));
+				vo.setTeacherOrgId(personInfoService.getPersonInfo(vo.getTeacher()).getOrgId());
 			});
 		}
 
@@ -154,11 +144,67 @@ public class ScheduleConfigService {
 		return ResultVo.ok(scheduleConfigVoPageInfo);
 	}
 
+	private List<SchedulePersonVo> getSchedulePersonListByObjectId(ScheduleConfig config) {
+		String objectType = config.getObjectType();
+		if (SCHEDULE_CONFIG_OBJECT_TYPE_ORG.equals(objectType)) {
+			return null;
+		} else if (SCHEDULE_CONFIG_OBJECT_TYPE_PERSON.equals(objectType)) {
+			return getSchedulePersonListObjectId(config.getObjectId());
+		}
+
+		return null;
+	}
+
+	private List<SchedulePersonVo> getSchedulePersonListObjectId(String objectId) {
+		SchedulePersonExample example = new SchedulePersonExample();
+		SchedulePersonExample.Criteria criteria = example.createCriteria();
+		criteria.andObjectIdEqualTo(objectId);
+		List<SchedulePersonVo> personVoList = listPo2VO(schedulePersonMapper.selectByExample(example), SchedulePersonVo.class);
+		personVoList.forEach(schedulePersonVo ->
+				schedulePersonVo.setOrgId(personInfoService.getPersonInfo(schedulePersonVo.getPersonId()).getOrgId()));
+
+		return personVoList;
+	}
+
+	private String getObjectName(ScheduleConfig config) {
+		String objectType = config.getObjectType();
+		if (SCHEDULE_CONFIG_OBJECT_TYPE_ORG.equals(objectType)) {
+			return orgService.getOrgNameById(config.getObjectId());
+		} else if (SCHEDULE_CONFIG_OBJECT_TYPE_PERSON.equals(objectType)) {
+			return getSchedulePersonLeaderName(config);
+		}
+
+		return "";
+	}
+
+	private String getSchedulePersonLeaderName(ScheduleConfig config) {
+		String objectId = config.getObjectId();
+		List<SchedulePerson> schedulePersonList = getSchedulePersonLeaderObjectId(objectId);
+		if (CommonUtil.isNotEmpty(schedulePersonList)) {
+			return personInfoService.getPersonInfoName(schedulePersonList.get(0).getPersonId());
+		} else {
+			// 没有领导, 取第一个人员的名字
+			List<SchedulePersonVo> personVoList = getSchedulePersonListObjectId(objectId);
+			if (CommonUtil.isNotEmpty(personVoList)) {
+				return personInfoService.getPersonInfoName(personVoList.get(0).getPersonId());
+			} else {
+				return "";
+			}
+		}
+	}
+
+	private List<SchedulePerson> getSchedulePersonLeaderObjectId(String objectId) {
+		SchedulePersonExample example = new SchedulePersonExample();
+		SchedulePersonExample.Criteria criteria = example.createCriteria();
+		criteria.andObjectIdEqualTo(objectId);
+		criteria.andLeaderEqualTo(YES);
+		return schedulePersonMapper.selectByExample(example);
+	}
+
 	public List<ScheduleConfig> getScheduleConfigList() {
 		ScheduleConfigExample example = new ScheduleConfigExample();
 		ScheduleConfigExample.Criteria criteria = example.createCriteria();
-		List<ScheduleConfig> configList = scheduleConfigMapper.selectByExample(example);
-		return configList;
+		return scheduleConfigMapper.selectByExample(example);
 	}
 
 	public void batchDelete(String idList) {
@@ -173,83 +219,17 @@ public class ScheduleConfigService {
 		}
 	}
 
-	private List<ScheduleDetail> generateScheduleDetail(ScheduleDetail detail, String repeatType) {
-		List<ScheduleDetail> resultList = new ArrayList<>();
-
-		if ("D".equals(repeatType)) {
-			for (int i = 0; i < 10; i++) {
-				Date tomorrow = addOneDay(detail.getSomeDate());
-				detail.setSomeDate(tomorrow);
-
-				resultList.add(detail);
-			}
-		} else if ("M".equals(repeatType)) {
-			for (int i = 0; i < 10; i++) {
-				Date nextMonth = addOneMonth(detail.getSomeDate());
-				detail.setSomeDate(nextMonth);
-
-				resultList.add(detail);
-			}
-		} else if ("W".equals(repeatType)) {
-			for (int i = 0; i < 10; i++) {
-				Date nextMonth = addOneWeek(detail.getSomeDate());
-				detail.setSomeDate(nextMonth);
-
-				resultList.add(detail);
-			}
-		} else if ("Y".equals(repeatType)) {
-			for (int i = 0; i < 10; i++) {
-				Date nextMonth = addOneYear(detail.getSomeDate());
-				detail.setSomeDate(nextMonth);
-
-				resultList.add(detail);
-			}
-		} else if ("N".equals(repeatType)) {
-			// do nothing
-		}
-
-		return resultList;
-	}
-
 	public ResultVo setRepeatType(String id, String repeatType) {
 		ScheduleConfig config = new ScheduleConfig();
 		config.setId(id);
 		config.setRepeatType(repeatType);
 		scheduleConfigMapper.updateByPrimaryKeySelective(config);
 
+		// 重新设置重复方式，必须重新生成日程，这比较麻烦
+		// 所以不允许修改重复方式较好
 		ScheduleConfig scheduleConfig = getScheduleConfigById(id);
-		// TODO
-		// insertScheduleDetailList(scheduleConfig);
 
 		return ResultVo.ok();
-	}
-
-	private Date addOneYear(Date date) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.add(Calendar.YEAR, 1);
-		return c.getTime();
-	}
-
-	private Date addOneMonth(Date date) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.add(Calendar.MONTH, 1);
-		return c.getTime();
-	}
-
-	private Date addOneWeek(Date date) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.add(Calendar.WEEK_OF_MONTH, 1);
-		return c.getTime();
-	}
-
-	private Date addOneDay(Date date) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.add(Calendar.DAY_OF_MONTH, 1);  // 今天+1天
-		return c.getTime();
 	}
 
 	private ScheduleConfig getScheduleConfigById(String id) {

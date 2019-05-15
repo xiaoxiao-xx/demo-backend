@@ -35,6 +35,18 @@ public class RollCallService {
 	@Autowired
 	private RollCallResultMapper rollCallResultMapper;
 
+	@Autowired
+	private ScheduleDetailMapper scheduleDetailMapper;
+
+	@Autowired
+	private OrgService orgService;
+
+	@Autowired
+	private PersonInfoService personInfoService;
+
+	@Autowired
+	private CommonService commonService;
+
 	public PageInfo<RollCallResultVo> getRollCallResultList(String orgId, String personId,
 	                                                        Integer pageIndex, Integer pageSize) {
 
@@ -66,15 +78,6 @@ public class RollCallService {
 		criteria.andPersonIdEqualTo(personId);
 		return rollCallResultMapper.selectByExample(example);
 	}
-
-	@Autowired
-	private ScheduleDetailMapper scheduleDetailMapper;
-
-	@Autowired
-	private OrgService orgService;
-
-	@Autowired
-	private PersonInfoService personInfoService;
 
 	public PageInfo<RollCallInfo> getRollCall(Integer pageIndex, Integer pageSize) {
 		ScheduleDetailExample example = new ScheduleDetailExample();
@@ -122,9 +125,6 @@ public class RollCallService {
 			return "进行中";
 		}
 	}
-
-	@Autowired
-	private CommonService commonService;
 
 	private Integer getRealRollCallCount(String detailId) {
 		String sql = "from roll_call_result where detail_id = #{detailId} and result = '3'";

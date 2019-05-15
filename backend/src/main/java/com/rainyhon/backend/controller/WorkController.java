@@ -5,6 +5,7 @@ import com.rainyhon.common.service.WorkService;
 import com.rainyhon.common.vo.ResultVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -31,7 +32,23 @@ public class WorkController {
 		return ResultVo.ok(workService.getWorkAttendanceListByMonth(personId, year, month));
 	}
 
-	@PostMapping("updateWorkAttendanceRecord")
+	@GetMapping("getWorkList")
+	public ResultVo getWorkAttendanceList(@RequestParam(required = false) String personName,
+	                                      @RequestParam(required = false) String orgId,
+	                                      @RequestParam(required = false) String history,
+	                                      @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+	                                      @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+	                                      @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+	                                      @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+		return workService.getWorkAttendanceList(personName, orgId, history, startDate, endDate, pageIndex, pageSize);
+	}
+
+	@GetMapping("getWorkStatInfo")
+	public ResultVo getWorkStatInfo(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date checkDate) {
+		return ResultVo.ok(workService.getWorkStatInfo(checkDate));
+	}
+
+	@PostMapping("updateWorkAttendance")
 	public ResultVo updateWorkAttendanceRecord(@RequestBody WorkAttendance workAttendance) {
 		workService.updateWorkAttendance(workAttendance);
 		return ResultVo.ok();

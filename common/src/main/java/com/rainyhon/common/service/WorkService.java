@@ -1,5 +1,6 @@
 package com.rainyhon.common.service;
 
+import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.constant.Constants;
 import com.rainyhon.common.mapper.WorkAttendanceMapper;
 import com.rainyhon.common.mapper.WorkCheckTimeMapper;
@@ -7,19 +8,39 @@ import com.rainyhon.common.mapper.WorkExemptionMapper;
 import com.rainyhon.common.mapper.WorkHolidayCalendarMapper;
 import com.rainyhon.common.model.*;
 import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.util.EntityUtils;
+import com.rainyhon.common.vo.ResultVo;
 import com.rainyhon.common.vo.WorkAttendanceVo;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.github.pagehelper.page.PageMethod.startPage;
+import static com.rainyhon.common.constant.Constants.DELETE_STATUS_NO;
+import static com.rainyhon.common.constant.Constants.YES;
+import static com.rainyhon.common.util.CommonUtil.*;
+import static java.util.Calendar.DAY_OF_WEEK;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class WorkService {
+
+	private static Map<Integer, String> DAY_OF_WEEK_MAP = new HashMap<>();
+
+	static {
+		DAY_OF_WEEK_MAP.put(0, "星期日");
+		DAY_OF_WEEK_MAP.put(1, "星期一");
+		DAY_OF_WEEK_MAP.put(2, "星期二");
+		DAY_OF_WEEK_MAP.put(3, "星期三");
+		DAY_OF_WEEK_MAP.put(4, "星期四");
+		DAY_OF_WEEK_MAP.put(5, "星期五");
+		DAY_OF_WEEK_MAP.put(6, "星期六");
+	}
 
 	@Autowired
 	private WorkHolidayCalendarMapper workHolidayCalendarMapper;
@@ -35,6 +56,15 @@ public class WorkService {
 
 	@Autowired
 	private CommonService commonService;
+
+	@Autowired
+	private OrgService orgService;
+
+	@Autowired
+	private PersonInfoService personInfoService;
+
+	@Autowired
+	private ScheduleDetailService scheduleDetailService;
 
 	public boolean isHoliday(Date date) {
 		WorkHolidayCalendarExample example = new WorkHolidayCalendarExample();
@@ -53,7 +83,7 @@ public class WorkService {
 		WorkExemptionExample example = new WorkExemptionExample();
 		WorkExemptionExample.Criteria criteria = example.createCriteria();
 		criteria.andPersonIdEqualTo(personId);
-		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
+		criteria.andDelStatusEqualTo(DELETE_STATUS_NO);
 
 		List<WorkExemption> exemptionList = workExemptionMapper.selectByExample(example);
 		if (CommonUtil.isNotEmpty(exemptionList)) {
@@ -78,6 +108,10 @@ public class WorkService {
 		workAttendanceMapper.insert(workAttendance);
 	}
 
+	public void updateWorkAttendacne(WorkAttendance workAttendance) {
+		workAttendanceMapper.updateByPrimaryKeySelective(workAttendance);
+	}
+
 	public WorkAttendance getWorkAttendanceByPersonIdAndCheckDate(String personId, Date checkDate) {
 		WorkAttendanceExample example = new WorkAttendanceExample();
 		WorkAttendanceExample.Criteria criteria = example.createCriteria();
@@ -92,6 +126,7 @@ public class WorkService {
 	}
 
 	public void updateWorkAttendance(WorkAttendance workAttendance) {
+		EntityUtils.setUpdateInfo(workAttendance);
 		workAttendanceMapper.updateByPrimaryKeySelective(workAttendance);
 	}
 
@@ -114,6 +149,135 @@ public class WorkService {
 		List<WorkAttendanceVo> list = CommonUtil.map2PO(maps, WorkAttendanceVo.class);
 
 		return list;
+	}
+
+	public ResultVo<PageInfo> getWorkAttendanceList(String personName, String orgId,
+	                                                String history,
+	                                                Date startDate, Date endDate,
+	                                                Integer pageIndex, Integer pageSize) {
+		WorkAttendanceExample example = new WorkAttendanceExample();
+		example.setOrderByClause("check_date desc");
+		example.setOrderByClause("on_work_time desc");
+
+		WorkAttendanceExample.Criteria criteria = example.createCriteria();
+
+		if (StringUtils.isNotBlank(personName)) {
+			List<String> personIdList = personInfoService.getPersonListByLike(personName);
+			criteria.andPersonIdIn(personIdList);
+		}
+
+		if (StringUtils.isNotBlank(orgId)) {
+			List<String> personList = personInfoService.getPersonListByOrgLike(orgId);
+			criteria.andPersonIdIn(personList);
+		}
+
+		// 查询历史考勤记录
+		// 默认查询所有历史记录
+		if (StringUtils.isNotBlank(history) && YES.equals(history)) {
+			if (startDate != null && endDate != null) {
+				criteria.andCheckDateBetween(startDate, endDate);
+			}
+		} else {
+			// 默认查询今天的考勤记录
+			criteria.andCheckDateEqualTo(new Date());
+		}
+
+		PageInfo<WorkAttendance> pageInfo = startPage(pageIndex, pageSize).doSelectPageInfo(()
+				-> workAttendanceMapper.selectByExample(example));
+
+		List<WorkAttendance> scheduleDetailList = pageInfo.getList();
+		List<WorkAttendanceVo> scheduleDetailVoList = listPo2VO(scheduleDetailList, WorkAttendanceVo.class);
+		scheduleDetailVoList.forEach(vo -> {
+			vo.setPersonName(personInfoService.getPersonInfoName(vo.getPersonId()));
+			vo.setOrgName(orgService.getOrgNameById(personInfoService.getPersonInfo(vo.getPersonId()).getOrgId()));
+			vo.setResultName(getResultName(vo.getResult()));
+			vo.setDayOfWeek(getDayOfWeekString(vo.getCheckDate()));
+		});
+
+		PageInfo<WorkAttendanceVo> voPageInfo = po2VO(pageInfo, PageInfo.class);
+		voPageInfo.setList(scheduleDetailVoList);
+
+		return ResultVo.ok(voPageInfo);
+	}
+
+	private String getDayOfWeekString(Date date) {
+		int i = getDayOfWeek(date);
+		return DAY_OF_WEEK_MAP.get(i);
+	}
+
+	private int getDayOfWeek(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		return calendar.get(DAY_OF_WEEK);
+	}
+
+	private String getResultName(String result) {
+		if (StringUtils.isBlank(result)) {
+			return "";
+		}
+
+		List<String> res = new ArrayList<>();
+
+		result = result.trim();
+		for (int i = 0; i < result.length(); i++) {
+			char c = result.charAt(i);
+			String resultString = scheduleDetailService.getAttendanceResultString(c + "");
+			res.add(resultString);
+		}
+
+		return getCommaString(res);
+	}
+
+	public WorkStatInfo getWorkStatInfo(Date checkDate) {
+		WorkAttendanceExample example = new WorkAttendanceExample();
+		WorkAttendanceExample.Criteria criteria = example.createCriteria();
+		criteria.andDelStatusEqualTo(DELETE_STATUS_NO);
+		if (checkDate == null) {
+			checkDate = new Date();
+		}
+		criteria.andCheckDateEqualTo(checkDate);
+		List<WorkAttendance> list = workAttendanceMapper.selectByExample(example);
+
+		Integer totalCount = list.size();
+		int absenteeismCount = 0;
+		int lateCount = 0;
+		int leaveEarlyCount = 0;
+		int normalCount = 0;
+
+		for (WorkAttendance workAttendance : list) {
+			String result = workAttendance.getResult();
+			if (result.contains("0")) {
+				absenteeismCount += 1;
+			}
+			if (result.contains("1")) {
+				lateCount += 1;
+			}
+			if (result.contains("2")) {
+				leaveEarlyCount += 1;
+			}
+			if (result.contains("3")) {
+				normalCount += 1;
+			}
+		}
+
+		return new WorkStatInfo(totalCount, absenteeismCount, lateCount,
+				leaveEarlyCount, normalCount);
+	}
+
+	@Data
+	@AllArgsConstructor
+	private static class WorkStatInfo {
+
+		private Integer totalCount;
+
+		private Integer absenteeismCount;
+
+		private Integer lateCount;
+
+		private Integer leaveEarlyCount;
+
+		private Integer normalCount;
+
 	}
 
 }

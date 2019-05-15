@@ -8,4 +8,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class WorkAttendanceVo extends WorkAttendance {
 
+	private String personName;
+
+	private String resultName;
+
+	private String orgName;
+
+	private String dayOfWeek;
+
 }
