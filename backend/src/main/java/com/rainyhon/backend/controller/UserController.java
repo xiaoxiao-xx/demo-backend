@@ -1,8 +1,9 @@
 package com.rainyhon.backend.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.rainyhon.backend.task.ScheduleTask;
+import com.rainyhon.backend.task.WorkTask;
 import com.rainyhon.common.model.User;
-//import com.rainyhon.common.service.PsmUserService;
 import com.rainyhon.common.service.UserService;
 import com.rainyhon.common.vo.ResultVo;
 import com.rainyhon.common.vo.UserInfo;
@@ -15,9 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("user")
 public class UserController {
-
-//	@Autowired
-//	private PsmUserService psmUserService;
 
 	@Autowired
 	private UserService userService;
@@ -72,5 +70,17 @@ public class UserController {
 //	public ResultVo getUserListByTeamId(@RequestParam String id) {
 //		return ResultVo.ok(userService.getUserListByOrgId(id));
 //	}
+
+	@Autowired
+	ScheduleTask scheduleTask;
+
+	@Autowired
+	WorkTask workTask;
+	@PostMapping("testgen")
+	public ResultVo testGen() {
+		scheduleTask.generateScheduleDetail();
+		workTask.generateWorkAttendance();
+		return ResultVo.ok();
+	}
 
 }

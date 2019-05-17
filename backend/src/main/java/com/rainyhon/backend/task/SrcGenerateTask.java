@@ -23,8 +23,6 @@ import static com.rainyhon.common.util.CommonUtil.random;
 
 /**
  * 素材记录产生任务
- *
- * @author Administrator
  */
 @Component
 public class SrcGenerateTask {

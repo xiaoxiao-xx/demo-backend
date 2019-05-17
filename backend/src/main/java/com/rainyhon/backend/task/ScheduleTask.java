@@ -7,7 +7,10 @@ import com.rainyhon.common.service.ScheduleConfigService;
 import com.rainyhon.common.service.ScheduleDetailService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
+import com.snowalker.lock.redisson.RedissonLock;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +23,9 @@ import static com.rainyhon.common.util.CommonUtil.getTomorrowCalendarInstance;
 
 /**
  * 日程生成任务
- *
- * @author
  */
 @Component
+@Slf4j
 public class ScheduleTask {
 
 	@Autowired
@@ -38,15 +40,40 @@ public class ScheduleTask {
 	@Autowired
 	private SchedulePersonMapper schedulePersonMapper;
 
+	@Autowired
+	private RedissonLock redissonLock;
+
 	/**
 	 * 每天23:00执行生成日程的任务
-	 * TODO 多个节点可能重复生成日程
-	 * 加分布式锁，只由一个节点生成数据
-	 * 锁由超时时间，几分钟后自动解锁
+	 * 多个节点可能重复生成日程，加分布式锁，只由一个节点生成数据，有超时时间，几分钟后自动解锁
 	 */
-	// TODO 测试
 	@Scheduled(cron = "0 0 23 * * *")
-	private void generateScheduleDetail() {
+	@Async
+	public void generateScheduleDetail() {
+		String lockName = "GenScheduleDetailTaskLock";
+
+		if (redissonLock.lock(lockName, 300)) {
+			// log.info("[ExecutorRedisson]--执行定时任务开始，休眠三秒");
+
+			generateScheduleDetailCore();
+
+			try {
+				Thread.sleep(100000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			log.info("执行生成日程表定时任务结束");
+			redissonLock.release(lockName);
+		} else {
+			log.info("获取锁失败");
+		}
+	}
+
+	/**
+	 * 生成日程表
+	 */
+	private void generateScheduleDetailCore() {
 		Calendar cal = getTomorrowCalendarInstance();
 
 		List<ScheduleConfig> configList = scheduleConfigService.getScheduleConfigList();
@@ -123,7 +150,7 @@ public class ScheduleTask {
 		return schedulePersonMapper.selectByExample(example);
 	}
 
-	boolean isRepeatResultDay(Date beginDay, Date endDay, String repeatType) {
+	private boolean isRepeatResultDay(Date beginDay, Date endDay, String repeatType) {
 		// D-day W-week M-month N-no
 
 		if (REPEAT_TYPE_NO.equals(repeatType)) {

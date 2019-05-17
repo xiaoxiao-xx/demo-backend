@@ -6,7 +6,10 @@ import com.rainyhon.common.service.PersonInfoService;
 import com.rainyhon.common.service.WorkService;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
+import com.snowalker.lock.redisson.RedissonLock;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +21,9 @@ import static com.rainyhon.common.util.CommonUtil.getTomorrowCalendarInstance;
 
 /**
  * 考勤记录生成任务
- * TODO 多个节点可能重复生成
  */
 @Component
+@Slf4j
 public class WorkTask {
 
 	@Autowired
@@ -29,11 +32,32 @@ public class WorkTask {
 	@Autowired
 	private PersonInfoService personInfoService;
 
+	@Autowired
+	private RedissonLock redissonLock;
+
 	/**
 	 * 每天23:00执行生成考勤记录的任务
 	 */
 	@Scheduled(cron = "0 0 23 * * *")
-	private void generateWorkAttendance() {
+	@Async
+	public void generateWorkAttendance() {
+		String lockName = "GenWorkAttendanceTaskLock";
+
+		if (redissonLock.lock(lockName, 300)) {
+			generateWorkAttendanceCore();
+
+			try {
+				Thread.sleep(100000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			log.info("执行生成日程表定时任务结束");
+			redissonLock.release(lockName);
+		}
+	}
+
+	private void generateWorkAttendanceCore() {
 		Calendar cal = getTomorrowCalendarInstance();
 
 		// 如果第二天在节假日表，不生成attendance表的记录

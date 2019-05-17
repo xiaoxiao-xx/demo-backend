@@ -67,6 +67,11 @@ redis:
   server: 127.0.0.1
   port: 6379
 
+redisson.lock.server.address: 127.0.0.1:6379
+redisson.lock.server.password:
+redisson.lock.server.database=:
+redisson.lock.server.type: standalone
+
 # logging.level: debug
 
 # Activiti default configuration
