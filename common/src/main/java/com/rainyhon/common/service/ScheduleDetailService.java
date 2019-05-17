@@ -89,24 +89,26 @@ public class ScheduleDetailService {
 		String detailId = CommonUtil.getUUID();
 		detail.setId(detailId);
 
-		// 默认把机构总人数设置为应到人数
-		String currentOrgId = CommonUtil.getCurrentOrgId();
-		Integer number = personInfoService.getPersonCountByOrgId(currentOrgId);
-		detail.setNumber(number);
-
-		// 后台默认设置时间
-		int defaultTime = 60;
-		detail.setSomeDate(new Date());
-		detail.setStartTime(new Date());
-		detail.setEndTime(new DateTime().plusSeconds(defaultTime).toDate());
-
-		String currentUserId = CommonUtil.getCurrentUserId();
-		String teacherId = userService.getRealPersonIdByUserId(currentUserId);
-		detail.setTeacher(teacherId);
 		EntityUtils.setCreateAndUpdateInfo(detail);
 
 		// 为电子点名生成结果表
 		if (SCHEDULE_DETAIL_TYPE_ROLL_CALL.equals(detail.getType())) {
+			// 电子点名发起人
+			String currentUserId = CommonUtil.getCurrentUserId();
+			String teacherId = userService.getRealPersonIdByUserId(currentUserId);
+			detail.setTeacher(teacherId);
+
+			// 默认把机构总人数设置为应到人数
+			String currentOrgId = CommonUtil.getCurrentOrgId();
+			Integer number = personInfoService.getPersonCountByOrgId(currentOrgId);
+			detail.setNumber(number);
+
+			// 后台默认设置时间
+			int defaultTime = 60;
+			detail.setSomeDate(new Date());
+			detail.setStartTime(new Date());
+			detail.setEndTime(new DateTime().plusSeconds(defaultTime).toDate());
+
 			List<PersonInfo> personInfoList = personInfoService.getPersonInfoListByOrgId(detail.getObjectId());
 			if (CommonUtil.isNotEmpty(personInfoList)) {
 				personInfoList.forEach(personInfo -> {

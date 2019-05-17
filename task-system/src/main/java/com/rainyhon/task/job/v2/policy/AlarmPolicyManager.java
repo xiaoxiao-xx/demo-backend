@@ -5,8 +5,10 @@ import com.rainyhon.common.model.AlarmPolicy;
 import com.rainyhon.common.service.AlarmPolicyService;
 import com.rainyhon.task.job.v2.policy.base.IAlarmPolicyChecker;
 import com.rainyhon.task.job.v2.policy.checker.StayTimeoutAlarmPolicyChecker;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -20,6 +22,7 @@ import java.util.Map;
  * @date 2019.04.29
  */
 @Component
+@Slf4j
 public class AlarmPolicyManager implements CommandLineRunner {
 
     private static final String DEFAULT = "DEFAULT";
@@ -45,7 +48,7 @@ public class AlarmPolicyManager implements CommandLineRunner {
     }
 
     private synchronized void refreshPolicy() {
-        policies = (List<AlarmPolicy>) policyService.getAllEnableAlarmPolicy().getData();
+        policies = policyService.getAllEnableAlarmPolicyReal();
     }
 
     @Override
@@ -69,4 +72,11 @@ public class AlarmPolicyManager implements CommandLineRunner {
     public IAlarmPolicyChecker getChecker() {
         return checker.get(DEFAULT);
     }
+
+    @Scheduled(fixedRate = 60000L)
+    private void refreshPolicies() {
+        refreshPolicy();
+        // log.info("已经刷新告警策略");
+    }
+
 }

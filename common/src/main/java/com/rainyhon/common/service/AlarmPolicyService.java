@@ -119,12 +119,16 @@ public class AlarmPolicyService {
     }
 
     public ResultVo getAllEnableAlarmPolicy() {
+        List<AlarmPolicy> list = getAllEnableAlarmPolicyReal();
+        return ResultVo.ok(list);
+    }
+
+    public List<AlarmPolicy> getAllEnableAlarmPolicyReal() {
         AlarmPolicyExample example = new AlarmPolicyExample();
         AlarmPolicyExample.Criteria criteria = example.createCriteria();
         criteria.andStateEqualTo(State.Enabled);
         criteria.andDelStatusEqualTo(DelStatus.NotDelete);
-        List<AlarmPolicy> list = psmAlarmPolicyMapper.selectByExample(example);
-        return ResultVo.ok(list);
+        return psmAlarmPolicyMapper.selectByExample(example);
     }
 
     /**
