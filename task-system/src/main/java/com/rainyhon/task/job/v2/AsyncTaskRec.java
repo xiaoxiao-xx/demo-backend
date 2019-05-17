@@ -147,7 +147,7 @@ public class AsyncTaskRec {
             String userId = face.getUserId();
             PersonInfo personInfo = personInfoService.getPersonInfo(userId);
 
-            sendEvent(face);
+            // sendEvent(face);
 
             // log.info("name: {}", face.getUserId());
             log.info("检测到人脸: {}, 分数: {}", personInfoService.getPersonInfoName(userId), face.getScore());
@@ -184,7 +184,7 @@ public class AsyncTaskRec {
     }
 
     @Autowired
-    private WebSocketTask webSocketTask;
+    private SummaryService summaryService;
 
     private void pushPersonMoveInfo(CaptureRecord captureRecord, String newAreaId) {
         int timeOut = 4 * 60;
@@ -198,7 +198,7 @@ public class AsyncTaskRec {
                     new DateTime(dateFormat.get().parse(captureTime)).plusSeconds(timeOut).toDate().getTime()
                             < new Date().getTime()) {
 
-                webSocketTask.sendDetailList();
+                rabbitMQUtil.sendMsg(gson.toJson(summaryService.getDetailListRedis2()) );
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -473,7 +473,8 @@ public class AsyncTaskRec {
 
         try {
             if (Double.parseDouble(face.getScore()) >= 60.00D) {
-                rabbitMQUtil.sendMsg(gson.toJson(vo));
+                // rabbitMQUtil.sendMsg(gson.toJson(vo));
+
                 //
                 // String alarmAreaId = "5";
                 // if ("1".equals(personInfo.getCurrentOrgId()) && alarmAreaId.equals(areaId)) {

@@ -33,7 +33,7 @@ public class AlarmPolicyController {
 
     @ApiOperation(value = "告警策略修改", notes = "告警策略修改")
     @PostMapping("update")
-    public ResultVo update(@RequestBody AlarmPolicyVo alarmPolicyVo) {
+    public ResultVo update(@RequestBody AlarmPolicyVo alarmPolicyVo) throws ParseException {
         return alarmPolicyService.update(alarmPolicyVo);
     }
 

@@ -6,9 +6,8 @@ import com.rainyhon.common.constant.AreaDef;
 import com.rainyhon.common.mapper.AlarmPolicyMapper;
 import com.rainyhon.common.model.AlarmPolicy;
 import com.rainyhon.common.model.AlarmPolicyExample;
-import com.rainyhon.common.service.AlarmModeService;
-import com.rainyhon.common.service.ParaDefineService;
 import com.rainyhon.common.util.CommonUtil;
+import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.util.StringUtil;
 import com.rainyhon.common.vo.AlarmPolicyOpt;
 import com.rainyhon.common.vo.AlarmPolicyVo;
@@ -54,9 +53,13 @@ public class AlarmPolicyService {
         return ResultVo.ok();
     }
 
-    public ResultVo update(AlarmPolicyVo alarmPolicyVo) {
+    public ResultVo update(AlarmPolicyVo alarmPolicyVo) throws ParseException {
         AlarmPolicy p = CommonUtil.po2VO(alarmPolicyVo, AlarmPolicy.class);
-        psmAlarmPolicyMapper.updateByPrimaryKey(p);
+
+	    p.setBeginTime(TIME_FORMAT.parse(alarmPolicyVo.getTimePeriod()[0]));
+	    p.setEndTime(TIME_FORMAT.parse(alarmPolicyVo.getTimePeriod()[1]));
+        EntityUtils.setUpdateInfo(alarmPolicyVo);
+        psmAlarmPolicyMapper.updateByPrimaryKeySelective(p);
         return ResultVo.ok();
     }
 
