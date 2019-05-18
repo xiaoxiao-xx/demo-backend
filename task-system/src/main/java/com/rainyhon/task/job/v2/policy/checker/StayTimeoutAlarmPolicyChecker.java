@@ -58,7 +58,7 @@ public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
             alarm.setId(getUUID());
             alarm.setRemark("");
             // 默认初始告警
-            alarm.setState("初始");
+            alarm.setState("0");
             alarm.setTriggerTime(captureTime);
             alarm.setObjectId(userId);
             if (Double.parseDouble(record.getFace().getScore()) >= 60.00D) {
