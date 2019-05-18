@@ -47,6 +47,7 @@ public class StayTimeoutAlarmPolicyChecker extends AbstractAlarmPolicyChecker {
         // 逗留时间，已存在则延长，否则指定时间过期
         expired.set(expiredKey, captureTime, expiredTime);
 
+        // 同一区域，且在监控时间段内，且超时，就报警
         if (isSameArea(policy, areaId)
                 && isBetweenTimePeriod(policy, captureTime)
                 && isStayTimeout(expiredKey, captureTime, expiredTime)) {

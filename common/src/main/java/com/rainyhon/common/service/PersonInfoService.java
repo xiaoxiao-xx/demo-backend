@@ -24,9 +24,9 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.rainyhon.common.util.CommonUtil.image2byte;
+import static com.rainyhon.common.util.CommonUtil.listPo2VO;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -56,7 +56,13 @@ public class PersonInfoService {
 	private FaceApiService faceApiService;
 
 	@Autowired
+	private OrgService orgService;
+
+	@Autowired
 	private JedisPoolUtil redisUtil;
+
+	@Autowired
+	private KeyPersonService keyPersonService;
 
 	@Value("${face.api.ip}")
 	private String faceApiIp;
@@ -102,6 +108,9 @@ public class PersonInfoService {
 	}
 
 	public ResultVo update(PersonInfoVo personInfoVo) {
+		// 和重点关注人员服务有关联，刷新重点关注人员表的数据
+		keyPersonService.refresh(personInfoVo.getId(), personInfoVo.getImptCareStatus());
+
 		EntityUtils.setUpdateInfo(personInfoVo);
 		personInfoMapper.updateByPrimaryKeySelective(personInfoVo);
 
@@ -128,6 +137,10 @@ public class PersonInfoService {
 		}
 
 		for (String id : idList) {
+			if (id == null) {
+				continue;
+			}
+
 			deletePersonInfo(id);
 
 			FaceSdkUserVo faceSdkUserVo = new FaceSdkUserVo();
@@ -180,25 +193,36 @@ public class PersonInfoService {
 		if (StringUtil.isNotEmpty(name)) {
 			criteria.andNameLike("%" + name.trim() + "%");
 		}
+
+		// 机构是或者不是最基层机构都可以查出所有人员
 		if (StringUtils.isNotEmpty(deptId)) {
-			criteria.andOrgIdEqualTo(deptId);
+			List<String> childrenOrgList = orgService.getChildrenOrgList(deptId);
+			criteria.andOrgIdIn(childrenOrgList);
 		}
-		List<PersonInfoVo> listPersonInfoVo = new ArrayList<>();
-		PageInfo<PersonInfo> personInfoPageInfo = PageHelper.startPage(pageIndex, pageSize)
+
+		PageInfo<PersonInfo> pageInfo = PageHelper.startPage(pageIndex, pageSize)
 				.doSelectPageInfo(() -> personInfoMapper.selectByExample(example));
-		for (PersonInfo personInfo : personInfoPageInfo.getList()) {
-			String deptName = departmentService.getDepartmentName(personInfo.getOrgId());
-			PersonInfoVo personInfoVo = CommonUtil.po2VO(personInfo, PersonInfoVo.class);
-			personInfoVo.setDeptName(deptName);
-			listPersonInfoVo.add(personInfoVo);
-		}
-		PageInfo<PersonInfoVo> pageInfo = new PageInfo(listPersonInfoVo);
-		pageInfo.setTotal(personInfoPageInfo.getTotal());
-		return ResultVo.ok(pageInfo);
+
+		List<PersonInfo> personInfoList = pageInfo.getList();
+		List<PersonInfoVo> personInfoVoList = listPo2VO(personInfoList, PersonInfoVo.class);
+
+		personInfoVoList.forEach(vo -> {
+			String deptName = departmentService.getDepartmentName(vo.getOrgId());
+			vo.setDeptName(deptName);
+
+			// 机构的父机构列表
+			List<String> parentList = orgService.findAllParents(vo.getOrgId());
+			parentList.add(vo.getOrgId());
+			vo.setDisplayOrgList(parentList);
+		});
+
+		PageInfo<PersonInfoVo> voPageInfo = CommonUtil.po2VO(pageInfo, PageInfo.class);
+		voPageInfo.setList(personInfoVoList);
+		return ResultVo.ok(voPageInfo);
 	}
 
 	public ResultVo importantCare(PersonInfoVo personInfoVo) {
-		personInfoVo.setCareStatus("YES");
+		personInfoVo.setCareStatus("--");
 		personInfoMapper.updateByPrimaryKeySelective(personInfoVo);
 		return ResultVo.ok();
 	}

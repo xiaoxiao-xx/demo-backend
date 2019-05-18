@@ -68,7 +68,6 @@ public class DeviceService {
 	}
 
 	@Data
-	@EqualsAndHashCode(callSuper = false)
 	public static class Area {
 
 		Area() {

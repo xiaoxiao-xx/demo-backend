@@ -23,6 +23,9 @@ public class OperHisService {
 	@Autowired
 	private ParaDefineService paraDefineService;
 
+	@Autowired
+	private UserService userService;
+
 	public void add(String operTarget, String operType) {
 		OperationHistory operHis = new OperationHistory();
 		operHis.setId(CommonUtil.getUUID());
@@ -36,9 +39,6 @@ public class OperHisService {
 	public void add(OperationHistory operationHistory) {
 		add(operationHistory.getOperTarget(), operationHistory.getOperType());
 	}
-
-	@Autowired
-	private UserService userService;
 
 	public List<OperationHistoryVo> getOperationHistory(String operTarget) {
 		OperationHistoryExample example = new OperationHistoryExample();

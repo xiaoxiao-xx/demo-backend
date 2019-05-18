@@ -14,6 +14,7 @@ import com.rainyhon.common.vo.WorkAttendanceVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -190,8 +191,16 @@ public class WorkService {
 		scheduleDetailVoList.forEach(vo -> {
 			vo.setPersonName(personInfoService.getPersonInfoName(vo.getPersonId()));
 			vo.setOrgName(orgService.getOrgNameById(personInfoService.getPersonInfo(vo.getPersonId()).getOrgId()));
-			vo.setResultName(getResultName(vo.getResult()));
+			vo.setResultName(getResultName(vo.getResult(), vo));
 			vo.setDayOfWeek(getDayOfWeekString(vo.getCheckDate()));
+
+			// 如果当前时间还不到下班时间，就不展示下班时间
+			LocalTime current = new LocalTime(new Date());
+			LocalTime quitTime = new LocalTime(vo.getQuitTime());
+
+			if (quitTime.isBefore(current)) {
+				vo.setQuitTime(null);
+			}
 		});
 
 		PageInfo<WorkAttendanceVo> voPageInfo = po2VO(pageInfo, PageInfo.class);
@@ -211,7 +220,7 @@ public class WorkService {
 		return calendar.get(DAY_OF_WEEK);
 	}
 
-	private String getResultName(String result) {
+	private String getResultName(String result, WorkAttendanceVo vo) {
 		if (StringUtils.isBlank(result)) {
 			return "";
 		}
@@ -221,6 +230,18 @@ public class WorkService {
 		result = result.trim();
 		for (int i = 0; i < result.length(); i++) {
 			char c = result.charAt(i);
+
+			if ((c + "").equals(Constants.ATTENDANCE_RESULT_LEAVE_EARLY)) {
+				// 如果当前时间还不到下班时间，就不展示早退
+				LocalTime current = new LocalTime(new Date());
+				LocalTime quitTime = new LocalTime(vo.getQuitTime());
+
+				if (quitTime.isBefore(current)) {
+					continue;
+				}
+
+			}
+
 			String resultString = scheduleDetailService.getAttendanceResultString(c + "");
 			res.add(resultString);
 		}

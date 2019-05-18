@@ -32,10 +32,17 @@ public class KeyPersonService {
 		String id = CommonUtil.getUUID();
 		keyPerson.setId(id);
 		keyPerson.setAttentionTime(new Date());
+		keyPerson.setStartPersonId(CommonUtil.getCurrentUserId());
 		EntityUtils.setCreateAndUpdateInfo(keyPerson);
 		keyPersonMapper.insert(keyPerson);
 
 		personInfoService.setImptCareStatus(keyPerson.getPersonId(), IMPT_CARE_TURE);
+	}
+
+	private void addKeyPerson(String personId) {
+		KeyPerson keyPerson = new KeyPerson();
+		keyPerson.setPersonId(personId);
+		addKeyPerson(keyPerson);
 	}
 
 	public void batchDelete(PersonDeleteVo vo) {
@@ -47,11 +54,7 @@ public class KeyPersonService {
 		KeyPersonExample example = new KeyPersonExample();
 		KeyPersonExample.Criteria criteria = example.createCriteria();
 		criteria.andPersonIdEqualTo(personId);
-		// criteria.andDelStatusEqualTo(DELETE_STATUS_NO);
-
-		KeyPerson person = new KeyPerson();
-		person.setDelStatus(DELETE_STATUS_YES);
-		keyPersonMapper.updateByExampleSelective(person, example);
+		keyPersonMapper.deleteByExample(example);
 
 		personInfoService.setImptCareStatus(personId, IMPT_CARE_FALSE);
 	}
@@ -70,11 +73,40 @@ public class KeyPersonService {
 		List<KeyPersonVo> personVoList = CommonUtil.listPo2VO(list, KeyPersonVo.class);
 		personVoList.forEach(vo -> {
 			vo.setPersonName(personInfoService.getPersonInfoName(vo.getPersonId()));
-
 		});
 		PageInfo<KeyPersonVo> voPageInfo = CommonUtil.po2VO(pageInfo, PageInfo.class);
 		voPageInfo.setList(personVoList);
 		return voPageInfo;
+	}
+
+	/**
+	 * 更新人员的重点关注状态
+	 */
+	public void refresh(String personId, String imptCareStatus) {
+		// 没有被重点关注
+		boolean exist = exist(personId);
+
+		if (IMPT_CARE_FALSE.equals(imptCareStatus)) {
+			if (exist) {
+				deleteById(personId);
+			}
+		} else if (IMPT_CARE_TURE.equals(imptCareStatus)) {
+			if (!exist) {
+				addKeyPerson(personId);
+			}
+		}
+	}
+
+	/**
+	 * 判断某个人员的重点关注数据是否存在
+	 */
+	private boolean exist(String personId) {
+		KeyPersonExample example = new KeyPersonExample();
+		KeyPersonExample.Criteria criteria = example.createCriteria();
+		criteria.andPersonIdEqualTo(personId);
+
+		List<KeyPerson> personList = keyPersonMapper.selectByExample(example);
+		return personList.size() > 0;
 	}
 
 }

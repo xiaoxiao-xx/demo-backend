@@ -4,6 +4,8 @@ import com.rainyhon.common.model.PersonInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class PersonInfoVo extends PersonInfo {
@@ -27,5 +29,10 @@ public class PersonInfoVo extends PersonInfo {
 	 * 区域
 	 */
 	private String area;
+
+	/**
+	 * 用户展示的机构列表
+	 */
+	private List<String> displayOrgList;
 
 }

@@ -16,8 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -79,6 +78,11 @@ public class OrgService {
 		return voList;
 	}
 
+	/**
+	 * 获取机构树
+	 *
+	 * @return
+	 */
 	public ResultVo<?> getOrgTree() {
 		OrgVo rootOrg = getRootOrg();
 		if (rootOrg == null) {
@@ -90,6 +94,52 @@ public class OrgService {
 		return ResultVo.ok(rootOrg);
 	}
 
+	/**
+	 * 获取一个机构以及它所有子机构的ID列表
+	 */
+	public List<String> getChildrenOrgList(String orgId) {
+		List<String> result = new ArrayList<>();
+		result.add(orgId);
+
+		List<OrgVo> children = getChildren(orgId);
+		if (children == null) {
+			return result;
+		}
+
+		List<String> list = getChildOrgList(children);
+		if (list != null) {
+			result.addAll(list);
+		}
+
+		return result;
+	}
+
+	private List<String> getChildOrgList(List<OrgVo> children) {
+		if (CommonUtil.isEmpty(children)) {
+			return null;
+		}
+
+		List<String> result = new ArrayList<>();
+
+		children.forEach(child -> {
+			List<OrgVo> voList = child.getChildren();
+			List<String> t = getChildOrgList(voList);
+			if (t != null) {
+				result.addAll(t);
+			}
+
+			result.add(child.getId());
+		});
+
+		return result;
+	}
+
+	/**
+	 * 递归获取子机构
+	 *
+	 * @param parentId
+	 * @return
+	 */
 	private List<OrgVo> getChildren(String parentId) {
 		List<OrgVo> children = getChildrenByParentId(parentId);
 
@@ -115,10 +165,15 @@ public class OrgService {
 		return null;
 	}
 
+	/**
+	 * 获取根机构
+	 * 注意：在一个系统中只能有一个根机构
+	 */
 	private OrgVo getRootOrg() {
 		OrgExample example = new OrgExample();
 		OrgExample.Criteria criteria = example.createCriteria();
 		criteria.andDelStatusEqualTo(Constants.DELETE_STATUS_NO);
+		// 根机构的父ID为空
 		criteria.andParentIdIsNull();
 		List<Org> orgList = orgMapper.selectByExample(example);
 		if (CommonUtil.isNotEmpty(orgList)) {
@@ -128,6 +183,49 @@ public class OrgService {
 		return null;
 	}
 
+	/**
+	 * 获取一个机构的所有父机构ID列表
+	 *
+	 * @param orgId 机构ID
+	 * @return 父机构ID列表
+	 */
+	public List<String> findAllParents(String orgId) {
+		List<OrgVo> allOrgs = getAllOrgs();
+		Map<String, String> orgMap = getOrgMap(allOrgs);
+
+		List<String> parentList = new ArrayList<>();
+		String parentOrgId = getParentOrgId(orgMap, orgId);
+		while (parentOrgId != null) {
+			parentList.add(parentOrgId);
+			parentOrgId = getParentOrgId(orgMap, parentOrgId);
+		}
+
+		Collections.reverse(parentList);
+		return parentList;
+	}
+
+	/**
+	 * 获取 Map<机构ID-父机构ID>
+	 */
+	private Map<String, String> getOrgMap(List<OrgVo> voList) {
+		Map<String, String> map = new HashMap<>();
+		voList.forEach(orgVo -> map.put(orgVo.getId(), orgVo.getParentId()));
+		return map;
+	}
+
+	/**
+	 * 获取父机构ID
+	 */
+	private String getParentOrgId(Map<String, String> orgMap, String id) {
+		return orgMap.get(id);
+	}
+
+	/**
+	 * 根据机构ID获取机构名
+	 *
+	 * @param orgId 机构ID
+	 * @return 机构名
+	 */
 	public String getOrgNameById(String orgId) {
 		Org org = getOrgById(orgId);
 		if (org == null) {
