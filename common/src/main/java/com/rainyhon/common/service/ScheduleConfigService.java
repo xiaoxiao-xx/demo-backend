@@ -102,6 +102,8 @@ public class ScheduleConfigService {
 		ScheduleConfig scheduleConfig = getScheduleConfigById(id);
 		deleteSchedulePersonByObjectId(scheduleConfig.getObjectId());
 
+		scheduleConfigMapper.deleteByPrimaryKey(id);
+
 		return ResultVo.ok();
 	}
 

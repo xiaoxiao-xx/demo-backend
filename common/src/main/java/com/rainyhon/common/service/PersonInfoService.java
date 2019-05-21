@@ -130,7 +130,7 @@ public class PersonInfoService {
 		return ResultVo.ok();
 	}
 
-	public ResultVo delete(PersonDeleteVo vo) {
+	public ResultVo delete(DeleteVo vo) {
 		List<String> idList = vo.getIdList();
 		if (CommonUtil.isEmpty(idList)) {
 			return ResultVo.ok();

@@ -138,5 +138,7 @@ public class Constants {
 	 */
 	public static int ERROR_CODE = 500;
 
+	public static final String CERTIFICATE_TYPE = "CERTIFICATE_TYPE";
+
 }
 

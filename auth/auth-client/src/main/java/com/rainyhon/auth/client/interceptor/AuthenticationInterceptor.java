@@ -40,6 +40,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 			return true;
 		}
 
+		// TODO 这会影响userInfo接口 注意
+//		if (request.getRequestURI().contains("user")) {
+//			return true;
+//		}
+
 		// TODO 内部调用，没有携带用户信息
 		if (request.getRequestURI().contains("getUserByUsername")) {
 			return true;

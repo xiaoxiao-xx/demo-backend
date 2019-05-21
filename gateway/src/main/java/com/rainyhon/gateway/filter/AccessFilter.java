@@ -60,6 +60,11 @@ public class AccessFilter extends ZuulFilter {
 			return null;
 		}
 
+		// TODO 这会影响userInfo接口 注意
+//		if (uri.contains("user")) {
+//			return null;
+//		}
+
 		// TODO 删除
 		if (uri.contains("/static/")) {
 			return null;

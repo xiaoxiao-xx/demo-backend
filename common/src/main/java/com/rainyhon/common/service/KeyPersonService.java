@@ -8,7 +8,7 @@ import com.rainyhon.common.model.KeyPersonExample;
 import com.rainyhon.common.util.CommonUtil;
 import com.rainyhon.common.util.EntityUtils;
 import com.rainyhon.common.vo.KeyPersonVo;
-import com.rainyhon.common.vo.PersonDeleteVo;
+import com.rainyhon.common.vo.DeleteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +45,7 @@ public class KeyPersonService {
 		addKeyPerson(keyPerson);
 	}
 
-	public void batchDelete(PersonDeleteVo vo) {
+	public void batchDelete(DeleteVo vo) {
 		List<String> idList = vo.getIdList();
 		idList.forEach(this::deleteById);
 	}

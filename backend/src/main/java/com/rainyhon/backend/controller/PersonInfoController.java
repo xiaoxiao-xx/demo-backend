@@ -1,7 +1,7 @@
 package com.rainyhon.backend.controller;
 
 import com.rainyhon.common.service.PersonInfoService;
-import com.rainyhon.common.vo.PersonDeleteVo;
+import com.rainyhon.common.vo.DeleteVo;
 import com.rainyhon.common.vo.PersonInfoVo;
 import com.rainyhon.common.vo.ResultVo;
 import com.rainyhon.common.vo.SearchVo;
@@ -33,7 +33,7 @@ public class PersonInfoController {
 	}
 
 	@PostMapping("delete")
-	public ResultVo delete(@RequestBody PersonDeleteVo vo) {
+	public ResultVo delete(@RequestBody DeleteVo vo) {
 		return personInfoService.delete(vo);
 	}
 

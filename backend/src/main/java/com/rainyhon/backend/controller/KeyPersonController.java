@@ -4,7 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.rainyhon.common.model.KeyPerson;
 import com.rainyhon.common.service.KeyPersonService;
 import com.rainyhon.common.vo.KeyPersonVo;
-import com.rainyhon.common.vo.PersonDeleteVo;
+import com.rainyhon.common.vo.DeleteVo;
 import com.rainyhon.common.vo.ResultVo;
 import com.rainyhon.common.vo.IdVo;
 import io.swagger.annotations.ApiOperation;
@@ -26,7 +26,7 @@ public class KeyPersonController {
 	}
 
 	@PostMapping("batchDelete")
-	public ResultVo batchDelete(@RequestBody PersonDeleteVo vo) {
+	public ResultVo batchDelete(@RequestBody DeleteVo vo) {
 		keyPersonService.batchDelete(vo);
 		return ResultVo.ok();
 	}
