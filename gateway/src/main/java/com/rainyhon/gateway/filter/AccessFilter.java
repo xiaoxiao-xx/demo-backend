@@ -44,6 +44,8 @@ public class AccessFilter extends ZuulFilter {
 		// urlWhiteList.add("/user/addUser");
 	}
 
+	// private Map<String, UserInfo> userInfoMap = new HashMap<>();
+
 	@Override
 	public Object run() {
 		RequestContext context = RequestContext.getCurrentContext();
@@ -84,17 +86,21 @@ public class AccessFilter extends ZuulFilter {
 		String accessToken = request.getHeader("access-token");
 		if (accessToken != null && !accessToken.trim().equals("")) {
 //			log.info("AccessToken: [{}]", accessToken);
-			UserInfo user = null;
+			UserInfo userInfo = null;
 			try {
-				user = getBean(AuthApi.class).isLogged(accessToken);
-				if (user != null && user.getIsLogged() != null && user.getIsLogged()) {
+				// TODO 没有必要每次都调用auth的服务，可以缓存结果，每几分钟失效一下
+				userInfo = getBean(AuthApi.class).isLogged(accessToken);
+
+				if (userInfo != null && userInfo.getIsLogged() != null && userInfo.getIsLogged()) {
+					// userInfoMap.put(userInfo.getId(), userInfo);
+
 //					String json = JSONUtils.toJSONString(user);
 					//ctx.addZuulRequestHeader("user_info", ByteUtils.byte2hex(Object2Byte.getBytesFromObject(user)));
 //					ctx.addZuulRequestHeader("user_roles", JSONUtils.toJSONArray(user.getRoles()).toString());
 					// UserInfo转成JSON字符串
-					String userInfo = new Gson().toJson(user);
+					String userInfoJsonStr = new Gson().toJson(userInfo);
 					// 再对JSON字符串进行Base64编码
-					context.addZuulRequestHeader("user_info", Base64Utils.base64Ecode(userInfo));
+					context.addZuulRequestHeader("user_info", Base64Utils.base64Ecode(userInfoJsonStr));
 //					log.info("Logged: {}", user.getUsername());
 					log.info(String.format("%-4s request to %s", request.getMethod(), request.getRequestURL().toString()));
 					return null;

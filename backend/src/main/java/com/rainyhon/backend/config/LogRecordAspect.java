@@ -1,6 +1,5 @@
 package com.rainyhon.backend.config;
 
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
